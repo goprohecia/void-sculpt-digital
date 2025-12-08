@@ -1,57 +1,90 @@
 import { Layout } from "@/components/Layout";
+import { FloatingParticles } from "@/components/FloatingParticles";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Target, Users, Sparkles } from "lucide-react";
-import logo from "@/assets/logo-impartial.png";
+import logoHero from "@/assets/logo-hero.png";
 
 const values = [
   {
     icon: Zap,
     title: "Innovation",
     description: "Nous repoussons constamment les limites du possible pour créer des expériences uniques.",
-    color: "neon-blue",
+    color: "neon-violet",
+    bg: "bg-neon-violet/10",
+    iconColor: "text-neon-violet",
+    border: "group-hover:border-neon-violet/50",
+    shadow: "group-hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]",
   },
   {
     icon: Target,
     title: "Précision",
     description: "Chaque pixel, chaque ligne de code est pensée pour la perfection.",
-    color: "neon-green",
+    color: "emerald",
+    bg: "bg-emerald-500/10",
+    iconColor: "text-emerald-400",
+    border: "group-hover:border-emerald-500/50",
+    shadow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]",
   },
   {
     icon: Users,
     title: "Partenariat",
     description: "Nous ne sommes pas un prestataire, mais votre partenaire de croissance digital.",
-    color: "neon-red",
+    color: "rose",
+    bg: "bg-rose-500/10",
+    iconColor: "text-rose-400",
+    border: "group-hover:border-rose-500/50",
+    shadow: "group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]",
   },
   {
     icon: Sparkles,
     title: "Excellence",
     description: "Notre standard est l'excellence, notre objectif est de dépasser vos attentes.",
-    color: "tier-custom",
+    color: "violet",
+    bg: "bg-violet-500/10",
+    iconColor: "text-violet-400",
+    border: "group-hover:border-violet-500/50",
+    shadow: "group-hover:shadow-[0_0_40px_rgba(167,139,250,0.15)]",
   },
 ];
 
 const Studio = () => {
   return (
     <Layout>
+      <FloatingParticles />
+      
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-neon-green/10 to-transparent opacity-50" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 grid-bg" />
+        <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow" />
+        <div className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
 
-        <div className="container mx-auto px-4 relative">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-8 flex justify-center">
-              <img
-                src={logo}
-                alt="IMPARTIAL"
-                className="w-24 h-24 animate-float opacity-0 animate-fade-in"
-              />
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
+              <div className="relative">
+                <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
+                <img
+                  src={logoHero}
+                  alt="IMPARTIAL"
+                  className="relative w-32 h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                />
+              </div>
             </div>
+            
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
+                <Sparkles className="h-4 w-4" />
+                Notre Histoire
+              </div>
+            </div>
+            
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.15s" }}
+              style={{ animationDelay: "0.2s" }}
             >
-              Le Studio IMPARTIAL
+              Le Studio <span className="text-gradient-neon">IMPARTIAL</span>
             </h1>
             <p
               className="text-xl text-muted-foreground opacity-0 animate-fade-in-up"
@@ -66,24 +99,35 @@ const Studio = () => {
 
       {/* Vision Section */}
       <section className="py-24 relative">
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Notre Vision</h2>
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                <Sparkles className="h-4 w-4 text-neon-violet" />
+                <span className="text-sm font-medium text-neon-violet">Notre Vision</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Créer l'<span className="text-gradient-neon">extraordinaire</span>
+              </h2>
               <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
                 Chez IMPARTIAL, nous croyons que le digital ne doit pas être un compromis. 
                 Nous fusionnons l'esthétique gaming et tech avec une approche premium pour 
                 créer des expériences qui marquent les esprits.
               </p>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Notre nom ? <span className="text-foreground font-medium">IMPARTIAL</span>. 
+                Notre nom ? <span className="text-neon-violet font-medium">IMPARTIAL</span>. 
                 Parce que nous abordons chaque projet sans préjugé, avec un regard neuf et 
                 une objectivité totale pour trouver LA meilleure solution pour vous.
               </p>
             </div>
             <div className="relative">
-              <div className="aspect-square rounded-3xl bg-gradient-to-br from-neon-blue/20 via-neon-green/10 to-neon-red/20 border border-border/50 flex items-center justify-center">
-                <div className="text-center p-8">
+              <div className="aspect-square rounded-3xl bg-glass-dark/60 backdrop-blur-xl border border-white/10 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-neon-violet/20 rounded-full blur-[80px] animate-pulse-glow" />
+                
+                <div className="text-center p-8 relative z-10">
                   <div className="text-7xl md:text-8xl font-black text-gradient-neon mb-4">
                     100%
                   </div>
@@ -96,10 +140,16 @@ const Studio = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-24 relative bg-card/30">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Valeurs</h2>
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+              <Sparkles className="h-4 w-4 text-neon-violet" />
+              <span className="text-sm font-medium text-neon-violet">Nos Piliers</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos <span className="text-gradient-neon">Valeurs</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Les piliers qui guident chacune de nos créations.
             </p>
@@ -109,14 +159,14 @@ const Studio = () => {
             {values.map((value, index) => (
               <div
                 key={value.title}
-                className="p-8 rounded-2xl bg-background border border-border hover:border-muted-foreground transition-all duration-300"
+                className={`group p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${value.border} ${value.shadow} opacity-0 animate-fade-in-up`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className={`w-14 h-14 rounded-xl bg-${value.color}/10 flex items-center justify-center mb-6`}>
-                  <value.icon className={`h-7 w-7 text-${value.color}`} />
+                <div className={`w-14 h-14 rounded-xl ${value.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <value.icon className={`h-7 w-7 ${value.iconColor}`} />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{value.title}</h3>
-                <p className="text-muted-foreground text-sm">{value.description}</p>
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-white transition-colors">{value.title}</h3>
+                <p className="text-muted-foreground text-sm group-hover:text-gray-300 transition-colors">{value.description}</p>
               </div>
             ))}
           </div>
@@ -124,22 +174,36 @@ const Studio = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Prêt à rejoindre l'aventure ?
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Discutons de votre projet et voyons comment nous pouvons créer quelque chose d'exceptionnel ensemble.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-foreground text-background font-semibold rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.25)]"
-            >
-              Nous contacter
-              <ArrowRight className="h-5 w-5" />
-            </Link>
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-neon-violet/10 via-purple-600/10 to-blue-600/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-violet-600/15 rounded-full blur-[150px]" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-3xl p-12 md:p-16 text-center border border-white/10 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-3xl" />
+              
+              <div className="relative z-10">
+                <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                  <Sparkles className="h-4 w-4 text-neon-violet" />
+                  <span className="text-sm font-medium text-neon-violet">Rejoignez-nous</span>
+                </div>
+                
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                  Prêt à rejoindre l'<span className="text-gradient-neon">aventure</span> ?
+                </h2>
+                <p className="text-xl text-muted-foreground mb-8">
+                  Discutons de votre projet et voyons comment nous pouvons créer quelque chose d'exceptionnel ensemble.
+                </p>
+                <Link
+                  to="/contact"
+                  className="btn-gradient inline-flex items-center justify-center gap-3 px-10 py-5 text-white font-semibold rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]"
+                >
+                  Nous contacter
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
