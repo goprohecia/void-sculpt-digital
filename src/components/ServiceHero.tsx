@@ -1,54 +1,94 @@
+import { FloatingParticles } from "@/components/FloatingParticles";
+import { Sparkles } from "lucide-react";
+import logoHero from "@/assets/logo-hero.png";
+
 interface ServiceHeroProps {
   title: string;
   subtitle: string;
   image: string;
-  accentColor: "red" | "green" | "blue" | "gold";
+  accentColor: "red" | "green" | "blue" | "gold" | "violet";
+  badge?: string;
 }
 
 const accentClasses = {
-  red: "from-neon-red/20",
-  green: "from-neon-green/20",
-  blue: "from-neon-blue/20",
-  gold: "from-tier-custom/20",
+  red: "from-rose-500/20",
+  green: "from-emerald-500/20",
+  blue: "from-neon-violet/20",
+  gold: "from-violet-500/20",
+  violet: "from-neon-violet/20",
 };
 
 const borderClasses = {
-  red: "border-neon-red shadow-[0_0_30px_rgba(255,51,102,0.6),0_0_60px_rgba(255,51,102,0.3)] animate-pulse-glow-red",
-  green: "border-neon-green shadow-[0_0_30px_rgba(0,255,136,0.6),0_0_60px_rgba(0,255,136,0.3)] animate-pulse-glow-green",
-  blue: "border-neon-blue shadow-[0_0_30px_rgba(0,170,255,0.6),0_0_60px_rgba(0,170,255,0.3)] animate-pulse-glow-blue",
-  gold: "border-tier-custom shadow-[0_0_30px_rgba(255,204,0,0.6),0_0_60px_rgba(255,204,0,0.3)] animate-pulse-glow-gold",
+  red: "border-rose-500/50 shadow-[0_0_40px_rgba(244,63,94,0.4)] group-hover:shadow-[0_0_60px_rgba(244,63,94,0.5)]",
+  green: "border-emerald-500/50 shadow-[0_0_40px_rgba(16,185,129,0.4)] group-hover:shadow-[0_0_60px_rgba(16,185,129,0.5)]",
+  blue: "border-neon-violet/50 shadow-[0_0_40px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_60px_rgba(139,92,246,0.5)]",
+  gold: "border-violet-400/50 shadow-[0_0_40px_rgba(167,139,250,0.4)] group-hover:shadow-[0_0_60px_rgba(167,139,250,0.5)]",
+  violet: "border-neon-violet/50 shadow-[0_0_40px_rgba(139,92,246,0.4)] group-hover:shadow-[0_0_60px_rgba(139,92,246,0.5)]",
 };
 
-export function ServiceHero({ title, subtitle, image, accentColor }: ServiceHeroProps) {
+const badgeColors = {
+  red: "text-rose-400",
+  green: "text-emerald-400",
+  blue: "text-neon-violet",
+  gold: "text-violet-400",
+  violet: "text-neon-violet",
+};
+
+export function ServiceHero({ title, subtitle, image, accentColor, badge }: ServiceHeroProps) {
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
-      {/* Background Gradient */}
-      <div
-        className={`absolute inset-0 bg-gradient-to-b ${accentClasses[accentColor]} to-transparent opacity-30`}
-      />
+      <FloatingParticles />
       
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      {/* Background Effects */}
+      <div className={`absolute inset-0 bg-gradient-to-b ${accentClasses[accentColor]} via-transparent to-transparent`} />
+      <div className="absolute inset-0 grid-bg" />
+      
+      {/* Glowing Orbs */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow" />
+      <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
 
-      <div className="container mx-auto px-4 relative">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight animate-fade-in-up">
-              {title}
+            {/* Logo */}
+            <div className="mb-6 flex justify-center lg:justify-start opacity-0 animate-fade-in">
+              <div className="relative">
+                <div className="absolute inset-0 bg-neon-violet/40 blur-[40px] rounded-full scale-110 animate-pulse-glow" />
+                <img
+                  src={logoHero}
+                  alt="IMPARTIAL"
+                  className="relative w-20 h-20 drop-shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                />
+              </div>
+            </div>
+            
+            {/* Badge */}
+            {badge && (
+              <div className="mb-6 flex justify-center lg:justify-start opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                <div className={`badge-gradient flex items-center gap-2 text-sm font-medium ${badgeColors[accentColor]}`}>
+                  <Sparkles className="h-4 w-4" />
+                  {badge}
+                </div>
+              </div>
+            )}
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+              <span className="text-gradient-neon">{title}</span>
             </h1>
             <p
-              className="text-xl text-muted-foreground max-w-2xl animate-fade-in-up [animation-delay:150ms]"
+              className="text-xl text-muted-foreground max-w-2xl opacity-0 animate-fade-in-up"
+              style={{ animationDelay: "0.3s" }}
             >
               {subtitle}
             </p>
           </div>
 
           {/* Hero Image */}
-          <div className={`flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 ${borderClasses[accentColor]}`}>
+          <div className={`group flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}>
             <img 
               src={image} 
               alt={title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
           </div>
         </div>

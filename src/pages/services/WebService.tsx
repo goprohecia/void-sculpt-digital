@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
+import { Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-web.png";
 
 const WebService = () => {
@@ -11,13 +12,20 @@ const WebService = () => {
         subtitle="De la vitrine épurée au E-commerce puissant. Votre présence en ligne, réinventée."
         image={heroImage}
         accentColor="blue"
+        badge="Sites Web & Vitrines"
       />
 
       {/* Pricing Section */}
       <section className="py-24 relative">
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres Web</h2>
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+              <Sparkles className="h-4 w-4 text-neon-violet" />
+              <span className="text-sm font-medium text-neon-violet">Tarifs</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Web</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Choisissez la formule adaptée à vos ambitions digitales.
             </p>

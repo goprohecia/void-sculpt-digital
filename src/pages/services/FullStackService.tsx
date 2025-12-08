@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
+import { Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-360.png";
 
 const FullStackService = () => {
@@ -11,13 +12,20 @@ const FullStackService = () => {
         subtitle="L'alliance parfaite : Site + App + Backoffice. La solution ultime pour les startups ambitieuses."
         image={heroImage}
         accentColor="gold"
+        badge="Écosystème 360°"
       />
 
       {/* Pricing Section */}
       <section className="py-24 relative">
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres 360°</h2>
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/30">
+              <Sparkles className="h-4 w-4 text-violet-400" />
+              <span className="text-sm font-medium text-violet-400">Tarifs</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">360°</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               L'écosystème complet pour une domination digitale sans compromis.
             </p>
