@@ -75,19 +75,19 @@ const Index = () => {
             <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
             animationDelay: "0.1s"
           }}>
-              <div className="relative animate-float">
+              <div className="relative">
                 <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-110 animate-pulse-glow" />
                 <div className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-pulse-glow" style={{ animationDelay: "0.5s" }} />
                 <img 
                   src={logoHero} 
                   alt="Impartial Logo" 
-                  className="relative h-40 md:h-52 lg:h-60 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)] animate-pulse-glow"
+                  className="relative h-40 md:h-52 lg:h-60 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)]"
                 />
               </div>
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight opacity-0 animate-fade-in-up animate-float" style={{
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.2s"
           }}>
               <span className="text-logo-gradient">IMPARTIAL</span>
