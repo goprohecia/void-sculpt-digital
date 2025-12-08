@@ -130,11 +130,11 @@
   }
 
   .text-logo-gradient {
-    background: linear-gradient(90deg, #a78bfa 0%, #818cf8 15%, #06b6d4 35%, #22c55e 55%, #ef4444 75%, #f97316 100%);
+    background: linear-gradient(90deg, #8b5cf6 0%, #6366f1 20%, #22d3ee 40%, #10b981 60%, #ef4444 80%, #8b5cf6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5));
+    filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6));
   }
 
   .text-gradient-violet {
