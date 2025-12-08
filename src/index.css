@@ -136,7 +136,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6));
-    animation: gradient-flow 4s ease-in-out infinite;
+    animation: gradient-flow 6s ease-in-out infinite, pulse-glow 6s ease-in-out infinite;
     position: relative;
   }
 
@@ -150,8 +150,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shine-sweep 3s ease-in-out infinite;
-    animation-delay: 1s;
+    animation: shine-sweep 6s ease-in-out infinite;
+    animation-delay: 2s;
   }
 
   @keyframes gradient-flow {
