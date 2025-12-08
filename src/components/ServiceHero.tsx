@@ -37,11 +37,11 @@ const badgeColors = {
 };
 
 const titleColors = {
-  red: "text-rose-400",
-  green: "text-emerald-400",
-  blue: "text-neon-violet",
-  gold: "text-violet-400",
-  violet: "text-neon-violet",
+  red: "text-rose-400 drop-shadow-[0_0_30px_rgba(244,63,94,0.6)]",
+  green: "text-emerald-400 drop-shadow-[0_0_30px_rgba(16,185,129,0.6)]",
+  blue: "text-neon-violet drop-shadow-[0_0_30px_rgba(139,92,246,0.6)]",
+  gold: "text-violet-400 drop-shadow-[0_0_30px_rgba(167,139,250,0.6)]",
+  violet: "text-neon-violet drop-shadow-[0_0_30px_rgba(139,92,246,0.6)]",
 };
 
 export function ServiceHero({ title, subtitle, image, accentColor, badge }: ServiceHeroProps) {
