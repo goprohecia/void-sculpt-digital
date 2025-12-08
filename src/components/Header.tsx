@@ -89,6 +89,15 @@ export function Header() {
             </div>
 
             <Link
+              to="/portfolio"
+              className={`font-medium transition-colors duration-200 hover:text-neon-blue ${
+                isActive("/portfolio") ? "text-neon-blue" : "text-foreground"
+              }`}
+            >
+              Portfolio
+            </Link>
+
+            <Link
               to="/studio"
               className={`font-medium transition-colors duration-200 hover:text-neon-blue ${
                 isActive("/studio") ? "text-neon-blue" : "text-foreground"
@@ -150,6 +159,16 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
+
+            <Link
+              to="/portfolio"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`px-4 py-3 rounded-lg transition-colors ${
+                isActive("/portfolio") ? "bg-neon-blue/10 text-neon-blue" : ""
+              }`}
+            >
+              Portfolio
+            </Link>
 
             <Link
               to="/studio"
