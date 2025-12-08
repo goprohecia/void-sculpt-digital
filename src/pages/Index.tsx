@@ -75,9 +75,20 @@ const Index = () => {
             <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
             animationDelay: "0.1s"
           }}>
-              <div className="relative animate-float group cursor-pointer">
-                <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-110 animate-pulse-glow transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.5]" />
-                <div className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-pulse-glow transition-all duration-500 group-hover:bg-violet-500/60 group-hover:blur-[70px]" style={{ animationDelay: "0.5s" }} />
+              <div 
+                className="relative animate-float group cursor-pointer transition-transform duration-100"
+                style={{ 
+                  transform: `translateY(${parallaxSlow * -0.5}px) scale(${1 - Math.abs(parallaxSlow) * 0.0005}) rotate(${parallaxSlow * 0.02}deg)` 
+                }}
+              >
+                <div 
+                  className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-110 animate-pulse-glow transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.5]"
+                  style={{ opacity: Math.max(0.4, 1 - Math.abs(parallaxSlow) * 0.002) }}
+                />
+                <div 
+                  className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-pulse-glow transition-all duration-500 group-hover:bg-violet-500/60 group-hover:blur-[70px]" 
+                  style={{ animationDelay: "0.5s", opacity: Math.max(0.3, 1 - Math.abs(parallaxSlow) * 0.002) }} 
+                />
                 <img 
                   src={logoHero} 
                   alt="Impartial Logo" 
