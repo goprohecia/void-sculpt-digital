@@ -130,11 +130,46 @@
   }
 
   .text-logo-gradient {
-    background: linear-gradient(90deg, #8b5cf6 0%, #6366f1 20%, #22d3ee 40%, #10b981 60%, #ef4444 80%, #8b5cf6 100%);
+    background: linear-gradient(90deg, #8b5cf6 0%, #6366f1 14%, #22d3ee 28%, #10b981 42%, #ef4444 56%, #8b5cf6 70%, #6366f1 84%, #22d3ee 100%);
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6));
+    animation: gradient-flow 4s ease-in-out infinite;
+    position: relative;
+  }
+
+  .text-logo-gradient::after {
+    content: 'IMPARTIAL';
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shine-sweep 3s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  @keyframes gradient-flow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes shine-sweep {
+    0%, 100% {
+      background-position: -200% 0;
+    }
+    50% {
+      background-position: 200% 0;
+    }
   }
 
   .text-gradient-violet {
