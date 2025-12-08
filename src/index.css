@@ -318,6 +318,126 @@
   .backdrop-blur-xl {
     backdrop-filter: blur(12px);
   }
+
+  /* Mobile-specific entrance animations */
+  .animate-logo-entrance {
+    animation: logo-entrance-mobile 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-logo-glow-entrance {
+    animation: logo-glow-entrance-mobile 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in-mobile 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up-mobile 0.6s ease-out forwards;
+  }
+}
+
+/* Mobile-specific keyframes */
+@keyframes logo-entrance-mobile {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes logo-glow-entrance-mobile {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in-mobile {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up-mobile {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered mobile animations */
+@media (max-width: 768px) {
+  .animate-fade-in[style*="animation-delay"] {
+    animation: fade-in-mobile 0.5s ease-out forwards;
+  }
+  
+  .animate-fade-in-up[style*="animation-delay"] {
+    animation: fade-in-up-mobile 0.5s ease-out forwards;
+  }
+
+  /* Service cards mobile entrance */
+  .group[class*="rounded-xl"] {
+    animation: card-entrance-mobile 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .group[class*="rounded-xl"]:nth-child(1) { animation-delay: 0.1s; }
+  .group[class*="rounded-xl"]:nth-child(2) { animation-delay: 0.15s; }
+  .group[class*="rounded-xl"]:nth-child(3) { animation-delay: 0.2s; }
+  .group[class*="rounded-xl"]:nth-child(4) { animation-delay: 0.25s; }
+}
+
+@keyframes card-entrance-mobile {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Touch-friendly hover states for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .btn-gradient:hover {
+    transform: none;
+  }
+  
+  .card-hover:hover {
+    transform: none;
+  }
+  
+  .group:hover .group-hover\:scale-110 {
+    transform: none;
+  }
+
+  /* Active states for touch */
+  .btn-gradient:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 20px hsl(var(--neon-violet) / 0.4);
+  }
+
+  .group:active {
+    transform: scale(0.98);
+  }
 }
 
 @keyframes float {
