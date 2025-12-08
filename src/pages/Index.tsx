@@ -66,7 +66,7 @@ const Index = () => {
                 loop
                 muted
                 playsInline
-                className="h-32 md:h-40 w-auto"
+                className="h-48 md:h-64 lg:h-72 w-auto"
               >
                 <source src={logoHero} type="video/mp4" />
               </video>
