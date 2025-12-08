@@ -8,7 +8,7 @@ const MobileService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Expériences Mobiles Next-Gen"
+        title="Expériences mobiles next-gen"
         subtitle="Des applications natives et cross-platform fluides, conçues pour engager vos utilisateurs."
         image={heroImage}
         accentColor="green"
