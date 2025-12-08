@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Sparkles, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
-import logoAnimated from "@/assets/logo-animated.mp4";
+import logoHero from "@/assets/logo-hero.png";
 
 export function Footer() {
   return (
@@ -15,13 +15,10 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3 group">
-              <video
-                src={logoAnimated}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="h-12 w-12 object-contain"
+              <img
+                src={logoHero}
+                alt="Impartial"
+                className="h-12 w-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] transition-all duration-300"
               />
               <span className="text-xl font-bold tracking-wider group-hover:text-neon-violet transition-colors">IMPARTIAL</span>
             </Link>
