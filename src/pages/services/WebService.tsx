@@ -46,6 +46,7 @@ const WebService = () => {
               ]}
               upsell="Hébergement & maintenance 59€/mois"
               subject="Site Web - Offre START (Site Présence)"
+              index={0}
             />
 
             <PricingCard
@@ -63,6 +64,7 @@ const WebService = () => {
               ]}
               upsell="Hébergement avancé + support 99€/mois"
               subject="Site Web - Offre PRO (Site Business)"
+              index={1}
             />
 
             <PricingCard
@@ -80,6 +82,7 @@ const WebService = () => {
               ]}
               upsell="Maintenance sur mesure dès 149€/mois"
               subject="Site Web - Offre SUR-MESURE (Site Premium)"
+              index={2}
             />
           </div>
         </div>
