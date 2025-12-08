@@ -8,7 +8,7 @@ const FullStackService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Domination Digitale Totale"
+        title="Domination digitale totale"
         subtitle="L'alliance parfaite : Site + App + Backoffice. La solution ultime pour les startups ambitieuses."
         image={heroImage}
         accentColor="gold"
