@@ -87,7 +87,10 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
         </div>
 
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          <div className="flex-1 text-center lg:text-left">
+          <div 
+            className="flex-1 text-center lg:text-left"
+            style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
+          >
             
             {/* Badge */}
             {badge && (
@@ -99,12 +102,21 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
               </div>
             )}
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+            <h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight opacity-0 animate-fade-in-up" 
+              style={{ 
+                animationDelay: "0.2s",
+                transform: `translateY(${parallaxSlow * 0.3}px)`
+              }}
+            >
               <span className="text-gradient-neon">{title}</span>
             </h1>
             <p
               className="text-xl text-muted-foreground max-w-2xl opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.3s" }}
+              style={{ 
+                animationDelay: "0.3s",
+                transform: `translateY(${parallaxSlow * 0.4}px)`
+              }}
             >
               {subtitle}
             </p>
@@ -113,7 +125,10 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
           {/* Hero Image with Parallax */}
           <div 
             className={`group flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}
-            style={{ transform: `translateY(${parallaxSlow * -1}px)` }}
+            style={{ 
+              transform: `translateY(${parallaxSlow * -1}px)`,
+              opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.005)
+            }}
           >
             <img 
               src={image} 
