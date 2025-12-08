@@ -65,14 +65,14 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 text-center lg:text-left">
-            {/* Logo */}
-            <div className="mb-6 flex justify-center lg:justify-start opacity-0 animate-fade-in">
+            {/* Logo - Centered and enlarged */}
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
               <div className="relative">
-                <div className="absolute inset-0 bg-neon-violet/40 blur-[40px] rounded-full scale-110 animate-pulse-glow" />
+                <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-125 animate-pulse-glow" />
                 <img
                   src={logoHero}
                   alt="IMPARTIAL"
-                  className="relative w-20 h-20 drop-shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                  className="relative w-28 h-28 md:w-32 md:h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.6)]"
                 />
               </div>
             </div>
