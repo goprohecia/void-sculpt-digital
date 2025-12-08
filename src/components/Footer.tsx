@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Sparkles, Mail, Phone, MapPin, ArrowUpRight, Cookie, Linkedin, Instagram, Twitter } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 import { openCookiePreferences } from "./CookieBanner";
+import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   return (
@@ -12,7 +13,7 @@ export function Footer() {
       <div className="absolute bottom-0 right-1/3 w-[300px] h-[150px] bg-purple-600/10 rounded-full blur-[100px]" />
 
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3 group">
@@ -118,7 +119,7 @@ export function Footer() {
               <div className="w-2 h-2 rounded-full bg-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.5)]" />
               Contact
             </h4>
-            <ul className="space-y-3 text-muted-foreground">
+            <ul className="space-y-3 text-muted-foreground text-sm">
               <li className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-rose-400" />
                 contact@impartial.studio
@@ -134,11 +135,23 @@ export function Footer() {
             </ul>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-neon-violet/10 border border-neon-violet/40 text-neon-violet rounded-xl hover:bg-neon-violet/20 hover:border-neon-violet/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all duration-300"
+              className="inline-flex items-center gap-2 mt-6 px-4 py-2 bg-neon-violet/10 border border-neon-violet/40 text-neon-violet rounded-xl hover:bg-neon-violet/20 hover:border-neon-violet/60 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all duration-300 text-sm"
             >
               Nous contacter
               <ArrowUpRight className="h-4 w-4" />
             </Link>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h4 className="font-semibold mb-6 text-violet-400 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-violet-400 shadow-[0_0_10px_rgba(167,139,250,0.5)]" />
+              Newsletter
+            </h4>
+            <p className="text-muted-foreground text-sm mb-4">
+              Recevez nos actualités et conseils digitaux.
+            </p>
+            <NewsletterForm variant="compact" />
           </div>
         </div>
 
