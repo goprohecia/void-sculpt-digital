@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Menu, X } from "lucide-react";
-import logoAnimated from "@/assets/logo-animated.mp4";
+import logoHeader from "@/assets/logo-header.mp4";
 
 const expertises = [
   { name: "Sites Web & Vitrines", href: "/services/web" },
@@ -23,18 +23,15 @@ export function Header() {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <video 
-              src={logoAnimated} 
+              src={logoHeader} 
               autoPlay
               loop
               muted
               playsInline
-              className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
-            <span className="text-xl font-bold tracking-wider hidden sm:block">
-              IMPARTIAL
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
