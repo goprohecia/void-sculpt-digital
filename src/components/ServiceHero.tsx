@@ -41,7 +41,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
   const parallaxFast = useParallax(0.4);
 
   return (
-    <section className="relative pt-32 pb-20 overflow-hidden">
+    <section className="relative pt-24 pb-10 overflow-hidden">
       <FloatingParticles />
       
       {/* Background Effects */}
@@ -63,9 +63,9 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Logo - Fully centered and large */}
+        {/* Logo - Centered and compact */}
         <div 
-          className="mb-12 flex justify-center"
+          className="mb-6 flex justify-center"
           style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008) }}
         >
           <div 
@@ -75,18 +75,18 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             }}
           >
             <div 
-              className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]"
+              className="absolute inset-0 bg-neon-violet/60 blur-[60px] rounded-full scale-150 animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[80px] group-hover:scale-[1.8]"
               style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
             />
             <img
               src={logoHero}
               alt="IMPARTIAL"
-              className="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
+              className="relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 drop-shadow-[0_0_40px_rgba(139,92,246,0.7)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_60px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
             />
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-12">
+        <div className="flex flex-col lg:flex-row items-center gap-8">
           <div 
             className="flex-1 text-center lg:text-left"
             style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
@@ -94,7 +94,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             
             {/* Badge */}
             {badge && (
-              <div className="mb-6 flex justify-center lg:justify-start opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              <div className="mb-4 flex justify-center lg:justify-start opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
                 <div className={`badge-gradient flex items-center gap-2 text-sm font-medium ${badgeColors[accentColor]}`}>
                   <Sparkles className="h-4 w-4" />
                   {badge}
@@ -103,7 +103,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             )}
             
             <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight opacity-0 animate-fade-in-up" 
+              className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight opacity-0 animate-fade-in-up" 
               style={{ 
                 animationDelay: "0.2s",
                 transform: `translateY(${parallaxSlow * 0.3}px)`
@@ -112,7 +112,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
               <span className="text-gradient-neon">{title}</span>
             </h1>
             <p
-              className="text-xl text-muted-foreground max-w-2xl opacity-0 animate-fade-in-up"
+              className="text-lg text-muted-foreground max-w-2xl opacity-0 animate-fade-in-up"
               style={{ 
                 animationDelay: "0.3s",
                 transform: `translateY(${parallaxSlow * 0.4}px)`
@@ -124,7 +124,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
 
           {/* Hero Image with Parallax */}
           <div 
-            className={`group flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}
+            className={`group flex-shrink-0 w-56 h-56 lg:w-72 lg:h-72 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}
             style={{ 
               transform: `translateY(${parallaxSlow * -1}px)`,
               opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.005)
