@@ -52,7 +52,14 @@ const Contact = () => {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in">
+              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
+                <Sparkles className="h-4 w-4" />
+                Contactez-nous
+              </div>
+            </div>
+            
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="relative">
                 <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
                 <img
@@ -60,13 +67,6 @@ const Contact = () => {
                   alt="IMPARTIAL"
                   className="relative w-32 h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
                 />
-              </div>
-            </div>
-            
-            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                <Sparkles className="h-4 w-4" />
-                Contactez-nous
               </div>
             </div>
             
