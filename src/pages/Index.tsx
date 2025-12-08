@@ -4,6 +4,7 @@ import { Testimonials } from "@/components/Testimonials";
 import { FAQ } from "@/components/FAQ";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
+import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 const services = [{
   icon: Globe,
@@ -31,6 +32,10 @@ const services = [{
   color: "tier-custom"
 }];
 const Index = () => {
+  const parallaxSlow = useParallax(0.15);
+  const parallaxMedium = useParallax(0.25);
+  const parallaxFast = useParallax(0.35);
+
   return <Layout>
       {/* Floating Particles Background */}
       <FloatingParticles />
@@ -41,11 +46,19 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
         <div className="absolute inset-0 grid-bg" />
         
-        {/* Glowing Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[180px] animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] animate-pulse-glow" style={{
-        animationDelay: "1s"
-      }} />
+        {/* Glowing Orbs with Parallax */}
+        <div 
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[180px] animate-pulse-glow"
+          style={{ transform: `translateY(${parallaxSlow}px)` }}
+        />
+        <div 
+          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] animate-pulse-glow"
+          style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
+        />
+        <div 
+          className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-[120px]"
+          style={{ transform: `translateY(${parallaxFast}px)` }}
+        />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-5xl mx-auto">

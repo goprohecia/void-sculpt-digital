@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ExternalLink, Eye, Sparkles } from "lucide-react";
+import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 
 interface Project {
@@ -116,6 +117,8 @@ const categoryColors: Record<string, { border: string; text: string; bg: string;
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const parallaxSlow = useParallax(0.15);
+  const parallaxMedium = useParallax(0.25);
 
   const filteredProjects =
     activeCategory === "all"
@@ -131,8 +134,14 @@ export default function Portfolio() {
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
         <div className="absolute inset-0 grid-bg" />
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow" />
-        <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
+        <div 
+          className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow"
+          style={{ transform: `translateY(${parallaxSlow}px)` }}
+        />
+        <div 
+          className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow"
+          style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
+        />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">

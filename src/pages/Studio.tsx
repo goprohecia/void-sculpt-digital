@@ -2,6 +2,7 @@ import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Target, Users, Sparkles } from "lucide-react";
+import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 
 const values = [
@@ -48,6 +49,9 @@ const values = [
 ];
 
 const Studio = () => {
+  const parallaxSlow = useParallax(0.15);
+  const parallaxMedium = useParallax(0.25);
+
   return (
     <Layout>
       <FloatingParticles />
@@ -57,8 +61,14 @@ const Studio = () => {
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
         <div className="absolute inset-0 grid-bg" />
-        <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow" />
-        <div className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
+        <div 
+          className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow"
+          style={{ transform: `translateY(${parallaxSlow}px)` }}
+        />
+        <div 
+          className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow"
+          style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
+        />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
