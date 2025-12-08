@@ -13,10 +13,10 @@ const accentClasses = {
 };
 
 const borderClasses = {
-  red: "border-neon-red shadow-[0_0_30px_rgba(255,51,102,0.6),0_0_60px_rgba(255,51,102,0.3)]",
-  green: "border-neon-green shadow-[0_0_30px_rgba(0,255,136,0.6),0_0_60px_rgba(0,255,136,0.3)]",
-  blue: "border-neon-blue shadow-[0_0_30px_rgba(0,170,255,0.6),0_0_60px_rgba(0,170,255,0.3)]",
-  gold: "border-tier-custom shadow-[0_0_30px_rgba(255,204,0,0.6),0_0_60px_rgba(255,204,0,0.3)]",
+  red: "border-neon-red shadow-[0_0_30px_rgba(255,51,102,0.6),0_0_60px_rgba(255,51,102,0.3)] animate-pulse-glow-red",
+  green: "border-neon-green shadow-[0_0_30px_rgba(0,255,136,0.6),0_0_60px_rgba(0,255,136,0.3)] animate-pulse-glow-green",
+  blue: "border-neon-blue shadow-[0_0_30px_rgba(0,170,255,0.6),0_0_60px_rgba(0,170,255,0.3)] animate-pulse-glow-blue",
+  gold: "border-tier-custom shadow-[0_0_30px_rgba(255,204,0,0.6),0_0_60px_rgba(255,204,0,0.3)] animate-pulse-glow-gold",
 };
 
 export function ServiceHero({ title, subtitle, image, accentColor }: ServiceHeroProps) {
