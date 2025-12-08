@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Testimonials } from "@/components/Testimonials";
 import { FAQ } from "@/components/FAQ";
-import { ArrowRight, Globe, Smartphone, Server, Layers } from "lucide-react";
+import { FloatingParticles } from "@/components/FloatingParticles";
+import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
 import logoAnimated from "@/assets/logo-animated.mp4";
 
 const services = [
@@ -11,7 +12,7 @@ const services = [
     title: "Sites Web & Vitrines",
     description: "Architectures web immersives, du site vitrine au e-commerce puissant.",
     href: "/services/web",
-    color: "neon-blue",
+    color: "neon-violet",
   },
   {
     icon: Smartphone,
@@ -39,20 +40,31 @@ const services = [
 const Index = () => {
   return (
     <Layout>
+      {/* Floating Particles Background */}
+      <FloatingParticles />
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-neon-blue/5 via-transparent to-neon-red/5" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
+        <div className="absolute inset-0 grid-bg" />
         
         {/* Glowing Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-blue/10 rounded-full blur-[150px] animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-red/10 rounded-full blur-[150px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[180px] animate-pulse-glow" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-5xl mx-auto">
-            {/* Logo */}
+            {/* Badge */}
             <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
+              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
+                <Sparkles className="h-4 w-4" />
+                Studio Digital Gaming & Tech
+              </div>
+            </div>
+
+            {/* Logo */}
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <video
                 src={logoAnimated}
                 autoPlay
@@ -75,14 +87,14 @@ const Index = () => {
               className="text-2xl md:text-3xl font-light text-muted-foreground mb-4 opacity-0 animate-fade-in-up"
               style={{ animationDelay: "0.35s" }}
             >
-              Studio Digital Premium
+              Créateurs d'expériences digitales
             </p>
 
             <p
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up"
               style={{ animationDelay: "0.5s" }}
             >
-              Nous créons des expériences digitales immersives qui transforment les marques ambitieuses en références incontournables.
+              Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets.
             </p>
 
             {/* CTAs */}
@@ -92,16 +104,16 @@ const Index = () => {
             >
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                className="btn-gradient inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-xl"
               >
                 Démarrer un projet
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <Link
-                to="/studio"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-border bg-transparent font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-muted-foreground"
+                to="/portfolio"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50"
               >
-                Découvrir le studio
+                Voir nos réalisations
               </Link>
             </div>
           </div>

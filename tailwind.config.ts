@@ -56,6 +56,7 @@ export default {
           green: "hsl(var(--neon-green))",
           blue: "hsl(var(--neon-blue))",
           white: "hsl(var(--neon-white))",
+          violet: "hsl(var(--neon-violet))",
         },
         // Glass
         glass: {
