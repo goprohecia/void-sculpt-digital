@@ -28,7 +28,7 @@ export function Header() {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
             <img 
               src={logoHero} 
               alt="Impartial" 
@@ -37,8 +37,8 @@ export function Header() {
             <span className="text-xl font-bold text-gradient-neon hidden sm:block">IMPARTIAL</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             <Link to="/" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/") ? "text-neon-violet" : "text-foreground"}`}>
               Accueil
             </Link>
@@ -68,8 +68,15 @@ export function Header() {
               Le Studio
             </Link>
 
-            <Link to="/contact" className="btn-gradient px-6 py-2.5 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]">
+            <Link to="/contact" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/contact") ? "text-neon-violet" : "text-foreground"}`}>
               Contact
+            </Link>
+          </div>
+
+          {/* CTA Button - Right */}
+          <div className="hidden lg:block flex-shrink-0">
+            <Link to="/contact" className="btn-gradient px-6 py-2.5 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]">
+              Prendre rendez-vous
             </Link>
           </div>
 
