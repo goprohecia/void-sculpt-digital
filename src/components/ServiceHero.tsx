@@ -113,7 +113,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
               <span className="text-gradient-neon">{title}</span>
             </h1>
             <p
-              className="text-xl text-muted-foreground max-w-2xl min-h-[3rem]"
+              className="text-xl text-foreground max-w-2xl min-h-[3rem]"
               style={{ 
                 transform: `translateY(${parallaxSlow * 0.4}px)`
               }}
