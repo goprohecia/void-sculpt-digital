@@ -64,9 +64,20 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Logo - Fully centered and large */}
-        <div className="mb-12 flex justify-center opacity-0 animate-fade-in">
-          <div className="relative animate-float group cursor-pointer">
-            <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-pulse-glow transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]" />
+        <div 
+          className="mb-12 flex justify-center animate-fade-in"
+          style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008) }}
+        >
+          <div 
+            className="relative animate-float group cursor-pointer transition-transform duration-100"
+            style={{ 
+              transform: `translateY(${parallaxSlow * -0.5}px) scale(${1 - Math.abs(parallaxSlow) * 0.001}) rotate(${parallaxSlow * 0.02}deg)` 
+            }}
+          >
+            <div 
+              className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-pulse-glow transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]"
+              style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
+            />
             <img
               src={logoHero}
               alt="IMPARTIAL"
