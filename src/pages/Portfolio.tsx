@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ExternalLink, Eye, Sparkles } from "lucide-react";
+import logoHero from "@/assets/logo-hero.png";
 
 interface Project {
   id: number;
@@ -135,13 +136,24 @@ export default function Portfolio() {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
-            <div className="mb-6 flex justify-center opacity-0 animate-fade-in">
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
+              <div className="relative">
+                <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
+                <img
+                  src={logoHero}
+                  alt="IMPARTIAL"
+                  className="relative w-32 h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                />
+              </div>
+            </div>
+            
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
                 Nos Créations
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
               Nos <span className="text-gradient-neon">Réalisations</span>
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
