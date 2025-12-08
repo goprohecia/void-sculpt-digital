@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Cookie, X, Check, Settings, ChevronDown } from "lucide-react";
 
@@ -10,17 +10,40 @@ interface CookiePreferences {
 }
 
 const defaultPreferences: CookiePreferences = {
-  essential: true, // Always true, cannot be disabled
+  essential: true,
   analytics: false,
   marketing: false,
   functional: false,
 };
+
+// Custom event for opening cookie preferences
+const OPEN_COOKIE_PREFERENCES_EVENT = "openCookiePreferences";
+
+export function openCookiePreferences() {
+  window.dispatchEvent(new CustomEvent(OPEN_COOKIE_PREFERENCES_EVENT));
+}
 
 export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>(defaultPreferences);
+
+  const openBanner = useCallback(() => {
+    // Load saved preferences if they exist
+    const savedConsent = localStorage.getItem("cookie-consent");
+    if (savedConsent && savedConsent !== "refused") {
+      try {
+        const savedPrefs = JSON.parse(savedConsent);
+        setPreferences(savedPrefs);
+      } catch {
+        setPreferences(defaultPreferences);
+      }
+    }
+    setShowPreferences(true);
+    setIsVisible(true);
+    setIsAnimating(true);
+  }, []);
 
   useEffect(() => {
     const consent = localStorage.getItem("cookie-consent");
@@ -33,10 +56,19 @@ export function CookieBanner() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleOpenPreferences = () => openBanner();
+    window.addEventListener(OPEN_COOKIE_PREFERENCES_EVENT, handleOpenPreferences);
+    return () => window.removeEventListener(OPEN_COOKIE_PREFERENCES_EVENT, handleOpenPreferences);
+  }, [openBanner]);
+
   const savePreferences = (prefs: CookiePreferences) => {
     localStorage.setItem("cookie-consent", JSON.stringify(prefs));
     setIsAnimating(false);
-    setTimeout(() => setIsVisible(false), 300);
+    setTimeout(() => {
+      setIsVisible(false);
+      setShowPreferences(false);
+    }, 300);
   };
 
   const handleAcceptAll = () => {
@@ -59,7 +91,7 @@ export function CookieBanner() {
   };
 
   const togglePreference = (key: keyof CookiePreferences) => {
-    if (key === "essential") return; // Cannot disable essential cookies
+    if (key === "essential") return;
     setPreferences((prev) => ({
       ...prev,
       [key]: !prev[key],
