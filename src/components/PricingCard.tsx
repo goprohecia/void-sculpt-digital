@@ -87,14 +87,14 @@ export function PricingCard({
         <p className="text-muted-foreground mb-6 group-hover:text-gray-300 transition-colors">{subtitle}</p>
 
         {/* Price */}
-        {price && (
-          <div className="mb-8">
-            <span className="text-3xl lg:text-4xl font-extrabold text-gradient-neon">{price}</span>
-            {price !== "Sur devis" && (
-              <span className="text-muted-foreground ml-2">HT</span>
-            )}
-          </div>
-        )}
+        <div className="mb-8">
+          <span className="text-3xl lg:text-4xl font-extrabold text-gradient-neon">
+            {price || "Sur demande"}
+          </span>
+          {price && price !== "Sur devis" && (
+            <span className="text-muted-foreground ml-2">HT</span>
+          )}
+        </div>
 
         {/* Features */}
         <ul className="space-y-4 mb-8 flex-1">
