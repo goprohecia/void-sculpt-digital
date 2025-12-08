@@ -62,8 +62,8 @@ const Index = () => {
             animationDelay: "0.1s"
           }}>
               <div className="relative">
-                <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-110" />
-                <div className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full" />
+                <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-110 animate-pulse-glow" />
+                <div className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-pulse-glow" style={{ animationDelay: "0.5s" }} />
                 <img 
                   src={logoHero} 
                   alt="Impartial Logo" 
