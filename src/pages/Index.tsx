@@ -5,41 +5,33 @@ import { FAQ } from "@/components/FAQ";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
 import logoAnimated from "@/assets/logo-animated.mp4";
-
-const services = [
-  {
-    icon: Globe,
-    title: "Sites Web & Vitrines",
-    description: "Architectures web immersives, du site vitrine au e-commerce puissant.",
-    href: "/services/web",
-    color: "neon-violet",
-  },
-  {
-    icon: Smartphone,
-    title: "Applications Mobiles",
-    description: "Apps natives et cross-platform fluides pour engager vos utilisateurs.",
-    href: "/services/mobile",
-    color: "neon-green",
-  },
-  {
-    icon: Server,
-    title: "Backoffice & SaaS",
-    description: "Dashboards puissants et automatisations pour piloter votre activité.",
-    href: "/services/backoffice",
-    color: "neon-red",
-  },
-  {
-    icon: Layers,
-    title: "Écosystème 360°",
-    description: "L'alliance parfaite : Site + App + Backoffice. La solution ultime.",
-    href: "/services/360",
-    color: "tier-custom",
-  },
-];
-
+const services = [{
+  icon: Globe,
+  title: "Sites Web & Vitrines",
+  description: "Architectures web immersives, du site vitrine au e-commerce puissant.",
+  href: "/services/web",
+  color: "neon-violet"
+}, {
+  icon: Smartphone,
+  title: "Applications Mobiles",
+  description: "Apps natives et cross-platform fluides pour engager vos utilisateurs.",
+  href: "/services/mobile",
+  color: "neon-green"
+}, {
+  icon: Server,
+  title: "Backoffice & SaaS",
+  description: "Dashboards puissants et automatisations pour piloter votre activité.",
+  href: "/services/backoffice",
+  color: "neon-red"
+}, {
+  icon: Layers,
+  title: "Écosystème 360°",
+  description: "L'alliance parfaite : Site + App + Backoffice. La solution ultime.",
+  href: "/services/360",
+  color: "tier-custom"
+}];
 const Index = () => {
-  return (
-    <Layout>
+  return <Layout>
       {/* Floating Particles Background */}
       <FloatingParticles />
 
@@ -51,7 +43,9 @@ const Index = () => {
         
         {/* Glowing Orbs */}
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[180px] animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] animate-pulse-glow" style={{
+        animationDelay: "1s"
+      }} />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-5xl mx-auto">
@@ -64,55 +58,40 @@ const Index = () => {
             </div>
 
             {/* Logo */}
-            <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <video
-                src={logoAnimated}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-32 h-32 md:w-40 md:h-40 object-contain animate-float"
-              />
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{
+            animationDelay: "0.1s"
+          }}>
+              
             </div>
 
             {/* Title */}
-            <h1
-              className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.2s" }}
-            >
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.2s"
+          }}>
               <span className="text-gradient-neon">IMPARTIAL</span>
             </h1>
 
-            <p
-              className="text-2xl md:text-3xl font-light text-muted-foreground mb-4 opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.35s" }}
-            >
+            <p className="text-2xl md:text-3xl font-light text-muted-foreground mb-4 opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.35s"
+          }}>
               Créateurs d'expériences digitales
             </p>
 
-            <p
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.5s" }}
-            >
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.5s"
+          }}>
               Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets.
             </p>
 
             {/* CTAs */}
-            <div
-              className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.65s" }}
-            >
-              <Link
-                to="/contact"
-                className="btn-gradient inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-xl"
-              >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.65s"
+          }}>
+              <Link to="/contact" className="btn-gradient inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-xl">
                 Démarrer un projet
                 <ArrowRight className="h-5 w-5" />
               </Link>
-              <Link
-                to="/portfolio"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50"
-              >
+              <Link to="/portfolio" className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50">
                 Voir nos réalisations
               </Link>
             </div>
@@ -120,7 +99,9 @@ const Index = () => {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in" style={{ animationDelay: "1s" }}>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in" style={{
+        animationDelay: "1s"
+      }}>
           <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center pt-2">
             <div className="w-1.5 h-3 bg-muted-foreground rounded-full animate-bounce" />
           </div>
@@ -146,52 +127,45 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => {
-              const colorClasses = {
-                'neon-violet': {
-                  bg: 'bg-neon-violet/10',
-                  icon: 'text-neon-violet',
-                  border: 'group-hover:border-neon-violet/50',
-                  shadow: 'group-hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]',
-                  glow: 'group-hover:bg-neon-violet/20',
-                },
-                'neon-green': {
-                  bg: 'bg-emerald-500/10',
-                  icon: 'text-emerald-400',
-                  border: 'group-hover:border-emerald-500/50',
-                  shadow: 'group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]',
-                  glow: 'group-hover:bg-emerald-500/20',
-                },
-                'neon-red': {
-                  bg: 'bg-rose-500/10',
-                  icon: 'text-rose-400',
-                  border: 'group-hover:border-rose-500/50',
-                  shadow: 'group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]',
-                  glow: 'group-hover:bg-rose-500/20',
-                },
-                'tier-custom': {
-                  bg: 'bg-gradient-to-br from-neon-violet/10 to-blue-500/10',
-                  icon: 'text-violet-400',
-                  border: 'group-hover:border-violet-500/50',
-                  shadow: 'group-hover:shadow-[0_0_40px_rgba(139,92,246,0.2)]',
-                  glow: 'group-hover:bg-gradient-to-br group-hover:from-neon-violet/20 group-hover:to-blue-500/20',
-                },
-              };
-              const colors = colorClasses[service.color as keyof typeof colorClasses];
-
-              return (
-                <Link
-                  key={service.href}
-                  to={service.href}
-                  className={`group relative p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
+            const colorClasses = {
+              'neon-violet': {
+                bg: 'bg-neon-violet/10',
+                icon: 'text-neon-violet',
+                border: 'group-hover:border-neon-violet/50',
+                shadow: 'group-hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]',
+                glow: 'group-hover:bg-neon-violet/20'
+              },
+              'neon-green': {
+                bg: 'bg-emerald-500/10',
+                icon: 'text-emerald-400',
+                border: 'group-hover:border-emerald-500/50',
+                shadow: 'group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]',
+                glow: 'group-hover:bg-emerald-500/20'
+              },
+              'neon-red': {
+                bg: 'bg-rose-500/10',
+                icon: 'text-rose-400',
+                border: 'group-hover:border-rose-500/50',
+                shadow: 'group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]',
+                glow: 'group-hover:bg-rose-500/20'
+              },
+              'tier-custom': {
+                bg: 'bg-gradient-to-br from-neon-violet/10 to-blue-500/10',
+                icon: 'text-violet-400',
+                border: 'group-hover:border-violet-500/50',
+                shadow: 'group-hover:shadow-[0_0_40px_rgba(139,92,246,0.2)]',
+                glow: 'group-hover:bg-gradient-to-br group-hover:from-neon-violet/20 group-hover:to-blue-500/20'
+              }
+            };
+            const colors = colorClasses[service.color as keyof typeof colorClasses];
+            return <Link key={service.href} to={service.href} className={`group relative p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`} style={{
+              animationDelay: `${index * 0.1}s`
+            }}>
                   {/* Hover gradient overlay */}
                   <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
                   
                   <div className="relative z-10">
-                    <div
-                      className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
-                    >
+                    <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                       <service.icon className={`h-7 w-7 ${colors.icon}`} />
                     </div>
                     <h3 className="text-xl font-semibold mb-3 group-hover:text-white transition-colors">{service.title}</h3>
@@ -201,9 +175,8 @@ const Index = () => {
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
-                </Link>
-              );
-            })}
+                </Link>;
+          })}
           </div>
         </div>
       </section>
@@ -241,10 +214,7 @@ const Index = () => {
                 <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
                   Discutons de votre projet et créons ensemble quelque chose d'extraordinaire.
                 </p>
-                <Link
-                  to="/contact"
-                  className="btn-gradient inline-flex items-center justify-center gap-3 px-10 py-5 text-white font-semibold rounded-xl text-lg"
-                >
+                <Link to="/contact" className="btn-gradient inline-flex items-center justify-center gap-3 px-10 py-5 text-white font-semibold rounded-xl text-lg">
                   Commencer maintenant
                   <ArrowRight className="h-5 w-5" />
                 </Link>
@@ -253,8 +223,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Index;
