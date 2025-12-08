@@ -92,13 +92,13 @@ const Index = () => {
               <span className="text-logo-gradient">IMPARTIAL</span>
             </h1>
 
-            <p className="text-xl md:text-2xl font-light text-muted-foreground mb-3 opacity-0 animate-fade-in-up" style={{
+            <p className="text-2xl md:text-3xl font-medium text-white mb-4 opacity-0 animate-fade-in-up tracking-wide" style={{
             animationDelay: "0.35s"
           }}>
-              Créateurs d'expériences digitales
+              Créateurs d&apos;expériences digitales
             </p>
 
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in-up" style={{
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 opacity-0 animate-fade-in-up leading-relaxed" style={{
             animationDelay: "0.5s"
           }}>
               Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets.
