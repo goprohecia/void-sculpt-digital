@@ -101,7 +101,7 @@ export function ServiceHero({
             transform: `translateY(${parallaxSlow * 0.3}px)`
           }}>
               <span className={titleColors[accentColor]}>
-                <TypeWriter text={title} delay={40} startDelay={300} className="text-5xl" />
+                <TypeWriter text={title} delay={40} startDelay={300} className="text-5xl font-mono" />
               </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-foreground max-w-2xl mx-auto lg:mx-0 min-h-[2.5rem] md:min-h-[3rem] px-2 sm:px-0" style={{
