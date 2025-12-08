@@ -1,25 +1,23 @@
-import { ReactNode } from "react";
-
 interface ServiceHeroProps {
   title: string;
   subtitle: string;
-  icon: ReactNode;
+  image: string;
   accentColor: "red" | "green" | "blue" | "gold";
 }
 
 const accentClasses = {
-  red: "from-neon-red/20 to-transparent text-neon-red",
-  green: "from-neon-green/20 to-transparent text-neon-green",
-  blue: "from-neon-blue/20 to-transparent text-neon-blue",
-  gold: "from-tier-custom/20 to-transparent text-tier-custom",
+  red: "from-neon-red/20",
+  green: "from-neon-green/20",
+  blue: "from-neon-blue/20",
+  gold: "from-tier-custom/20",
 };
 
-export function ServiceHero({ title, subtitle, icon, accentColor }: ServiceHeroProps) {
+export function ServiceHero({ title, subtitle, image, accentColor }: ServiceHeroProps) {
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
       {/* Background Gradient */}
       <div
-        className={`absolute inset-0 bg-gradient-to-b ${accentClasses[accentColor].split(" ")[0]} opacity-30`}
+        className={`absolute inset-0 bg-gradient-to-b ${accentClasses[accentColor]} to-transparent opacity-30`}
       />
       
       {/* Grid Pattern */}
@@ -28,25 +26,23 @@ export function ServiceHero({ title, subtitle, icon, accentColor }: ServiceHeroP
       <div className="container mx-auto px-4 relative">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight opacity-0 animate-fade-in-up">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight animate-fade-in-up">
               {title}
             </h1>
             <p
-              className="text-xl text-muted-foreground max-w-2xl opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.15s" }}
+              className="text-xl text-muted-foreground max-w-2xl animate-fade-in-up [animation-delay:150ms]"
             >
               {subtitle}
             </p>
           </div>
 
-          {/* Icon/Illustration */}
-          <div
-            className={`flex-shrink-0 w-64 h-64 lg:w-80 lg:h-80 flex items-center justify-center rounded-3xl bg-gradient-to-br ${accentClasses[accentColor].split(" ")[0]} border border-border/50 animate-float opacity-0 animate-scale-in`}
-            style={{ animationDelay: "0.3s" }}
-          >
-            <div className={`${accentClasses[accentColor].split(" ").slice(1).join(" ")}`}>
-              {icon}
-            </div>
+          {/* Hero Image */}
+          <div className="flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float">
+            <img 
+              src={image} 
+              alt={title}
+              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(100,200,255,0.3)]"
+            />
           </div>
         </div>
       </div>

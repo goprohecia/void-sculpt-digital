@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Layers } from "lucide-react";
+import heroImage from "@/assets/hero-360.png";
 
 const FullStackService = () => {
   return (
@@ -9,7 +9,7 @@ const FullStackService = () => {
       <ServiceHero
         title="Domination Digitale Totale"
         subtitle="L'alliance parfaite : Site + App + Backoffice. La solution ultime pour les startups ambitieuses."
-        icon={<Layers className="w-32 h-32 lg:w-40 lg:h-40" strokeWidth={1} />}
+        image={heroImage}
         accentColor="gold"
       />
 

@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Smartphone } from "lucide-react";
+import heroImage from "@/assets/hero-mobile.png";
 
 const MobileService = () => {
   return (
@@ -9,7 +9,7 @@ const MobileService = () => {
       <ServiceHero
         title="Expériences Mobiles Next-Gen"
         subtitle="Des applications natives et cross-platform fluides, conçues pour engager vos utilisateurs."
-        icon={<Smartphone className="w-32 h-32 lg:w-40 lg:h-40" strokeWidth={1} />}
+        image={heroImage}
         accentColor="green"
       />
 
