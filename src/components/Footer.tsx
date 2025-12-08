@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Sparkles, Mail, Phone, MapPin, ArrowUpRight, Cookie } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
+import { openCookiePreferences } from "./CookieBanner";
 
 export function Footer() {
   return (
@@ -117,7 +118,7 @@ export function Footer() {
           <p className="text-muted-foreground text-sm">
             © 2024 <span className="text-neon-violet">IMPARTIAL</span>. Tous droits réservés.
           </p>
-          <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
             <Link to="/mentions-legales" className="hover:text-neon-violet transition-colors">
               Mentions légales
             </Link>
@@ -130,6 +131,13 @@ export function Footer() {
             <Link to="/cgv" className="hover:text-neon-violet transition-colors">
               CGV
             </Link>
+            <button
+              onClick={openCookiePreferences}
+              className="flex items-center gap-1.5 hover:text-neon-violet transition-colors"
+            >
+              <Cookie className="h-3.5 w-3.5" />
+              Préférences cookies
+            </button>
           </div>
         </div>
       </div>
