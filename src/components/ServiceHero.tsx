@@ -104,13 +104,14 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             )}
             
             <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight opacity-0 animate-fade-in-up" 
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight min-h-[4rem]" 
               style={{ 
-                animationDelay: "0.2s",
                 transform: `translateY(${parallaxSlow * 0.3}px)`
               }}
             >
-              <span className="text-gradient-neon">{title}</span>
+              <span className="text-gradient-neon">
+                <TypeWriter text={title} delay={40} startDelay={300} />
+              </span>
             </h1>
             <p
               className="text-xl text-foreground max-w-2xl min-h-[3rem]"
@@ -118,7 +119,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
                 transform: `translateY(${parallaxSlow * 0.4}px)`
               }}
             >
-              <TypeWriter text={subtitle} delay={25} startDelay={600} />
+              <TypeWriter text={subtitle} delay={25} startDelay={1200} />
             </p>
           </div>
 
