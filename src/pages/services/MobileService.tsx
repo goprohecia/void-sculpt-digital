@@ -46,6 +46,7 @@ const MobileService = () => {
               ]}
               upsell="Maintenance & updates 149€/mois"
               subject="Application Mobile - Offre START (MVP App)"
+              index={0}
             />
 
             <PricingCard
@@ -63,6 +64,7 @@ const MobileService = () => {
               ]}
               upsell="Maintenance + Monitoring 249€/mois"
               subject="Application Mobile - Offre PRO (App Market Ready)"
+              index={1}
             />
 
             <PricingCard
@@ -80,6 +82,7 @@ const MobileService = () => {
               ]}
               upsell="Infogérance complète sur devis"
               subject="Application Mobile - Offre SUR-MESURE (Écosystème Mobile)"
+              index={2}
             />
           </div>
         </div>

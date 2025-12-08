@@ -46,6 +46,7 @@ const BackofficeService = () => {
               ]}
               upsell="Hébergement & support 79€/mois"
               subject="Backoffice - Offre START (Admin Pilot)"
+              index={0}
             />
 
             <PricingCard
@@ -63,6 +64,7 @@ const BackofficeService = () => {
               ]}
               upsell="Support prioritaire 129€/mois"
               subject="Backoffice - Offre PRO (SaaS Operator)"
+              index={1}
             />
 
             <PricingCard
@@ -80,6 +82,7 @@ const BackofficeService = () => {
               ]}
               upsell="TMA complète sur devis"
               subject="Backoffice - Offre SUR-MESURE (Enterprise Core)"
+              index={2}
             />
           </div>
         </div>

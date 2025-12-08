@@ -46,6 +46,7 @@ const FullStackService = () => {
               ]}
               upsell="Pack Maintenance 360 – 149€/mois"
               subject="360° - Offre START (Digital Launch)"
+              index={0}
             />
 
             <PricingCard
@@ -63,6 +64,7 @@ const FullStackService = () => {
               ]}
               upsell="Pack Croissance – 249€/mois"
               subject="360° - Offre PRO (Business Engine)"
+              index={1}
             />
 
             <PricingCard
@@ -80,6 +82,7 @@ const FullStackService = () => {
               ]}
               upsell="Contrat d'accompagnement sur devis"
               subject="360° - Offre SUR-MESURE (Full Ecosystem)"
+              index={2}
             />
           </div>
         </div>

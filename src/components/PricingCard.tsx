@@ -61,12 +61,14 @@ export function PricingCard({
   features,
   upsell,
   subject,
-}: PricingCardProps) {
+  index = 0,
+}: PricingCardProps & { index?: number }) {
   const styles = tierStyles[tier];
 
   return (
     <div
-      className={`relative flex flex-col p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-2 ${styles.border} ${styles.hoverBorder} ${styles.glow} group`}
+      className={`relative flex flex-col p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border transition-all duration-500 hover:scale-[1.02] hover:-translate-y-2 ${styles.border} ${styles.hoverBorder} ${styles.glow} group opacity-0 animate-fade-in-up`}
+      style={{ animationDelay: `${index * 150}ms` }}
     >
       {/* Background gradient on hover */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
