@@ -676,3 +676,42 @@
   animation-delay: 0.7s;
   width: 0;
 }
+
+/* Star Animations */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(45deg);
+    opacity: 1;
+    width: 4px;
+    height: 4px;
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8),
+                -30px 0 20px 4px rgba(255, 255, 255, 0.4),
+                -60px 0 30px 2px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    transform: translateX(500px) translateY(500px) rotate(45deg);
+    opacity: 0;
+    width: 2px;
+    height: 2px;
+    box-shadow: 0 0 5px 1px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle ease-in-out infinite;
+}
+
+.animate-shooting-star {
+  animation: shooting-star 1.5s ease-out forwards;
+}
