@@ -129,6 +129,14 @@
     @apply bg-gradient-to-r from-violet-400 via-purple-500 to-indigo-400 bg-clip-text text-transparent;
   }
 
+  .text-logo-gradient {
+    background: linear-gradient(90deg, #a78bfa 0%, #818cf8 15%, #06b6d4 35%, #22c55e 55%, #ef4444 75%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5));
+  }
+
   .text-gradient-violet {
     @apply bg-gradient-to-r from-purple-400 via-violet-500 to-purple-600 bg-clip-text text-transparent;
   }

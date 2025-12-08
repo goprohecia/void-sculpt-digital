@@ -89,7 +89,7 @@ const Index = () => {
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.2s"
           }}>
-              <span className="text-gradient-neon">IMPARTIAL</span>
+              <span className="text-logo-gradient">IMPARTIAL</span>
             </h1>
 
             <p className="text-xl md:text-2xl font-light text-muted-foreground mb-3 opacity-0 animate-fade-in-up" style={{
