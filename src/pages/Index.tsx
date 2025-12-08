@@ -61,11 +61,14 @@ const Index = () => {
             <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{
             animationDelay: "0.1s"
           }}>
-              <img 
-                src={logoHero} 
-                alt="Impartial Logo" 
-                className="h-48 md:h-64 lg:h-72 w-auto"
-              />
+              <div className="relative">
+                <div className="absolute inset-0 bg-neon-violet/40 blur-3xl rounded-full scale-75" />
+                <img 
+                  src={logoHero} 
+                  alt="Impartial Logo" 
+                  className="relative h-48 md:h-64 lg:h-72 w-auto drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                />
+              </div>
             </div>
 
             {/* Title */}
