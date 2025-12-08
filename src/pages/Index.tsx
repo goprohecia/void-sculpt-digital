@@ -129,35 +129,81 @@ const Index = () => {
 
       {/* Services Section */}
       <section className="py-24 relative">
-        <div className="container mx-auto px-4">
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Expertises</h2>
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+              <Sparkles className="h-4 w-4 text-neon-violet" />
+              <span className="text-sm font-medium text-neon-violet">Services Premium</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Nos Expertises</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Des solutions digitales complètes pour propulser votre business vers de nouveaux sommets.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <Link
-                key={service.href}
-                to={service.href}
-                className="group p-8 rounded-2xl bg-card/50 border border-border hover:border-muted-foreground transition-all duration-500 hover:scale-[1.02] hover:shadow-lg"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div
-                  className={`w-14 h-14 rounded-xl bg-${service.color}/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+            {services.map((service, index) => {
+              const colorClasses = {
+                'neon-violet': {
+                  bg: 'bg-neon-violet/10',
+                  icon: 'text-neon-violet',
+                  border: 'group-hover:border-neon-violet/50',
+                  shadow: 'group-hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]',
+                  glow: 'group-hover:bg-neon-violet/20',
+                },
+                'neon-green': {
+                  bg: 'bg-emerald-500/10',
+                  icon: 'text-emerald-400',
+                  border: 'group-hover:border-emerald-500/50',
+                  shadow: 'group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]',
+                  glow: 'group-hover:bg-emerald-500/20',
+                },
+                'neon-red': {
+                  bg: 'bg-rose-500/10',
+                  icon: 'text-rose-400',
+                  border: 'group-hover:border-rose-500/50',
+                  shadow: 'group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]',
+                  glow: 'group-hover:bg-rose-500/20',
+                },
+                'tier-custom': {
+                  bg: 'bg-gradient-to-br from-neon-violet/10 to-blue-500/10',
+                  icon: 'text-violet-400',
+                  border: 'group-hover:border-violet-500/50',
+                  shadow: 'group-hover:shadow-[0_0_40px_rgba(139,92,246,0.2)]',
+                  glow: 'group-hover:bg-gradient-to-br group-hover:from-neon-violet/20 group-hover:to-blue-500/20',
+                },
+              };
+              const colors = colorClasses[service.color as keyof typeof colorClasses];
+
+              return (
+                <Link
+                  key={service.href}
+                  to={service.href}
+                  className={`group relative p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <service.icon className={`h-7 w-7 text-${service.color}`} />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                <p className="text-muted-foreground text-sm mb-4">{service.description}</p>
-                <span className={`inline-flex items-center gap-1 text-sm font-medium text-${service.color} group-hover:gap-2 transition-all`}>
-                  Explorer
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            ))}
+                  {/* Hover gradient overlay */}
+                  <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
+                  
+                  <div className="relative z-10">
+                    <div
+                      className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <service.icon className={`h-7 w-7 ${colors.icon}`} />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 group-hover:text-white transition-colors">{service.title}</h3>
+                    <p className="text-muted-foreground text-sm mb-4 group-hover:text-gray-300 transition-colors">{service.description}</p>
+                    <span className={`inline-flex items-center gap-1 text-sm font-medium ${colors.icon} group-hover:gap-3 transition-all duration-300`}>
+                      Explorer
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
