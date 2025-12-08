@@ -62,11 +62,11 @@ const Studio = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
         <div className="absolute inset-0 grid-bg" />
         <div 
-          className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow"
+          className="absolute top-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-violet-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow"
           style={{ transform: `translateY(${parallaxSlow}px)` }}
         />
         <div 
-          className="absolute bottom-1/4 left-1/3 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow"
+          className="absolute bottom-1/4 left-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-600/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] animate-pulse-glow hidden sm:block"
           style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
         />
 
