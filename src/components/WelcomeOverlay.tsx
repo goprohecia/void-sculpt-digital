@@ -34,9 +34,12 @@ export function WelcomeOverlay({ show, onComplete }: WelcomeOverlayProps) {
 
   // Generate shooting stars
   const shootingStars = useMemo(() => {
-    return Array.from({ length: 3 }, (_, i) => ({
+    return Array.from({ length: 8 }, (_, i) => ({
       id: i,
-      delay: i * 1.5 + Math.random(),
+      delay: i * 0.6 + Math.random() * 0.5,
+      startX: 10 + Math.random() * 60,
+      startY: Math.random() * 30,
+      duration: 1 + Math.random() * 0.8,
     }));
   }, []);
 
@@ -90,9 +93,10 @@ export function WelcomeOverlay({ show, onComplete }: WelcomeOverlayProps) {
             key={`shooting-${star.id}`}
             className="absolute w-1 h-1 bg-white rounded-full animate-shooting-star"
             style={{
-              left: `${20 + star.id * 30}%`,
-              top: "10%",
+              left: `${star.startX}%`,
+              top: `${star.startY}%`,
               animationDelay: `${star.delay}s`,
+              animationDuration: `${star.duration}s`,
             }}
           />
         ))}
