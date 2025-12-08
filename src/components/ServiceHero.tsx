@@ -65,23 +65,23 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
       <div className="container mx-auto px-4 relative z-10">
         {/* Logo - Fully centered and large */}
         <div 
-          className="mb-12 flex justify-center animate-fade-in"
+          className="mb-12 flex justify-center"
           style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008) }}
         >
           <div 
-            className="relative animate-float group cursor-pointer transition-transform duration-100"
+            className="relative group cursor-pointer transition-transform duration-100"
             style={{ 
               transform: `translateY(${parallaxSlow * -0.5}px) scale(${1 - Math.abs(parallaxSlow) * 0.001}) rotate(${parallaxSlow * 0.02}deg)` 
             }}
           >
             <div 
-              className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-pulse-glow transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]"
+              className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]"
               style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
             />
             <img
               src={logoHero}
               alt="IMPARTIAL"
-              className="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] animate-pulse-glow transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
+              className="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
             />
           </div>
         </div>

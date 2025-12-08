@@ -261,6 +261,14 @@
     background-size: 200% 200%;
   }
 
+  .animate-logo-entrance {
+    animation: logo-entrance 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-logo-glow-entrance {
+    animation: logo-glow-entrance 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
   /* GPU-accelerated transforms */
   .gpu-accelerated {
     transform: translateZ(0);
@@ -339,5 +347,38 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes logo-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-10deg);
+    filter: blur(20px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(3deg);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+}
+
+@keyframes logo-glow-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.1);
   }
 }
