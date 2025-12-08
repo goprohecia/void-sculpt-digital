@@ -12,6 +12,13 @@ const accentClasses = {
   gold: "from-tier-custom/20",
 };
 
+const borderClasses = {
+  red: "border-neon-red shadow-[0_0_30px_rgba(255,51,102,0.6),0_0_60px_rgba(255,51,102,0.3)]",
+  green: "border-neon-green shadow-[0_0_30px_rgba(0,255,136,0.6),0_0_60px_rgba(0,255,136,0.3)]",
+  blue: "border-neon-blue shadow-[0_0_30px_rgba(0,170,255,0.6),0_0_60px_rgba(0,170,255,0.3)]",
+  gold: "border-tier-custom shadow-[0_0_30px_rgba(255,204,0,0.6),0_0_60px_rgba(255,204,0,0.3)]",
+};
+
 export function ServiceHero({ title, subtitle, image, accentColor }: ServiceHeroProps) {
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
@@ -37,11 +44,11 @@ export function ServiceHero({ title, subtitle, image, accentColor }: ServiceHero
           </div>
 
           {/* Hero Image */}
-          <div className="flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden">
+          <div className={`flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 ${borderClasses[accentColor]}`}>
             <img 
               src={image} 
               alt={title}
-              className="w-full h-full object-cover drop-shadow-[0_0_40px_rgba(100,200,255,0.3)]"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
