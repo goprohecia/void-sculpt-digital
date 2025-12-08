@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { Testimonials } from "@/components/Testimonials";
 import { FAQ } from "@/components/FAQ";
 import { FloatingParticles } from "@/components/FloatingParticles";
+import TypeWriter from "@/components/TypeWriter";
 import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
@@ -92,16 +93,20 @@ const Index = () => {
               <span className="text-logo-gradient">IMPARTIAL</span>
             </h1>
 
-            <p className="text-2xl md:text-3xl font-medium text-white mb-4 opacity-0 animate-fade-in-up tracking-wide" style={{
-            animationDelay: "0.35s"
-          }}>
-              Créateurs d&apos;expériences digitales
+            <p className="text-2xl md:text-3xl font-medium text-white mb-4 tracking-wide min-h-[2.5rem]">
+              <TypeWriter 
+                text="Créateurs d'expériences digitales" 
+                delay={40} 
+                startDelay={800}
+              />
             </p>
 
-            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 opacity-0 animate-fade-in-up leading-relaxed" style={{
-            animationDelay: "0.5s"
-          }}>
-              Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets.
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed min-h-[4rem]">
+              <TypeWriter 
+                text="Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets." 
+                delay={25} 
+                startDelay={2200}
+              />
             </p>
 
             {/* CTAs */}
