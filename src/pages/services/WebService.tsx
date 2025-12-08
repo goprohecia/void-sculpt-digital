@@ -8,11 +8,11 @@ const WebService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Architectures Web Immersives"
-        subtitle="De la vitrine épurée au E-commerce puissant. Votre présence en ligne, réinventée."
+        title="Architectures web immersives"
+        subtitle="De la vitrine épurée au e-commerce puissant. Votre présence en ligne, réinventée."
         image={heroImage}
         accentColor="blue"
-        badge="Sites Web & Vitrines"
+        badge="Sites web & vitrines"
       />
 
       {/* Pricing Section */}
@@ -25,7 +25,7 @@ const WebService = () => {
               <Sparkles className="h-4 w-4 text-neon-violet" />
               <span className="text-sm font-medium text-neon-violet">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Web</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">web</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Choisissez la formule adaptée à vos ambitions digitales.
             </p>
@@ -34,7 +34,7 @@ const WebService = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <PricingCard
               tier="start"
-              title="Site Présence"
+              title="Site présence"
               subtitle="Pour être visible"
               features={[
                 "Site vitrine 1 à 5 pages",
@@ -50,7 +50,7 @@ const WebService = () => {
 
             <PricingCard
               tier="pro"
-              title="Site Business / E-commerce"
+              title="Site business / e-commerce"
               subtitle="Pour générer des leads et ventes"
               features={[
                 "Site complet ou boutique en ligne",
@@ -67,7 +67,7 @@ const WebService = () => {
 
             <PricingCard
               tier="custom"
-              title="Site Premium"
+              title="Site premium"
               subtitle="Pour marque ou projet spécifique"
               features={[
                 "Design sur-mesure exclusif",

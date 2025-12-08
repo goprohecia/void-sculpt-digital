@@ -12,7 +12,7 @@ const MobileService = () => {
         subtitle="Des applications natives et cross-platform fluides, conçues pour engager vos utilisateurs."
         image={heroImage}
         accentColor="green"
-        badge="Applications Mobiles"
+        badge="Applications mobiles"
       />
 
       {/* Pricing Section */}
@@ -25,7 +25,7 @@ const MobileService = () => {
               <Sparkles className="h-4 w-4 text-emerald-400" />
               <span className="text-sm font-medium text-emerald-400">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Mobile</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">mobile</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               De l'idée à l'App Store, nous vous accompagnons à chaque étape.
             </p>
@@ -67,7 +67,7 @@ const MobileService = () => {
 
             <PricingCard
               tier="custom"
-              title="Écosystème Mobile"
+              title="Écosystème mobile"
               subtitle="Projet complexe / Scaleup"
               features={[
                 "Architecture scalable",
