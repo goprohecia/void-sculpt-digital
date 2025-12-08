@@ -4,7 +4,7 @@ import { Testimonials } from "@/components/Testimonials";
 import { FAQ } from "@/components/FAQ";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
-import logoHero from "@/assets/logo-hero.mp4";
+import logoHero from "@/assets/logo-hero.png";
 const services = [{
   icon: Globe,
   title: "Sites Web & Vitrines",
@@ -61,15 +61,11 @@ const Index = () => {
             <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{
             animationDelay: "0.1s"
           }}>
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
+              <img 
+                src={logoHero} 
+                alt="Impartial Logo" 
                 className="h-48 md:h-64 lg:h-72 w-auto"
-              >
-                <source src={logoHero} type="video/mp4" />
-              </video>
+              />
             </div>
 
             {/* Title */}
