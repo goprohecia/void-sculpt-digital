@@ -2,6 +2,7 @@ import { FloatingParticles } from "@/components/FloatingParticles";
 import { Sparkles } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
+import TypeWriter from "@/components/TypeWriter";
 
 interface ServiceHeroProps {
   title: string;
@@ -112,13 +113,12 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
               <span className="text-gradient-neon">{title}</span>
             </h1>
             <p
-              className="text-xl text-muted-foreground max-w-2xl opacity-0 animate-fade-in-up"
+              className="text-xl text-muted-foreground max-w-2xl min-h-[3rem]"
               style={{ 
-                animationDelay: "0.3s",
                 transform: `translateY(${parallaxSlow * 0.4}px)`
               }}
             >
-              {subtitle}
+              <TypeWriter text={subtitle} delay={25} startDelay={600} />
             </p>
           </div>
 
