@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
+import { Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-mobile.png";
 
 const MobileService = () => {
@@ -11,13 +12,20 @@ const MobileService = () => {
         subtitle="Des applications natives et cross-platform fluides, conçues pour engager vos utilisateurs."
         image={heroImage}
         accentColor="green"
+        badge="Applications Mobiles"
       />
 
       {/* Pricing Section */}
       <section className="py-24 relative">
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres Mobile</h2>
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+              <Sparkles className="h-4 w-4 text-emerald-400" />
+              <span className="text-sm font-medium text-emerald-400">Tarifs</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Mobile</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               De l'idée à l'App Store, nous vous accompagnons à chaque étape.
             </p>
