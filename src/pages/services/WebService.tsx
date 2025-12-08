@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Monitor } from "lucide-react";
+import heroImage from "@/assets/hero-web.png";
 
 const WebService = () => {
   return (
@@ -9,7 +9,7 @@ const WebService = () => {
       <ServiceHero
         title="Architectures Web Immersives"
         subtitle="De la vitrine épurée au E-commerce puissant. Votre présence en ligne, réinventée."
-        icon={<Monitor className="w-32 h-32 lg:w-40 lg:h-40" strokeWidth={1} />}
+        image={heroImage}
         accentColor="blue"
       />
 

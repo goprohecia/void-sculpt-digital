@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Server } from "lucide-react";
+import heroImage from "@/assets/hero-backoffice.png";
 
 const BackofficeService = () => {
   return (
@@ -9,7 +9,7 @@ const BackofficeService = () => {
       <ServiceHero
         title="Le Cerveau de Votre Opération"
         subtitle="Dashboards puissants et automatisations pour piloter votre activité avec précision."
-        icon={<Server className="w-32 h-32 lg:w-40 lg:h-40" strokeWidth={1} />}
+        image={heroImage}
         accentColor="red"
       />
 
