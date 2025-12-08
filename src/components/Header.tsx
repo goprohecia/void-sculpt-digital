@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown, Menu, X } from "lucide-react";
-import logo from "@/assets/logo-impartial.png";
+import logoAnimated from "@/assets/logo-animated.mp4";
 
 const expertises = [
   { name: "Sites Web & Vitrines", href: "/services/web" },
@@ -24,10 +24,13 @@ export function Header() {
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <img 
-              src={logo} 
-              alt="IMPARTIAL" 
-              className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+            <video 
+              src={logoAnimated} 
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <span className="text-xl font-bold tracking-wider hidden sm:block">
               IMPARTIAL
