@@ -108,8 +108,12 @@ export function Header() {
               Le Studio
             </Link>
 
-            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="mx-4 mt-2 btn-gradient px-6 py-3 text-white font-semibold rounded-xl text-center">
+            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-lg transition-colors ${isActive("/contact") ? "bg-neon-violet/10 text-neon-violet" : ""}`}>
               Contact
+            </Link>
+
+            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="mx-4 mt-2 btn-gradient px-6 py-3 text-white font-semibold rounded-xl text-center">
+              Prendre rendez-vous
             </Link>
           </div>
         </div>

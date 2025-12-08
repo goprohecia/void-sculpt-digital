@@ -57,24 +57,24 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
       <div className={`absolute inset-0 bg-gradient-to-b ${accentClasses[accentColor]} via-transparent to-transparent`} />
       <div className="absolute inset-0 grid-bg" />
       
-      {/* Glowing Orbs with Parallax */}
+      {/* Glowing Orbs with Parallax - smaller on mobile */}
       <div 
-        className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow"
+        className="absolute top-1/4 left-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-violet-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow"
         style={{ transform: `translateY(${parallaxSlow}px)` }}
       />
       <div 
-        className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow"
+        className="absolute bottom-1/4 right-1/4 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-600/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] animate-pulse-glow hidden sm:block"
         style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
       />
       <div 
-        className="absolute top-1/2 right-1/3 w-[200px] h-[200px] bg-blue-600/10 rounded-full blur-[100px]"
+        className="absolute top-1/2 right-1/3 w-[100px] md:w-[150px] lg:w-[200px] h-[100px] md:h-[150px] lg:h-[200px] bg-blue-600/10 rounded-full blur-[50px] md:blur-[80px] lg:blur-[100px] hidden md:block"
         style={{ transform: `translateY(${parallaxFast}px)` }}
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Logo - Fully centered and large */}
+        {/* Logo - Fully centered */}
         <div 
-          className="mb-12 flex justify-center"
+          className="mb-6 md:mb-10 lg:mb-12 flex justify-center"
           style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008) }}
         >
           <div 
@@ -84,18 +84,18 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             }}
           >
             <div 
-              className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]"
+              className="absolute inset-0 bg-neon-violet/60 blur-[40px] md:blur-[60px] lg:blur-[80px] rounded-full scale-150 animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.8]"
               style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
             />
             <img
               src={logoHero}
               alt="IMPARTIAL"
-              className="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
+              className="relative w-28 h-28 md:w-40 md:h-40 lg:w-48 lg:h-48 drop-shadow-[0_0_30px_rgba(139,92,246,0.6)] md:drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
             />
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-12">
+        <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-12">
           <div 
             className="flex-1 text-center lg:text-left"
             style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
@@ -103,16 +103,16 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             
             {/* Badge */}
             {badge && (
-              <div className="mb-6 flex justify-center lg:justify-start opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                <div className={`badge-gradient flex items-center gap-2 text-sm font-medium ${badgeColors[accentColor]}`}>
-                  <Sparkles className="h-4 w-4" />
+              <div className="mb-4 md:mb-6 flex justify-center lg:justify-start opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                <div className={`badge-gradient flex items-center gap-2 text-xs md:text-sm font-medium ${badgeColors[accentColor]}`}>
+                  <Sparkles className="h-3 w-3 md:h-4 md:w-4" />
                   {badge}
                 </div>
               </div>
             )}
             
             <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight min-h-[4rem]" 
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 md:mb-6 leading-tight min-h-[2.5rem] md:min-h-[3.5rem] lg:min-h-[4rem]" 
               style={{ 
                 transform: `translateY(${parallaxSlow * 0.3}px)`
               }}
@@ -122,7 +122,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
               </span>
             </h1>
             <p
-              className="text-xl text-foreground max-w-2xl min-h-[3rem]"
+              className="text-base sm:text-lg md:text-xl text-foreground max-w-2xl mx-auto lg:mx-0 min-h-[2.5rem] md:min-h-[3rem] px-2 sm:px-0"
               style={{ 
                 transform: `translateY(${parallaxSlow * 0.4}px)`
               }}
@@ -133,7 +133,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
 
           {/* Hero Image with Parallax */}
           <div 
-            className={`group flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}
+            className={`group flex-shrink-0 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 animate-float rounded-full overflow-hidden border-2 md:border-4 transition-all duration-500 ${borderClasses[accentColor]}`}
             style={{ 
               transform: `translateY(${parallaxSlow * -1}px)`,
               opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.005)

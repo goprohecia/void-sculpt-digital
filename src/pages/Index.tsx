@@ -47,17 +47,17 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
         <div className="absolute inset-0 grid-bg" />
         
-        {/* Glowing Orbs with Parallax */}
+        {/* Glowing Orbs with Parallax - smaller on mobile */}
         <div 
-          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-violet-600/20 rounded-full blur-[180px] animate-pulse-glow"
+          className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] lg:w-[500px] h-[250px] md:h-[400px] lg:h-[500px] bg-violet-600/20 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px] animate-pulse-glow"
           style={{ transform: `translateY(${parallaxSlow}px)` }}
         />
         <div 
-          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] animate-pulse-glow"
+          className="absolute bottom-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-blue-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow hidden sm:block"
           style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
         />
         <div 
-          className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-[120px]"
+          className="absolute top-1/2 right-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-500/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] hidden md:block"
           style={{ transform: `translateY(${parallaxFast}px)` }}
         />
 
@@ -101,13 +101,13 @@ const Index = () => {
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-2 tracking-tight opacity-0 animate-fade-in-up" style={{
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 tracking-tight opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.2s"
           }}>
               <span className="text-logo-gradient">IMPARTIAL</span>
             </h1>
 
-            <p className="text-xl md:text-2xl font-medium text-white mb-3 tracking-wide min-h-[2rem]">
+            <p className="text-lg sm:text-xl md:text-2xl font-medium text-white mb-3 tracking-wide min-h-[1.75rem] md:min-h-[2rem]">
               <TypeWriter 
                 text="Créateurs d'expériences digitales" 
                 delay={40} 
@@ -115,7 +115,7 @@ const Index = () => {
               />
             </p>
 
-            <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed min-h-[3.5rem]">
+            <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed min-h-[3rem] md:min-h-[3.5rem] px-2 sm:px-0">
               <TypeWriter 
                 text="Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets." 
                 delay={25} 
@@ -124,14 +124,14 @@ const Index = () => {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0 animate-fade-in-up" style={{
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center opacity-0 animate-fade-in-up px-4 sm:px-0" style={{
             animationDelay: "0.65s"
           }}>
-              <Link to="/contact" className="btn-gradient inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-xl">
+              <Link to="/contact" className="w-full sm:w-auto btn-gradient inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 text-white font-semibold rounded-xl text-sm md:text-base">
                 Démarrer un projet
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Link>
-              <Link to="/portfolio" className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50">
+              <Link to="/portfolio" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50 text-sm md:text-base">
                 Voir nos réalisations
               </Link>
             </div>
@@ -149,23 +149,23 @@ const Index = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-24 relative">
+      <section className="py-16 md:py-24 relative">
         {/* Background glow */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-              <Sparkles className="h-4 w-4 text-neon-violet" />
-              <span className="text-sm font-medium text-neon-violet">Services Premium</span>
+          <div className="text-center mb-10 md:mb-16">
+            <div className="inline-flex items-center gap-2 mb-4 px-3 md:px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+              <Sparkles className="h-3 w-3 md:h-4 md:w-4 text-neon-violet" />
+              <span className="text-xs md:text-sm font-medium text-neon-violet">Services Premium</span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">Nos Expertises</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">Nos Expertises</h2>
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto px-4 md:px-0">
               Des solutions digitales complètes pour propulser votre business vers de nouveaux sommets.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {services.map((service, index) => {
             const colorClasses = {
               'neon-violet': {
@@ -198,21 +198,21 @@ const Index = () => {
               }
             };
             const colors = colorClasses[service.color as keyof typeof colorClasses];
-            return <Link key={service.href} to={service.href} className={`group relative p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`} style={{
+            return <Link key={service.href} to={service.href} className={`group relative p-6 md:p-8 rounded-xl md:rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`} style={{
               animationDelay: `${index * 0.1}s`
             }}>
                   {/* Hover gradient overlay */}
-                  <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
+                  <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
                   
                   <div className="relative z-10">
-                    <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <service.icon className={`h-7 w-7 ${colors.icon}`} />
+                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl ${colors.bg} flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <service.icon className={`h-6 w-6 md:h-7 md:w-7 ${colors.icon}`} />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-white transition-colors">{service.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4 group-hover:text-gray-300 transition-colors">{service.description}</p>
-                    <span className={`inline-flex items-center gap-1 text-sm font-medium ${colors.icon} group-hover:gap-3 transition-all duration-300`}>
+                    <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 group-hover:text-white transition-colors">{service.title}</h3>
+                    <p className="text-muted-foreground text-xs md:text-sm mb-3 md:mb-4 group-hover:text-gray-300 transition-colors">{service.description}</p>
+                    <span className={`inline-flex items-center gap-1 text-xs md:text-sm font-medium ${colors.icon} group-hover:gap-3 transition-all duration-300`}>
                       Explorer
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
                 </Link>;
@@ -228,17 +228,17 @@ const Index = () => {
       <FAQ />
 
       {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-16 md:py-24 relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-r from-neon-violet/10 via-purple-600/10 to-blue-600/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/15 rounded-full blur-[180px]" />
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[500px] lg:w-[600px] h-[300px] md:h-[500px] lg:h-[600px] bg-violet-600/15 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px]" />
+        <div className="absolute top-0 right-0 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-500/10 rounded-full blur-[60px] md:blur-[80px] lg:blur-[100px] hidden sm:block" />
+        <div className="absolute bottom-0 left-0 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-blue-500/10 rounded-full blur-[60px] md:blur-[80px] lg:blur-[100px] hidden sm:block" />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             {/* Glassmorphism Card */}
-            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-3xl p-12 md:p-16 border border-white/10 text-center relative overflow-hidden">
+            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16 border border-white/10 text-center relative overflow-hidden">
               {/* Inner glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-3xl" />
               
