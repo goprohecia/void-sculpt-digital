@@ -37,11 +37,11 @@ export function ServiceHero({ title, subtitle, image, accentColor }: ServiceHero
           </div>
 
           {/* Hero Image */}
-          <div className="flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float">
+          <div className="flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden">
             <img 
               src={image} 
               alt={title}
-              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(100,200,255,0.3)]"
+              className="w-full h-full object-cover drop-shadow-[0_0_40px_rgba(100,200,255,0.3)]"
             />
           </div>
         </div>
