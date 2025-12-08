@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Studio from "./pages/Studio";
 import Contact from "./pages/Contact";
+import Portfolio from "./pages/Portfolio";
 import WebService from "./pages/services/WebService";
 import MobileService from "./pages/services/MobileService";
 import BackofficeService from "./pages/services/BackofficeService";
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/studio" element={<Studio />} />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services/web" element={<WebService />} />
           <Route path="/services/mobile" element={<MobileService />} />
