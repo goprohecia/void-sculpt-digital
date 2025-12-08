@@ -4,10 +4,10 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 
 const expertises = [{
-  name: "Sites Web & Vitrines",
+  name: "Sites web & vitrines",
   href: "/services/web"
 }, {
-  name: "Applications Mobiles",
+  name: "Applications mobiles",
   href: "/services/mobile"
 }, {
   name: "Backoffice & SaaS",
@@ -46,7 +46,7 @@ export function Header() {
             {/* Dropdown */}
             <div className="relative" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
               <button className={`flex items-center gap-1 font-medium transition-colors duration-200 hover:text-neon-violet ${isExpertiseActive ? "text-neon-violet" : "text-foreground"}`}>
-                Nos Expertises
+                Nos expertises
                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -65,7 +65,7 @@ export function Header() {
             </Link>
 
             <Link to="/studio" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/studio") ? "text-neon-violet" : "text-foreground"}`}>
-              Le Studio
+              Le studio
             </Link>
 
             <Link to="/contact" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/contact") ? "text-neon-violet" : "text-foreground"}`}>
@@ -94,7 +94,7 @@ export function Header() {
             </Link>
 
             <div className="px-4 py-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
-              Nos Expertises
+              Nos expertises
             </div>
             {expertises.map(item => <Link key={item.href} to={item.href} onClick={() => setIsMobileMenuOpen(false)} className={`px-6 py-3 rounded-lg transition-colors ${isActive(item.href) ? "bg-neon-violet/10 text-neon-violet" : ""}`}>
                 {item.name}
@@ -105,7 +105,7 @@ export function Header() {
             </Link>
 
             <Link to="/studio" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-lg transition-colors ${isActive("/studio") ? "bg-neon-violet/10 text-neon-violet" : ""}`}>
-              Le Studio
+              Le studio
             </Link>
 
             <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`px-4 py-3 rounded-lg transition-colors ${isActive("/contact") ? "bg-neon-violet/10 text-neon-violet" : ""}`}>
