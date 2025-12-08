@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import logoHero from "@/assets/logo-hero.png";
 
 interface WelcomeOverlayProps {
   show: boolean;
@@ -14,6 +15,14 @@ interface Star {
   delay: number;
   duration: number;
 }
+
+const shootingStarColors = [
+  { bg: "bg-white", shadow: "rgba(255, 255, 255, 0.8)" },
+  { bg: "bg-violet-400", shadow: "rgba(139, 92, 246, 0.8)" },
+  { bg: "bg-blue-400", shadow: "rgba(96, 165, 250, 0.8)" },
+  { bg: "bg-purple-400", shadow: "rgba(192, 132, 252, 0.8)" },
+  { bg: "bg-cyan-400", shadow: "rgba(34, 211, 238, 0.8)" },
+];
 
 export function WelcomeOverlay({ show, onComplete }: WelcomeOverlayProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,14 +41,15 @@ export function WelcomeOverlay({ show, onComplete }: WelcomeOverlayProps) {
     }));
   }, []);
 
-  // Generate shooting stars
+  // Generate shooting stars with colors
   const shootingStars = useMemo(() => {
-    return Array.from({ length: 8 }, (_, i) => ({
+    return Array.from({ length: 12 }, (_, i) => ({
       id: i,
-      delay: i * 0.6 + Math.random() * 0.5,
-      startX: 10 + Math.random() * 60,
-      startY: Math.random() * 30,
-      duration: 1 + Math.random() * 0.8,
+      delay: i * 0.4 + Math.random() * 0.3,
+      startX: 5 + Math.random() * 70,
+      startY: Math.random() * 40,
+      duration: 0.8 + Math.random() * 0.6,
+      color: shootingStarColors[i % shootingStarColors.length],
     }));
   }, []);
 
@@ -91,12 +101,13 @@ export function WelcomeOverlay({ show, onComplete }: WelcomeOverlayProps) {
         {shootingStars.map((star) => (
           <div
             key={`shooting-${star.id}`}
-            className="absolute w-1 h-1 bg-white rounded-full animate-shooting-star"
+            className={`absolute w-1 h-1 rounded-full animate-shooting-star ${star.color.bg}`}
             style={{
               left: `${star.startX}%`,
               top: `${star.startY}%`,
               animationDelay: `${star.delay}s`,
               animationDuration: `${star.duration}s`,
+              boxShadow: `0 0 10px 2px ${star.color.shadow}, -30px 0 20px 4px ${star.color.shadow.replace('0.8', '0.4')}, -60px 0 30px 2px ${star.color.shadow.replace('0.8', '0.2')}`,
             }}
           />
         ))}
@@ -109,6 +120,18 @@ export function WelcomeOverlay({ show, onComplete }: WelcomeOverlayProps) {
 
       {/* Content */}
       <div className="relative z-10 text-center px-6">
+        {/* Logo */}
+        <div className="mb-6 flex justify-center">
+          <div className="relative">
+            <div className="absolute inset-0 bg-neon-violet/60 blur-[60px] rounded-full scale-150 animate-pulse-glow" />
+            <img
+              src={logoHero}
+              alt="IMPARTIAL"
+              className="relative w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_0_40px_rgba(139,92,246,0.8)] animate-welcome-logo"
+            />
+          </div>
+        </div>
+
         {/* Welcome Text */}
         <div className="overflow-hidden">
           <p 
