@@ -17,7 +17,9 @@ import FullStackService from "./pages/services/FullStackService";
 import MentionsLegales from "./pages/legal/MentionsLegales";
 import PolitiqueConfidentialite from "./pages/legal/PolitiqueConfidentialite";
 import Cookies from "./pages/legal/Cookies";
+import CGV from "./pages/legal/CGV";
 import NotFound from "./pages/NotFound";
+import { CookieBanner } from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -51,8 +53,10 @@ const App = () => {
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
               <Route path="/cookies" element={<Cookies />} />
+              <Route path="/cgv" element={<CGV />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <CookieBanner />
           </BrowserRouter>
         </div>
       </TooltipProvider>

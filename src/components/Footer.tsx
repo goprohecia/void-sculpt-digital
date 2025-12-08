@@ -122,10 +122,13 @@ export function Footer() {
               Mentions légales
             </Link>
             <Link to="/politique-confidentialite" className="hover:text-neon-violet transition-colors">
-              Politique de confidentialité
+              Confidentialité
             </Link>
             <Link to="/cookies" className="hover:text-neon-violet transition-colors">
               Cookies
+            </Link>
+            <Link to="/cgv" className="hover:text-neon-violet transition-colors">
+              CGV
             </Link>
           </div>
         </div>
