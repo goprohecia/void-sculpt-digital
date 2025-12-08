@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Testimonials } from "@/components/Testimonials";
+import { FAQ } from "@/components/FAQ";
 import { ArrowRight, Globe, Smartphone, Server, Layers } from "lucide-react";
 import logoAnimated from "@/assets/logo-animated.mp4";
 
@@ -151,6 +152,9 @@ const Index = () => {
 
       {/* Testimonials Section */}
       <Testimonials />
+
+      {/* FAQ Section */}
+      <FAQ />
 
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden">
