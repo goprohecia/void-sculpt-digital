@@ -1,5 +1,6 @@
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Sparkles } from "lucide-react";
+import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 
 interface ServiceHeroProps {
@@ -35,6 +36,10 @@ const badgeColors = {
 };
 
 export function ServiceHero({ title, subtitle, image, accentColor, badge }: ServiceHeroProps) {
+  const parallaxSlow = useParallax(0.15);
+  const parallaxMedium = useParallax(0.25);
+  const parallaxFast = useParallax(0.4);
+
   return (
     <section className="relative pt-32 pb-20 overflow-hidden">
       <FloatingParticles />
@@ -43,9 +48,19 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
       <div className={`absolute inset-0 bg-gradient-to-b ${accentClasses[accentColor]} via-transparent to-transparent`} />
       <div className="absolute inset-0 grid-bg" />
       
-      {/* Glowing Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow" />
-      <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
+      {/* Glowing Orbs with Parallax */}
+      <div 
+        className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow"
+        style={{ transform: `translateY(${parallaxSlow}px)` }}
+      />
+      <div 
+        className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow"
+        style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
+      />
+      <div 
+        className="absolute top-1/2 right-1/3 w-[200px] h-[200px] bg-blue-600/10 rounded-full blur-[100px]"
+        style={{ transform: `translateY(${parallaxFast}px)` }}
+      />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12">
@@ -83,8 +98,11 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
             </p>
           </div>
 
-          {/* Hero Image */}
-          <div className={`group flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}>
+          {/* Hero Image with Parallax */}
+          <div 
+            className={`group flex-shrink-0 w-72 h-72 lg:w-96 lg:h-96 animate-float rounded-full overflow-hidden border-4 transition-all duration-500 ${borderClasses[accentColor]}`}
+            style={{ transform: `translateY(${parallaxSlow * -1}px)` }}
+          >
             <img 
               src={image} 
               alt={title}
