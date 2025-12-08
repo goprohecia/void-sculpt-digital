@@ -62,11 +62,12 @@ const Index = () => {
             animationDelay: "0.1s"
           }}>
               <div className="relative">
-                <div className="absolute inset-0 bg-neon-violet/40 blur-3xl rounded-full scale-75" />
+                <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-110" />
+                <div className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full" />
                 <img 
                   src={logoHero} 
                   alt="Impartial Logo" 
-                  className="relative h-48 md:h-64 lg:h-72 w-auto drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                  className="relative h-48 md:h-64 lg:h-72 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)]"
                 />
               </div>
             </div>
