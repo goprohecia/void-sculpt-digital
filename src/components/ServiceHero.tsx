@@ -63,19 +63,20 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
       />
 
       <div className="container mx-auto px-4 relative z-10">
+        {/* Logo - Fully centered and large */}
+        <div className="mb-12 flex justify-center opacity-0 animate-fade-in">
+          <div className="relative">
+            <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full scale-150 animate-pulse-glow" />
+            <img
+              src={logoHero}
+              alt="IMPARTIAL"
+              className="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-[0_0_50px_rgba(139,92,246,0.7)]"
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="flex-1 text-center lg:text-left">
-            {/* Logo - Centered and enlarged */}
-            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
-              <div className="relative">
-                <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-125 animate-pulse-glow" />
-                <img
-                  src={logoHero}
-                  alt="IMPARTIAL"
-                  className="relative w-28 h-28 md:w-32 md:h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.6)]"
-                />
-              </div>
-            </div>
             
             {/* Badge */}
             {badge && (
