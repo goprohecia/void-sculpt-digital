@@ -233,10 +233,11 @@ const Contact = () => {
 
                   <button
                     type="submit"
-                    className="w-full md:w-auto btn-gradient px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] inline-flex items-center justify-center gap-2"
+                    className="group w-full md:w-auto btn-gradient px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] inline-flex items-center justify-center gap-2 relative overflow-hidden"
                   >
-                    Envoyer le message
-                    <Send className="h-5 w-5" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                    <span className="relative">Envoyer le message</span>
+                    <Send className="relative h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
                   </button>
                 </div>
               </form>
