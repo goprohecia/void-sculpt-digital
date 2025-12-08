@@ -36,6 +36,14 @@ const badgeColors = {
   violet: "text-neon-violet",
 };
 
+const titleColors = {
+  red: "text-rose-400",
+  green: "text-emerald-400",
+  blue: "text-neon-violet",
+  gold: "text-violet-400",
+  violet: "text-neon-violet",
+};
+
 export function ServiceHero({ title, subtitle, image, accentColor, badge }: ServiceHeroProps) {
   const parallaxSlow = useParallax(0.15);
   const parallaxMedium = useParallax(0.25);
@@ -109,7 +117,7 @@ export function ServiceHero({ title, subtitle, image, accentColor, badge }: Serv
                 transform: `translateY(${parallaxSlow * 0.3}px)`
               }}
             >
-              <span className="text-gradient-neon">
+              <span className={titleColors[accentColor]}>
                 <TypeWriter text={title} delay={40} startDelay={300} />
               </span>
             </h1>
