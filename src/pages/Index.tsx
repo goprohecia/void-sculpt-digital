@@ -216,22 +216,40 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-neon-blue/10 via-neon-green/10 to-neon-red/10" />
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Prêt à révolutionner votre présence digitale ?
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Discutons de votre projet et créons ensemble quelque chose d'extraordinaire.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-foreground text-background font-semibold rounded-xl text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.25)]"
-            >
-              Commencer maintenant
-              <ArrowRight className="h-5 w-5" />
-            </Link>
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-r from-neon-violet/10 via-purple-600/10 to-blue-600/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/15 rounded-full blur-[180px]" />
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px]" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            {/* Glassmorphism Card */}
+            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-3xl p-12 md:p-16 border border-white/10 text-center relative overflow-hidden">
+              {/* Inner glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-3xl" />
+              
+              <div className="relative z-10">
+                <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                  <Sparkles className="h-4 w-4 text-neon-violet" />
+                  <span className="text-sm font-medium text-neon-violet">Démarrer un projet</span>
+                </div>
+                
+                <h2 className="text-3xl md:text-5xl font-bold mb-6">
+                  Prêt à <span className="text-gradient-neon">révolutionner</span> votre présence digitale ?
+                </h2>
+                <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+                  Discutons de votre projet et créons ensemble quelque chose d'extraordinaire.
+                </p>
+                <Link
+                  to="/contact"
+                  className="btn-gradient inline-flex items-center justify-center gap-3 px-10 py-5 text-white font-semibold rounded-xl text-lg"
+                >
+                  Commencer maintenant
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
