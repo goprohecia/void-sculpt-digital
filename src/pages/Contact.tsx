@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Sparkles, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import logoHero from "@/assets/logo-hero.png";
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -29,13 +30,19 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     toast({
       title: "Message envoyé !",
       description: "Nous vous recontacterons dans les plus brefs délais.",
     });
     setFormData({ name: "", email: "", company: "", subject: "", message: "" });
+    setIsLoading(false);
   };
 
   return (
@@ -233,11 +240,16 @@ const Contact = () => {
 
                   <button
                     type="submit"
-                    className="group w-full md:w-auto btn-gradient px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] inline-flex items-center justify-center gap-2 relative overflow-hidden"
+                    disabled={isLoading}
+                    className="group w-full md:w-auto btn-gradient px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] inline-flex items-center justify-center gap-2 relative overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                    <span className="relative">Envoyer le message</span>
-                    <Send className="relative h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                    <span className="relative">{isLoading ? "Envoi en cours..." : "Envoyer le message"}</span>
+                    {isLoading ? (
+                      <Loader2 className="relative h-5 w-5 animate-spin" />
+                    ) : (
+                      <Send className="relative h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                    )}
                   </button>
                 </div>
               </form>
