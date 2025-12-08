@@ -25,7 +25,7 @@ const FullStackService = () => {
               <Sparkles className="h-4 w-4 text-violet-400" />
               <span className="text-sm font-medium text-violet-400">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">360°</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">360°</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               L'écosystème complet pour une domination digitale sans compromis.
             </p>
@@ -43,7 +43,7 @@ const FullStackService = () => {
                 "Connexion entre services",
                 "Formation équipe",
               ]}
-              upsell="Pack Maintenance 360 – 149€/mois"
+              upsell="Pack maintenance 360 – 149€/mois"
               subject="360° - Offre START (Digital Launch)"
               index={0}
             />
@@ -60,7 +60,7 @@ const FullStackService = () => {
                 "Analytics unifiés",
                 "Support prioritaire",
               ]}
-              upsell="Pack Croissance – 249€/mois"
+              upsell="Pack croissance – 249€/mois"
               subject="360° - Offre PRO (Business Engine)"
               index={1}
             />
