@@ -8,7 +8,7 @@ const BackofficeService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Le Cerveau de Votre Opération"
+        title="Le cerveau de votre opération"
         subtitle="Dashboards puissants et automatisations pour piloter votre activité avec précision."
         image={heroImage}
         accentColor="red"
