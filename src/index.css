@@ -601,3 +601,78 @@
 .animate-spin-reverse {
   animation: spin-reverse 4s linear infinite;
 }
+
+/* Welcome Overlay Animations */
+@keyframes welcome-subtitle {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes welcome-title {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-10%) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes welcome-tagline {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes welcome-line {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    width: 200px;
+    opacity: 1;
+  }
+}
+
+.animate-welcome-subtitle {
+  animation: welcome-subtitle 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.animate-welcome-title {
+  animation: welcome-title 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.animate-welcome-tagline {
+  animation: welcome-tagline 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+.animate-welcome-line {
+  animation: welcome-line 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.7s;
+  width: 0;
+}
