@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Send, Sparkles, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
@@ -156,6 +157,9 @@ const Contact = () => {
                   <p>Weekend: Sur rendez-vous</p>
                 </div>
               </div>
+
+              {/* Newsletter */}
+              <NewsletterForm />
             </div>
 
             {/* Contact Form */}
