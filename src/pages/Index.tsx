@@ -41,7 +41,7 @@ const Index = () => {
       <FloatingParticles />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-20">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
         <div className="absolute inset-0 grid-bg" />
@@ -63,7 +63,7 @@ const Index = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-5xl mx-auto">
             {/* Badge */}
-            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
+            <div className="mb-6 mt-4 flex justify-center opacity-0 animate-fade-in">
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
                 Studio Digital Gaming & Tech
@@ -71,7 +71,7 @@ const Index = () => {
             </div>
 
             {/* Logo */}
-            <div className="mb-8 flex justify-center opacity-0 animate-fade-in" style={{
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
             animationDelay: "0.1s"
           }}>
               <div className="relative">
@@ -80,32 +80,32 @@ const Index = () => {
                 <img 
                   src={logoHero} 
                   alt="Impartial Logo" 
-                  className="relative h-48 md:h-64 lg:h-72 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)]"
+                  className="relative h-40 md:h-52 lg:h-60 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)]"
                 />
               </div>
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight opacity-0 animate-fade-in-up" style={{
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tight opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.2s"
           }}>
               <span className="text-gradient-neon">IMPARTIAL</span>
             </h1>
 
-            <p className="text-2xl md:text-3xl font-light text-muted-foreground mb-4 opacity-0 animate-fade-in-up" style={{
+            <p className="text-xl md:text-2xl font-light text-muted-foreground mb-3 opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.35s"
           }}>
               Créateurs d'expériences digitales
             </p>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 opacity-0 animate-fade-in-up" style={{
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.5s"
           }}>
               Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up" style={{
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.65s"
           }}>
               <Link to="/contact" className="btn-gradient inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-xl">
@@ -119,8 +119,8 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in" style={{
+        {/* Scroll Indicator - hidden on small screens */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in hidden md:block" style={{
         animationDelay: "1s"
       }}>
           <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center pt-2">
