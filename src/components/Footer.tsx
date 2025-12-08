@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Phone, MapPin, ArrowUpRight, Cookie } from "lucide-react";
+import { Sparkles, Mail, Phone, MapPin, ArrowUpRight, Cookie, Linkedin, Instagram, Twitter } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 import { openCookiePreferences } from "./CookieBanner";
 
@@ -29,6 +29,34 @@ export function Footer() {
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-neon-violet" />
               <span className="text-sm text-neon-violet font-medium">Gaming & Tech Design</span>
+            </div>
+
+            {/* Social Media Icons */}
+            <div className="flex items-center gap-3 pt-2">
+              <a
+                href="https://linkedin.com/company/impartial-studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-neon-violet/20 hover:border-neon-violet/40 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-300 group"
+              >
+                <Linkedin className="h-4 w-4 text-muted-foreground group-hover:text-neon-violet transition-colors" />
+              </a>
+              <a
+                href="https://instagram.com/impartial.studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-rose-500/20 hover:border-rose-500/40 hover:shadow-[0_0_15px_rgba(244,63,94,0.3)] transition-all duration-300 group"
+              >
+                <Instagram className="h-4 w-4 text-muted-foreground group-hover:text-rose-400 transition-colors" />
+              </a>
+              <a
+                href="https://twitter.com/impartial_studio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/40 hover:shadow-[0_0_15px_rgba(14,165,233,0.3)] transition-all duration-300 group"
+              >
+                <Twitter className="h-4 w-4 text-muted-foreground group-hover:text-sky-400 transition-colors" />
+              </a>
             </div>
           </div>
 
