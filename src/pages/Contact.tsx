@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { FloatingParticles } from "@/components/FloatingParticles";
+import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import logoHero from "@/assets/logo-hero.png";
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
@@ -38,19 +40,42 @@ const Contact = () => {
 
   return (
     <Layout>
+      <FloatingParticles />
+      
       {/* Hero */}
       <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-neon-blue/10 to-transparent opacity-50" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 grid-bg" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/15 rounded-full blur-[150px] animate-pulse-glow" />
+        <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px] animate-pulse-glow" style={{ animationDelay: "1s" }} />
 
-        <div className="container mx-auto px-4 relative">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 opacity-0 animate-fade-in-up">
-              Parlons de votre projet
+            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
+              <div className="relative">
+                <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
+                <img
+                  src={logoHero}
+                  alt="IMPARTIAL"
+                  className="relative w-32 h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
+                />
+              </div>
+            </div>
+            
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
+                <Sparkles className="h-4 w-4" />
+                Contactez-nous
+              </div>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+              Parlons de votre <span className="text-gradient-neon">projet</span>
             </h1>
             <p
               className="text-xl text-muted-foreground opacity-0 animate-fade-in-up"
-              style={{ animationDelay: "0.15s" }}
+              style={{ animationDelay: "0.3s" }}
             >
               Une idée ? Un besoin ? Contactez-nous et donnons vie à votre vision digitale.
             </p>
@@ -60,40 +85,42 @@ const Contact = () => {
 
       {/* Contact Section */}
       <section className="py-16 relative">
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
             {/* Contact Info */}
             <div className="lg:col-span-1 space-y-8">
               <div>
                 <h2 className="text-2xl font-bold mb-6">Informations</h2>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-neon-blue/10 flex items-center justify-center flex-shrink-0">
-                      <Mail className="h-5 w-5 text-neon-blue" />
+                  <div className="flex items-start gap-4 group">
+                    <div className="w-12 h-12 rounded-xl bg-neon-violet/10 border border-neon-violet/30 flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300">
+                      <Mail className="h-5 w-5 text-neon-violet" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Email</p>
-                      <a href="mailto:contact@impartial.studio" className="text-muted-foreground hover:text-foreground transition-colors">
+                      <a href="mailto:contact@impartial.studio" className="text-muted-foreground hover:text-neon-violet transition-colors">
                         contact@impartial.studio
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-neon-green/10 flex items-center justify-center flex-shrink-0">
-                      <Phone className="h-5 w-5 text-neon-green" />
+                  <div className="flex items-start gap-4 group">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] transition-all duration-300">
+                      <Phone className="h-5 w-5 text-emerald-400" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Téléphone</p>
-                      <a href="tel:+33123456789" className="text-muted-foreground hover:text-foreground transition-colors">
+                      <a href="tel:+33123456789" className="text-muted-foreground hover:text-emerald-400 transition-colors">
                         +33 1 23 45 67 89
                       </a>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-neon-red/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="h-5 w-5 text-neon-red" />
+                  <div className="flex items-start gap-4 group">
+                    <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.3)] transition-all duration-300">
+                      <MapPin className="h-5 w-5 text-rose-400" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Adresse</p>
@@ -106,8 +133,8 @@ const Contact = () => {
               </div>
 
               {/* Hours */}
-              <div className="p-6 rounded-2xl bg-card border border-border">
-                <h3 className="font-semibold mb-4">Horaires</h3>
+              <div className="p-6 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/30 hover:shadow-[0_0_30px_rgba(139,92,246,0.1)] transition-all duration-300">
+                <h3 className="font-semibold mb-4 text-neon-violet">Horaires</h3>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <p>Lundi - Vendredi: 9h00 - 18h00</p>
                   <p>Weekend: Sur rendez-vous</p>
@@ -117,97 +144,101 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <form onSubmit={handleSubmit} className="p-8 rounded-2xl bg-card border border-border">
-                <h2 className="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
+              <form onSubmit={handleSubmit} className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-2xl" />
+                
+                <div className="relative z-10">
+                  <h2 className="text-2xl font-bold mb-6">Envoyez-nous un <span className="text-gradient-neon">message</span></h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Nom complet *
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium mb-2">
+                        Nom complet *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl bg-background/50 border border-white/10 focus:border-neon-violet focus:outline-none focus:ring-1 focus:ring-neon-violet focus:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl bg-background/50 border border-white/10 focus:border-neon-violet focus:outline-none focus:ring-1 focus:ring-neon-violet focus:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-medium mb-2">
+                        Entreprise
+                      </label>
+                      <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl bg-background/50 border border-white/10 focus:border-neon-violet focus:outline-none focus:ring-1 focus:ring-neon-violet focus:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                        placeholder="Votre entreprise"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="subject" className="block text-sm font-medium mb-2">
+                        Sujet *
+                      </label>
+                      <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        required
+                        value={formData.subject}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl bg-background/50 border border-white/10 focus:border-neon-violet focus:outline-none focus:ring-1 focus:ring-neon-violet focus:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                        placeholder="Votre projet"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <label htmlFor="message" className="block text-sm font-medium mb-2">
+                      Message *
                     </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
+                    <textarea
+                      id="message"
+                      name="message"
                       required
-                      value={formData.name}
+                      rows={6}
+                      value={formData.message}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-colors"
-                      placeholder="John Doe"
+                      className="w-full px-4 py-3 rounded-xl bg-background/50 border border-white/10 focus:border-neon-violet focus:outline-none focus:ring-1 focus:ring-neon-violet focus:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all resize-none"
+                      placeholder="Décrivez votre projet, vos besoins, vos délais..."
                     />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-colors"
-                      placeholder="john@example.com"
-                    />
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Entreprise
-                    </label>
-                    <input
-                      type="text"
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-colors"
-                      placeholder="Votre entreprise"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                      Sujet *
-                    </label>
-                    <input
-                      type="text"
-                      id="subject"
-                      name="subject"
-                      required
-                      value={formData.subject}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-colors"
-                      placeholder="Votre projet"
-                    />
-                  </div>
+                  <button
+                    type="submit"
+                    className="w-full md:w-auto btn-gradient px-8 py-4 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] inline-flex items-center justify-center gap-2"
+                  >
+                    Envoyer le message
+                    <Send className="h-5 w-5" />
+                  </button>
                 </div>
-
-                <div className="mb-6">
-                  <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    rows={6}
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-neon-blue focus:outline-none focus:ring-1 focus:ring-neon-blue transition-colors resize-none"
-                    placeholder="Décrivez votre projet, vos besoins, vos délais..."
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full md:w-auto px-8 py-4 bg-foreground text-background font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] inline-flex items-center justify-center gap-2"
-                >
-                  Envoyer le message
-                  <Send className="h-5 w-5" />
-                </button>
               </form>
             </div>
           </div>
