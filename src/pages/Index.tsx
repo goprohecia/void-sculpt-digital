@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Testimonials } from "@/components/Testimonials";
 import { ArrowRight, Globe, Smartphone, Server, Layers } from "lucide-react";
-import logo from "@/assets/logo-impartial.png";
+import logoAnimated from "@/assets/logo-animated.mp4";
 
 const services = [
   {
@@ -52,10 +52,13 @@ const Index = () => {
           <div className="text-center max-w-5xl mx-auto">
             {/* Logo */}
             <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
-              <img
-                src={logo}
-                alt="IMPARTIAL"
-                className="w-32 h-32 md:w-40 md:h-40 animate-float"
+              <video
+                src={logoAnimated}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-32 h-32 md:w-40 md:h-40 object-contain animate-float"
               />
             </div>
 
