@@ -159,11 +159,11 @@ export default function Portfolio() {
             <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
-                Nos créations
+                Nos Créations
               </div>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-              Nos <span className="text-gradient-neon">réalisations</span>
+              Nos <span className="text-gradient-neon">Réalisations</span>
             </h1>
             <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
               Découvrez nos projets et les solutions digitales que nous avons créées pour nos clients.

@@ -75,7 +75,7 @@ const Studio = () => {
             <div className="mb-6 flex justify-center opacity-0 animate-fade-in">
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
-                Notre histoire
+                Notre Histoire
               </div>
             </div>
             
@@ -116,7 +116,7 @@ const Studio = () => {
             <div>
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
                 <Sparkles className="h-4 w-4 text-neon-violet" />
-                <span className="text-sm font-medium text-neon-violet">Notre vision</span>
+                <span className="text-sm font-medium text-neon-violet">Notre Vision</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Créer l'<span className="text-gradient-neon">extraordinaire</span>
@@ -157,9 +157,9 @@ const Studio = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
               <Sparkles className="h-4 w-4 text-neon-violet" />
-              <span className="text-sm font-medium text-neon-violet">Nos piliers</span>
+              <span className="text-sm font-medium text-neon-violet">Nos Piliers</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos <span className="text-gradient-neon">valeurs</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos <span className="text-gradient-neon">Valeurs</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Les piliers qui guident chacune de nos créations.
             </p>
