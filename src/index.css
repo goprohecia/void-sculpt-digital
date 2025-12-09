@@ -76,6 +76,18 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* Improve click responsiveness for all interactive elements */
+  a, button, [role="button"], input, select, textarea, label[for] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+
+  button, a {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 @layer components {
@@ -205,6 +217,8 @@
     @apply relative overflow-hidden font-semibold;
     background: linear-gradient(135deg, hsl(265 85% 60%), hsl(265 85% 50%));
     transition: all 0.3s ease;
+    z-index: 1;
+    isolation: isolate;
   }
 
   .btn-gradient:hover {
@@ -437,6 +451,12 @@
 
   .group:active {
     transform: scale(0.98);
+  }
+
+  /* Improve touch responsiveness */
+  a, button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 

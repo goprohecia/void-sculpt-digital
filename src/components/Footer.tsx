@@ -6,7 +6,7 @@ import { NewsletterForm } from "./NewsletterForm";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-white/10 bg-glass-dark/50 backdrop-blur-xl overflow-hidden">
+    <footer className="relative border-t border-white/10 bg-glass-dark/50 backdrop-blur-xl overflow-hidden z-10">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-t from-neon-violet/5 via-transparent to-transparent" />
       <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-violet-600/10 rounded-full blur-[120px]" />
