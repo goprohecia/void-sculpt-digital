@@ -187,8 +187,8 @@ export function FloatingParticles() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 will-change-transform"
-      style={{ opacity: 0.7 }}
+      className="fixed inset-0 pointer-events-none will-change-transform"
+      style={{ opacity: 0.7, zIndex: -1 }}
     />
   );
 }
