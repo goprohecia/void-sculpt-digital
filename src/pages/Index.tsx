@@ -131,7 +131,7 @@ const Index = () => {
                 Démarrer un projet
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
               </Link>
-              <Link to="/portfolio" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50 text-sm md:text-base">
+              <Link to="/portfolio" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 border border-border bg-card/50 font-semibold rounded-xl transition-colors duration-100 hover:bg-secondary hover:border-primary/50 text-sm md:text-base">
                 Voir nos réalisations
               </Link>
             </div>
@@ -198,21 +198,21 @@ const Index = () => {
               }
             };
             const colors = colorClasses[service.color as keyof typeof colorClasses];
-            return <Link key={service.href} to={service.href} className={`group relative p-6 md:p-8 rounded-xl md:rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`} style={{
+            return <Link key={service.href} to={service.href} className={`group relative p-6 md:p-8 rounded-xl md:rounded-2xl bg-card/80 border border-white/10 transition-all duration-150 hover:scale-[1.02] hover:-translate-y-1 ${colors.border} ${colors.shadow}`} style={{
               animationDelay: `${index * 0.1}s`
             }}>
                   {/* Hover gradient overlay */}
-                  <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
+                  <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-150 ${colors.glow}`} />
                   
                   <div className="relative z-10">
-                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl ${colors.bg} flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`w-12 h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl ${colors.bg} flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-150`}>
                       <service.icon className={`h-6 w-6 md:h-7 md:w-7 ${colors.icon}`} />
                     </div>
-                    <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 group-hover:text-white transition-colors">{service.title}</h3>
-                    <p className="text-muted-foreground text-xs md:text-sm mb-3 md:mb-4 group-hover:text-gray-300 transition-colors">{service.description}</p>
-                    <span className={`inline-flex items-center gap-1 text-xs md:text-sm font-medium ${colors.icon} group-hover:gap-3 transition-all duration-300`}>
+                    <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-3 group-hover:text-white transition-colors duration-100">{service.title}</h3>
+                    <p className="text-muted-foreground text-xs md:text-sm mb-3 md:mb-4 group-hover:text-gray-300 transition-colors duration-100">{service.description}</p>
+                    <span className={`inline-flex items-center gap-1 text-xs md:text-sm font-medium ${colors.icon} group-hover:gap-3 transition-all duration-150`}>
                       Explorer
-                      <ArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-1 transition-transform duration-100" />
                     </span>
                   </div>
                 </Link>;
