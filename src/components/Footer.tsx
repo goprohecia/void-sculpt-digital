@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Sparkles, Mail, Phone, MapPin, ArrowUpRight, Cookie } from "lucide-react";
+import { Newsletter } from "@/components/Newsletter";
 import logoHero from "@/assets/logo-hero.png";
 
 export function Footer() {
+  const openCookieSettings = () => {
+    localStorage.removeItem("cookie-consent");
+    window.location.reload();
+  };
+
   return (
     <footer className="relative border-t border-white/10 bg-glass-dark/50 backdrop-blur-xl overflow-hidden">
       {/* Background Effects */}
@@ -11,7 +17,7 @@ export function Footer() {
       <div className="absolute bottom-0 right-1/3 w-[300px] h-[150px] bg-purple-600/10 rounded-full blur-[100px]" />
 
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3 group">
@@ -111,19 +117,34 @@ export function Footer() {
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
+
+          {/* Newsletter */}
+          <div>
+            <Newsletter variant="inline" />
+          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
             © 2024 <span className="text-neon-violet">IMPARTIAL</span>. Tous droits réservés.
           </p>
-          <div className="flex gap-6 text-sm text-muted-foreground">
-            <Link to="#" className="hover:text-neon-violet transition-colors">
-              Mentions légales
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
+            <Link to="/cgu" className="hover:text-neon-violet transition-colors">
+              CGU
             </Link>
-            <Link to="#" className="hover:text-neon-violet transition-colors">
-              Politique de confidentialité
+            <Link to="/cgv" className="hover:text-neon-violet transition-colors">
+              CGV
             </Link>
+            <Link to="/cookies" className="hover:text-neon-violet transition-colors">
+              Cookies
+            </Link>
+            <button
+              onClick={openCookieSettings}
+              className="hover:text-neon-violet transition-colors flex items-center gap-1"
+            >
+              <Cookie className="h-3 w-3" />
+              Préférences cookies
+            </button>
           </div>
         </div>
       </div>

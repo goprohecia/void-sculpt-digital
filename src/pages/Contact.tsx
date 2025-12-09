@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
+import { Newsletter } from "@/components/Newsletter";
 import { Mail, Phone, MapPin, Send, Sparkles, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useParallax } from "@/hooks/use-parallax";
@@ -263,6 +264,15 @@ const Contact = () => {
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-2xl mx-auto">
+            <Newsletter variant="card" />
           </div>
         </div>
       </section>
