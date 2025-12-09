@@ -38,37 +38,68 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation - Centered */}
-          <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-            <Link to="/" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/") ? "text-neon-violet" : "text-foreground"}`}>
+          <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
+            <Link 
+              to="/" 
+              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/") ? "text-neon-violet" : "text-foreground"}`}
+            >
               Accueil
             </Link>
 
             {/* Dropdown */}
-            <div className="relative" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
-              <button className={`flex items-center gap-1 font-medium transition-colors duration-200 hover:text-neon-violet ${isExpertiseActive ? "text-neon-violet" : "text-foreground"}`}>
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsDropdownOpen(true)} 
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
+              <button 
+                className={`flex items-center gap-1 px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isExpertiseActive ? "text-neon-violet" : "text-foreground"}`}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                type="button"
+              >
                 Nos expertises
                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
-              {/* Dropdown Menu */}
-              <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 transition-all duration-200 ${isDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"}`}>
-                <div className="bg-background/80 backdrop-blur-xl rounded-xl p-2 min-w-[220px] border border-neon-violet/30 shadow-[0_10px_40px_rgba(139,92,246,0.2)]">
-                  {expertises.map(item => <Link key={item.href} to={item.href} className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-neon-violet/10 ${isActive(item.href) ? "text-neon-violet bg-neon-violet/10" : ""}`}>
+              {/* Dropdown Menu - with bridge element to prevent gap */}
+              <div 
+                className={`absolute top-full left-1/2 -translate-x-1/2 pt-1 transition-all duration-200 ${isDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2 pointer-events-none"}`}
+              >
+                {/* Invisible bridge to prevent hover gap */}
+                <div className="absolute -top-1 left-0 right-0 h-3" />
+                <div className="bg-background/95 backdrop-blur-xl rounded-xl p-2 min-w-[220px] border border-neon-violet/30 shadow-[0_10px_40px_rgba(139,92,246,0.2)]">
+                  {expertises.map(item => (
+                    <Link 
+                      key={item.href} 
+                      to={item.href} 
+                      onClick={() => setIsDropdownOpen(false)}
+                      className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-neon-violet/10 ${isActive(item.href) ? "text-neon-violet bg-neon-violet/10" : ""}`}
+                    >
                       {item.name}
-                    </Link>)}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <Link to="/portfolio" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/portfolio") ? "text-neon-violet" : "text-foreground"}`}>
+            <Link 
+              to="/portfolio" 
+              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/portfolio") ? "text-neon-violet" : "text-foreground"}`}
+            >
               Portfolio
             </Link>
 
-            <Link to="/studio" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/studio") ? "text-neon-violet" : "text-foreground"}`}>
+            <Link 
+              to="/studio" 
+              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/studio") ? "text-neon-violet" : "text-foreground"}`}
+            >
               Le studio
             </Link>
 
-            <Link to="/contact" className={`font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/contact") ? "text-neon-violet" : "text-foreground"}`}>
+            <Link 
+              to="/contact" 
+              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/contact") ? "text-neon-violet" : "text-foreground"}`}
+            >
               Contact
             </Link>
           </div>
