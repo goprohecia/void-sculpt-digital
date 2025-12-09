@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import { CookieBanner } from "@/components/CookieBanner";
 import Index from "./pages/Index";
 import Studio from "./pages/Studio";
 import Contact from "./pages/Contact";
@@ -13,6 +14,9 @@ import WebService from "./pages/services/WebService";
 import MobileService from "./pages/services/MobileService";
 import BackofficeService from "./pages/services/BackofficeService";
 import FullStackService from "./pages/services/FullStackService";
+import CGU from "./pages/legal/CGU";
+import CGV from "./pages/legal/CGV";
+import Cookies from "./pages/legal/Cookies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,8 +41,12 @@ const App = () => {
               <Route path="/services/mobile" element={<MobileService />} />
               <Route path="/services/backoffice" element={<BackofficeService />} />
               <Route path="/services/360" element={<FullStackService />} />
+              <Route path="/cgu" element={<CGU />} />
+              <Route path="/cgv" element={<CGV />} />
+              <Route path="/cookies" element={<Cookies />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <CookieBanner />
           </BrowserRouter>
         </div>
       </TooltipProvider>
