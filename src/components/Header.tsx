@@ -41,7 +41,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             <Link 
               to="/" 
-              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/") ? "text-neon-violet" : "text-foreground"}`}
+              className={`px-3 py-2 font-medium transition-colors duration-75 hover:text-neon-violet ${isActive("/") ? "text-neon-violet" : "text-foreground"}`}
             >
               Accueil
             </Link>
@@ -53,17 +53,17 @@ export function Header() {
               onMouseLeave={() => setIsDropdownOpen(false)}
             >
               <button 
-                className={`flex items-center gap-1 px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isExpertiseActive ? "text-neon-violet" : "text-foreground"}`}
+                className={`flex items-center gap-1 px-3 py-2 font-medium transition-colors duration-75 hover:text-neon-violet ${isExpertiseActive ? "text-neon-violet" : "text-foreground"}`}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 type="button"
               >
                 Nos expertises
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`h-4 w-4 transition-transform duration-100 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
               {/* Dropdown Menu - with bridge element to prevent gap */}
               <div 
-                className={`absolute top-full left-1/2 -translate-x-1/2 pt-1 transition-all duration-200 ${isDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2 pointer-events-none"}`}
+                className={`absolute top-full left-1/2 -translate-x-1/2 pt-1 transition-opacity duration-100 ${isDropdownOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
               >
                 {/* Invisible bridge to prevent hover gap */}
                 <div className="absolute -top-1 left-0 right-0 h-3" />
@@ -73,7 +73,7 @@ export function Header() {
                       key={item.href} 
                       to={item.href} 
                       onClick={() => setIsDropdownOpen(false)}
-                      className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-neon-violet/10 ${isActive(item.href) ? "text-neon-violet bg-neon-violet/10" : ""}`}
+                      className={`block px-4 py-3 rounded-lg transition-colors duration-75 hover:bg-neon-violet/10 ${isActive(item.href) ? "text-neon-violet bg-neon-violet/10" : ""}`}
                     >
                       {item.name}
                     </Link>
@@ -84,21 +84,21 @@ export function Header() {
 
             <Link 
               to="/portfolio" 
-              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/portfolio") ? "text-neon-violet" : "text-foreground"}`}
+              className={`px-3 py-2 font-medium transition-colors duration-75 hover:text-neon-violet ${isActive("/portfolio") ? "text-neon-violet" : "text-foreground"}`}
             >
               Portfolio
             </Link>
 
             <Link 
               to="/studio" 
-              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/studio") ? "text-neon-violet" : "text-foreground"}`}
+              className={`px-3 py-2 font-medium transition-colors duration-75 hover:text-neon-violet ${isActive("/studio") ? "text-neon-violet" : "text-foreground"}`}
             >
               Le studio
             </Link>
 
             <Link 
               to="/contact" 
-              className={`px-3 py-2 font-medium transition-colors duration-200 hover:text-neon-violet ${isActive("/contact") ? "text-neon-violet" : "text-foreground"}`}
+              className={`px-3 py-2 font-medium transition-colors duration-75 hover:text-neon-violet ${isActive("/contact") ? "text-neon-violet" : "text-foreground"}`}
             >
               Contact
             </Link>
@@ -106,7 +106,7 @@ export function Header() {
 
           {/* CTA Button - Right */}
           <div className="hidden lg:block flex-shrink-0">
-            <Link to="/contact" className="btn-gradient px-6 py-2.5 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]">
+            <Link to="/contact" className="btn-gradient px-6 py-2.5 text-white font-semibold rounded-xl">
               Prendre rendez-vous
             </Link>
           </div>
