@@ -24,7 +24,7 @@ export function Header() {
   const isActive = (path: string) => location.pathname === path;
   const isExpertiseActive = expertises.some(e => location.pathname === e.href);
   
-  return <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 md:bg-background/60 md:backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(139,92,246,0.1)]">
+  return <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 border-b border-white/10 shadow-[0_4px_30px_rgba(139,92,246,0.1)]">
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}

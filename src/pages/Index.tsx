@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Testimonials } from "@/components/Testimonials";
 import { FAQ } from "@/components/FAQ";
-import { FloatingParticles } from "@/components/FloatingParticles";
 import TypeWriter from "@/components/TypeWriter";
 import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
-import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
+
 const services = [{
   icon: Globe,
   title: "Sites web & vitrines",
@@ -32,78 +31,43 @@ const services = [{
   href: "/services/360",
   color: "tier-custom"
 }];
+
 const Index = () => {
-  const parallaxSlow = useParallax(0.15);
-  const parallaxMedium = useParallax(0.25);
-  const parallaxFast = useParallax(0.35);
-
   return <Layout>
-      {/* Floating Particles Background */}
-      <FloatingParticles />
-
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
-        {/* Background Effects */}
+        {/* Background Effects - Static, no blur */}
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
         <div className="absolute inset-0 grid-bg" />
         
-        {/* Glowing Orbs with Parallax - smaller on mobile */}
-        <div 
-          className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] lg:w-[500px] h-[250px] md:h-[400px] lg:h-[500px] bg-violet-600/20 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px] animate-pulse-glow"
-          style={{ transform: `translateY(${parallaxSlow}px)` }}
-        />
-        <div 
-          className="absolute bottom-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-blue-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow hidden sm:block"
-          style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
-        />
-        <div 
-          className="absolute top-1/2 right-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-500/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] hidden md:block"
-          style={{ transform: `translateY(${parallaxFast}px)` }}
-        />
+        {/* Static Glowing Orbs - No animation, reduced blur */}
+        <div className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-violet-600/20 rounded-full blur-[80px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[200px] md:w-[300px] h-[200px] md:h-[300px] bg-blue-600/15 rounded-full blur-[60px] hidden sm:block" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-5xl mx-auto">
             {/* Badge */}
-            <div className="mb-4 flex justify-center opacity-0 animate-fade-in">
+            <div className="mb-4 flex justify-center">
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
                 Studio digital gaming & tech
               </div>
             </div>
 
-            {/* Logo */}
-            <div 
-              className="mb-4 flex justify-center"
-              style={{
-                opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008)
-              }}
-            >
-              <div 
-                className="relative group cursor-pointer transition-transform duration-100"
-                style={{ 
-                  transform: `translateY(${parallaxSlow * -0.5}px) scale(${1 - Math.abs(parallaxSlow) * 0.001}) rotate(${parallaxSlow * 0.02}deg)` 
-                }}
-              >
-                <div 
-                  className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.5]"
-                  style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
-                />
-                <div 
-                  className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-logo-glow-entrance transition-all duration-500 group-hover:bg-violet-500/60 group-hover:blur-[70px]" 
-                  style={{ animationDelay: "0.3s", opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }} 
-                />
+            {/* Logo - Static, no parallax */}
+            <div className="mb-4 flex justify-center">
+              <div className="relative group cursor-pointer">
+                <div className="absolute inset-0 bg-neon-violet/40 blur-[60px] rounded-full" />
                 <img 
                   src={logoHero} 
                   alt="Impartial Logo" 
-                  className="relative h-32 md:h-40 lg:h-48 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
+                  className="relative h-32 md:h-40 lg:h-48 w-auto drop-shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-transform duration-100 group-hover:scale-105"
                 />
               </div>
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 tracking-tight opacity-0 animate-fade-in-up" style={{
-            animationDelay: "0.2s"
-          }}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 tracking-tight">
               <span className="text-logo-gradient">IMPARTIAL</span>
             </h1>
 
@@ -124,9 +88,7 @@ const Index = () => {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center opacity-0 animate-fade-in-up px-4 sm:px-0" style={{
-            animationDelay: "0.65s"
-          }}>
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-4 sm:px-0">
               <Link to="/contact" className="w-full sm:w-auto btn-gradient inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 text-white font-semibold rounded-xl text-sm md:text-base">
                 Démarrer un projet
                 <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
@@ -139,11 +101,9 @@ const Index = () => {
         </div>
 
         {/* Scroll Indicator - hidden on small screens */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in hidden md:block" style={{
-        animationDelay: "1s"
-      }}>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
           <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center pt-2">
-            <div className="w-1.5 h-3 bg-muted-foreground rounded-full animate-bounce" />
+            <div className="w-1.5 h-3 bg-muted-foreground rounded-full" />
           </div>
         </div>
       </section>
@@ -229,16 +189,14 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-16 md:py-24 relative overflow-hidden">
-        {/* Background Effects */}
+        {/* Background Effects - Static */}
         <div className="absolute inset-0 bg-gradient-to-r from-neon-violet/10 via-purple-600/10 to-blue-600/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[500px] lg:w-[600px] h-[300px] md:h-[500px] lg:h-[600px] bg-violet-600/15 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px]" />
-        <div className="absolute top-0 right-0 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-500/10 rounded-full blur-[60px] md:blur-[80px] lg:blur-[100px] hidden sm:block" />
-        <div className="absolute bottom-0 left-0 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-blue-500/10 rounded-full blur-[60px] md:blur-[80px] lg:blur-[100px] hidden sm:block" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-violet-600/15 rounded-full blur-[80px]" />
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
-            {/* Glassmorphism Card */}
-            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16 border border-white/10 text-center relative overflow-hidden">
+            {/* Card - No backdrop blur */}
+            <div className="bg-card/95 rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16 border border-white/10 text-center relative overflow-hidden">
               {/* Inner glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-3xl" />
               
