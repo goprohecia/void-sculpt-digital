@@ -95,10 +95,21 @@
     transition-timing-function: ease-out;
   }
 
+  /* Micro-animation feedback on hover */
+  button:hover, a:hover, [role="button"]:hover {
+    transform: translateY(-1px);
+  }
+
   /* Ensure immediate visual feedback on interaction */
   button:active, a:active, [role="button"]:active {
-    transform: scale(0.98);
+    transform: scale(0.97) translateY(0);
     transition-duration: 0ms;
+  }
+
+  /* Icon buttons special hover */
+  button:hover svg, a:hover svg {
+    transform: scale(1.05);
+    transition: transform 100ms ease-out;
   }
 }
 
