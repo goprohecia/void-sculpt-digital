@@ -76,41 +76,6 @@
   html {
     scroll-behavior: smooth;
   }
-
-  /* Improve click responsiveness for all interactive elements */
-  a, button, [role="button"], input, select, textarea, label[for] {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-    /* Remove transition delays for immediate response */
-    transition-delay: 0ms !important;
-  }
-
-  button, a {
-    position: relative;
-    z-index: 1;
-    /* Instant hover/active states */
-    transition-property: background-color, border-color, color, box-shadow, transform;
-    transition-duration: 100ms;
-    transition-timing-function: ease-out;
-  }
-
-  /* Micro-animation feedback on hover */
-  button:hover, a:hover, [role="button"]:hover {
-    transform: translateY(-1px);
-  }
-
-  /* Ensure immediate visual feedback on interaction */
-  button:active, a:active, [role="button"]:active {
-    transform: scale(0.97) translateY(0);
-    transition-duration: 0ms;
-  }
-
-  /* Icon buttons special hover */
-  button:hover svg, a:hover svg {
-    transform: scale(1.05);
-    transition: transform 100ms ease-out;
-  }
 }
 
 @layer components {
@@ -239,9 +204,7 @@
   .btn-gradient {
     @apply relative overflow-hidden font-semibold;
     background: linear-gradient(135deg, hsl(265 85% 60%), hsl(265 85% 50%));
-    transition: box-shadow 0.1s ease, transform 0.1s ease;
-    z-index: 1;
-    isolation: isolate;
+    transition: all 0.3s ease;
   }
 
   .btn-gradient:hover {
@@ -249,14 +212,9 @@
     transform: translateY(-2px);
   }
 
-  .btn-gradient:active {
-    transform: translateY(0) scale(0.98);
-    transition-duration: 0ms;
-  }
-
   /* Card Hover Effects */
   .card-hover {
-    @apply transition-all duration-200;
+    @apply transition-all duration-500;
   }
 
   .card-hover:hover {
@@ -341,15 +299,6 @@
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
-  /* Disable expensive blur effects on mobile for better performance */
-  .backdrop-blur-xl,
-  .backdrop-blur-lg,
-  .backdrop-blur-md {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background-color: hsl(var(--card) / 0.95) !important;
-  }
-
   .animate-float {
     animation-duration: 8s;
   }
@@ -363,7 +312,11 @@
   .blur-\[120px\],
   .blur-\[100px\],
   .blur-\[80px\] {
-    filter: blur(40px);
+    filter: blur(60px);
+  }
+
+  .backdrop-blur-xl {
+    backdrop-filter: blur(12px);
   }
 
   /* Mobile-specific entrance animations */
@@ -484,12 +437,6 @@
 
   .group:active {
     transform: scale(0.98);
-  }
-
-  /* Improve touch responsiveness */
-  a, button {
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
   }
 }
 
