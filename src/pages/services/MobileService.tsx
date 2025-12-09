@@ -8,11 +8,11 @@ const MobileService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Expériences mobiles next-gen"
+        title="Expériences Mobiles Next-Gen"
         subtitle="Des applications natives et cross-platform fluides, conçues pour engager vos utilisateurs."
         image={heroImage}
         accentColor="green"
-        badge="Applications mobiles"
+        badge="Applications Mobiles"
       />
 
       {/* Pricing Section */}
@@ -25,7 +25,7 @@ const MobileService = () => {
               <Sparkles className="h-4 w-4 text-emerald-400" />
               <span className="text-sm font-medium text-emerald-400">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">mobile</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Mobile</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               De l'idée à l'App Store, nous vous accompagnons à chaque étape.
             </p>
@@ -36,6 +36,7 @@ const MobileService = () => {
               tier="start"
               title="MVP App"
               subtitle="Pour tester une idée"
+              price="10 000 – 20 000 €"
               features={[
                 "Application simple iOS/Android",
                 "Authentification basique",
@@ -52,6 +53,7 @@ const MobileService = () => {
               tier="pro"
               title="App Market Ready"
               subtitle="Pour une app prête marché"
+              price="20 000 – 50 000 €"
               features={[
                 "App complète iOS & Android",
                 "Notifications push",
@@ -67,8 +69,9 @@ const MobileService = () => {
 
             <PricingCard
               tier="custom"
-              title="Écosystème mobile"
+              title="Écosystème Mobile"
               subtitle="Projet complexe / Scaleup"
+              price="Sur devis"
               features={[
                 "Architecture scalable",
                 "Sécurité renforcée",

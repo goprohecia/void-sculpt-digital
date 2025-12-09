@@ -8,7 +8,7 @@ const BackofficeService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Le cerveau de votre opération"
+        title="Le Cerveau de Votre Opération"
         subtitle="Dashboards puissants et automatisations pour piloter votre activité avec précision."
         image={heroImage}
         accentColor="red"
@@ -25,7 +25,7 @@ const BackofficeService = () => {
               <Sparkles className="h-4 w-4 text-rose-400" />
               <span className="text-sm font-medium text-rose-400">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">backoffice</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Backoffice</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Des outils sur mesure pour optimiser vos opérations quotidiennes.
             </p>
@@ -34,8 +34,9 @@ const BackofficeService = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <PricingCard
               tier="start"
-              title="Admin pilot"
+              title="Admin Pilot"
               subtitle="Gestion simple"
+              price="2 000 – 4 000 €"
               features={[
                 "Dashboard simple et intuitif",
                 "Gestion utilisateurs",
@@ -50,8 +51,9 @@ const BackofficeService = () => {
 
             <PricingCard
               tier="pro"
-              title="SaaS operator"
+              title="SaaS Operator"
               subtitle="Automatisation"
+              price="5 000 – 12 000 €"
               features={[
                 "Intégrations API multiples",
                 "Reporting avancé",
@@ -67,8 +69,9 @@ const BackofficeService = () => {
 
             <PricingCard
               tier="custom"
-              title="Enterprise core"
+              title="Enterprise Core"
               subtitle="PME/ETI besoins forts"
+              price="Sur devis"
               features={[
                 "Architecture microservices",
                 "IA & Machine Learning",

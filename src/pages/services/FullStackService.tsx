@@ -8,7 +8,7 @@ const FullStackService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Domination digitale totale"
+        title="Domination Digitale Totale"
         subtitle="L'alliance parfaite : Site + App + Backoffice. La solution ultime pour les startups ambitieuses."
         image={heroImage}
         accentColor="gold"
@@ -25,7 +25,7 @@ const FullStackService = () => {
               <Sparkles className="h-4 w-4 text-violet-400" />
               <span className="text-sm font-medium text-violet-400">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">360°</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">360°</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               L'écosystème complet pour une domination digitale sans compromis.
             </p>
@@ -36,6 +36,7 @@ const FullStackService = () => {
               tier="start"
               title="Digital Launch"
               subtitle="Petite structure"
+              price="8 000 – 15 000 €"
               features={[
                 "Site vitrine professionnel",
                 "Mini application mobile",
@@ -43,7 +44,7 @@ const FullStackService = () => {
                 "Connexion entre services",
                 "Formation équipe",
               ]}
-              upsell="Pack maintenance 360 – 149€/mois"
+              upsell="Pack Maintenance 360 – 149€/mois"
               subject="360° - Offre START (Digital Launch)"
               index={0}
             />
@@ -52,6 +53,7 @@ const FullStackService = () => {
               tier="pro"
               title="Business Engine"
               subtitle="Entreprise en activité"
+              price="20 000 – 50 000 €"
               features={[
                 "Site PRO avec e-commerce",
                 "App mobile complète",
@@ -60,7 +62,7 @@ const FullStackService = () => {
                 "Analytics unifiés",
                 "Support prioritaire",
               ]}
-              upsell="Pack croissance – 249€/mois"
+              upsell="Pack Croissance – 249€/mois"
               subject="360° - Offre PRO (Business Engine)"
               index={1}
             />
@@ -69,6 +71,7 @@ const FullStackService = () => {
               tier="custom"
               title="Full Ecosystem"
               subtitle="Projet ambitieux / Scaleup"
+              price="Sur devis"
               features={[
                 "Site custom haute performance",
                 "App scalable multiplateforme",

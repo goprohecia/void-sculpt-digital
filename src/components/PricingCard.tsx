@@ -7,7 +7,7 @@ interface PricingCardProps {
   tier: Tier;
   title: string;
   subtitle: string;
-  price?: string;
+  price: string;
   features: string[];
   upsell: string;
   subject: string;
@@ -88,10 +88,8 @@ export function PricingCard({
 
         {/* Price */}
         <div className="mb-8">
-          <span className="text-3xl lg:text-4xl font-extrabold text-gradient-neon">
-            {price || "Sur demande"}
-          </span>
-          {price && price !== "Sur devis" && (
+          <span className="text-3xl lg:text-4xl font-extrabold text-gradient-neon">{price}</span>
+          {price !== "Sur devis" && (
             <span className="text-muted-foreground ml-2">HT</span>
           )}
         </div>

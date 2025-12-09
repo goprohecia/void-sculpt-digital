@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoadingScreen } from "@/components/LoadingScreen";
-import { WelcomeOverlay } from "@/components/WelcomeOverlay";
 import Index from "./pages/Index";
 import Studio from "./pages/Studio";
 import Contact from "./pages/Contact";
@@ -20,18 +19,11 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
-
-  const handleLoadingComplete = () => {
-    setIsLoaded(true);
-    setShowWelcome(true);
-  };
 
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <LoadingScreen onComplete={handleLoadingComplete} />
-        <WelcomeOverlay show={showWelcome} onComplete={() => setShowWelcome(false)} />
+        <LoadingScreen onComplete={() => setIsLoaded(true)} />
         <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
           <Toaster />
           <Sonner />

@@ -8,11 +8,11 @@ const WebService = () => {
   return (
     <Layout>
       <ServiceHero
-        title="Architectures web immersives"
-        subtitle="De la vitrine épurée au e-commerce puissant. Votre présence en ligne, réinventée."
+        title="Architectures Web Immersives"
+        subtitle="De la vitrine épurée au E-commerce puissant. Votre présence en ligne, réinventée."
         image={heroImage}
         accentColor="blue"
-        badge="Sites web & vitrines"
+        badge="Sites Web & Vitrines"
       />
 
       {/* Pricing Section */}
@@ -25,7 +25,7 @@ const WebService = () => {
               <Sparkles className="h-4 w-4 text-neon-violet" />
               <span className="text-sm font-medium text-neon-violet">Tarifs</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos offres <span className="text-gradient-neon">web</span></h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Web</span></h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Choisissez la formule adaptée à vos ambitions digitales.
             </p>
@@ -34,8 +34,9 @@ const WebService = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <PricingCard
               tier="start"
-              title="Site présence"
+              title="Site Présence"
               subtitle="Pour être visible"
+              price="1 500 – 3 000 €"
               features={[
                 "Site vitrine 1 à 5 pages",
                 "Design professionnel",
@@ -50,8 +51,9 @@ const WebService = () => {
 
             <PricingCard
               tier="pro"
-              title="Site business / e-commerce"
+              title="Site Business / E-commerce"
               subtitle="Pour générer des leads et ventes"
+              price="4 000 – 8 000 €"
               features={[
                 "Site complet ou boutique en ligne",
                 "Système de paiement intégré",
@@ -67,8 +69,9 @@ const WebService = () => {
 
             <PricingCard
               tier="custom"
-              title="Site premium"
+              title="Site Premium"
               subtitle="Pour marque ou projet spécifique"
+              price="Sur devis"
               features={[
                 "Design sur-mesure exclusif",
                 "Fonctionnalités avancées",
