@@ -159,7 +159,7 @@ const Index = () => {
               <Sparkles className="h-3 w-3 md:h-4 md:w-4 text-neon-violet" />
               <span className="text-xs md:text-sm font-medium text-neon-violet">Services Premium</span>
             </div>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">Nos Expertises</h2>
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">Nos expertises</h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto px-4 md:px-0">
               Des solutions digitales complètes pour propulser votre business vers de nouveaux sommets.
             </p>

@@ -41,7 +41,7 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-6 text-neon-violet flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-neon-violet shadow-[0_0_10px_rgba(139,92,246,0.5)]" />
-              Nos Expertises
+              Nos expertises
             </h4>
             <ul className="space-y-3">
               {[
@@ -67,13 +67,13 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-6 text-emerald-400 flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
-              Le Studio
+              Le studio
             </h4>
             <ul className="space-y-3">
               {[
-                { to: "/studio", label: "Notre Vision" },
-                { to: "/studio", label: "L'Équipe" },
-                { to: "/studio", label: "Nos Valeurs" },
+                { to: "/studio", label: "Notre vision" },
+                { to: "/studio", label: "L'équipe" },
+                { to: "/studio", label: "Nos valeurs" },
                 { to: "/portfolio", label: "Portfolio" },
               ].map((link, index) => (
                 <li key={index}>

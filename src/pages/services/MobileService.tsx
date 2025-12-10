@@ -36,7 +36,7 @@ const MobileService = () => {
               tier="start"
               title="MVP App"
               subtitle="Pour tester une idée"
-              price="10 000 – 20 000 €"
+              price="Sur demande"
               features={[
                 "Application simple iOS/Android",
                 "Authentification basique",
@@ -53,7 +53,7 @@ const MobileService = () => {
               tier="pro"
               title="App Market Ready"
               subtitle="Pour une app prête marché"
-              price="20 000 – 50 000 €"
+              price="Sur demande"
               features={[
                 "App complète iOS & Android",
                 "Notifications push",

@@ -36,7 +36,7 @@ const BackofficeService = () => {
               tier="start"
               title="Admin Pilot"
               subtitle="Gestion simple"
-              price="2 000 – 4 000 €"
+              price="Sur demande"
               features={[
                 "Dashboard simple et intuitif",
                 "Gestion utilisateurs",
@@ -53,7 +53,7 @@ const BackofficeService = () => {
               tier="pro"
               title="SaaS Operator"
               subtitle="Automatisation"
-              price="5 000 – 12 000 €"
+              price="Sur demande"
               features={[
                 "Intégrations API multiples",
                 "Reporting avancé",

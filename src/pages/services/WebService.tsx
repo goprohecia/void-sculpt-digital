@@ -36,7 +36,7 @@ const WebService = () => {
               tier="start"
               title="Site Présence"
               subtitle="Pour être visible"
-              price="1 500 – 3 000 €"
+              price="Sur demande"
               features={[
                 "Site vitrine 1 à 5 pages",
                 "Design professionnel",
@@ -53,7 +53,7 @@ const WebService = () => {
               tier="pro"
               title="Site Business / E-commerce"
               subtitle="Pour générer des leads et ventes"
-              price="4 000 – 8 000 €"
+              price="Sur demande"
               features={[
                 "Site complet ou boutique en ligne",
                 "Système de paiement intégré",

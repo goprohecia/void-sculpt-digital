@@ -36,7 +36,7 @@ const FullStackService = () => {
               tier="start"
               title="Digital Launch"
               subtitle="Petite structure"
-              price="8 000 – 15 000 €"
+              price="Sur demande"
               features={[
                 "Site vitrine professionnel",
                 "Mini application mobile",
@@ -53,7 +53,7 @@ const FullStackService = () => {
               tier="pro"
               title="Business Engine"
               subtitle="Entreprise en activité"
-              price="20 000 – 50 000 €"
+              price="Sur demande"
               features={[
                 "Site PRO avec e-commerce",
                 "App mobile complète",
