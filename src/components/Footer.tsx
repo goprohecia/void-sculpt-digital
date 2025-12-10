@@ -129,6 +129,9 @@ export function Footer() {
             © 2024 <span className="text-neon-violet">IMPARTIAL</span>. Tous droits réservés.
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
+            <Link to="/mentions-legales" className="hover:text-neon-violet transition-colors">
+              Mentions légales
+            </Link>
             <Link to="/cgu" className="hover:text-neon-violet transition-colors">
               CGU
             </Link>
