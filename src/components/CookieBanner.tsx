@@ -47,9 +47,13 @@ export function CookieBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-slide-up">
-      <div className="max-w-4xl mx-auto">
-        <div className="relative p-6 rounded-2xl bg-glass-dark/95 backdrop-blur-xl border border-white/10 shadow-[0_0_40px_rgba(139,92,246,0.15)]">
+    <>
+      {/* Backdrop overlay that blocks interaction */}
+      <div className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
+      
+      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-slide-up">
+        <div className="max-w-4xl mx-auto">
+          <div className="relative p-6 rounded-2xl bg-background border border-white/20 shadow-[0_0_60px_rgba(139,92,246,0.2)]">
           <button
             onClick={rejectAll}
             className="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/10 transition-colors"
@@ -146,9 +150,10 @@ export function CookieBanner() {
               </div>
             </>
           )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
