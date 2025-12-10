@@ -89,7 +89,7 @@ export function PricingCard({
         {/* Price */}
         <div className="mb-8">
           <span className="text-3xl lg:text-4xl font-extrabold text-gradient-neon">{price}</span>
-          {price !== "Sur devis" && (
+          {price !== "Sur devis" && price !== "Sur demande" && (
             <span className="text-muted-foreground ml-2">HT</span>
           )}
         </div>
