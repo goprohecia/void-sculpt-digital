@@ -11,6 +11,7 @@ interface CookiePreferences {
 
 export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     essential: true,
@@ -27,21 +28,26 @@ export function CookieBanner() {
     }
   }, []);
 
+  const closeBanner = (finalPreferences: CookiePreferences) => {
+    localStorage.setItem("cookie-consent", JSON.stringify(finalPreferences));
+    localStorage.setItem("cookie-consent-date", new Date().toISOString());
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+    }, 400);
+  };
+
   const savePreferences = (acceptAll: boolean = false) => {
     const finalPreferences = acceptAll
       ? { essential: true, analytics: true, marketing: true, functional: true }
       : preferences;
-    
-    localStorage.setItem("cookie-consent", JSON.stringify(finalPreferences));
-    localStorage.setItem("cookie-consent-date", new Date().toISOString());
-    setIsVisible(false);
+    closeBanner(finalPreferences);
   };
 
   const rejectAll = () => {
     const minimalPreferences = { essential: true, analytics: false, marketing: false, functional: false };
-    localStorage.setItem("cookie-consent", JSON.stringify(minimalPreferences));
-    localStorage.setItem("cookie-consent-date", new Date().toISOString());
-    setIsVisible(false);
+    closeBanner(minimalPreferences);
   };
 
   if (!isVisible) return null;
@@ -49,9 +55,19 @@ export function CookieBanner() {
   return (
     <>
       {/* Backdrop overlay that blocks interaction */}
-      <div className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
+      <div 
+        className={`fixed inset-0 z-40 bg-background/80 backdrop-blur-sm transition-opacity duration-400 ${
+          isClosing ? 'opacity-0' : 'opacity-100'
+        }`} 
+      />
       
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-slide-up">
+      <div 
+        className={`fixed bottom-0 left-0 right-0 z-50 p-4 transition-all duration-400 ease-out ${
+          isClosing 
+            ? 'opacity-0 translate-y-full' 
+            : 'opacity-100 translate-y-0 animate-slide-up'
+        }`}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="relative p-6 rounded-2xl bg-background border border-white/20 shadow-[0_0_60px_rgba(139,92,246,0.2)]">
           <button

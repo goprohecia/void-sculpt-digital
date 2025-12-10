@@ -17,6 +17,7 @@ import FullStackService from "./pages/services/FullStackService";
 import CGU from "./pages/legal/CGU";
 import CGV from "./pages/legal/CGV";
 import Cookies from "./pages/legal/Cookies";
+import MentionsLegales from "./pages/legal/MentionsLegales";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => {
               <Route path="/cgu" element={<CGU />} />
               <Route path="/cgv" element={<CGV />} />
               <Route path="/cookies" element={<Cookies />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <CookieBanner />
