@@ -335,6 +335,39 @@ const Contact = () => {
         </div>
       </SectionTransition>
 
+      {/* Calendly Section */}
+      <SectionTransition className="py-16 relative" parallaxStrength={0.05}>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <ScrollReveal variant="fadeInUp">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                  Réservez un <span className="text-gradient-neon">rendez-vous</span>
+                </h2>
+                <p className="text-muted-foreground">
+                  Choisissez un créneau qui vous convient pour discuter de votre projet
+                </p>
+              </div>
+            </ScrollReveal>
+            
+            <ScrollReveal variant="fadeIn" delay={0.2}>
+              <Hover3DCard className="rounded-2xl" rotateStrength={3} glareEnabled={false}>
+                <div className="bg-glass-dark/60 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden">
+                  <iframe
+                    src="https://calendly.com/yannis-bezriche/impartial-games"
+                    width="100%"
+                    height="700"
+                    frameBorder="0"
+                    title="Calendly"
+                    className="bg-transparent"
+                  />
+                </div>
+              </Hover3DCard>
+            </ScrollReveal>
+          </div>
+        </div>
+      </SectionTransition>
+
       {/* Newsletter Section */}
       <SectionTransition className="py-16 relative" parallaxStrength={0.05}>
         <div className="container mx-auto px-4 relative z-10">
