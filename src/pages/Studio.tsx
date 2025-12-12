@@ -1,10 +1,10 @@
 import { Layout } from "@/components/Layout";
+import { FloatingParticles } from "@/components/FloatingParticles";
 import { Link } from "react-router-dom";
 import { ArrowRight, Zap, Target, Users, Sparkles } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
-import { StudioBackground3D } from "@/components/3d/StudioBackground3D";
 import { 
   ScrollReveal, 
   StaggerContainer,
@@ -94,8 +94,7 @@ const Studio = () => {
 
   return (
     <Layout>
-      {/* 3D Background */}
-      <StudioBackground3D />
+      <FloatingParticles />
       
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden">

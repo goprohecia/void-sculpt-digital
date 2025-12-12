@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Newsletter } from "@/components/Newsletter";
-import { Mail, Phone, MapPin, Send, Sparkles, Loader2, Calendar } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Sparkles, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
@@ -331,48 +331,6 @@ const Contact = () => {
                 </Hover3DCard>
               </ScrollReveal>
             </div>
-          </div>
-        </div>
-      </SectionTransition>
-
-      {/* Calendly Section */}
-      <SectionTransition className="py-16 relative" parallaxStrength={0.05}>
-        <ParallaxBackground speed={0.15}>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-600/5 to-transparent" />
-        </ParallaxBackground>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <ScrollReveal variant="fadeInUp">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                  <Calendar className="h-4 w-4 text-neon-violet" />
-                  <span className="text-sm font-medium text-neon-violet">Planifiez un appel</span>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Réservez un <span className="text-gradient-neon">rendez-vous</span>
-                </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Choisissez un créneau qui vous convient pour discuter de votre projet avec notre équipe.
-                </p>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal variant="scaleIn" delay={0.2}>
-              <Hover3DCard className="rounded-2xl" rotateStrength={2} glareEnabled={false}>
-                <div className="p-2 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 overflow-hidden">
-                  <iframe
-                    src="https://calendly.com/yannis-bezriche/impartial-games?hide_gdpr_banner=1&background_color=0a0a0f&text_color=ffffff&primary_color=8b5cf6"
-                    width="100%"
-                    height="700"
-                    frameBorder="0"
-                    title="Calendly - Prendre rendez-vous"
-                    className="rounded-xl"
-                    style={{ minWidth: "320px" }}
-                  />
-                </div>
-              </Hover3DCard>
-            </ScrollReveal>
           </div>
         </div>
       </SectionTransition>

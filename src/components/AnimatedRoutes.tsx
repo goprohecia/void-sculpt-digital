@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { PageTransition3D } from "./PageTransition3D";
+import { PageTransition } from "./PageTransition";
 import Index from "@/pages/Index";
 import Studio from "@/pages/Studio";
 import Contact from "@/pages/Contact";
@@ -21,19 +21,19 @@ export function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition3D><Index /></PageTransition3D>} />
-        <Route path="/studio" element={<PageTransition3D><Studio /></PageTransition3D>} />
-        <Route path="/portfolio" element={<PageTransition3D><Portfolio /></PageTransition3D>} />
-        <Route path="/contact" element={<PageTransition3D><Contact /></PageTransition3D>} />
-        <Route path="/services/web" element={<PageTransition3D><WebService /></PageTransition3D>} />
-        <Route path="/services/mobile" element={<PageTransition3D><MobileService /></PageTransition3D>} />
-        <Route path="/services/backoffice" element={<PageTransition3D><BackofficeService /></PageTransition3D>} />
-        <Route path="/services/360" element={<PageTransition3D><FullStackService /></PageTransition3D>} />
-        <Route path="/cgu" element={<PageTransition3D><CGU /></PageTransition3D>} />
-        <Route path="/cgv" element={<PageTransition3D><CGV /></PageTransition3D>} />
-        <Route path="/cookies" element={<PageTransition3D><Cookies /></PageTransition3D>} />
-        <Route path="/mentions-legales" element={<PageTransition3D><MentionsLegales /></PageTransition3D>} />
-        <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
+        <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+        <Route path="/studio" element={<PageTransition><Studio /></PageTransition>} />
+        <Route path="/portfolio" element={<PageTransition><Portfolio /></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/services/web" element={<PageTransition><WebService /></PageTransition>} />
+        <Route path="/services/mobile" element={<PageTransition><MobileService /></PageTransition>} />
+        <Route path="/services/backoffice" element={<PageTransition><BackofficeService /></PageTransition>} />
+        <Route path="/services/360" element={<PageTransition><FullStackService /></PageTransition>} />
+        <Route path="/cgu" element={<PageTransition><CGU /></PageTransition>} />
+        <Route path="/cgv" element={<PageTransition><CGV /></PageTransition>} />
+        <Route path="/cookies" element={<PageTransition><Cookies /></PageTransition>} />
+        <Route path="/mentions-legales" element={<PageTransition><MentionsLegales /></PageTransition>} />
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
