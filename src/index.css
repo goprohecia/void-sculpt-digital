@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 @layer base {
+  /* Dark theme (default) */
   :root {
     --background: 250 15% 4%;
     --foreground: 0 0% 98%;
@@ -61,6 +62,62 @@
     --sidebar-border: 250 15% 15%;
     --sidebar-ring: 265 85% 60%;
   }
+
+  /* Light theme */
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 250 15% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 250 15% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 250 15% 10%;
+
+    --primary: 265 75% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 250 10% 92%;
+    --secondary-foreground: 250 15% 15%;
+
+    --muted: 250 10% 94%;
+    --muted-foreground: 250 10% 40%;
+
+    --accent: 265 75% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 250 10% 88%;
+    --input: 250 10% 88%;
+    --ring: 265 75% 55%;
+
+    /* Neon Colors - slightly desaturated for light mode */
+    --neon-red: 345 85% 50%;
+    --neon-green: 155 85% 35%;
+    --neon-blue: 200 85% 45%;
+    --neon-white: 250 15% 15%;
+    --neon-violet: 265 75% 55%;
+
+    /* Glassmorphism - light mode */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 250 10% 85%;
+
+    /* Card tiers - adjusted for light mode */
+    --tier-start: 0 0% 40%;
+    --tier-pro: 265 75% 55%;
+    --tier-custom: 45 90% 45%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 250 15% 10%;
+    --sidebar-primary: 265 75% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 250 10% 94%;
+    --sidebar-accent-foreground: 250 15% 10%;
+    --sidebar-border: 250 10% 88%;
+    --sidebar-ring: 265 75% 55%;
+  }
 }
 
 @layer base {
@@ -71,11 +128,28 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-html {
-  scroll-behavior: smooth;
-}
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Theme transition for smooth color changes */
+  html.light,
+  html.dark {
+    color-scheme: light dark;
+  }
+
+  /* Apply transitions to key elements for smooth theme switching */
+  .theme-transition,
+  header,
+  footer,
+  main,
+  .card,
+  [class*="bg-"] {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
 
 /* Hide default cursor on desktop when custom cursor is active */
 @media (pointer: fine) {
@@ -106,7 +180,15 @@ html {
 
   .glass-card {
     @apply bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-xl border border-border/30;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .dark .glass-card {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  
+  .light .glass-card {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
   }
 
   /* Neon Glows */
