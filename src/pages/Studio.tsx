@@ -67,11 +67,6 @@ const timeline = [
     description: "Création du studio avec une vision claire : révolutionner le digital gaming & tech.",
   },
   {
-    year: "2024",
-    title: "Premiers clients",
-    description: "Lancement de nos premières collaborations : We Close Agency, Altarys Group, Guardian Of Prophecia.",
-  },
-  {
     year: "2025",
     title: "Expansion",
     description: "Élargissement de l'équipe et diversification des services vers le mobile et SaaS.",
