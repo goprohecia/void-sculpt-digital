@@ -142,7 +142,7 @@ export function PortfolioShowcase() {
                               <img
                                 src={project.image}
                                 alt={project.title}
-                                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                                className="w-[110%] h-[130%] object-cover object-[center_15%] -ml-[5%] transition-transform duration-700 group-hover:scale-110"
                               />
                               
                               {/* Hover Overlay with Preview Button */}
