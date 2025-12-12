@@ -226,7 +226,7 @@ const PolitiqueConfidentialite = () => {
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li><span className="font-semibold text-foreground">Par email :</span> contact@impartial.studio</li>
-                  <li><span className="font-semibold text-foreground">Par courrier :</span> IMPARTIAL Studio - 123 Avenue des Champs-Élysées, 75008 Paris</li>
+                  <li><span className="font-semibold text-foreground">Par courrier :</span> Impartial Games, Delaware    </li>
                 </ul>
                 <p>
                   Vous disposez également du droit d'introduire une réclamation auprès de la CNIL (Commission Nationale de l'Informatique et des Libertés) si vous estimez que le traitement de vos données ne respecte pas la réglementation applicable.
