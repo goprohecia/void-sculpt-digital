@@ -5,118 +5,118 @@
 @tailwind utilities;
 
 @layer base {
-  /* Mode clair (défaut) */
+  /* Mode clair - Plus lumineux et aéré */
   :root {
-    --background: 250 15% 4%;
-    --foreground: 0 0% 98%;
+    --background: 240 20% 96%;
+    --foreground: 240 10% 10%;
 
-    --card: 250 15% 6%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
 
-    --popover: 250 15% 6%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
 
-    --primary: 265 85% 60%;
+    --primary: 265 85% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 250 15% 12%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 240 15% 90%;
+    --secondary-foreground: 240 10% 20%;
 
-    --muted: 250 15% 15%;
-    --muted-foreground: 250 10% 55%;
+    --muted: 240 15% 92%;
+    --muted-foreground: 240 10% 40%;
 
-    --accent: 265 85% 60%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 265 85% 55%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 250 15% 15%;
-    --input: 250 15% 15%;
-    --ring: 265 85% 60%;
+    --border: 240 15% 85%;
+    --input: 240 15% 88%;
+    --ring: 265 85% 55%;
 
     --radius: 0.75rem;
 
-    /* Neon Colors */
-    --neon-red: 345 100% 60%;
-    --neon-green: 155 100% 45%;
-    --neon-blue: 200 100% 50%;
+    /* Neon Colors - softer for light mode */
+    --neon-red: 345 90% 50%;
+    --neon-green: 155 90% 35%;
+    --neon-blue: 200 90% 45%;
     --neon-white: 0 0% 100%;
-    --neon-violet: 265 85% 60%;
+    --neon-violet: 265 85% 55%;
 
-    /* Glassmorphism */
-    --glass-bg: 250 15% 8%;
-    --glass-border: 250 15% 20%;
+    /* Glassmorphism - light mode */
+    --glass-bg: 0 0% 100%;
+    --glass-border: 240 15% 80%;
 
     /* Card tiers */
-    --tier-start: 0 0% 70%;
-    --tier-pro: 265 85% 60%;
-    --tier-custom: 45 93% 55%;
+    --tier-start: 240 10% 50%;
+    --tier-pro: 265 85% 55%;
+    --tier-custom: 45 93% 45%;
 
-    --sidebar-background: 250 15% 4%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 265 85% 60%;
+    --sidebar-background: 240 20% 96%;
+    --sidebar-foreground: 240 10% 10%;
+    --sidebar-primary: 265 85% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 15% 10%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 250 15% 15%;
-    --sidebar-ring: 265 85% 60%;
+    --sidebar-accent: 240 15% 92%;
+    --sidebar-accent-foreground: 240 10% 20%;
+    --sidebar-border: 240 15% 85%;
+    --sidebar-ring: 265 85% 55%;
   }
 
-  /* Mode sombre - Anthracite avec étoiles */
+  /* Mode sombre - Anthracite profond spatial */
   .dark {
-    --background: 220 15% 8%;
+    --background: 230 20% 5%;
     --foreground: 0 0% 95%;
 
-    --card: 220 15% 10%;
+    --card: 230 20% 7%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 220 15% 10%;
+    --popover: 230 20% 7%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 265 85% 65%;
+    --primary: 265 90% 68%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 230 20% 12%;
+    --secondary-foreground: 0 0% 92%;
 
-    --muted: 220 15% 18%;
-    --muted-foreground: 220 10% 50%;
+    --muted: 230 20% 15%;
+    --muted-foreground: 230 15% 50%;
 
-    --accent: 265 85% 65%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 265 90% 68%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 265 85% 65%;
+    --border: 230 20% 15%;
+    --input: 230 20% 15%;
+    --ring: 265 90% 68%;
 
-    /* Neon Colors - slightly brighter for dark mode */
+    /* Neon Colors - vibrant for dark mode */
     --neon-red: 345 100% 65%;
     --neon-green: 155 100% 50%;
-    --neon-blue: 200 100% 55%;
+    --neon-blue: 200 100% 60%;
     --neon-white: 0 0% 100%;
-    --neon-violet: 265 85% 65%;
+    --neon-violet: 265 90% 68%;
 
-    /* Glassmorphism */
-    --glass-bg: 220 15% 12%;
-    --glass-border: 220 15% 22%;
+    /* Glassmorphism - dark mode */
+    --glass-bg: 230 20% 10%;
+    --glass-border: 230 20% 20%;
 
     /* Card tiers */
     --tier-start: 0 0% 75%;
-    --tier-pro: 265 85% 65%;
-    --tier-custom: 45 93% 60%;
+    --tier-pro: 265 90% 68%;
+    --tier-custom: 45 95% 60%;
 
-    --sidebar-background: 220 15% 8%;
+    --sidebar-background: 230 20% 5%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 265 85% 65%;
+    --sidebar-primary: 265 90% 68%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 265 85% 65%;
+    --sidebar-accent: 230 20% 10%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 230 20% 15%;
+    --sidebar-ring: 265 90% 68%;
   }
 }
 
@@ -157,12 +157,20 @@ html {
     @apply bg-glass/80 backdrop-blur-xl border border-glass-border;
   }
 
+  .dark .glass {
+    @apply bg-glass/60;
+  }
+
   .glass-dark {
     @apply bg-card/70 backdrop-blur-xl border border-border/50;
   }
 
   .glass-card {
     @apply bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-xl border border-border/30;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  }
+
+  .dark .glass-card {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
