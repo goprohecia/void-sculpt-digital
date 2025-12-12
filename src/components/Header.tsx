@@ -222,7 +222,7 @@ export function Header() {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
-              className="lg:hidden overflow-hidden pb-6"
+              className="lg:hidden overflow-hidden pb-6 bg-background"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
