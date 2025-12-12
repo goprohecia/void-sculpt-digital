@@ -63,9 +63,9 @@
     --sidebar-ring: 265 85% 60%;
   }
 
-  /* Mode sombre - Espace profond noir absolu */
+  /* Mode sombre - Espace profond bleu nuit */
   .dark {
-    --background: 0 0% 0%;
+    --background: 220 50% 4%;
     --foreground: 0 0% 96%;
 
     --card: 0 0% 3%;
