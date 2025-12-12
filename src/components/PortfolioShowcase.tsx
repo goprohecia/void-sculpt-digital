@@ -142,19 +142,22 @@ export function PortfolioShowcase() {
                             onMouseLeave={() => setHoveredProject(null)}
                           >
                             {/* Image */}
-                            <div className="relative h-64 md:h-80 overflow-hidden">
+                            <div className="relative h-64 md:h-80 overflow-hidden rounded-t-2xl">
                               <img
                                 src={project.image}
                                 alt={project.title}
-                                className="w-[115%] h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                className="w-[115%] h-[115%] object-cover transition-transform duration-700 group-hover:scale-110"
                                 style={{ objectPosition: project.imagePosition }}
                               />
                               
-                              {/* Dark Vignette Effect */}
+                              {/* Dark Vignette Effect on all sides */}
                               <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_60px_20px_rgba(0,0,0,0.6)]" />
                               
-                              {/* Right side gradient to hide white band */}
-                              <div className="absolute inset-y-0 right-0 w-20 pointer-events-none bg-gradient-to-l from-background/90 to-transparent" />
+                              {/* Edge gradients for smooth fade on all sides */}
+                              <div className="absolute inset-x-0 top-0 h-16 pointer-events-none bg-gradient-to-b from-background/70 to-transparent" />
+                              <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none bg-gradient-to-t from-background/70 to-transparent" />
+                              <div className="absolute inset-y-0 left-0 w-16 pointer-events-none bg-gradient-to-r from-background/70 to-transparent" />
+                              <div className="absolute inset-y-0 right-0 w-16 pointer-events-none bg-gradient-to-l from-background/70 to-transparent" />
                               
                               {/* Hover Overlay with Preview Button */}
                               <AnimatePresence>
