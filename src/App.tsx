@@ -3,22 +3,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { CookieBanner } from "@/components/CookieBanner";
-import Index from "./pages/Index";
-import Studio from "./pages/Studio";
-import Contact from "./pages/Contact";
-import Portfolio from "./pages/Portfolio";
-import WebService from "./pages/services/WebService";
-import MobileService from "./pages/services/MobileService";
-import BackofficeService from "./pages/services/BackofficeService";
-import FullStackService from "./pages/services/FullStackService";
-import CGU from "./pages/legal/CGU";
-import CGV from "./pages/legal/CGV";
-import Cookies from "./pages/legal/Cookies";
-import MentionsLegales from "./pages/legal/MentionsLegales";
-import NotFound from "./pages/NotFound";
+import { CustomCursor } from "@/components/CustomCursor";
+import { AnimatedRoutes } from "@/components/AnimatedRoutes";
 
 const queryClient = new QueryClient();
 
@@ -28,26 +17,13 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <CustomCursor />
         <LoadingScreen onComplete={() => setIsLoaded(true)} />
         <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/studio" element={<Studio />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/services/web" element={<WebService />} />
-              <Route path="/services/mobile" element={<MobileService />} />
-              <Route path="/services/backoffice" element={<BackofficeService />} />
-              <Route path="/services/360" element={<FullStackService />} />
-              <Route path="/cgu" element={<CGU />} />
-              <Route path="/cgv" element={<CGV />} />
-              <Route path="/cookies" element={<Cookies />} />
-              <Route path="/mentions-legales" element={<MentionsLegales />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <AnimatedRoutes />
             <CookieBanner />
           </BrowserRouter>
         </div>
