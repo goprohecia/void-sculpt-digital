@@ -2,10 +2,8 @@ import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Sparkles, Shield, Database, Eye, Lock, Users, Globe, Mail } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
-
 const PolitiqueConfidentialite = () => {
-  return (
-    <Layout>
+  return <Layout>
       <FloatingParticles />
       
       {/* Hero */}
@@ -18,24 +16,26 @@ const PolitiqueConfidentialite = () => {
             <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
               <div className="relative">
                 <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
-                <img
-                  src={logoHero}
-                  alt="IMPARTIAL"
-                  className="relative w-24 h-24 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
-                />
+                <img src={logoHero} alt="IMPARTIAL" className="relative w-24 h-24 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]" />
               </div>
             </div>
             
-            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
+            animationDelay: "0.1s"
+          }}>
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
                 Protection des données
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.2s"
+          }}>
               Politique de <span className="text-gradient-neon">confidentialité</span>
             </h1>
-            <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+            <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.3s"
+          }}>
               Comment nous protégeons vos données personnelles
             </p>
           </div>
@@ -76,10 +76,10 @@ const PolitiqueConfidentialite = () => {
                 <h2 className="text-2xl font-bold">Responsable du traitement</h2>
               </div>
               <div className="space-y-4 text-muted-foreground">
-                <p><span className="font-semibold text-foreground">Raison sociale :</span> IMPARTIAL Studio</p>
-                <p><span className="font-semibold text-foreground">Adresse :</span> 123 Avenue des Champs-Élysées, 75008 Paris, France</p>
+                <p><span className="font-semibold text-foreground">Raison sociale :</span> Impartial Games </p>
+                <p><span className="font-semibold text-foreground">Adresse :</span> Delaware</p>
                 <p><span className="font-semibold text-foreground">Email :</span> contact@impartial.studio</p>
-                <p><span className="font-semibold text-foreground">Téléphone :</span> +33 1 23 45 67 89</p>
+                
               </div>
             </div>
 
@@ -262,8 +262,6 @@ const PolitiqueConfidentialite = () => {
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default PolitiqueConfidentialite;
