@@ -4,7 +4,6 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
 import { MagneticButton, RippleButton } from "@/components/animations";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 const expertises = [{
   name: "Sites Web & Vitrines",
@@ -66,7 +65,7 @@ export function Header() {
   
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border shadow-[0_4px_30px_rgba(139,92,246,0.1)]"
+      className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(139,92,246,0.1)]"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
@@ -133,7 +132,7 @@ export function Header() {
                     transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   >
                     <motion.div 
-                      className="bg-popover/95 backdrop-blur-xl rounded-xl p-2 min-w-[220px] border border-primary/30 shadow-[0_10px_40px_rgba(139,92,246,0.2)]"
+                      className="bg-background/80 backdrop-blur-xl rounded-xl p-2 min-w-[220px] border border-neon-violet/30 shadow-[0_10px_40px_rgba(139,92,246,0.2)]"
                       initial={{ rotateX: -15 }}
                       animate={{ rotateX: 0 }}
                       style={{ transformPerspective: 1000 }}
@@ -174,9 +173,8 @@ export function Header() {
             </NavLink>
           </div>
 
-          {/* CTA Button & Theme Toggle - Right */}
-          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            <ThemeToggle />
+          {/* CTA Button - Right */}
+          <div className="hidden lg:block flex-shrink-0">
             <MagneticButton as="div" strength={0.25}>
               <RippleButton
                 onClick={() => window.open("https://calendly.com/yannis-bezriche/impartial-games", "_blank")}
@@ -187,15 +185,13 @@ export function Header() {
             </MagneticButton>
           </div>
 
-          {/* Mobile Menu Button & Theme Toggle */}
-          <div className="lg:hidden flex items-center gap-2">
-            <ThemeToggle />
-            <motion.button 
-              className="p-2" 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
+          {/* Mobile Menu Button */}
+          <motion.button 
+            className="lg:hidden p-2" 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <AnimatePresence mode="wait">
               {isMobileMenuOpen ? (
                 <motion.div
@@ -220,7 +216,6 @@ export function Header() {
               )}
             </AnimatePresence>
           </motion.button>
-          </div>
         </nav>
 
         {/* Mobile Menu */}

@@ -23,11 +23,11 @@ export function Footer() {
     localStorage.removeItem("cookie-consent");
     window.location.reload();
   };
-  return <footer className="relative border-t border-border bg-card/50 backdrop-blur-xl overflow-hidden">
+  return <footer className="relative border-t border-white/10 bg-glass-dark/50 backdrop-blur-xl overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
-      <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-primary/10 rounded-full blur-[120px] dark:bg-violet-600/10" />
-      <div className="absolute bottom-0 right-1/3 w-[300px] h-[150px] bg-primary/10 rounded-full blur-[100px] dark:bg-purple-600/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-neon-violet/5 via-transparent to-transparent" />
+      <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-violet-600/10 rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 right-1/3 w-[300px] h-[150px] bg-purple-600/10 rounded-full blur-[100px]" />
 
       <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
@@ -189,7 +189,7 @@ export function Footer() {
           </ScrollReveal>
         </div>
 
-        <motion.div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4" initial={{
+        <motion.div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4" initial={{
         opacity: 0,
         y: 20
       }} whileInView={{
