@@ -33,6 +33,7 @@ interface Project {
   client?: string;
   year: string;
   url: string;
+  imagePosition: string;
 }
 
 const projects: Project[] = [
@@ -46,6 +47,7 @@ const projects: Project[] = [
     client: "We Close Agency",
     year: "2024",
     url: "/portfolio/weclose",
+    imagePosition: "center 20%",
   },
   {
     id: 2,
@@ -57,6 +59,7 @@ const projects: Project[] = [
     client: "Altarys Group",
     year: "2024",
     url: "/portfolio/altarys",
+    imagePosition: "center 35%",
   },
   {
     id: 3,
@@ -68,6 +71,7 @@ const projects: Project[] = [
     client: "Guardian Of Prophecia",
     year: "2024",
     url: "/portfolio/prophecia",
+    imagePosition: "center center",
   },
 ];
 
@@ -200,9 +204,12 @@ export default function Portfolio() {
                     <ImageWithSkeleton
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       containerClassName="h-64 overflow-hidden"
+                      style={{ objectPosition: project.imagePosition }}
                     />
+                    {/* Dark Vignette Effect */}
+                    <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_15px_rgba(0,0,0,0.5)]" />
                     {/* Category Badge */}
                     <div
                       className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm`}
@@ -279,9 +286,12 @@ export default function Portfolio() {
                         <ImageWithSkeleton
                           src={project.image}
                           alt={project.title}
-                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           containerClassName="w-full h-full overflow-hidden"
+                          style={{ objectPosition: project.imagePosition }}
                         />
+                        {/* Dark Vignette Effect */}
+                        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_15px_rgba(0,0,0,0.5)]" />
                         <motion.div
                           className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4"
                           initial={{ opacity: 0 }}
