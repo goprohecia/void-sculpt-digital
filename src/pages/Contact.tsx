@@ -140,8 +140,8 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="font-medium mb-1">Email</p>
-                        <a href="mailto:contact@impartial.studio" className="text-muted-foreground hover:text-neon-violet transition-colors">
-                          contact@impartial.studio
+                        <a href="mailto:contact@impartialgames.com" className="text-muted-foreground hover:text-neon-violet transition-colors">
+                          contact@impartialgames.com
                         </a>
                       </div>
                     </div>
@@ -173,7 +173,7 @@ const Contact = () => {
                       <div>
                         <p className="font-medium mb-1">Adresse</p>
                         <p className="text-muted-foreground">
-                          Paris, France
+                          Delaware, États-Unis
                         </p>
                       </div>
                     </div>
