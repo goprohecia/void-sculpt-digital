@@ -1,6 +1,7 @@
 import { useRef, useMemo, useEffect, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sparkles, Trail } from "@react-three/drei";
+import { Canvas, useFrame, useThree, extend } from "@react-three/fiber";
+import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 // Hook pour synchroniser avec le scroll
@@ -26,6 +27,169 @@ function useScrollProgress() {
   }, []);
   
   return { progress, activeSection };
+}
+
+// Low-poly Game Controller
+function GameController({ position, scale = 1 }: { 
+  position: [number, number, number]; 
+  scale?: number;
+}) {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+      groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.8) * 0.2;
+    }
+  });
+  
+  return (
+    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.5}>
+      <group ref={groupRef} position={position} scale={scale}>
+        {/* Main body */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[1.8, 0.4, 1]} />
+          <meshStandardMaterial 
+            color="#1a1a2e"
+            emissive="#8b5cf6"
+            emissiveIntensity={0.2}
+            metalness={0.9}
+            roughness={0.3}
+          />
+        </mesh>
+        
+        {/* Left grip */}
+        <mesh position={[-0.7, -0.1, 0.3]} rotation={[0.3, 0, -0.2]}>
+          <cylinderGeometry args={[0.15, 0.2, 0.6, 8]} />
+          <meshStandardMaterial 
+            color="#1a1a2e"
+            emissive="#8b5cf6"
+            emissiveIntensity={0.15}
+            metalness={0.8}
+            roughness={0.4}
+          />
+        </mesh>
+        
+        {/* Right grip */}
+        <mesh position={[0.7, -0.1, 0.3]} rotation={[0.3, 0, 0.2]}>
+          <cylinderGeometry args={[0.15, 0.2, 0.6, 8]} />
+          <meshStandardMaterial 
+            color="#1a1a2e"
+            emissive="#8b5cf6"
+            emissiveIntensity={0.15}
+            metalness={0.8}
+            roughness={0.4}
+          />
+        </mesh>
+        
+        {/* D-pad */}
+        <mesh position={[-0.5, 0.22, 0]}>
+          <boxGeometry args={[0.3, 0.08, 0.1]} />
+          <meshStandardMaterial color="#2d2d44" emissive="#06b6d4" emissiveIntensity={0.3} />
+        </mesh>
+        <mesh position={[-0.5, 0.22, 0]}>
+          <boxGeometry args={[0.1, 0.08, 0.3]} />
+          <meshStandardMaterial color="#2d2d44" emissive="#06b6d4" emissiveIntensity={0.3} />
+        </mesh>
+        
+        {/* Action buttons */}
+        <mesh position={[0.4, 0.25, -0.12]}>
+          <sphereGeometry args={[0.08, 8, 8]} />
+          <meshStandardMaterial color="#f43f5e" emissive="#f43f5e" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh position={[0.55, 0.25, 0]}>
+          <sphereGeometry args={[0.08, 8, 8]} />
+          <meshStandardMaterial color="#10b981" emissive="#10b981" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh position={[0.4, 0.25, 0.12]}>
+          <sphereGeometry args={[0.08, 8, 8]} />
+          <meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh position={[0.25, 0.25, 0]}>
+          <sphereGeometry args={[0.08, 8, 8]} />
+          <meshStandardMaterial color="#eab308" emissive="#eab308" emissiveIntensity={0.5} />
+        </mesh>
+        
+        {/* Analog sticks */}
+        <mesh position={[-0.2, 0.25, 0.2]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.12, 16]} />
+          <meshStandardMaterial color="#2d2d44" emissive="#8b5cf6" emissiveIntensity={0.2} />
+        </mesh>
+        <mesh position={[0.1, 0.25, -0.2]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.12, 16]} />
+          <meshStandardMaterial color="#2d2d44" emissive="#8b5cf6" emissiveIntensity={0.2} />
+        </mesh>
+      </group>
+    </Float>
+  );
+}
+
+// Monitor/Screen Element (Dev)
+function CodeMonitor({ position, scale = 1 }: { 
+  position: [number, number, number]; 
+  scale?: number;
+}) {
+  const groupRef = useRef<THREE.Group>(null);
+  const screenRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.15;
+    }
+    if (screenRef.current) {
+      const material = screenRef.current.material as THREE.MeshStandardMaterial;
+      material.emissiveIntensity = 0.3 + Math.sin(state.clock.elapsedTime * 2) * 0.1;
+    }
+  });
+  
+  return (
+    <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.4}>
+      <group ref={groupRef} position={position} scale={scale}>
+        {/* Monitor frame */}
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[1.6, 1, 0.1]} />
+          <meshStandardMaterial 
+            color="#1a1a2e"
+            metalness={0.9}
+            roughness={0.3}
+          />
+        </mesh>
+        
+        {/* Screen */}
+        <mesh ref={screenRef} position={[0, 0, 0.06]}>
+          <planeGeometry args={[1.4, 0.85]} />
+          <meshStandardMaterial 
+            color="#0f172a"
+            emissive="#8b5cf6"
+            emissiveIntensity={0.3}
+          />
+        </mesh>
+        
+        {/* Code lines on screen */}
+        {[0.25, 0.1, -0.05, -0.2, -0.35].map((y, i) => (
+          <mesh key={i} position={[-0.3 + i * 0.05, y, 0.07]}>
+            <boxGeometry args={[0.4 + Math.random() * 0.4, 0.04, 0.01]} />
+            <meshStandardMaterial 
+              color={i % 2 === 0 ? "#8b5cf6" : "#06b6d4"}
+              emissive={i % 2 === 0 ? "#8b5cf6" : "#06b6d4"}
+              emissiveIntensity={0.8}
+            />
+          </mesh>
+        ))}
+        
+        {/* Stand */}
+        <mesh position={[0, -0.6, 0]}>
+          <boxGeometry args={[0.15, 0.3, 0.1]} />
+          <meshStandardMaterial color="#1a1a2e" metalness={0.9} roughness={0.3} />
+        </mesh>
+        <mesh position={[0, -0.8, 0.1]}>
+          <boxGeometry args={[0.5, 0.05, 0.3]} />
+          <meshStandardMaterial color="#1a1a2e" metalness={0.9} roughness={0.3} />
+        </mesh>
+      </group>
+    </Float>
+  );
 }
 
 // Keyboard Key 3D Component
@@ -85,26 +249,6 @@ function VoxelCube({ position, color, delay = 0 }: {
         emissiveIntensity={0.5}
         transparent
         opacity={0.8}
-      />
-    </mesh>
-  );
-}
-
-// Code Lines (Dev Element)
-function CodeLine({ position, width, color }: { 
-  position: [number, number, number]; 
-  width: number;
-  color: string;
-}) {
-  return (
-    <mesh position={position}>
-      <boxGeometry args={[width, 0.05, 0.02]} />
-      <meshStandardMaterial 
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.8}
-        transparent
-        opacity={0.6}
       />
     </mesh>
   );
@@ -181,73 +325,152 @@ function DataParticles({ count, color }: { count: number; color: string }) {
   );
 }
 
-// Central Sphere (Main Element)
-function CentralSphere({ activeSection, progress }: { activeSection: number; progress: number }) {
+// Morphing Central Sphere with section-based geometry
+function MorphingSphere({ activeSection, progress }: { activeSection: number; progress: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<any>(null);
   
-  const sectionColors = useMemo(() => [
-    "#8b5cf6", // violet - Hero
-    "#10b981", // emerald - Vision
-    "#a855f7", // purple - Timeline
-    "#f43f5e", // rose - Values/CTA
+  // Target properties for each section
+  const sectionConfigs = useMemo(() => [
+    { color: "#8b5cf6", distort: 0.3, speed: 2, scale: 1, detail: 1 },      // Hero - Smooth
+    { color: "#10b981", distort: 0.5, speed: 3, scale: 1.2, detail: 2 },    // Vision - More distorted
+    { color: "#a855f7", distort: 0.4, speed: 4, scale: 1.1, detail: 1 },    // Timeline - Dynamic
+    { color: "#f43f5e", distort: 0.6, speed: 5, scale: 1.3, detail: 2 },    // CTA - Most active
   ], []);
   
+  const currentConfig = useRef(sectionConfigs[0]);
+  
   useFrame((state) => {
-    if (meshRef.current) {
-      // Smooth color transition
-      const targetColor = new THREE.Color(sectionColors[activeSection]);
-      const currentMaterial = meshRef.current.material as THREE.MeshStandardMaterial;
-      currentMaterial.color.lerp(targetColor, 0.05);
-      currentMaterial.emissive.lerp(targetColor, 0.05);
+    if (meshRef.current && materialRef.current) {
+      const targetConfig = sectionConfigs[activeSection];
       
-      // Scale based on progress
-      const scale = 1 + progress * 0.3;
-      meshRef.current.scale.setScalar(scale);
+      // Smooth interpolation of all properties
+      currentConfig.current.distort += (targetConfig.distort - currentConfig.current.distort) * 0.03;
+      currentConfig.current.speed += (targetConfig.speed - currentConfig.current.speed) * 0.03;
+      currentConfig.current.scale += (targetConfig.scale - currentConfig.current.scale) * 0.03;
       
-      // Rotation
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
+      // Update material
+      materialRef.current.distort = currentConfig.current.distort;
+      materialRef.current.speed = currentConfig.current.speed;
+      
+      // Color transition
+      const targetColor = new THREE.Color(targetConfig.color);
+      materialRef.current.color.lerp(targetColor, 0.03);
+      materialRef.current.emissive.lerp(targetColor, 0.03);
+      
+      // Scale morphing
+      const pulseScale = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05;
+      meshRef.current.scale.setScalar(currentConfig.current.scale * pulseScale);
+      
+      // Rotation based on section
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2 + activeSection * 0.5;
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3 + activeSection) * 0.3;
+      meshRef.current.rotation.z = Math.cos(state.clock.elapsedTime * 0.25) * 0.1;
     }
   });
   
   return (
     <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.5}>
       <mesh ref={meshRef}>
-        <icosahedronGeometry args={[1.2, 1]} />
+        <icosahedronGeometry args={[1.2, 4]} />
         <MeshDistortMaterial
+          ref={materialRef}
           color="#8b5cf6"
           emissive="#8b5cf6"
-          emissiveIntensity={0.3}
+          emissiveIntensity={0.4}
           metalness={0.8}
           roughness={0.2}
           distort={0.3}
           speed={2}
         />
       </mesh>
+      
+      {/* Inner glow sphere */}
+      <mesh scale={0.8}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshStandardMaterial 
+          color="#8b5cf6"
+          emissive="#8b5cf6"
+          emissiveIntensity={0.6}
+          transparent
+          opacity={0.3}
+        />
+      </mesh>
     </Float>
   );
 }
 
-// Camera Controller
+// Camera Controller with smooth transitions
 function CameraController({ activeSection, progress }: { activeSection: number; progress: number }) {
   const { camera } = useThree();
   
   const cameraPositions = useMemo(() => [
-    { x: 0, y: 0, z: 8 },      // Hero - Front view
-    { x: 3, y: 1, z: 7 },      // Vision - Angled right
-    { x: -2, y: -1, z: 9 },    // Timeline - Pulled back left
-    { x: 0, y: 2, z: 6 },      // CTA - Above and closer
+    { x: 0, y: 0, z: 8, lookY: 0 },       // Hero - Front view
+    { x: 3, y: 1, z: 7, lookY: 0 },       // Vision - Angled right
+    { x: -2, y: -0.5, z: 9, lookY: 0 },   // Timeline - Pulled back left
+    { x: 0, y: 1.5, z: 6, lookY: -0.3 },  // CTA - Above and closer
   ], []);
   
   useFrame(() => {
     const targetPos = cameraPositions[activeSection];
-    camera.position.x += (targetPos.x - camera.position.x) * 0.02;
-    camera.position.y += (targetPos.y - camera.position.y) * 0.02;
-    camera.position.z += (targetPos.z - camera.position.z) * 0.02;
-    camera.lookAt(0, 0, 0);
+    camera.position.x += (targetPos.x - camera.position.x) * 0.015;
+    camera.position.y += (targetPos.y - camera.position.y) * 0.015;
+    camera.position.z += (targetPos.z - camera.position.z) * 0.015;
+    camera.lookAt(0, targetPos.lookY, 0);
   });
   
   return null;
+}
+
+// Dynamic Lighting based on section
+function DynamicLighting({ activeSection }: { activeSection: number }) {
+  const light1Ref = useRef<THREE.DirectionalLight>(null);
+  const light2Ref = useRef<THREE.PointLight>(null);
+  
+  const lightConfigs = useMemo(() => [
+    { main: "#8b5cf6", accent: "#06b6d4", intensity: 1 },
+    { main: "#10b981", accent: "#8b5cf6", intensity: 1.2 },
+    { main: "#a855f7", accent: "#f43f5e", intensity: 1.1 },
+    { main: "#f43f5e", accent: "#8b5cf6", intensity: 1.3 },
+  ], []);
+  
+  useFrame(() => {
+    const config = lightConfigs[activeSection];
+    
+    if (light1Ref.current) {
+      const targetColor = new THREE.Color(config.main);
+      light1Ref.current.color.lerp(targetColor, 0.02);
+      light1Ref.current.intensity += (config.intensity - light1Ref.current.intensity) * 0.02;
+    }
+    
+    if (light2Ref.current) {
+      const targetColor = new THREE.Color(config.accent);
+      light2Ref.current.color.lerp(targetColor, 0.02);
+    }
+  });
+  
+  return (
+    <>
+      <ambientLight intensity={0.3} />
+      <directionalLight 
+        ref={light1Ref}
+        position={[5, 5, 5]} 
+        intensity={1} 
+        color="#8b5cf6"
+      />
+      <directionalLight 
+        position={[-5, -5, -5]} 
+        intensity={0.4} 
+        color="#06b6d4"
+      />
+      <pointLight 
+        ref={light2Ref}
+        position={[0, 0, 3]} 
+        intensity={1.5} 
+        color="#8b5cf6" 
+      />
+    </>
+  );
 }
 
 // Main Scene
@@ -256,39 +479,31 @@ function Scene() {
   
   return (
     <>
-      {/* Ambient Light */}
-      <ambientLight intensity={0.3} />
-      
-      {/* Directional Lights - change based on section */}
-      <directionalLight 
-        position={[5, 5, 5]} 
-        intensity={0.8} 
-        color="#8b5cf6"
-      />
-      <directionalLight 
-        position={[-5, -5, -5]} 
-        intensity={0.4} 
-        color="#06b6d4"
-      />
-      
-      {/* Point lights for glow */}
-      <pointLight position={[0, 0, 3]} intensity={1} color="#8b5cf6" />
+      {/* Dynamic Lighting */}
+      <DynamicLighting activeSection={activeSection} />
       
       {/* Camera Controller */}
       <CameraController activeSection={activeSection} progress={progress} />
       
-      {/* Central Sphere */}
-      <CentralSphere activeSection={activeSection} progress={progress} />
+      {/* Central Morphing Sphere */}
+      <MorphingSphere activeSection={activeSection} progress={progress} />
       
       {/* Orbiting Rings */}
       <OrbitRing radius={2.5} speed={0.3} color="#8b5cf6" />
       <OrbitRing radius={3} speed={-0.2} color="#06b6d4" thickness={0.015} />
       <OrbitRing radius={3.5} speed={0.15} color="#a855f7" thickness={0.01} />
       
+      {/* Game Controller - Main Interactive Element */}
+      <GameController position={[4.5, 1.5, -2]} scale={0.8} />
+      <GameController position={[-5, -1, -3]} scale={0.6} />
+      
+      {/* Code Monitor */}
+      <CodeMonitor position={[-4, 2, -3]} scale={0.7} />
+      <CodeMonitor position={[5, -2, -4]} scale={0.5} />
+      
       {/* Keyboard Keys - Dev Theme */}
-      <KeyboardKey position={[-4, 2, -2]} color="#8b5cf6" scale={0.8} />
-      <KeyboardKey position={[4, -1.5, -3]} color="#10b981" scale={0.6} />
-      <KeyboardKey position={[-3, -2, -1]} color="#f43f5e" scale={0.5} />
+      <KeyboardKey position={[-3, -2.5, -1]} color="#8b5cf6" scale={0.6} />
+      <KeyboardKey position={[3.5, 2.5, -2]} color="#10b981" scale={0.5} />
       
       {/* Voxel Cubes - Gaming Theme */}
       <VoxelCube position={[5, 1, -2]} color="#06b6d4" delay={0} />
@@ -296,27 +511,14 @@ function Scene() {
       <VoxelCube position={[3, 3, -4]} color="#a855f7" delay={2} />
       <VoxelCube position={[-4, -3, -2]} color="#10b981" delay={3} />
       <VoxelCube position={[6, -2, -3]} color="#f43f5e" delay={1.5} />
-      
-      {/* Code Lines - Dev Theme */}
-      <group position={[-6, 0, -5]}>
-        <CodeLine position={[0, 0.3, 0]} width={1.5} color="#8b5cf6" />
-        <CodeLine position={[0.3, 0, 0]} width={2} color="#06b6d4" />
-        <CodeLine position={[-0.2, -0.3, 0]} width={1.2} color="#a855f7" />
-        <CodeLine position={[0.5, -0.6, 0]} width={1.8} color="#10b981" />
-      </group>
-      
-      <group position={[6, 1, -4]}>
-        <CodeLine position={[0, 0.3, 0]} width={1.8} color="#06b6d4" />
-        <CodeLine position={[-0.3, 0, 0]} width={1.3} color="#8b5cf6" />
-        <CodeLine position={[0.2, -0.3, 0]} width={2} color="#f43f5e" />
-      </group>
+      <VoxelCube position={[-6, 2, -2]} color="#eab308" delay={2.5} />
       
       {/* Data Particles */}
-      <DataParticles count={200} color="#8b5cf6" />
+      <DataParticles count={150} color="#8b5cf6" />
       
       {/* Sparkles */}
       <Sparkles 
-        count={100}
+        count={80}
         scale={15}
         size={2}
         speed={0.3}
@@ -327,8 +529,17 @@ function Scene() {
       <gridHelper 
         args={[30, 30, "#8b5cf6", "#1e1b4b"]} 
         position={[0, -5, 0]}
-        rotation={[0, 0, 0]}
       />
+      
+      {/* Post-processing */}
+      <EffectComposer>
+        <Bloom 
+          intensity={0.8}
+          luminanceThreshold={0.2}
+          luminanceSmoothing={0.9}
+          mipmapBlur
+        />
+      </EffectComposer>
     </>
   );
 }
