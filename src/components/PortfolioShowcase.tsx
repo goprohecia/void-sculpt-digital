@@ -7,7 +7,7 @@ import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from
 
 // Import screenshots
 import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
-import altarysImg from "@/assets/portfolio/altarys.png";
+import altarysImg from "@/assets/portfolio/altarys-logo.png";
 
 interface Project {
   id: number;
@@ -16,6 +16,7 @@ interface Project {
   description: string;
   image: string;
   url: string;
+  externalUrl?: string;
   tags: string[];
   color: string;
 }
@@ -38,6 +39,7 @@ const projects: Project[] = [
     description: "Plateforme DeFi et RWA avec dashboard administratif complet. Interface intuitive pour la gestion financière décentralisée.",
     image: altarysImg,
     url: "/portfolio/altarys",
+    externalUrl: "https://altarys.com",
     tags: ["Dashboard", "DeFi", "Finance"],
     color: "neon-blue",
   },
@@ -165,7 +167,7 @@ export function PortfolioShowcase() {
                                       Aperçu
                                     </motion.button>
                                     <motion.a
-                                      href={project.url}
+                                      href={project.externalUrl || project.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="px-6 py-3 rounded-xl bg-neon-violet/20 border border-neon-violet/50 text-neon-violet font-medium flex items-center gap-2 hover:scale-105 transition-transform"
