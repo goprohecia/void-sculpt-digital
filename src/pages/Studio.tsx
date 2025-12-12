@@ -68,11 +68,6 @@ const timeline = [
   },
   {
     year: "2025",
-    title: "Expansion",
-    description: "Élargissement de l'équipe et diversification des services vers le mobile et SaaS.",
-  },
-  {
-    year: "2025",
     title: "Innovation 360°",
     description: "Lancement de notre offre écosystème complet pour accompagner les startups.",
   },
