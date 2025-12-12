@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -7,13 +7,15 @@ interface ImageWithSkeletonProps {
   alt: string;
   className?: string;
   containerClassName?: string;
+  style?: CSSProperties;
 }
 
 export function ImageWithSkeleton({ 
   src, 
   alt, 
   className,
-  containerClassName 
+  containerClassName,
+  style
 }: ImageWithSkeletonProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -42,6 +44,7 @@ export function ImageWithSkeleton({
           isLoaded ? "opacity-100" : "opacity-0",
           className
         )}
+        style={style}
         onLoad={() => setIsLoaded(true)}
         onError={() => setHasError(true)}
         initial={{ opacity: 0, scale: 1.1 }}
