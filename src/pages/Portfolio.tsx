@@ -22,6 +22,7 @@ import {
 // Import screenshots
 import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
 import altarysImg from "@/assets/portfolio/altarys-logo.png";
+import propheciaImg from "@/assets/portfolio/prophecia-logo.jpeg";
 
 interface Project {
   id: number;
@@ -63,7 +64,7 @@ const projects: Project[] = [
     title: "Guardian Of Prophecia",
     category: "360",
     description: "Plateforme gaming complète avec système d'invitation, rewards et communauté. Expérience immersive pour les joueurs passionnés avec intégration Web3.",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
+    image: propheciaImg,
     tags: ["Gaming", "Web3", "Community", "Full Stack"],
     client: "Guardian Of Prophecia",
     year: "2024",
