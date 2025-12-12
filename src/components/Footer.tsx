@@ -198,7 +198,7 @@ export function Footer() {
           viewport={{ once: true }}
         >
           <p className="text-muted-foreground text-sm">
-            © 2024 <span className="text-neon-violet">IMPARTIAL</span>. Tous droits réservés.
+            © 2025 <span className="text-neon-violet">IMPARTIAL</span>. Tous droits réservés.
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
             {[
