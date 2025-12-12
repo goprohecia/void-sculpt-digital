@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
-import { ExternalLink, ChevronLeft, ChevronRight, Sparkles, X, Eye } from "lucide-react";
+import { ExternalLink, ChevronLeft, ChevronRight, Sparkles, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
 
@@ -65,7 +65,6 @@ export function PortfolioShowcase() {
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const scrollPrev = () => emblaApi?.scrollPrev();
   const scrollNext = () => emblaApi?.scrollNext();
@@ -271,62 +270,6 @@ export function PortfolioShowcase() {
           </ScrollReveal>
         </div>
       </SectionTransition>
-
-      {/* Iframe Preview Modal */}
-      <AnimatePresence>
-        {previewUrl && (
-          <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/90 backdrop-blur-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="relative w-full max-w-6xl h-[80vh] bg-glass-dark rounded-2xl border border-white/10 overflow-hidden"
-              initial={{ scale: 0.9, rotateX: -10 }}
-              animate={{ scale: 1, rotateX: 0 }}
-              exit={{ scale: 0.9, rotateX: 10 }}
-              style={{ perspective: 1000 }}
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-white/10 bg-glass-dark/80">
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                  </div>
-                  <span className="text-sm text-muted-foreground truncate max-w-md">{previewUrl}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={previewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                  <button
-                    onClick={() => setPreviewUrl(null)}
-                    className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-              
-              {/* Iframe */}
-              <iframe
-                src={previewUrl}
-                className="w-full h-[calc(100%-60px)]"
-                title="Preview"
-                sandbox="allow-scripts allow-same-origin"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
