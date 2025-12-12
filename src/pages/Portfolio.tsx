@@ -200,8 +200,8 @@ export default function Portfolio() {
                     <ImageWithSkeleton
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover"
-                      containerClassName="h-64"
+                      className="w-full h-[120%] object-cover object-bottom"
+                      containerClassName="h-64 overflow-hidden"
                     />
                     {/* Category Badge */}
                     <div
@@ -279,8 +279,8 @@ export default function Portfolio() {
                         <ImageWithSkeleton
                           src={project.image}
                           alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          containerClassName="w-full h-full"
+                          className="w-full h-[120%] object-cover object-bottom transition-transform duration-500 group-hover:scale-110"
+                          containerClassName="w-full h-full overflow-hidden"
                         />
                         <motion.div
                           className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4"
