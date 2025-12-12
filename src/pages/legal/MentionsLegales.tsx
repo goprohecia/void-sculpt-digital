@@ -61,7 +61,7 @@ const MentionsLegales = () => {
                 <p><span className="font-semibold text-foreground">Raison sociale :</span> Impartial Games </p>
                 <p><span className="font-semibold text-foreground">Forme juridique :</span> C corp </p>
                 
-                <p><span className="font-semibold text-foreground">Siège social :</span> Delaware</p>
+                <p><span className="font-semibold text-foreground">Siège social :</span>Siège social : Delaware, États-Unis</p>
                 
                 
                 
