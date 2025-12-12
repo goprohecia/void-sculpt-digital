@@ -177,7 +177,7 @@ export function Header() {
           <div className="hidden lg:block flex-shrink-0">
             <MagneticButton as="div" strength={0.25}>
               <RippleButton
-                onClick={() => window.location.href = "/contact"}
+                onClick={() => window.open("https://calendly.com/yannis-bezriche/impartial-games", "_blank")}
                 className="btn-gradient px-6 py-2.5 text-white font-semibold rounded-xl"
               >
                 Prendre rendez-vous
@@ -293,13 +293,15 @@ export function Header() {
                 <motion.div
                   variants={{ open: { opacity: 1, y: 0 }, closed: { opacity: 0, y: 20 } }}
                 >
-                  <Link 
-                    to="/contact" 
+                  <a 
+                    href="https://calendly.com/yannis-bezriche/impartial-games"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setIsMobileMenuOpen(false)} 
                     className="mx-4 mt-2 btn-gradient px-6 py-3 text-white font-semibold rounded-xl text-center block"
                   >
                     Prendre rendez-vous
-                  </Link>
+                  </a>
                 </motion.div>
               </motion.div>
             </motion.div>

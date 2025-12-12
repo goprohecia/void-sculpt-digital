@@ -7,6 +7,9 @@ import * as THREE from "three";
 // Context for mobile optimization
 const MobileContext = createContext(false);
 
+// Context for mouse position
+const MouseContext = createContext({ x: 0, y: 0 });
+
 // Hook to detect mobile
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -23,16 +26,48 @@ function useIsMobile() {
   return isMobile;
 }
 
+// Hook for mouse position (normalized -1 to 1)
+function useMousePosition() {
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouse({
+        x: (e.clientX / window.innerWidth) * 2 - 1,
+        y: -(e.clientY / window.innerHeight) * 2 + 1,
+      });
+    };
+    
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+  
+  return mouse;
+}
+
 // Hook pour synchroniser avec le scroll
 function useScrollProgress() {
   const [progress, setProgress] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
+  const [scrollVelocity, setScrollVelocity] = useState(0);
+  const lastScrollTop = useRef(0);
+  const lastTime = useRef(Date.now());
   
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollProgress = Math.min(scrollTop / docHeight, 1);
+      
+      // Calculate scroll velocity
+      const now = Date.now();
+      const dt = Math.max(now - lastTime.current, 1);
+      const velocity = Math.abs(scrollTop - lastScrollTop.current) / dt;
+      setScrollVelocity(Math.min(velocity * 10, 1)); // Normalize to 0-1
+      
+      lastScrollTop.current = scrollTop;
+      lastTime.current = now;
+      
       setProgress(scrollProgress);
       
       const sectionIndex = Math.floor(scrollProgress * 4);
@@ -44,7 +79,7 @@ function useScrollProgress() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   
-  return { progress, activeSection };
+  return { progress, activeSection, scrollVelocity };
 }
 
 // Trailing Orb with luminous trail
@@ -338,25 +373,69 @@ function OrbitRing({ radius, speed, color, thickness = 0.02 }: {
   );
 }
 
-// Simplified Data Particles
-function DataParticles({ count, color }: { count: number; color: string }) {
+// Scroll-Reactive Particles
+function ScrollReactiveParticles({ count, color, scrollVelocity }: { 
+  count: number; 
+  color: string;
+  scrollVelocity: number;
+}) {
   const isMobile = useContext(MobileContext);
+  const mouse = useContext(MouseContext);
   const actualCount = isMobile ? Math.floor(count / 3) : count;
   
-  const points = useMemo(() => {
-    const positions = new Float32Array(actualCount * 3);
+  const { positions, velocities } = useMemo(() => {
+    const pos = new Float32Array(actualCount * 3);
+    const vel = new Float32Array(actualCount * 3);
     for (let i = 0; i < actualCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      pos[i * 3] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      vel[i * 3] = (Math.random() - 0.5) * 0.02;
+      vel[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
+      vel[i * 3 + 2] = (Math.random() - 0.5) * 0.01;
     }
-    return positions;
+    return { positions: pos, velocities: vel };
   }, [actualCount]);
   
   const pointsRef = useRef<THREE.Points>(null);
+  const positionsRef = useRef(positions);
   
   useFrame((state) => {
     if (pointsRef.current) {
+      const geometry = pointsRef.current.geometry;
+      const posAttr = geometry.attributes.position;
+      
+      // Animate particles based on scroll velocity and mouse
+      for (let i = 0; i < actualCount; i++) {
+        const idx = i * 3;
+        
+        // Base movement
+        positionsRef.current[idx] += velocities[idx] * (1 + scrollVelocity * 5);
+        positionsRef.current[idx + 1] += velocities[idx + 1] * (1 + scrollVelocity * 5);
+        positionsRef.current[idx + 2] += velocities[idx + 2];
+        
+        // Mouse influence (desktop only)
+        if (!isMobile) {
+          const dx = mouse.x * 5 - positionsRef.current[idx];
+          const dy = mouse.y * 5 - positionsRef.current[idx + 1];
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 5) {
+            positionsRef.current[idx] += dx * 0.001;
+            positionsRef.current[idx + 1] += dy * 0.001;
+          }
+        }
+        
+        // Wrap around bounds
+        if (Math.abs(positionsRef.current[idx]) > 10) positionsRef.current[idx] *= -0.9;
+        if (Math.abs(positionsRef.current[idx + 1]) > 10) positionsRef.current[idx + 1] *= -0.9;
+        if (Math.abs(positionsRef.current[idx + 2]) > 5) positionsRef.current[idx + 2] *= -0.9;
+        
+        posAttr.setXYZ(i, positionsRef.current[idx], positionsRef.current[idx + 1], positionsRef.current[idx + 2]);
+      }
+      
+      posAttr.needsUpdate = true;
+      
+      // Global rotation
       pointsRef.current.rotation.y = state.clock.elapsedTime * 0.02;
     }
   });
@@ -367,18 +446,86 @@ function DataParticles({ count, color }: { count: number; color: string }) {
         <bufferAttribute
           attach="attributes-position"
           count={actualCount}
-          array={points}
+          array={positions}
           itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial
-        size={isMobile ? 0.08 : 0.05}
+        size={isMobile ? 0.08 : 0.05 + scrollVelocity * 0.1}
         color={color}
         transparent
-        opacity={0.6}
+        opacity={0.6 + scrollVelocity * 0.3}
         sizeAttenuation
       />
     </points>
+  );
+}
+
+// Interactive element that reacts to mouse
+function InteractiveOrb({ position, color, size = 0.3 }: {
+  position: [number, number, number];
+  color: string;
+  size?: number;
+}) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  const mouse = useContext(MouseContext);
+  const isMobile = useContext(MobileContext);
+  const targetScale = useRef(1);
+  const targetEmissive = useRef(0.5);
+  
+  useFrame((state) => {
+    if (meshRef.current && !isMobile) {
+      // Convert mouse to 3D space approximation
+      const mouseX = mouse.x * 8;
+      const mouseY = mouse.y * 5;
+      
+      const dx = mouseX - meshRef.current.position.x;
+      const dy = mouseY - meshRef.current.position.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      
+      // Scale up when mouse is near
+      if (dist < 3) {
+        targetScale.current = 1.5 - dist * 0.15;
+        targetEmissive.current = 1 - dist * 0.15;
+        
+        // Move slightly toward mouse
+        meshRef.current.position.x += dx * 0.01;
+        meshRef.current.position.y += dy * 0.01;
+      } else {
+        targetScale.current = 1;
+        targetEmissive.current = 0.5;
+        
+        // Return to original position
+        meshRef.current.position.x += (position[0] - meshRef.current.position.x) * 0.02;
+        meshRef.current.position.y += (position[1] - meshRef.current.position.y) * 0.02;
+      }
+      
+      // Smooth scale transition
+      const currentScale = meshRef.current.scale.x;
+      meshRef.current.scale.setScalar(currentScale + (targetScale.current - currentScale) * 0.1);
+      
+      // Update emissive
+      const material = meshRef.current.material as THREE.MeshStandardMaterial;
+      material.emissiveIntensity += (targetEmissive.current - material.emissiveIntensity) * 0.1;
+      
+      // Floating animation
+      meshRef.current.position.z = position[2] + Math.sin(state.clock.elapsedTime + position[0]) * 0.3;
+    }
+  });
+  
+  return (
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[size, isMobile ? 12 : 24, isMobile ? 12 : 24]} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={0.5}
+        metalness={0.8}
+        roughness={0.2}
+        transparent
+        opacity={0.9}
+      />
+    </mesh>
   );
 }
 
@@ -521,10 +668,11 @@ function DynamicLighting({ activeSection }: { activeSection: number }) {
 
 // Main Scene - Desktop
 function DesktopScene() {
-  const { progress, activeSection } = useScrollProgress();
+  const { progress, activeSection, scrollVelocity } = useScrollProgress();
+  const mouse = useMousePosition();
   
   return (
-    <>
+    <MouseContext.Provider value={mouse}>
       <DynamicLighting activeSection={activeSection} />
       <CameraController activeSection={activeSection} progress={progress} />
       <MorphingSphere activeSection={activeSection} progress={progress} />
@@ -533,6 +681,12 @@ function DesktopScene() {
       <OrbitRing radius={2.5} speed={0.3} color="#8b5cf6" />
       <OrbitRing radius={3} speed={-0.2} color="#06b6d4" thickness={0.015} />
       <OrbitRing radius={3.5} speed={0.15} color="#a855f7" thickness={0.01} />
+      
+      {/* Interactive Orbs - React to mouse */}
+      <InteractiveOrb position={[-5, 2, -1]} color="#8b5cf6" size={0.4} />
+      <InteractiveOrb position={[5, -1, -2]} color="#06b6d4" size={0.35} />
+      <InteractiveOrb position={[-3, -2, 0]} color="#f43f5e" size={0.3} />
+      <InteractiveOrb position={[4, 3, -1]} color="#10b981" size={0.35} />
       
       {/* Trailing Orbs */}
       <TrailingOrb position={[3, 2, -1]} color="#8b5cf6" speed={0.8} />
@@ -555,27 +709,27 @@ function DesktopScene() {
       <VoxelCube position={[-4, -3, -2]} color="#10b981" delay={3} />
       <VoxelCube position={[6, -2, -3]} color="#f43f5e" delay={1.5} hasTrail />
       
-      {/* Particles */}
-      <DataParticles count={150} color="#8b5cf6" />
-      <Sparkles count={80} scale={15} size={2} speed={0.3} color="#8b5cf6" />
+      {/* Scroll-Reactive Particles */}
+      <ScrollReactiveParticles count={150} color="#8b5cf6" scrollVelocity={scrollVelocity} />
+      <Sparkles count={80} scale={15} size={2} speed={0.3 + scrollVelocity * 0.5} color="#8b5cf6" />
       
       {/* Grid */}
       <gridHelper args={[30, 30, "#8b5cf6", "#1e1b4b"]} position={[0, -5, 0]} />
       
       {/* Post-processing */}
       <EffectComposer>
-        <Bloom intensity={0.8} luminanceThreshold={0.2} luminanceSmoothing={0.9} mipmapBlur />
+        <Bloom intensity={0.8 + scrollVelocity * 0.3} luminanceThreshold={0.2} luminanceSmoothing={0.9} mipmapBlur />
       </EffectComposer>
-    </>
+    </MouseContext.Provider>
   );
 }
 
 // Main Scene - Mobile (simplified)
 function MobileScene() {
-  const { progress, activeSection } = useScrollProgress();
+  const { progress, activeSection, scrollVelocity } = useScrollProgress();
   
   return (
-    <>
+    <MouseContext.Provider value={{ x: 0, y: 0 }}>
       <DynamicLighting activeSection={activeSection} />
       <CameraController activeSection={activeSection} progress={progress} />
       <MorphingSphere activeSection={activeSection} progress={progress} />
@@ -595,15 +749,15 @@ function MobileScene() {
       <VoxelCube position={[4, 1, -2]} color="#06b6d4" delay={0} />
       <VoxelCube position={[-4, 0, -1]} color="#8b5cf6" delay={1} />
       
-      {/* Reduced particles */}
-      <DataParticles count={50} color="#8b5cf6" />
+      {/* Reduced scroll-reactive particles */}
+      <ScrollReactiveParticles count={50} color="#8b5cf6" scrollVelocity={scrollVelocity} />
       <Sparkles count={30} scale={12} size={3} speed={0.2} color="#8b5cf6" />
       
       {/* Post-processing with lighter bloom */}
       <EffectComposer>
         <Bloom intensity={0.5} luminanceThreshold={0.3} luminanceSmoothing={0.9} mipmapBlur />
       </EffectComposer>
-    </>
+    </MouseContext.Provider>
   );
 }
 
