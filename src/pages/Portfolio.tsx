@@ -20,8 +20,8 @@ import {
 } from "@/components/animations";
 
 // Import screenshots
-import wecloseImg from "@/assets/portfolio/weclose.png";
-import altarysImg from "@/assets/portfolio/altarys.png";
+import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
+import altarysImg from "@/assets/portfolio/altarys-logo.png";
 
 interface Project {
   id: number;
