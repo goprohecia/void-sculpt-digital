@@ -77,7 +77,7 @@ const PolitiqueConfidentialite = () => {
               </div>
               <div className="space-y-4 text-muted-foreground">
                 <p><span className="font-semibold text-foreground">Raison sociale :</span> Impartial Games </p>
-                <p><span className="font-semibold text-foreground">Adresse :</span> Delaware</p>
+                <p><span className="font-semibold text-foreground">Adresse :</span> Delaware, États-Unis   </p>
                 <p><span className="font-semibold text-foreground">Email :</span> contact@impartialgames.com</p>
                 
               </div>
