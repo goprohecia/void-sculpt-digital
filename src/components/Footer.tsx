@@ -152,13 +152,15 @@ export function Footer() {
                 Contact
               </h4>
               <ul className="space-y-3 text-muted-foreground">
-                <motion.li className="flex items-center gap-3" whileHover={{
+                <motion.li whileHover={{
                 x: 3
               }} transition={{
                 duration: 0.2
               }}>
-                  <Mail className="h-4 w-4 text-rose-400" />
-                  contact@impartial.studio
+                  <a href="mailto:contact@impartialgames.com" className="flex items-center gap-3 hover:text-rose-400 transition-colors">
+                    <Mail className="h-4 w-4 text-rose-400" />
+                    contact@impartialgames.com
+                  </a>
                 </motion.li>
                 
                 <motion.li className="flex items-center gap-3" whileHover={{
@@ -167,7 +169,7 @@ export function Footer() {
                 duration: 0.2
               }}>
                   <MapPin className="h-4 w-4 text-rose-400" />
-                  ​Delaware, États-Unis 
+                  Delaware, États-Unis
                 </motion.li>
               </ul>
               <MagneticButton as="div" strength={0.15} className="mt-6 inline-block">
