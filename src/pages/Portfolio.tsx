@@ -33,7 +33,6 @@ interface Project {
   client?: string;
   year: string;
   url: string;
-  imagePosition?: string;
 }
 
 const projects: Project[] = [
@@ -47,7 +46,6 @@ const projects: Project[] = [
     client: "We Close Agency",
     year: "2024",
     url: "/portfolio/weclose",
-    imagePosition: "center 25%",
   },
   {
     id: 2,
@@ -59,7 +57,6 @@ const projects: Project[] = [
     client: "Altarys Group",
     year: "2024",
     url: "/portfolio/altarys",
-    imagePosition: "center 20%",
   },
   {
     id: 3,
@@ -71,7 +68,6 @@ const projects: Project[] = [
     client: "Guardian Of Prophecia",
     year: "2024",
     url: "/portfolio/prophecia",
-    imagePosition: "center center",
   },
 ];
 
@@ -201,16 +197,12 @@ export default function Portfolio() {
                 <div className="bg-glass-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden group">
-                    <div className="w-[115%] h-[140%] -ml-[7.5%] transition-transform duration-500 group-hover:scale-110">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                        style={{ objectPosition: project.imagePosition || 'center center' }}
-                      />
-                    </div>
-                    {/* Vignette Effect */}
-                    <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.6)_100%)]" />
+                    <ImageWithSkeleton
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                      containerClassName="h-64 overflow-hidden"
+                    />
                     {/* Category Badge */}
                     <div
                       className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm`}
@@ -283,17 +275,13 @@ export default function Portfolio() {
                       onMouseLeave={() => setHoveredProject(null)}
                     >
                       {/* Image */}
-                      <div className="relative h-56 overflow-hidden">
-                        <div className="w-[115%] h-[140%] -ml-[7.5%] transition-transform duration-500 group-hover:scale-110">
-                          <img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full object-cover"
-                            style={{ objectPosition: project.imagePosition || 'center center' }}
-                          />
-                        </div>
-                        {/* Vignette Effect */}
-                        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.6)_100%)]" />
+                      <div className="relative h-56 overflow-hidden group">
+                        <ImageWithSkeleton
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                          containerClassName="w-full h-full overflow-hidden"
+                        />
                         <motion.div
                           className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4"
                           initial={{ opacity: 0 }}

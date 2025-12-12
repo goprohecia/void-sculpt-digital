@@ -18,7 +18,6 @@ interface Project {
   url: string;
   tags: string[];
   color: string;
-  imagePosition?: string;
 }
 
 const projects: Project[] = [
@@ -31,7 +30,6 @@ const projects: Project[] = [
     url: "/portfolio/weclose",
     tags: ["React", "Framer Motion", "Design Premium"],
     color: "neon-violet",
-    imagePosition: "center 25%",
   },
   {
     id: 2,
@@ -42,7 +40,6 @@ const projects: Project[] = [
     url: "/portfolio/altarys",
     tags: ["Dashboard", "DeFi", "Finance"],
     color: "neon-blue",
-    imagePosition: "center 20%",
   },
   {
     id: 3,
@@ -53,7 +50,6 @@ const projects: Project[] = [
     url: "/portfolio/prophecia",
     tags: ["Gaming", "Web3", "Community"],
     color: "neon-green",
-    imagePosition: "center center",
   },
 ];
 
@@ -146,11 +142,8 @@ export function PortfolioShowcase() {
                               <img
                                 src={project.image}
                                 alt={project.title}
-                                className="w-[115%] h-[140%] object-cover -ml-[7.5%] transition-transform duration-700 group-hover:scale-110"
-                                style={{ objectPosition: project.imagePosition || 'center center' }}
+                                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                               />
-                              {/* Vignette Effect */}
-                              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.6)_100%)]" />
                               
                               {/* Hover Overlay with Preview Button */}
                               <AnimatePresence>
