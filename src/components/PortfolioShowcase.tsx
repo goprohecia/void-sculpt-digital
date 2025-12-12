@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
-import { ExternalLink, ChevronLeft, ChevronRight, Sparkles, X } from "lucide-react";
+import { ExternalLink, ChevronLeft, ChevronRight, Sparkles, X, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
 
@@ -159,17 +159,19 @@ export function PortfolioShowcase() {
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
                                   >
-                                    <motion.a
-                                      href={project.externalUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
+                                    <Link
+                                      to={project.url}
                                       className={`px-6 py-3 rounded-xl ${colors.bg} border ${colors.border} ${colors.text} font-medium flex items-center gap-2 hover:scale-105 transition-transform`}
-                                      initial={{ y: 20, opacity: 0 }}
-                                      animate={{ y: 0, opacity: 1 }}
-                                      transition={{ delay: 0.1 }}
                                     >
-                                      Aperçu <ExternalLink className="h-4 w-4" />
-                                    </motion.a>
+                                      <motion.span
+                                        className="flex items-center gap-2"
+                                        initial={{ y: 20, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ delay: 0.1 }}
+                                      >
+                                        Aperçu <Eye className="h-4 w-4" />
+                                      </motion.span>
+                                    </Link>
                                     <motion.a
                                       href={project.externalUrl}
                                       target="_blank"
