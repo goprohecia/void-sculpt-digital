@@ -150,11 +150,6 @@ const Contact = () => {
                   </Hover3DCard>
                 </ScrollReveal>
 
-                <ScrollReveal variant="fadeInLeft" delay={0.2}>
-                  <Hover3DCard className="rounded-xl" rotateStrength={5}>
-                    
-                  </Hover3DCard>
-                </ScrollReveal>
 
                 <ScrollReveal variant="fadeInLeft" delay={0.3}>
                   <Hover3DCard className="rounded-xl" rotateStrength={5}>
