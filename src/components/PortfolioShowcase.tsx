@@ -43,7 +43,7 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    title: "Prophecia",
+    title: "Guardian Of Prophecia",
     category: "Jeu Vidéo",
     description: "Plateforme gaming avec système d'invitation et rewards. Expérience immersive pour les joueurs passionnés.",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
