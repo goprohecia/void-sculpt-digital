@@ -31,7 +31,7 @@ const projects: Project[] = [
     url: "/portfolio/weclose",
     tags: ["React", "Framer Motion", "Design Premium"],
     color: "neon-violet",
-    imagePosition: "center 20%",
+    imagePosition: "left 20%",
   },
   {
     id: 2,
