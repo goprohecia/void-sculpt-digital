@@ -204,12 +204,14 @@ export default function Portfolio() {
                     <ImageWithSkeleton
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-[115%] h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       containerClassName="h-64 overflow-hidden"
                       style={{ objectPosition: project.imagePosition }}
                     />
                     {/* Dark Vignette Effect */}
                     <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_15px_rgba(0,0,0,0.5)]" />
+                    {/* Right side gradient to hide white band */}
+                    <div className="absolute inset-y-0 right-0 w-16 pointer-events-none bg-gradient-to-l from-background/90 to-transparent" />
                     {/* Category Badge */}
                     <div
                       className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm`}
@@ -286,12 +288,14 @@ export default function Portfolio() {
                         <ImageWithSkeleton
                           src={project.image}
                           alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          className="w-[115%] h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           containerClassName="w-full h-full overflow-hidden"
                           style={{ objectPosition: project.imagePosition }}
                         />
                         {/* Dark Vignette Effect */}
                         <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_15px_rgba(0,0,0,0.5)]" />
+                        {/* Right side gradient to hide white band */}
+                        <div className="absolute inset-y-0 right-0 w-16 pointer-events-none bg-gradient-to-l from-background/90 to-transparent" />
                         <motion.div
                           className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4"
                           initial={{ opacity: 0 }}
