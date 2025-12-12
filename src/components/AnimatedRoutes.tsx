@@ -13,6 +13,7 @@ import CGU from "@/pages/legal/CGU";
 import CGV from "@/pages/legal/CGV";
 import Cookies from "@/pages/legal/Cookies";
 import MentionsLegales from "@/pages/legal/MentionsLegales";
+import PolitiqueConfidentialite from "@/pages/legal/PolitiqueConfidentialite";
 import NotFound from "@/pages/NotFound";
 
 // Portfolio project pages
@@ -41,6 +42,7 @@ export function AnimatedRoutes() {
         <Route path="/cgv" element={<PageTransition3D><CGV /></PageTransition3D>} />
         <Route path="/cookies" element={<PageTransition3D><Cookies /></PageTransition3D>} />
         <Route path="/mentions-legales" element={<PageTransition3D><MentionsLegales /></PageTransition3D>} />
+        <Route path="/politique-confidentialite" element={<PageTransition3D><PolitiqueConfidentialite /></PageTransition3D>} />
         <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
       </Routes>
     </AnimatePresence>
