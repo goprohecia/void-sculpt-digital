@@ -146,12 +146,15 @@ export function PortfolioShowcase() {
                               <img
                                 src={project.image}
                                 alt={project.title}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                className="w-[115%] h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 style={{ objectPosition: project.imagePosition }}
                               />
                               
                               {/* Dark Vignette Effect */}
                               <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_60px_20px_rgba(0,0,0,0.6)]" />
+                              
+                              {/* Right side gradient to hide white band */}
+                              <div className="absolute inset-y-0 right-0 w-20 pointer-events-none bg-gradient-to-l from-background/90 to-transparent" />
                               
                               {/* Hover Overlay with Preview Button */}
                               <AnimatePresence>
