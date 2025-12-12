@@ -12,14 +12,14 @@ import {
 } from "@/components/animations";
 
 const projectDetails = {
-  title: "Prophecia",
+  title: "Guardian Of Prophecia",
   subtitle: "Plateforme gaming complète avec système de rewards et communauté",
   category: "Écosystème 360°",
-  client: "Prophecia",
+  client: "Guardian Of Prophecia",
   year: "2024",
   duration: "12 semaines",
   url: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
-  description: `Prophecia est une plateforme gaming innovante qui combine communauté, rewards et expérience immersive. Le projet nécessitait un écosystème complet incluant site web, système d'invitation, gestion des récompenses et intégrations Web3.
+  description: `Guardian Of Prophecia est une plateforme gaming innovante qui combine communauté, rewards et expérience immersive. Le projet nécessitait un écosystème complet incluant site web, système d'invitation, gestion des récompenses et intégrations Web3.
 
 L'objectif était de créer une expérience gaming haut de gamme qui engage les joueurs et les récompense pour leur participation active à la communauté. L'interface devait être à la fois spectaculaire et fonctionnelle, avec des animations fluides et une navigation intuitive.`,
   challenges: [
@@ -144,7 +144,7 @@ export default function PropheciaProject() {
                       transition={{ duration: 0.5 }}
                     >
                       <Gamepad2 className="w-24 h-24 text-emerald-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold text-emerald-400">PROPHECIA</h3>
+                      <h3 className="text-2xl font-bold text-emerald-400">GUARDIAN OF PROPHECIA</h3>
                       <p className="text-muted-foreground">Gaming Platform</p>
                     </motion.div>
                   </div>
