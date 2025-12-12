@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
 
 // Import screenshots
-import wecloseImg from "@/assets/portfolio/weclose.png";
+import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
 import altarysImg from "@/assets/portfolio/altarys.png";
 
 interface Project {
