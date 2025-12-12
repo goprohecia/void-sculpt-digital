@@ -21,109 +21,63 @@ import {
 interface Project {
   id: number;
   title: string;
-  category: "web" | "mobile" | "backoffice" | "360";
+  category: "web" | "mobile" | "backoffice" | "360" | "gaming";
   description: string;
   image: string;
   tags: string[];
   client?: string;
   year: string;
+  url?: string;
 }
 
 const projects: Project[] = [
   {
     id: 1,
-    title: "E-Commerce Premium",
+    title: "WeClose Agency",
     category: "web",
-    description: "Plateforme e-commerce haute performance avec tunnel de vente optimisé et paiements sécurisés.",
-    image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?w=600&h=400&fit=crop",
-    tags: ["React", "Stripe", "SEO"],
-    client: "Fashion Brand",
+    description: "Site vitrine moderne et dynamique pour une agence de closing avec animations fluides et design premium.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+    tags: ["React", "Tailwind", "Animations"],
+    client: "WeClose",
     year: "2024",
+    url: "https://wecloseagency.fr/",
   },
   {
     id: 2,
-    title: "App Fitness Tracker",
-    category: "mobile",
-    description: "Application mobile cross-platform pour le suivi d'entraînements avec synchronisation temps réel.",
-    image: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=600&h=400&fit=crop",
-    tags: ["React Native", "Firebase", "HealthKit"],
-    client: "FitLife",
+    title: "Altarys Group",
+    category: "backoffice",
+    description: "Plateforme de gestion complète avec dashboard administratif et outils de pilotage pour groupe immobilier.",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop",
+    tags: ["TypeScript", "Dashboard", "CRM"],
+    client: "Altarys Group",
     year: "2024",
+    url: "https://altarys-group.fr/",
   },
   {
     id: 3,
-    title: "Dashboard Analytics",
-    category: "backoffice",
-    description: "Tableau de bord administratif avec visualisation de données en temps réel et reporting automatisé.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    tags: ["TypeScript", "D3.js", "PostgreSQL"],
-    client: "DataCorp",
-    year: "2023",
-  },
-  {
-    id: 4,
-    title: "Écosystème Startup",
-    category: "360",
-    description: "Solution complète Site + App + Backoffice pour une startup fintech en croissance.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    tags: ["Full Stack", "Microservices", "AWS"],
-    client: "FinTech Plus",
+    title: "Go Prophecia",
+    category: "gaming",
+    description: "Jeu vidéo immersif avec système de progression, matchmaking et communauté de joueurs intégrée.",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
+    tags: ["Gaming", "WebGL", "Multiplayer"],
+    client: "Prophecia Games",
     year: "2024",
-  },
-  {
-    id: 5,
-    title: "Site Vitrine Luxe",
-    category: "web",
-    description: "Site vitrine élégant avec animations premium pour une marque de joaillerie haut de gamme.",
-    image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&h=400&fit=crop",
-    tags: ["Next.js", "GSAP", "CMS"],
-    client: "Maison Bijoux",
-    year: "2023",
-  },
-  {
-    id: 6,
-    title: "App Livraison",
-    category: "mobile",
-    description: "Application de livraison avec géolocalisation temps réel et notifications push.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
-    tags: ["Flutter", "Google Maps", "Socket.io"],
-    client: "QuickDeliver",
-    year: "2023",
-  },
-  {
-    id: 7,
-    title: "CRM Immobilier",
-    category: "backoffice",
-    description: "Solution CRM sur mesure pour la gestion de biens immobiliers et leads qualifiés.",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop",
-    tags: ["Vue.js", "Supabase", "AI"],
-    client: "ImmoGroup",
-    year: "2024",
-  },
-  {
-    id: 8,
-    title: "Plateforme SaaS",
-    category: "360",
-    description: "Plateforme SaaS B2B complète avec abonnements, API et intégrations tierces.",
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-    tags: ["Node.js", "Stripe", "Kubernetes"],
-    client: "CloudTech",
-    year: "2024",
+    url: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
   },
 ];
 
 const categories = [
   { id: "all", name: "Tous" },
   { id: "web", name: "Web" },
-  { id: "mobile", name: "Mobile" },
   { id: "backoffice", name: "Backoffice" },
-  { id: "360", name: "360°" },
+  { id: "gaming", name: "Gaming" },
 ];
 
 const categoryColors: Record<string, { border: string; text: string; bg: string; shadow: string }> = {
   web: { border: "border-neon-violet/50", text: "text-neon-violet", bg: "bg-neon-violet/10", shadow: "shadow-[0_0_20px_rgba(139,92,246,0.3)]" },
   mobile: { border: "border-emerald-500/50", text: "text-emerald-400", bg: "bg-emerald-500/10", shadow: "shadow-[0_0_20px_rgba(16,185,129,0.3)]" },
   backoffice: { border: "border-rose-500/50", text: "text-rose-400", bg: "bg-rose-500/10", shadow: "shadow-[0_0_20px_rgba(244,63,94,0.3)]" },
+  gaming: { border: "border-cyan-500/50", text: "text-cyan-400", bg: "bg-cyan-500/10", shadow: "shadow-[0_0_20px_rgba(6,182,212,0.3)]" },
   "360": { border: "border-violet-400/50", text: "text-violet-400", bg: "bg-violet-500/10", shadow: "shadow-[0_0_20px_rgba(167,139,250,0.3)]" },
 };
 

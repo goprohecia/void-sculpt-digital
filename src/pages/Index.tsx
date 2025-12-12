@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { Testimonials } from "@/components/Testimonials";
+import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import { FAQ } from "@/components/FAQ";
-import { FloatingParticles } from "@/components/FloatingParticles";
 import TypeWriter from "@/components/TypeWriter";
 import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 import { motion } from "framer-motion";
+import { HomeBackground3D } from "@/components/3d/HomeBackground3D";
 import { 
   ScrollReveal, 
   StaggerContainer,
@@ -48,8 +48,8 @@ const Index = () => {
   const parallaxFast = useParallax(0.35);
 
   return <Layout>
-    {/* Floating Particles Background */}
-    <FloatingParticles />
+    {/* 3D Background */}
+    <HomeBackground3D />
 
     {/* Hero Section */}
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
@@ -279,8 +279,8 @@ const Index = () => {
       </div>
     </SectionTransition>
 
-    {/* Testimonials Section */}
-    <Testimonials />
+    {/* Portfolio Showcase Section (replaces Testimonials) */}
+    <PortfolioShowcase />
 
     {/* FAQ Section */}
     <FAQ />
