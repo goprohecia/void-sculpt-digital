@@ -39,7 +39,11 @@ const WebService = () => {
             </ScrollReveal>
 
             <ScrollReveal variant="fadeInUp" delay={0.1}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos Offres <span className="text-gradient-neon">Web</span></h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-2">Nos Offres <span className="text-gradient-neon">Web</span></h2>
+            </ScrollReveal>
+
+            <ScrollReveal variant="fadeInUp" delay={0.15}>
+              <p className="text-xl font-semibold text-neon-violet mb-4">À partir de 1500€</p>
             </ScrollReveal>
 
             <ScrollReveal variant="fadeInUp" delay={0.2}>
