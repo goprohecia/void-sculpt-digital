@@ -129,16 +129,16 @@ export function PortfolioShowcase() {
                         key={project.id}
                         className="flex-[0_0_100%] min-w-0 px-4 md:flex-[0_0_80%] lg:flex-[0_0_70%]"
                       >
-                        <Hover3DCard className="rounded-2xl" rotateStrength={5}>
+                        <Hover3DCard className="rounded-xl" rotateStrength={5}>
                           <motion.div 
-                            className={`group bg-glass-dark/80 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-neon-violet/40 transition-all duration-500 hover:${colors.shadow}`}
-                            whileHover={{ y: -5 }}
+                            className={`group bg-glass-dark/80 backdrop-blur-xl rounded-xl overflow-hidden border border-white/10 hover:border-neon-violet/40 transition-all duration-500 hover:${colors.shadow}`}
+                            whileHover={{ y: -4 }}
                             transition={{ duration: 0.3 }}
                             onMouseEnter={() => setHoveredProject(project.id)}
                             onMouseLeave={() => setHoveredProject(null)}
                           >
                             {/* Image */}
-                            <div className="relative h-64 md:h-80 overflow-hidden">
+                            <div className="relative h-52 md:h-64 overflow-hidden">
                               <img
                                 src={project.image}
                                 alt={project.title}
@@ -186,8 +186,8 @@ export function PortfolioShowcase() {
                             </div>
 
                             {/* Content */}
-                            <div className="p-6 md:p-8">
-                              <h3 className="text-xl md:text-2xl font-bold mb-2">{project.title}</h3>
+                            <div className="p-5 md:p-6">
+                              <h3 className="text-lg md:text-xl font-bold mb-2">{project.title}</h3>
                               <p className="text-muted-foreground mb-4 line-clamp-2">
                                 {project.description}
                               </p>
