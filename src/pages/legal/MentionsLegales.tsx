@@ -2,10 +2,8 @@ import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Sparkles, Building2, Mail, Phone, Globe, Server, Shield } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
-
 const MentionsLegales = () => {
-  return (
-    <Layout>
+  return <Layout>
       <FloatingParticles />
       
       {/* Hero */}
@@ -18,24 +16,26 @@ const MentionsLegales = () => {
             <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
               <div className="relative">
                 <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
-                <img
-                  src={logoHero}
-                  alt="IMPARTIAL"
-                  className="relative w-24 h-24 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
-                />
+                <img src={logoHero} alt="IMPARTIAL" className="relative w-24 h-24 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]" />
               </div>
             </div>
             
-            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
+            animationDelay: "0.1s"
+          }}>
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
                 <Sparkles className="h-4 w-4" />
                 Informations légales
               </div>
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.2s"
+          }}>
               Mentions <span className="text-gradient-neon">légales</span>
             </h1>
-            <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+            <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{
+            animationDelay: "0.3s"
+          }}>
               Conformément aux dispositions légales en vigueur
             </p>
           </div>
@@ -58,13 +58,13 @@ const MentionsLegales = () => {
                 <h2 className="text-2xl font-bold">Éditeur du site</h2>
               </div>
               <div className="space-y-4 text-muted-foreground">
-                <p><span className="font-semibold text-foreground">Raison sociale :</span> IMPARTIAL Studio</p>
-                <p><span className="font-semibold text-foreground">Forme juridique :</span> SAS (Société par Actions Simplifiée)</p>
-                <p><span className="font-semibold text-foreground">Capital social :</span> 10 000 €</p>
-                <p><span className="font-semibold text-foreground">Siège social :</span> 123 Avenue des Champs-Élysées, 75008 Paris, France</p>
-                <p><span className="font-semibold text-foreground">SIRET :</span> 123 456 789 00012</p>
-                <p><span className="font-semibold text-foreground">RCS :</span> Paris B 123 456 789</p>
-                <p><span className="font-semibold text-foreground">Numéro TVA intracommunautaire :</span> FR12 123456789</p>
+                <p><span className="font-semibold text-foreground">Raison sociale :</span> Impartial Games </p>
+                <p><span className="font-semibold text-foreground">Forme juridique :</span> C corp </p>
+                
+                <p><span className="font-semibold text-foreground">Siège social :</span> Delaware</p>
+                
+                
+                
               </div>
             </div>
 
@@ -77,34 +77,13 @@ const MentionsLegales = () => {
                 <h2 className="text-2xl font-bold">Directeur de la publication</h2>
               </div>
               <div className="space-y-4 text-muted-foreground">
-                <p><span className="font-semibold text-foreground">Nom :</span> [Nom du directeur de publication]</p>
+                <p><span className="font-semibold text-foreground">Nom :</span> Yannis Bizriche </p>
                 <p><span className="font-semibold text-foreground">Qualité :</span> Président</p>
               </div>
             </div>
 
             {/* Contact */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-rose-500/20 border border-rose-500/30">
-                  <Mail className="h-6 w-6 text-rose-400" />
-                </div>
-                <h2 className="text-2xl font-bold">Contact</h2>
-              </div>
-              <div className="space-y-4 text-muted-foreground">
-                <p className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-rose-400" />
-                  <span>contact@impartial.studio</span>
-                </p>
-                <p className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-rose-400" />
-                  <span>+33 1 23 45 67 89</span>
-                </p>
-                <p className="flex items-center gap-3">
-                  <Globe className="h-5 w-5 text-rose-400" />
-                  <span>www.impartial.studio</span>
-                </p>
-              </div>
-            </div>
+            
 
             {/* Hébergeur */}
             <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
@@ -200,8 +179,6 @@ const MentionsLegales = () => {
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default MentionsLegales;
