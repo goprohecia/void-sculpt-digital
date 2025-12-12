@@ -5,9 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark theme (default) */
-  :root,
-  .dark {
+  :root {
     --background: 250 15% 4%;
     --foreground: 0 0% 98%;
 
@@ -63,62 +61,6 @@
     --sidebar-border: 250 15% 15%;
     --sidebar-ring: 265 85% 60%;
   }
-
-  /* Light theme - assombri pour meilleur contraste */
-  .light {
-    --background: 250 10% 78%;
-    --foreground: 250 30% 8%;
-
-    --card: 250 10% 72%;
-    --card-foreground: 250 30% 6%;
-
-    --popover: 250 10% 75%;
-    --popover-foreground: 250 30% 6%;
-
-    --primary: 265 70% 42%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 250 8% 68%;
-    --secondary-foreground: 250 30% 8%;
-
-    --muted: 250 8% 70%;
-    --muted-foreground: 250 25% 25%;
-
-    --accent: 265 70% 42%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 65% 42%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 250 8% 60%;
-    --input: 250 8% 65%;
-    --ring: 265 70% 42%;
-
-    /* Neon Colors - adjusted for light mode visibility */
-    --neon-red: 345 80% 38%;
-    --neon-green: 155 70% 25%;
-    --neon-blue: 200 80% 32%;
-    --neon-white: 250 30% 8%;
-    --neon-violet: 265 70% 38%;
-
-    /* Glassmorphism - light mode */
-    --glass-bg: 250 10% 72%;
-    --glass-border: 250 8% 55%;
-
-    /* Card tiers - adjusted for light mode */
-    --tier-start: 0 0% 28%;
-    --tier-pro: 265 70% 38%;
-    --tier-custom: 45 75% 35%;
-
-    --sidebar-background: 250 10% 78%;
-    --sidebar-foreground: 250 30% 8%;
-    --sidebar-primary: 265 70% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 8% 70%;
-    --sidebar-accent-foreground: 250 30% 8%;
-    --sidebar-border: 250 8% 60%;
-    --sidebar-ring: 265 70% 42%;
-  }
 }
 
 @layer base {
@@ -126,20 +68,9 @@
     @apply border-border;
   }
 
-  /* Smooth theme transitions */
-  html {
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  html.light,
-  html.dark {
-    color-scheme: light dark;
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Montserrat', sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
 html {

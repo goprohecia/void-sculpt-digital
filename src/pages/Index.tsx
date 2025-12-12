@@ -8,7 +8,14 @@ import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-
 import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 import { motion } from "framer-motion";
-import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground } from "@/components/animations";
+import { 
+  ScrollReveal, 
+  StaggerContainer,
+  staggerItemVariants,
+  SectionTransition,
+  ParallaxBackground,
+} from "@/components/animations";
+
 const services = [{
   icon: Globe,
   title: "Sites Web & Vitrines",
@@ -34,10 +41,12 @@ const services = [{
   href: "/services/360",
   color: "tier-custom"
 }];
+
 const Index = () => {
   const parallaxSlow = useParallax(0.15);
   const parallaxMedium = useParallax(0.25);
   const parallaxFast = useParallax(0.35);
+
   return <Layout>
     {/* Floating Particles Background */}
     <FloatingParticles />
@@ -49,30 +58,28 @@ const Index = () => {
       <div className="absolute inset-0 grid-bg" />
       
       {/* Glowing Orbs with Parallax - smaller on mobile */}
-      <div className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] lg:w-[500px] h-[250px] md:h-[400px] lg:h-[500px] bg-violet-600/20 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px] animate-pulse-glow" style={{
-        transform: `translateY(${parallaxSlow}px)`
-      }} />
-      <div className="absolute bottom-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-blue-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow hidden sm:block" style={{
-        transform: `translateY(${parallaxMedium}px)`,
-        animationDelay: "1s"
-      }} />
-      <div className="absolute top-1/2 right-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-500/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] hidden md:block" style={{
-        transform: `translateY(${parallaxFast}px)`
-      }} />
+      <div 
+        className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] lg:w-[500px] h-[250px] md:h-[400px] lg:h-[500px] bg-violet-600/20 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px] animate-pulse-glow"
+        style={{ transform: `translateY(${parallaxSlow}px)` }}
+      />
+      <div 
+        className="absolute bottom-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-blue-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow hidden sm:block"
+        style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
+      />
+      <div 
+        className="absolute top-1/2 right-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-500/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] hidden md:block"
+        style={{ transform: `translateY(${parallaxFast}px)` }}
+      />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-5xl mx-auto">
           {/* Badge */}
-          <motion.div className="mb-4 flex justify-center" initial={{
-            opacity: 0,
-            y: 20
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1]
-          }}>
+          <motion.div 
+            className="mb-4 flex justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
               <Sparkles className="h-4 w-4" />
               Studio Digital Gaming & Tech
@@ -80,84 +87,80 @@ const Index = () => {
           </motion.div>
 
           {/* Logo */}
-          <motion.div className="mb-4 flex justify-center" initial={{
-            opacity: 0,
-            scale: 0.8,
-            rotate: -10
-          }} animate={{
-            opacity: 1,
-            scale: 1,
-            rotate: 0
-          }} transition={{
-            duration: 0.8,
-            delay: 0.2,
-            ease: [0.25, 0.1, 0.25, 1]
-          }} style={{
-            opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008)
-          }}>
-            <div className="relative group cursor-pointer transition-transform duration-100" style={{
-              transform: `translateY(${parallaxSlow * -0.5}px) scale(${1 - Math.abs(parallaxSlow) * 0.001}) rotate(${parallaxSlow * 0.02}deg)`
-            }}>
-              <div className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.5]" style={{
-                opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006)
-              }} />
-              <div className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-logo-glow-entrance transition-all duration-500 group-hover:bg-violet-500/60 group-hover:blur-[70px]" style={{
-                animationDelay: "0.3s",
-                opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006)
-              }} />
-              <img src={logoHero} alt="Impartial Logo" className="relative h-32 md:h-40 lg:h-48 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]" />
+          <motion.div 
+            className="mb-4 flex justify-center"
+            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            style={{
+              opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.008)
+            }}
+          >
+            <div 
+              className="relative group cursor-pointer transition-transform duration-100"
+              style={{ 
+                transform: `translateY(${parallaxSlow * -0.5}px) scale(${1 - Math.abs(parallaxSlow) * 0.001}) rotate(${parallaxSlow * 0.02}deg)` 
+              }}
+            >
+              <div 
+                className="absolute inset-0 bg-neon-violet/60 blur-[80px] rounded-full animate-logo-glow-entrance transition-all duration-500 group-hover:bg-neon-violet/80 group-hover:blur-[100px] group-hover:scale-[1.5]"
+                style={{ opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }}
+              />
+              <div 
+                className="absolute inset-0 bg-violet-500/40 blur-[50px] rounded-full animate-logo-glow-entrance transition-all duration-500 group-hover:bg-violet-500/60 group-hover:blur-[70px]" 
+                style={{ animationDelay: "0.3s", opacity: Math.max(0, 1 - Math.abs(parallaxSlow) * 0.006) }} 
+              />
+              <img 
+                src={logoHero} 
+                alt="Impartial Logo" 
+                className="relative h-32 md:h-40 lg:h-48 w-auto drop-shadow-[0_0_50px_rgba(139,92,246,0.7)] drop-shadow-[0_0_100px_rgba(139,92,246,0.4)] animate-logo-entrance transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.9)] group-hover:rotate-[5deg]"
+              />
             </div>
           </motion.div>
 
           {/* Title */}
-          <motion.h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 tracking-tight" initial={{
-            opacity: 0,
-            y: 30
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            duration: 0.6,
-            delay: 0.3,
-            ease: [0.25, 0.1, 0.25, 1]
-          }}>
+          <motion.h1 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-2 tracking-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <span className="text-logo-gradient">IMPARTIAL</span>
           </motion.h1>
 
-          <motion.p className="text-lg sm:text-xl md:text-2xl font-medium text-white mb-3 tracking-wide min-h-[1.75rem] md:min-h-[2rem]" initial={{
-            opacity: 0
-          }} animate={{
-            opacity: 1
-          }} transition={{
-            duration: 0.6,
-            delay: 0.5
-          }}>
-            <TypeWriter text="Créateurs d'expériences digitales" delay={40} startDelay={800} />
+          <motion.p 
+            className="text-lg sm:text-xl md:text-2xl font-medium text-white mb-3 tracking-wide min-h-[1.75rem] md:min-h-[2rem]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <TypeWriter 
+              text="Créateurs d'expériences digitales" 
+              delay={40} 
+              startDelay={800}
+            />
           </motion.p>
 
-          <motion.p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed min-h-[3rem] md:min-h-[3.5rem] px-2 sm:px-0" initial={{
-            opacity: 0
-          }} animate={{
-            opacity: 1
-          }} transition={{
-            duration: 0.6,
-            delay: 0.6
-          }}>
-            <TypeWriter text="Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets." delay={25} startDelay={2200} />
+          <motion.p 
+            className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl mx-auto mb-6 md:mb-8 leading-relaxed min-h-[3rem] md:min-h-[3.5rem] px-2 sm:px-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <TypeWriter 
+              text="Nous transformons vos idées en solutions digitales performantes : sites web, applications mobiles et écosystèmes complets." 
+              delay={25} 
+              startDelay={2200}
+            />
           </motion.p>
 
           {/* CTAs */}
-          <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-4 sm:px-0" initial={{
-            opacity: 0,
-            y: 30
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            duration: 0.6,
-            delay: 0.8,
-            ease: [0.25, 0.1, 0.25, 1]
-          }}>
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-4 sm:px-0"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <Link to="/contact" className="w-full sm:w-auto btn-gradient inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 text-white font-semibold rounded-xl text-sm md:text-base">
               Démarrer un projet
               <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
@@ -170,17 +173,15 @@ const Index = () => {
       </div>
 
       {/* Scroll Indicator - hidden on small screens */}
-      <motion.div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block" initial={{
-        opacity: 0,
-        y: 10
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.6,
-        delay: 1.2
-      }}>
-        
+      <motion.div 
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.2 }}
+      >
+        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center pt-2">
+          <div className="w-1.5 h-3 bg-muted-foreground rounded-full animate-bounce" />
+        </div>
       </motion.div>
     </section>
 
@@ -209,7 +210,11 @@ const Index = () => {
           </ScrollReveal>
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6" staggerDelay={0.1} delayStart={0.2}>
+        <StaggerContainer 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+          staggerDelay={0.1}
+          delayStart={0.2}
+        >
           {services.map((service, index) => {
             const colorClasses = {
               'neon-violet': {
@@ -242,8 +247,16 @@ const Index = () => {
               }
             };
             const colors = colorClasses[service.color as keyof typeof colorClasses];
-            return <motion.div key={service.href} variants={staggerItemVariants}>
-                <Link to={service.href} className={`group relative block p-6 md:p-8 rounded-xl md:rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}>
+            
+            return (
+              <motion.div
+                key={service.href}
+                variants={staggerItemVariants}
+              >
+                <Link 
+                  to={service.href} 
+                  className={`group relative block p-6 md:p-8 rounded-xl md:rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}
+                >
                   {/* Hover gradient overlay */}
                   <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
                   
@@ -259,7 +272,8 @@ const Index = () => {
                     </span>
                   </div>
                 </Link>
-              </motion.div>;
+              </motion.div>
+            );
           })}
         </StaggerContainer>
       </div>
@@ -323,4 +337,5 @@ const Index = () => {
     </SectionTransition>
   </Layout>;
 };
+
 export default Index;
