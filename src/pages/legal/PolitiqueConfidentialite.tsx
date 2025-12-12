@@ -256,7 +256,7 @@ const PolitiqueConfidentialite = () => {
 
             {/* Mise à jour */}
             <div className="text-center text-sm text-muted-foreground">
-              <p>Dernière mise à jour : Décembre 2024</p>
+              <p>Dernière mise à jour : Décembre 2025</p>
             </div>
 
           </div>

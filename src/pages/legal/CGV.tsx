@@ -85,7 +85,7 @@ const CGV = () => {
               </div>
 
               <p className="text-sm text-muted-foreground text-center pt-8">
-                Dernière mise à jour : Décembre 2024
+                Dernière mise à jour : Décembre 2025
               </p>
             </div>
           </div>
