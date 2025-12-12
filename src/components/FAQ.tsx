@@ -1,9 +1,11 @@
+import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ScrollReveal, StaggerContainer, SectionTransition, ParallaxBackground } from "@/components/animations";
 
 const faqs = [
   {
@@ -32,57 +34,83 @@ const faqs = [
   },
 ];
 
+const faqItemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1] as const,
+    },
+  },
+};
+
 export function FAQ() {
   return (
-    <section className="py-24 relative">
+    <SectionTransition className="py-24 relative" parallaxStrength={0.05}>
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-red/5 to-transparent" />
+      <ParallaxBackground speed={0.15}>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-red/5 to-transparent" />
+      </ParallaxBackground>
 
       <div className="container mx-auto px-4 relative">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Questions <span className="text-neon-red">Fréquentes</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Retrouvez les réponses aux questions les plus courantes sur nos services et notre façon de travailler.
-          </p>
+          <ScrollReveal variant="fadeInUp">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Questions <span className="text-neon-red">Fréquentes</span>
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal variant="fadeInUp" delay={0.1}>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Retrouvez les réponses aux questions les plus courantes sur nos services et notre façon de travailler.
+            </p>
+          </ScrollReveal>
         </div>
 
         {/* Accordion */}
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="glass-dark rounded-xl border border-border/50 px-6 data-[state=open]:border-neon-red/30 transition-all duration-300"
-              >
-                <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-neon-red hover:no-underline transition-colors">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <StaggerContainer staggerDelay={0.08} delayStart={0.2}>
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <motion.div key={index} variants={faqItemVariants}>
+                  <AccordionItem
+                    value={`item-${index}`}
+                    className="glass-dark rounded-xl border border-border/50 px-6 data-[state=open]:border-neon-red/30 transition-all duration-300 hover:border-neon-red/20"
+                  >
+                    <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-neon-red hover:no-underline transition-colors">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                </motion.div>
+              ))}
+            </Accordion>
+          </StaggerContainer>
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-4">
-            Vous avez une autre question ?
-          </p>
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 text-neon-red hover:text-neon-red/80 font-medium transition-colors"
-          >
-            Contactez-nous directement
-            <span className="text-xl">→</span>
-          </a>
-        </div>
+        <ScrollReveal variant="fadeInUp" delay={0.5}>
+          <div className="text-center mt-12">
+            <p className="text-muted-foreground mb-4">
+              Vous avez une autre question ?
+            </p>
+            <motion.a
+              href="/contact"
+              className="inline-flex items-center gap-2 text-neon-red hover:text-neon-red/80 font-medium transition-colors"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              Contactez-nous directement
+              <span className="text-xl">→</span>
+            </motion.a>
+          </div>
+        </ScrollReveal>
       </div>
-    </section>
+    </SectionTransition>
   );
 }

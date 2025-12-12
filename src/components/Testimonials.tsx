@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Quote, ChevronLeft, ChevronRight, Star, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { ScrollReveal, SectionTransition, ParallaxBackground } from "@/components/animations";
 
 interface Testimonial {
   id: number;
@@ -97,110 +99,132 @@ export function Testimonials() {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <SectionTransition className="py-24 relative overflow-hidden" parallaxStrength={0.05}>
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
-      <div className="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[150px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px]" />
+      <ParallaxBackground speed={0.2}>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+        <div className="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/10 rounded-full blur-[120px]" />
+      </ParallaxBackground>
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-            <Sparkles className="h-4 w-4 text-neon-violet" />
-            <span className="text-sm font-medium text-neon-violet">Témoignages</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            Ce que disent nos <span className="text-gradient-neon">clients</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Découvrez les retours de nos clients qui nous font confiance pour leurs projets digitaux.
-          </p>
+          <ScrollReveal variant="fadeInUp">
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+              <Sparkles className="h-4 w-4 text-neon-violet" />
+              <span className="text-sm font-medium text-neon-violet">Témoignages</span>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal variant="fadeInUp" delay={0.1}>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Ce que disent nos <span className="text-gradient-neon">clients</span>
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal variant="fadeInUp" delay={0.2}>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Découvrez les retours de nos clients qui nous font confiance pour leurs projets digitaux.
+            </p>
+          </ScrollReveal>
         </div>
 
         {/* Carousel */}
-        <div className="relative max-w-5xl mx-auto">
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
-              {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="flex-[0_0_100%] min-w-0 px-4 md:flex-[0_0_80%] lg:flex-[0_0_60%]"
-                >
-                  <div className="group bg-glass-dark/80 backdrop-blur-xl rounded-2xl p-8 md:p-10 border border-white/10 hover:border-neon-violet/40 transition-all duration-500 hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]">
-                    {/* Quote Icon */}
-                    <div className="flex justify-between items-start mb-6">
-                      <Quote className="h-10 w-10 text-neon-violet/40" />
-                      <div className="flex gap-1">
-                        {Array.from({ length: testimonial.rating }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className="h-5 w-5 fill-amber-400 text-amber-400"
+        <ScrollReveal variant="fadeIn" delay={0.3}>
+          <div className="relative max-w-5xl mx-auto">
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {testimonials.map((testimonial) => (
+                  <div
+                    key={testimonial.id}
+                    className="flex-[0_0_100%] min-w-0 px-4 md:flex-[0_0_80%] lg:flex-[0_0_60%]"
+                  >
+                    <motion.div 
+                      className="group bg-glass-dark/80 backdrop-blur-xl rounded-2xl p-8 md:p-10 border border-white/10 hover:border-neon-violet/40 transition-all duration-500 hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]"
+                      whileHover={{ scale: 1.02, y: -5 }}
+                      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                    >
+                      {/* Quote Icon */}
+                      <div className="flex justify-between items-start mb-6">
+                        <Quote className="h-10 w-10 text-neon-violet/40" />
+                        <div className="flex gap-1">
+                          {Array.from({ length: testimonial.rating }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className="h-5 w-5 fill-amber-400 text-amber-400"
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <p className="text-lg md:text-xl leading-relaxed mb-8 text-foreground/90">
+                        "{testimonial.content}"
+                      </p>
+
+                      {/* Author */}
+                      <div className="flex items-center gap-4">
+                        <div className="relative">
+                          <img
+                            src={testimonial.avatar}
+                            alt={testimonial.name}
+                            className="w-14 h-14 rounded-full object-cover border-2 border-neon-violet/40"
                           />
-                        ))}
+                          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-neon-violet/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground">{testimonial.name}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {testimonial.role} • <span className="text-neon-violet">{testimonial.company}</span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-
-                    {/* Content */}
-                    <p className="text-lg md:text-xl leading-relaxed mb-8 text-foreground/90">
-                      "{testimonial.content}"
-                    </p>
-
-                    {/* Author */}
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img
-                          src={testimonial.avatar}
-                          alt={testimonial.name}
-                          className="w-14 h-14 rounded-full object-cover border-2 border-neon-violet/40"
-                        />
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-neon-violet/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">{testimonial.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {testimonial.role} • <span className="text-neon-violet">{testimonial.company}</span>
-                        </p>
-                      </div>
-                    </div>
+                    </motion.div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Navigation Buttons */}
-          <button
-            onClick={scrollPrev}
-            disabled={!canScrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 p-3 rounded-full bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          <button
-            onClick={scrollNext}
-            disabled={!canScrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 p-3 rounded-full bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
-        </div>
+            {/* Navigation Buttons */}
+            <motion.button
+              onClick={scrollPrev}
+              disabled={!canScrollPrev}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 p-3 rounded-full bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </motion.button>
+            <motion.button
+              onClick={scrollNext}
+              disabled={!canScrollNext}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 p-3 rounded-full bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ChevronRight className="h-6 w-6" />
+            </motion.button>
+          </div>
+        </ScrollReveal>
 
         {/* Dots */}
-        <div className="flex justify-center gap-2 mt-8">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => emblaApi?.scrollTo(index)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                index === selectedIndex
-                  ? "bg-neon-violet w-8 shadow-[0_0_10px_rgba(139,92,246,0.5)]"
-                  : "bg-white/20 w-2.5 hover:bg-white/40"
-              }`}
-            />
-          ))}
-        </div>
+        <ScrollReveal variant="fadeIn" delay={0.4}>
+          <div className="flex justify-center gap-2 mt-8">
+            {testimonials.map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => emblaApi?.scrollTo(index)}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  index === selectedIndex
+                    ? "bg-neon-violet w-8 shadow-[0_0_10px_rgba(139,92,246,0.5)]"
+                    : "bg-white/20 w-2.5 hover:bg-white/40"
+                }`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              />
+            ))}
+          </div>
+        </ScrollReveal>
       </div>
-    </section>
+    </SectionTransition>
   );
 }
