@@ -64,60 +64,60 @@
     --sidebar-ring: 265 85% 60%;
   }
 
-  /* Light theme - 2× lighter versions */
+  /* Light theme - assombri pour meilleur contraste */
   .light {
-    --background: 250 20% 98%;
-    --foreground: 250 15% 10%;
+    --background: 250 10% 78%;
+    --foreground: 250 30% 8%;
 
-    --card: 250 20% 95%;
-    --card-foreground: 250 15% 10%;
+    --card: 250 10% 72%;
+    --card-foreground: 250 30% 6%;
 
-    --popover: 250 20% 98%;
-    --popover-foreground: 250 15% 10%;
+    --popover: 250 10% 75%;
+    --popover-foreground: 250 30% 6%;
 
-    --primary: 265 85% 55%;
+    --primary: 265 70% 42%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 250 15% 90%;
-    --secondary-foreground: 250 15% 15%;
+    --secondary: 250 8% 68%;
+    --secondary-foreground: 250 30% 8%;
 
-    --muted: 250 15% 92%;
-    --muted-foreground: 250 10% 40%;
+    --muted: 250 8% 70%;
+    --muted-foreground: 250 25% 25%;
 
-    --accent: 265 85% 55%;
+    --accent: 265 70% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 55%;
+    --destructive: 0 65% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 250 15% 85%;
-    --input: 250 15% 88%;
-    --ring: 265 85% 55%;
+    --border: 250 8% 60%;
+    --input: 250 8% 65%;
+    --ring: 265 70% 42%;
 
-    /* Neon Colors - slightly adjusted for light mode visibility */
-    --neon-red: 345 100% 50%;
-    --neon-green: 155 100% 35%;
-    --neon-blue: 200 100% 45%;
-    --neon-white: 250 15% 10%;
-    --neon-violet: 265 85% 50%;
+    /* Neon Colors - adjusted for light mode visibility */
+    --neon-red: 345 80% 38%;
+    --neon-green: 155 70% 25%;
+    --neon-blue: 200 80% 32%;
+    --neon-white: 250 30% 8%;
+    --neon-violet: 265 70% 38%;
 
     /* Glassmorphism - light mode */
-    --glass-bg: 250 20% 96%;
-    --glass-border: 250 15% 80%;
+    --glass-bg: 250 10% 72%;
+    --glass-border: 250 8% 55%;
 
     /* Card tiers - adjusted for light mode */
-    --tier-start: 0 0% 40%;
-    --tier-pro: 265 85% 50%;
-    --tier-custom: 45 93% 45%;
+    --tier-start: 0 0% 28%;
+    --tier-pro: 265 70% 38%;
+    --tier-custom: 45 75% 35%;
 
-    --sidebar-background: 250 20% 98%;
-    --sidebar-foreground: 250 15% 10%;
-    --sidebar-primary: 265 85% 55%;
+    --sidebar-background: 250 10% 78%;
+    --sidebar-foreground: 250 30% 8%;
+    --sidebar-primary: 265 70% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 250 15% 92%;
-    --sidebar-accent-foreground: 250 15% 10%;
-    --sidebar-border: 250 15% 85%;
-    --sidebar-ring: 265 85% 55%;
+    --sidebar-accent: 250 8% 70%;
+    --sidebar-accent-foreground: 250 30% 8%;
+    --sidebar-border: 250 8% 60%;
+    --sidebar-ring: 265 70% 42%;
   }
 }
 
