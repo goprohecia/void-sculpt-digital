@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { PageTransition3D } from "./PageTransition3D";
+import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 import Index from "@/pages/Index";
 import Studio from "@/pages/Studio";
 import Contact from "@/pages/Contact";
@@ -23,6 +24,7 @@ import PropheciaProject from "@/pages/portfolio/PropheciaProject";
 
 export function AnimatedRoutes() {
   const location = useLocation();
+  useScrollToTop();
 
   return (
     <AnimatePresence mode="wait">
