@@ -8,6 +8,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { CookieBanner } from "@/components/CookieBanner";
 import { CustomCursor } from "@/components/CustomCursor";
 import { AnimatedRoutes } from "@/components/AnimatedRoutes";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => {
           <BrowserRouter>
             <AnimatedRoutes />
             <CookieBanner />
+            <ScrollToTop />
           </BrowserRouter>
         </div>
       </TooltipProvider>

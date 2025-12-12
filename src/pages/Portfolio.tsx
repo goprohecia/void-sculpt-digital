@@ -5,6 +5,7 @@ import { ExternalLink, Eye, Sparkles } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
+import { ImageWithSkeleton } from "@/components/ImageWithSkeleton";
 import { 
   ScrollReveal, 
   StaggerContainer,
@@ -236,10 +237,11 @@ export default function Portfolio() {
                 <div className="bg-glass-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden">
-                    <img
+                    <ImageWithSkeleton
                       src={project.image}
                       alt={project.title}
                       className="w-full h-full object-cover"
+                      containerClassName="h-64"
                     />
                     {/* Category Badge */}
                     <div
@@ -314,10 +316,11 @@ export default function Portfolio() {
                     >
                       {/* Image */}
                       <div className="relative h-56 overflow-hidden">
-                        <img
+                        <ImageWithSkeleton
                           src={project.image}
                           alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          containerClassName="w-full h-full"
                         />
                         <motion.div
                           className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4"
