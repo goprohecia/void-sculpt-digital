@@ -71,6 +71,11 @@ const timeline = [
     title: "Innovation 360°",
     description: "Lancement de notre offre écosystème complet pour accompagner les startups.",
   },
+  {
+    year: "2026",
+    title: "Expansion internationale",
+    description: "Ouverture vers de nouveaux marchés et consolidation de notre expertise à l'échelle mondiale.",
+  },
 ];
 
 const Studio = () => {
