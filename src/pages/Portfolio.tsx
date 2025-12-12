@@ -47,7 +47,7 @@ const projects: Project[] = [
     client: "We Close Agency",
     year: "2024",
     url: "/portfolio/weclose",
-    imagePosition: "20% 40%",
+    imagePosition: "0% 40%",
   },
   {
     id: 2,
