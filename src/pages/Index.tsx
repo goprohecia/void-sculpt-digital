@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
-import { Testimonials } from "@/components/Testimonials";
+import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import { FAQ } from "@/components/FAQ";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import TypeWriter from "@/components/TypeWriter";
@@ -279,8 +279,8 @@ const Index = () => {
       </div>
     </SectionTransition>
 
-    {/* Testimonials Section */}
-    <Testimonials />
+    {/* Portfolio Showcase Section */}
+    <PortfolioShowcase />
 
     {/* FAQ Section */}
     <FAQ />

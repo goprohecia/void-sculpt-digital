@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { ExternalLink, Eye, Sparkles } from "lucide-react";
+import { ExternalLink, Eye, Sparkles, X } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
 import { ImageWithSkeleton } from "@/components/ImageWithSkeleton";
 import { 
@@ -18,6 +18,10 @@ import {
   HorizontalScrollItem,
 } from "@/components/animations";
 
+// Import screenshots
+import wecloseImg from "@/assets/portfolio/weclose.png";
+import altarysImg from "@/assets/portfolio/altarys.png";
+
 interface Project {
   id: number;
   title: string;
@@ -27,88 +31,42 @@ interface Project {
   tags: string[];
   client?: string;
   year: string;
+  url: string;
 }
 
 const projects: Project[] = [
   {
     id: 1,
-    title: "E-Commerce Premium",
+    title: "We Close Agency",
     category: "web",
-    description: "Plateforme e-commerce haute performance avec tunnel de vente optimisé et paiements sécurisés.",
-    image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?w=600&h=400&fit=crop",
-    tags: ["React", "Stripe", "SEO"],
-    client: "Fashion Brand",
+    description: "Site vitrine premium pour une agence de closers et setters. Design moderne noir et or avec animations fluides et expérience utilisateur immersive.",
+    image: wecloseImg,
+    tags: ["React", "Framer Motion", "Design Premium"],
+    client: "We Close Agency",
     year: "2024",
+    url: "https://wecloseagency.fr/",
   },
   {
     id: 2,
-    title: "App Fitness Tracker",
-    category: "mobile",
-    description: "Application mobile cross-platform pour le suivi d'entraînements avec synchronisation temps réel.",
-    image: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=600&h=400&fit=crop",
-    tags: ["React Native", "Firebase", "HealthKit"],
-    client: "FitLife",
+    title: "Altarys Group",
+    category: "backoffice",
+    description: "Plateforme DeFi et RWA avec dashboard administratif complet. Interface intuitive pour la gestion financière décentralisée et les actifs tokenisés.",
+    image: altarysImg,
+    tags: ["Dashboard", "DeFi", "Finance", "TypeScript"],
+    client: "Altarys Group",
     year: "2024",
+    url: "https://altarys-group.fr/",
   },
   {
     id: 3,
-    title: "Dashboard Analytics",
-    category: "backoffice",
-    description: "Tableau de bord administratif avec visualisation de données en temps réel et reporting automatisé.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    tags: ["TypeScript", "D3.js", "PostgreSQL"],
-    client: "DataCorp",
-    year: "2023",
-  },
-  {
-    id: 4,
-    title: "Écosystème Startup",
+    title: "Prophecia",
     category: "360",
-    description: "Solution complète Site + App + Backoffice pour une startup fintech en croissance.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    tags: ["Full Stack", "Microservices", "AWS"],
-    client: "FinTech Plus",
+    description: "Plateforme gaming complète avec système d'invitation, rewards et communauté. Expérience immersive pour les joueurs passionnés avec intégration Web3.",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
+    tags: ["Gaming", "Web3", "Community", "Full Stack"],
+    client: "Prophecia",
     year: "2024",
-  },
-  {
-    id: 5,
-    title: "Site Vitrine Luxe",
-    category: "web",
-    description: "Site vitrine élégant avec animations premium pour une marque de joaillerie haut de gamme.",
-    image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=600&h=400&fit=crop",
-    tags: ["Next.js", "GSAP", "CMS"],
-    client: "Maison Bijoux",
-    year: "2023",
-  },
-  {
-    id: 6,
-    title: "App Livraison",
-    category: "mobile",
-    description: "Application de livraison avec géolocalisation temps réel et notifications push.",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
-    tags: ["Flutter", "Google Maps", "Socket.io"],
-    client: "QuickDeliver",
-    year: "2023",
-  },
-  {
-    id: 7,
-    title: "CRM Immobilier",
-    category: "backoffice",
-    description: "Solution CRM sur mesure pour la gestion de biens immobiliers et leads qualifiés.",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop",
-    tags: ["Vue.js", "Supabase", "AI"],
-    client: "ImmoGroup",
-    year: "2024",
-  },
-  {
-    id: 8,
-    title: "Plateforme SaaS",
-    category: "360",
-    description: "Plateforme SaaS B2B complète avec abonnements, API et intégrations tierces.",
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-    tags: ["Node.js", "Stripe", "Kubernetes"],
-    client: "CloudTech",
-    year: "2024",
+    url: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
   },
 ];
 
@@ -130,6 +88,7 @@ const categoryColors: Record<string, { border: string; text: string; bg: string;
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const parallaxSlow = useParallax(0.15);
   const parallaxMedium = useParallax(0.25);
 
@@ -329,19 +288,23 @@ export default function Portfolio() {
                           transition={{ duration: 0.3 }}
                         >
                           <motion.button 
+                            onClick={() => setPreviewUrl(project.url)}
                             className="p-3 rounded-full bg-neon-violet/20 border border-neon-violet/40 hover:bg-neon-violet/30 transition-colors"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                           >
                             <Eye className="h-5 w-5 text-neon-violet" />
                           </motion.button>
-                          <motion.button 
+                          <motion.a 
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="p-3 rounded-full bg-neon-violet/20 border border-neon-violet/40 hover:bg-neon-violet/30 transition-colors"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                           >
                             <ExternalLink className="h-5 w-5 text-neon-violet" />
-                          </motion.button>
+                          </motion.a>
                         </motion.div>
 
                         {/* Category Badge */}
@@ -433,6 +396,58 @@ export default function Portfolio() {
           </ScrollReveal>
         </div>
       </SectionTransition>
+
+      {/* Iframe Preview Modal */}
+      <AnimatePresence>
+        {previewUrl && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/90 backdrop-blur-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="relative w-full max-w-6xl h-[80vh] bg-glass-dark rounded-2xl border border-white/10 overflow-hidden"
+              initial={{ scale: 0.9, rotateX: -10 }}
+              animate={{ scale: 1, rotateX: 0 }}
+              exit={{ scale: 0.9, rotateX: 10 }}
+              style={{ perspective: 1000 }}
+            >
+              <div className="flex items-center justify-between p-4 border-b border-white/10 bg-glass-dark/80">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
+                  </div>
+                  <span className="text-sm text-muted-foreground truncate max-w-md">{previewUrl}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                  <button
+                    onClick={() => setPreviewUrl(null)}
+                    className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+              <iframe
+                src={previewUrl}
+                className="w-full h-[calc(100%-60px)]"
+                title="Preview"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 }
