@@ -203,6 +203,7 @@ export function Footer() {
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm text-muted-foreground">
             {[
               { to: "/mentions-legales", label: "Mentions légales" },
+              { to: "/politique-confidentialite", label: "Confidentialité" },
               { to: "/cgu", label: "CGU" },
               { to: "/cgv", label: "CGV" },
               { to: "/cookies", label: "Cookies" },
