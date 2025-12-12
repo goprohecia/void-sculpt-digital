@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ArrowLeft, ExternalLink, Calendar, Users, Zap, Gamepad2, Sparkles, Check, Trophy, Gift, Users2 } from "lucide-react";
+import propheciaLogo from "@/assets/portfolio/prophecia-logo.jpeg";
 import { motion } from "framer-motion";
 import { 
   ScrollReveal, 
@@ -136,18 +137,11 @@ export default function PropheciaProject() {
             <ScrollReveal variant="fadeInRight">
               <Hover3DCard className="rounded-2xl" rotateStrength={8}>
                 <div className="relative rounded-2xl overflow-hidden border-2 border-emerald-500/30 shadow-[0_0_80px_rgba(16,185,129,0.3)]">
-                  <div className="aspect-video bg-gradient-to-br from-emerald-900/50 via-background to-cyan-900/30 flex items-center justify-center">
-                    <motion.div
-                      className="text-center"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <Gamepad2 className="w-24 h-24 text-emerald-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold text-emerald-400">GUARDIAN OF PROPHECIA</h3>
-                      <p className="text-muted-foreground">Gaming Platform</p>
-                    </motion.div>
-                  </div>
+                  <img 
+                    src={propheciaLogo} 
+                    alt="Guardian Of Prophecia"
+                    className="w-full h-auto object-cover"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                   
                   {/* Animated border effect */}

@@ -8,6 +8,7 @@ import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from
 // Import screenshots
 import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
 import altarysImg from "@/assets/portfolio/altarys-logo.png";
+import propheciaImg from "@/assets/portfolio/prophecia-logo.jpeg";
 
 interface Project {
   id: number;
@@ -49,7 +50,7 @@ const projects: Project[] = [
     title: "Guardian Of Prophecia",
     category: "Jeu Vidéo",
     description: "Plateforme gaming avec système d'invitation et rewards. Expérience immersive pour les joueurs passionnés.",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
+    image: propheciaImg,
     url: "/portfolio/prophecia",
     externalUrl: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
     tags: ["Gaming", "Web3", "Community"],
