@@ -63,25 +63,25 @@
     --sidebar-ring: 265 85% 60%;
   }
 
-  /* Mode sombre - Espace profond avec étoiles */
+  /* Mode sombre - Espace profond noir absolu */
   .dark {
-    --background: 0 0% 2%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 96%;
 
-    --card: 240 10% 5%;
+    --card: 0 0% 3%;
     --card-foreground: 0 0% 96%;
 
-    --popover: 240 10% 5%;
+    --popover: 0 0% 3%;
     --popover-foreground: 0 0% 96%;
 
     --primary: 265 85% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 10% 8%;
+    --secondary: 0 0% 5%;
     --secondary-foreground: 0 0% 96%;
 
-    --muted: 240 10% 10%;
-    --muted-foreground: 240 5% 45%;
+    --muted: 0 0% 7%;
+    --muted-foreground: 0 0% 45%;
 
     --accent: 265 85% 65%;
     --accent-foreground: 0 0% 96%;
@@ -89,8 +89,8 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 10% 12%;
-    --input: 240 10% 12%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
     --ring: 265 85% 65%;
 
     /* Neon Colors - brighter for dark mode */
@@ -101,21 +101,21 @@
     --neon-violet: 265 85% 65%;
 
     /* Glassmorphism */
-    --glass-bg: 240 10% 6%;
-    --glass-border: 240 10% 15%;
+    --glass-bg: 0 0% 4%;
+    --glass-border: 0 0% 12%;
 
     /* Card tiers */
     --tier-start: 0 0% 75%;
     --tier-pro: 265 85% 65%;
     --tier-custom: 45 93% 60%;
 
-    --sidebar-background: 0 0% 2%;
+    --sidebar-background: 0 0% 0%;
     --sidebar-foreground: 0 0% 96%;
     --sidebar-primary: 265 85% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 8%;
+    --sidebar-accent: 0 0% 5%;
     --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 240 10% 12%;
+    --sidebar-border: 0 0% 10%;
     --sidebar-ring: 265 85% 65%;
   }
 }

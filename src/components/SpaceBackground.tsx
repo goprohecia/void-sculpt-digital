@@ -39,6 +39,17 @@ interface Aurora {
   offset: number;
 }
 
+interface Galaxy {
+  x: number;
+  y: number;
+  radius: number;
+  arms: number;
+  rotation: number;
+  rotationSpeed: number;
+  color: string;
+  opacity: number;
+}
+
 export function SpaceBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDark, setIsDark] = useState(false);
@@ -46,6 +57,7 @@ export function SpaceBackground() {
   const shootingStarsRef = useRef<ShootingStar[]>([]);
   const nebulaeRef = useRef<Nebula[]>([]);
   const aurorasRef = useRef<Aurora[]>([]);
+  const galaxiesRef = useRef<Galaxy[]>([]);
   const animationRef = useRef<number>();
 
   useEffect(() => {
@@ -86,81 +98,98 @@ export function SpaceBackground() {
 
     const starColors = [
       "255, 255, 255",
-      "255, 240, 220",
-      "220, 240, 255",
-      "255, 220, 180",
-      "200, 220, 255",
+      "255, 245, 238",
+      "230, 240, 255",
+      "255, 230, 200",
+      "210, 225, 255",
     ];
 
     const initElements = () => {
-      // Initialize stars - more dense like the reference image
-      const starCount = Math.floor((canvas.width * canvas.height) / 3000);
+      // Initialize stars - dense like deep space
+      const starCount = Math.floor((canvas.width * canvas.height) / 2500);
       starsRef.current = Array.from({ length: starCount }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 1.5 + 0.3,
-        opacity: Math.random() * 0.9 + 0.1,
+        size: Math.random() * 1.2 + 0.2,
+        opacity: Math.random() * 0.85 + 0.15,
         twinkleSpeed: Math.random() * 0.03 + 0.01,
         twinkleOffset: Math.random() * Math.PI * 2,
         color: starColors[Math.floor(Math.random() * starColors.length)],
       }));
 
-      // Initialize nebulae
+      // Initialize nebulae - more subtle
       nebulaeRef.current = [
         {
-          x: canvas.width * 0.2,
-          y: canvas.height * 0.3,
-          radius: Math.min(canvas.width, canvas.height) * 0.4,
-          color1: "rgba(139, 92, 246, 0.03)",
-          color2: "rgba(59, 130, 246, 0.02)",
-          rotation: 0,
-          rotationSpeed: 0.0002,
-        },
-        {
-          x: canvas.width * 0.8,
-          y: canvas.height * 0.7,
+          x: canvas.width * 0.15,
+          y: canvas.height * 0.25,
           radius: Math.min(canvas.width, canvas.height) * 0.35,
-          color1: "rgba(236, 72, 153, 0.025)",
-          color2: "rgba(139, 92, 246, 0.015)",
-          rotation: Math.PI,
-          rotationSpeed: -0.00015,
+          color1: "rgba(139, 92, 246, 0.015)",
+          color2: "rgba(59, 130, 246, 0.01)",
+          rotation: 0,
+          rotationSpeed: 0.0001,
         },
         {
-          x: canvas.width * 0.5,
-          y: canvas.height * 0.5,
-          radius: Math.min(canvas.width, canvas.height) * 0.5,
-          color1: "rgba(34, 211, 238, 0.02)",
-          color2: "rgba(16, 185, 129, 0.015)",
-          rotation: Math.PI / 2,
-          rotationSpeed: 0.0001,
+          x: canvas.width * 0.85,
+          y: canvas.height * 0.75,
+          radius: Math.min(canvas.width, canvas.height) * 0.3,
+          color1: "rgba(236, 72, 153, 0.012)",
+          color2: "rgba(139, 92, 246, 0.008)",
+          rotation: Math.PI,
+          rotationSpeed: -0.00008,
         },
       ];
 
-      // Initialize auroras
+      // Initialize galaxies
+      galaxiesRef.current = [
+        {
+          x: canvas.width * 0.75,
+          y: canvas.height * 0.2,
+          radius: 60,
+          arms: 2,
+          rotation: 0,
+          rotationSpeed: 0.0003,
+          color: "rgba(139, 92, 246, ",
+          opacity: 0.15,
+        },
+        {
+          x: canvas.width * 0.2,
+          y: canvas.height * 0.7,
+          radius: 45,
+          arms: 2,
+          rotation: Math.PI / 4,
+          rotationSpeed: -0.0002,
+          color: "rgba(99, 102, 241, ",
+          opacity: 0.12,
+        },
+        {
+          x: canvas.width * 0.6,
+          y: canvas.height * 0.55,
+          radius: 35,
+          arms: 2,
+          rotation: Math.PI / 2,
+          rotationSpeed: 0.00025,
+          color: "rgba(34, 211, 238, ",
+          opacity: 0.1,
+        },
+      ];
+
+      // Initialize auroras - very subtle
       aurorasRef.current = [
         {
-          y: canvas.height * 0.15,
-          amplitude: 30,
-          frequency: 0.003,
-          speed: 0.0005,
-          color: "rgba(34, 211, 238, 0.08)",
+          y: canvas.height * 0.12,
+          amplitude: 20,
+          frequency: 0.002,
+          speed: 0.0003,
+          color: "rgba(34, 211, 238, 0.04)",
           offset: 0,
         },
         {
-          y: canvas.height * 0.2,
-          amplitude: 25,
-          frequency: 0.004,
-          speed: 0.0007,
-          color: "rgba(139, 92, 246, 0.06)",
+          y: canvas.height * 0.18,
+          amplitude: 15,
+          frequency: 0.003,
+          speed: 0.0004,
+          color: "rgba(139, 92, 246, 0.03)",
           offset: Math.PI / 3,
-        },
-        {
-          y: canvas.height * 0.25,
-          amplitude: 20,
-          frequency: 0.0035,
-          speed: 0.0006,
-          color: "rgba(16, 185, 129, 0.05)",
-          offset: Math.PI / 2,
         },
       ];
     };
@@ -170,7 +199,6 @@ export function SpaceBackground() {
       "rgba(139, 92, 246, ",
       "rgba(99, 102, 241, ",
       "rgba(34, 211, 238, ",
-      "rgba(168, 85, 247, ",
     ];
 
     const createShootingStar = (): ShootingStar => ({
@@ -203,14 +231,54 @@ export function SpaceBackground() {
       ctx.restore();
     };
 
+    const drawGalaxy = (galaxy: Galaxy) => {
+      ctx.save();
+      ctx.translate(galaxy.x, galaxy.y);
+      ctx.rotate(galaxy.rotation);
+
+      // Draw spiral arms
+      for (let arm = 0; arm < galaxy.arms; arm++) {
+        const armAngle = (arm * Math.PI * 2) / galaxy.arms;
+        
+        for (let i = 0; i < 80; i++) {
+          const t = i / 80;
+          const spiralAngle = armAngle + t * Math.PI * 2.5;
+          const distance = t * galaxy.radius;
+          
+          const x = Math.cos(spiralAngle) * distance;
+          const y = Math.sin(spiralAngle) * distance * 0.4; // Elliptical
+          
+          const starSize = (1 - t * 0.7) * 1.5;
+          const starOpacity = (1 - t * 0.8) * galaxy.opacity;
+          
+          ctx.beginPath();
+          ctx.arc(x, y, starSize, 0, Math.PI * 2);
+          ctx.fillStyle = `${galaxy.color}${starOpacity})`;
+          ctx.fill();
+        }
+      }
+
+      // Core glow
+      const coreGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, galaxy.radius * 0.3);
+      coreGradient.addColorStop(0, `${galaxy.color}${galaxy.opacity * 0.4})`);
+      coreGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+      
+      ctx.fillStyle = coreGradient;
+      ctx.beginPath();
+      ctx.arc(0, 0, galaxy.radius * 0.3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    };
+
     const drawAurora = (aurora: Aurora, time: number) => {
       ctx.beginPath();
       ctx.moveTo(0, aurora.y);
 
-      for (let x = 0; x <= canvas.width; x += 5) {
+      for (let x = 0; x <= canvas.width; x += 8) {
         const y = aurora.y + 
           Math.sin(x * aurora.frequency + time * aurora.speed * 1000 + aurora.offset) * aurora.amplitude +
-          Math.sin(x * aurora.frequency * 2 + time * aurora.speed * 500) * (aurora.amplitude * 0.5);
+          Math.sin(x * aurora.frequency * 1.5 + time * aurora.speed * 500) * (aurora.amplitude * 0.3);
         ctx.lineTo(x, y);
       }
 
@@ -228,8 +296,8 @@ export function SpaceBackground() {
     };
 
     const animate = () => {
-      // Clear with deep space black
-      ctx.fillStyle = "rgb(5, 5, 8)";
+      // Pure black space background
+      ctx.fillStyle = "rgb(0, 0, 0)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       time += 0.016;
@@ -238,6 +306,12 @@ export function SpaceBackground() {
       nebulaeRef.current.forEach((nebula) => {
         nebula.rotation += nebula.rotationSpeed;
         drawNebula(nebula);
+      });
+
+      // Draw galaxies
+      galaxiesRef.current.forEach((galaxy) => {
+        galaxy.rotation += galaxy.rotationSpeed;
+        drawGalaxy(galaxy);
       });
 
       // Draw auroras
@@ -255,17 +329,17 @@ export function SpaceBackground() {
         ctx.fillStyle = `rgba(${star.color}, ${finalOpacity})`;
         ctx.fill();
 
-        // Add glow for brighter stars
-        if (star.size > 1 && star.opacity > 0.6) {
+        // Glow for brighter stars
+        if (star.size > 0.8 && star.opacity > 0.5) {
           ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${star.color}, ${finalOpacity * 0.2})`;
+          ctx.arc(star.x, star.y, star.size * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${star.color}, ${finalOpacity * 0.15})`;
           ctx.fill();
         }
       });
 
       // Shooting stars
-      if (Math.random() < 0.004) {
+      if (Math.random() < 0.003) {
         shootingStarsRef.current.push(createShootingStar());
       }
 
@@ -298,12 +372,6 @@ export function SpaceBackground() {
           ctx.beginPath();
           ctx.arc(star.x, star.y, 3, 0, Math.PI * 2);
           ctx.fillStyle = `${star.color}${star.opacity})`;
-          ctx.fill();
-
-          // Extra glow
-          ctx.beginPath();
-          ctx.arc(star.x, star.y, 6, 0, Math.PI * 2);
-          ctx.fillStyle = `${star.color}${star.opacity * 0.3})`;
           ctx.fill();
 
           return true;
