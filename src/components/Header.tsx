@@ -4,6 +4,7 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
 import { MagneticButton, RippleButton } from "@/components/animations";
+import { ThemeToggle } from "./ThemeToggle";
 
 const expertises = [{
   name: "Sites Web & Vitrines",
@@ -173,8 +174,9 @@ export function Header() {
             </NavLink>
           </div>
 
-          {/* CTA Button - Right */}
-          <div className="hidden lg:block flex-shrink-0">
+          {/* CTA Button & Theme Toggle - Right */}
+          <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+            <ThemeToggle />
             <MagneticButton as="div" strength={0.25}>
               <RippleButton
                 onClick={() => window.open("https://calendly.com/yannis-bezriche/impartial-games", "_blank")}
@@ -185,37 +187,40 @@ export function Header() {
             </MagneticButton>
           </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button 
-            className="lg:hidden p-2" 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <AnimatePresence mode="wait">
-              {isMobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X className="h-6 w-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu className="h-6 w-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
+          {/* Mobile Menu Button & Theme Toggle */}
+          <div className="lg:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <motion.button 
+              className="p-2" 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <AnimatePresence mode="wait">
+                {isMobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <X className="h-6 w-6" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Menu className="h-6 w-6" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          </div>
         </nav>
 
         {/* Mobile Menu */}
