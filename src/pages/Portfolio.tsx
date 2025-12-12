@@ -196,11 +196,11 @@ export default function Portfolio() {
               <Hover3DCard className="rounded-2xl overflow-hidden">
                 <div className="bg-glass-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
                   {/* Image */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-64 overflow-hidden group">
                     <ImageWithSkeleton
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                       containerClassName="h-64 overflow-hidden"
                     />
                     {/* Category Badge */}
@@ -275,11 +275,11 @@ export default function Portfolio() {
                       onMouseLeave={() => setHoveredProject(null)}
                     >
                       {/* Image */}
-                      <div className="relative h-56 overflow-hidden">
+                      <div className="relative h-56 overflow-hidden group">
                         <ImageWithSkeleton
                           src={project.image}
                           alt={project.title}
-                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                           containerClassName="w-full h-full overflow-hidden"
                         />
                         <motion.div
