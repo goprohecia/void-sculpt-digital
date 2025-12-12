@@ -11,7 +11,7 @@ import {
   RippleButton,
 } from "@/components/animations";
 
-import wecloseImg from "@/assets/portfolio/weclose.png";
+import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
 
 const projectDetails = {
   title: "We Close Agency",

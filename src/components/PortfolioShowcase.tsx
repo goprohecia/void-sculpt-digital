@@ -29,6 +29,7 @@ const projects: Project[] = [
     description: "Site vitrine pour une agence de closers et setters. Design moderne avec animations fluides et une expérience utilisateur immersive.",
     image: wecloseImg,
     url: "/portfolio/weclose",
+    externalUrl: "https://wecloseagency.fr/",
     tags: ["React", "Framer Motion", "Design Premium"],
     color: "neon-violet",
   },
@@ -39,7 +40,7 @@ const projects: Project[] = [
     description: "Plateforme DeFi et RWA avec dashboard administratif complet. Interface intuitive pour la gestion financière décentralisée.",
     image: altarysImg,
     url: "/portfolio/altarys",
-    externalUrl: "https://altarys.com",
+    externalUrl: "https://altarys-group.fr/",
     tags: ["Dashboard", "DeFi", "Finance"],
     color: "neon-blue",
   },
@@ -50,6 +51,7 @@ const projects: Project[] = [
     description: "Plateforme gaming avec système d'invitation et rewards. Expérience immersive pour les joueurs passionnés.",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop",
     url: "/portfolio/prophecia",
+    externalUrl: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
     tags: ["Gaming", "Web3", "Community"],
     color: "neon-green",
   },
@@ -157,17 +159,19 @@ export function PortfolioShowcase() {
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
                                   >
-                                    <motion.button
-                                      onClick={() => setPreviewUrl(project.url)}
+                                    <motion.a
+                                      href={project.externalUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
                                       className={`px-6 py-3 rounded-xl ${colors.bg} border ${colors.border} ${colors.text} font-medium flex items-center gap-2 hover:scale-105 transition-transform`}
                                       initial={{ y: 20, opacity: 0 }}
                                       animate={{ y: 0, opacity: 1 }}
                                       transition={{ delay: 0.1 }}
                                     >
-                                      Aperçu
-                                    </motion.button>
+                                      Aperçu <ExternalLink className="h-4 w-4" />
+                                    </motion.a>
                                     <motion.a
-                                      href={project.externalUrl || project.url}
+                                      href={project.externalUrl}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="px-6 py-3 rounded-xl bg-neon-violet/20 border border-neon-violet/50 text-neon-violet font-medium flex items-center gap-2 hover:scale-105 transition-transform"

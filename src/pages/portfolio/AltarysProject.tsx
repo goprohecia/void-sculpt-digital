@@ -11,7 +11,7 @@ import {
   RippleButton,
 } from "@/components/animations";
 
-import altarysImg from "@/assets/portfolio/altarys.png";
+import altarysImg from "@/assets/portfolio/altarys-logo.png";
 
 const projectDetails = {
   title: "Altarys Group",
