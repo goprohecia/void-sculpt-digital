@@ -33,7 +33,6 @@ interface Project {
   client?: string;
   year: string;
   url: string;
-  imagePosition: string;
 }
 
 const projects: Project[] = [
@@ -47,7 +46,6 @@ const projects: Project[] = [
     client: "We Close Agency",
     year: "2024",
     url: "/portfolio/weclose",
-    imagePosition: "0% 40%",
   },
   {
     id: 2,
@@ -59,7 +57,6 @@ const projects: Project[] = [
     client: "Altarys Group",
     year: "2024",
     url: "/portfolio/altarys",
-    imagePosition: "center 35%",
   },
   {
     id: 3,
@@ -71,7 +68,6 @@ const projects: Project[] = [
     client: "Guardian Of Prophecia",
     year: "2024",
     url: "/portfolio/prophecia",
-    imagePosition: "center center",
   },
 ];
 
@@ -200,24 +196,16 @@ export default function Portfolio() {
               <Hover3DCard className="rounded-2xl overflow-hidden">
                 <div className="bg-glass-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
                   {/* Image */}
-                  <div className="relative h-64 overflow-hidden rounded-t-2xl group">
+                  <div className="relative h-64 overflow-hidden">
                     <ImageWithSkeleton
                       src={project.image}
                       alt={project.title}
-                      className="w-[115%] h-[115%] object-cover transition-transform duration-500 group-hover:scale-110"
-                      containerClassName="h-64 overflow-hidden"
-                      style={{ objectPosition: project.imagePosition }}
+                      className="w-full h-full object-cover"
+                      containerClassName="h-64"
                     />
-                    {/* Dark Vignette Effect */}
-                    <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_15px_rgba(0,0,0,0.5)]" />
-                    {/* Edge gradients for smooth fade on all sides */}
-                    <div className="absolute inset-x-0 top-0 h-12 pointer-events-none bg-gradient-to-b from-background/60 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 h-12 pointer-events-none bg-gradient-to-t from-background/60 to-transparent" />
-                    <div className="absolute inset-y-0 left-0 w-12 pointer-events-none bg-gradient-to-r from-background/60 to-transparent" />
-                    <div className="absolute inset-y-0 right-0 w-12 pointer-events-none bg-gradient-to-l from-background/60 to-transparent" />
                     {/* Category Badge */}
                     <div
-                      className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm z-10`}
+                      className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm`}
                     >
                       {project.category === "360" ? "360°" : project.category.charAt(0).toUpperCase() + project.category.slice(1)}
                     </div>
@@ -287,23 +275,15 @@ export default function Portfolio() {
                       onMouseLeave={() => setHoveredProject(null)}
                     >
                       {/* Image */}
-                      <div className="relative h-56 overflow-hidden rounded-t-2xl group">
+                      <div className="relative h-56 overflow-hidden">
                         <ImageWithSkeleton
                           src={project.image}
                           alt={project.title}
-                          className="w-[115%] h-[115%] object-cover transition-transform duration-500 group-hover:scale-110"
-                          containerClassName="w-full h-full overflow-hidden"
-                          style={{ objectPosition: project.imagePosition }}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          containerClassName="w-full h-full"
                         />
-                        {/* Dark Vignette Effect */}
-                        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_15px_rgba(0,0,0,0.5)]" />
-                        {/* Edge gradients for smooth fade on all sides */}
-                        <div className="absolute inset-x-0 top-0 h-12 pointer-events-none bg-gradient-to-b from-background/60 to-transparent" />
-                        <div className="absolute inset-x-0 bottom-0 h-12 pointer-events-none bg-gradient-to-t from-background/60 to-transparent" />
-                        <div className="absolute inset-y-0 left-0 w-12 pointer-events-none bg-gradient-to-r from-background/60 to-transparent" />
-                        <div className="absolute inset-y-0 right-0 w-12 pointer-events-none bg-gradient-to-l from-background/60 to-transparent" />
                         <motion.div
-                          className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4 z-10"
+                          className="absolute inset-0 bg-background/90 backdrop-blur-sm flex items-center justify-center gap-4"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
                           transition={{ duration: 0.3 }}
@@ -318,7 +298,7 @@ export default function Portfolio() {
 
                         {/* Category Badge */}
                         <div
-                          className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm z-10`}
+                          className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold border ${colors.border} ${colors.text} ${colors.bg} backdrop-blur-sm`}
                         >
                           {project.category === "360" ? "360°" : project.category.charAt(0).toUpperCase() + project.category.slice(1)}
                         </div>
