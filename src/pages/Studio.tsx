@@ -62,29 +62,24 @@ const values = [
 
 const timeline = [
   {
-    year: "2020",
+    year: "2024",
     title: "Naissance d'IMPARTIAL",
     description: "Création du studio avec une vision claire : révolutionner le digital gaming & tech.",
   },
   {
-    year: "2021",
-    title: "Premiers succès",
-    description: "Lancement de nos premières collaborations majeures et construction de notre réputation.",
+    year: "2024",
+    title: "Premiers clients",
+    description: "Lancement de nos premières collaborations : We Close Agency, Altarys Group, Guardian Of Prophecia.",
   },
   {
-    year: "2022",
+    year: "2025",
     title: "Expansion",
     description: "Élargissement de l'équipe et diversification des services vers le mobile et SaaS.",
   },
   {
-    year: "2023",
+    year: "2025",
     title: "Innovation 360°",
     description: "Lancement de notre offre écosystème complet pour accompagner les startups.",
-  },
-  {
-    year: "2024",
-    title: "Vers l'excellence",
-    description: "Consolidation de notre expertise et expansion internationale.",
   },
 ];
 
