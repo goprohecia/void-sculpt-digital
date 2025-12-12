@@ -3,10 +3,60 @@ import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
 import { Sparkles } from "lucide-react";
 import heroImage from "@/assets/hero-mobile.png";
+import { ServiceScene3D } from "@/components/3d/ServiceScene3D";
+import { StepsTimeline3D } from "@/components/3d/StepsTimeline3D";
+import { useState } from "react";
+
+const steps = [
+  {
+    title: "MVP App",
+    description: "Pour tester une idée",
+    features: [
+      "Application simple iOS/Android",
+      "Authentification basique",
+      "3 à 5 écrans principaux",
+      "Design UI moderne",
+      "Publication stores",
+    ]
+  },
+  {
+    title: "App Market Ready",
+    description: "Pour une app prête marché",
+    features: [
+      "App complète iOS & Android",
+      "Notifications push",
+      "Fonctions temps réel",
+      "Social login",
+      "Analytics intégrés",
+      "Tests utilisateurs",
+    ]
+  },
+  {
+    title: "Écosystème Mobile",
+    description: "Projet complexe / Scaleup",
+    features: [
+      "Architecture scalable",
+      "Sécurité renforcée",
+      "Intégrations avancées",
+      "Backend sur-mesure",
+      "Performance optimale",
+      "Support dédié",
+    ]
+  }
+];
 
 const MobileService = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
   return (
     <Layout>
+      {/* 3D Background Scene */}
+      <ServiceScene3D 
+        steps={steps} 
+        accentColor="#10b981" 
+        serviceType="mobile" 
+      />
+
       <ServiceHero
         title="Expériences Mobiles Next-Gen"
         subtitle="Des applications natives et cross-platform fluides, conçues pour engager vos utilisateurs."
@@ -14,6 +64,55 @@ const MobileService = () => {
         accentColor="green"
         badge="Applications Mobiles"
       />
+
+      {/* Interactive 3D Steps Timeline */}
+      <section className="py-16 relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">
+              Explorez nos <span className="text-gradient-neon">formules</span>
+            </h2>
+            <p className="text-muted-foreground text-sm md:text-base">
+              Cliquez sur les formes 3D pour découvrir chaque offre
+            </p>
+          </div>
+          
+          <StepsTimeline3D 
+            steps={steps} 
+            accentColor="#10b981" 
+            activeStep={activeStep}
+            onStepChange={setActiveStep}
+          />
+
+          {/* Active Step Details */}
+          <div className="mt-8 max-w-2xl mx-auto">
+            <div className="bg-glass-dark/80 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/20 transition-all duration-500">
+              <h3 className="text-xl font-bold text-emerald-400 mb-2">
+                {steps[activeStep].title}
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                {steps[activeStep].description}
+              </p>
+              <ul className="space-y-2">
+                {steps[activeStep].features.map((feature, idx) => (
+                  <li 
+                    key={idx} 
+                    className="flex items-center gap-2 text-sm text-gray-300"
+                    style={{ 
+                      opacity: 0,
+                      animation: 'fade-in 0.3s ease-out forwards',
+                      animationDelay: `${idx * 0.1}s`
+                    }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Pricing Section */}
       <section className="py-24 relative">

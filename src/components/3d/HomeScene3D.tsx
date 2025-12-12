@@ -1,6 +1,6 @@
-import { useRef, Suspense } from 'react';
+import { useRef, Suspense, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, MeshDistortMaterial, Sphere, Ring, Torus, Stars } from '@react-three/drei';
+import { Float, MeshDistortMaterial, Sphere, Ring, Torus, Stars, Icosahedron } from '@react-three/drei';
 import * as THREE from 'three';
 import { useScroll3D } from '@/hooks/use-scroll-3d';
 
@@ -194,6 +194,134 @@ function OrbWithTrail({
   );
 }
 
+// Section Transition Morphing Shape
+function SectionMorphingShape({ scrollProgress }: { scrollProgress: number }) {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  // Calculate which section we're in (0-1 for each section)
+  const sectionIndex = Math.floor(scrollProgress * 4);
+  const sectionProgress = (scrollProgress * 4) % 1;
+  
+  const colors = ['#8b5cf6', '#3b82f6', '#10b981', '#f43f5e'];
+  const currentColor = new THREE.Color(colors[sectionIndex % colors.length]);
+  const nextColor = new THREE.Color(colors[(sectionIndex + 1) % colors.length]);
+  const lerpedColor = currentColor.clone().lerp(nextColor, sectionProgress);
+
+  useFrame((state) => {
+    const time = state.clock.elapsedTime;
+    
+    if (meshRef.current) {
+      meshRef.current.rotation.x = time * 0.2 + scrollProgress * Math.PI * 2;
+      meshRef.current.rotation.y = time * 0.3 + scrollProgress * Math.PI;
+      meshRef.current.rotation.z = Math.sin(time * 0.5) * 0.2;
+      
+      // Position based on scroll - appears in the middle of page
+      const visibility = scrollProgress > 0.15 && scrollProgress < 0.85 ? 1 : 0;
+      const scale = visibility * (0.8 + Math.sin(sectionProgress * Math.PI) * 0.3);
+      meshRef.current.scale.setScalar(scale);
+      
+      // Move along the side of the screen
+      meshRef.current.position.x = 5 + Math.sin(scrollProgress * Math.PI * 4) * 2;
+      meshRef.current.position.y = -scrollProgress * 30 + 5;
+    }
+  });
+
+  // Calculate distortion - more during transitions
+  const distortAmount = 0.2 + Math.sin(sectionProgress * Math.PI) * 0.4;
+
+  return (
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.3}>
+      <Icosahedron ref={meshRef} args={[1.2, 4]}>
+        <MeshDistortMaterial
+          color={lerpedColor}
+          emissive={lerpedColor}
+          emissiveIntensity={0.5}
+          metalness={0.9}
+          roughness={0.1}
+          distort={distortAmount}
+          speed={3}
+          transparent
+          opacity={0.8}
+        />
+      </Icosahedron>
+    </Float>
+  );
+}
+
+// Transition Particles flowing between sections
+function TransitionParticles({ scrollProgress }: { scrollProgress: number }) {
+  const particlesRef = useRef<THREE.Points>(null);
+  const count = 300;
+
+  const particles = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    for (let i = 0; i < count; i++) {
+      // Spiral/helix distribution
+      const t = i / count;
+      const angle = t * Math.PI * 10;
+      const radius = 3 + Math.random() * 4;
+      
+      positions[i * 3] = Math.cos(angle) * radius;
+      positions[i * 3 + 1] = (t - 0.5) * 40;
+      positions[i * 3 + 2] = Math.sin(angle) * radius;
+
+      // Gradient colors
+      colors[i * 3] = 0.5 + t * 0.4;
+      colors[i * 3 + 1] = 0.2 + t * 0.3;
+      colors[i * 3 + 2] = 0.8 + t * 0.2;
+    }
+
+    return { positions, colors };
+  }, []);
+
+  useFrame((state) => {
+    if (particlesRef.current) {
+      const time = state.clock.elapsedTime;
+      particlesRef.current.rotation.y = time * 0.05 + scrollProgress;
+      particlesRef.current.position.y = -scrollProgress * 20;
+      
+      // Update particle positions for flow effect
+      const positions = particlesRef.current.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < count; i++) {
+        const t = i / count;
+        const angle = t * Math.PI * 10 + time * 0.3;
+        const radius = 3 + Math.sin(time * 0.5 + t * 5) * 1;
+        positions[i * 3] = Math.cos(angle) * radius;
+        positions[i * 3 + 2] = Math.sin(angle) * radius;
+      }
+      particlesRef.current.geometry.attributes.position.needsUpdate = true;
+    }
+  });
+
+  return (
+    <points ref={particlesRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={particles.positions}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={count}
+          array={particles.colors}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.04}
+        vertexColors
+        transparent
+        opacity={0.4 + scrollProgress * 0.3}
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
+  );
+}
+
 function BackgroundElements({ scrollProgress }: { scrollProgress: number }) {
   return (
     <>
@@ -239,6 +367,10 @@ export function HomeScene3D() {
           <BackgroundElements scrollProgress={scrollProgress} />
           <LogoSphere scrollProgress={scrollProgress} />
           <ServiceOrbs scrollProgress={scrollProgress} />
+          
+          {/* Section transitions */}
+          <SectionMorphingShape scrollProgress={scrollProgress} />
+          <TransitionParticles scrollProgress={scrollProgress} />
         </Suspense>
       </Canvas>
     </div>
