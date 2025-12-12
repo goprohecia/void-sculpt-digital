@@ -225,7 +225,7 @@ const PolitiqueConfidentialite = () => {
                   Pour exercer vos droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter :
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li><span className="font-semibold text-foreground">Par email :</span> contact@impartial.studio</li>
+                  <li><span className="font-semibold text-foreground">Par email :</span>Par email : contact@impartialgames.com</li>
                   <li><span className="font-semibold text-foreground">Par courrier :</span> Impartial Games, Delaware    </li>
                 </ul>
                 <p>
