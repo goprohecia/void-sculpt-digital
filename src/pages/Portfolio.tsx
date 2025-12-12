@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { ExternalLink, Eye, Sparkles, X } from "lucide-react";
@@ -44,7 +45,7 @@ const projects: Project[] = [
     tags: ["React", "Framer Motion", "Design Premium"],
     client: "We Close Agency",
     year: "2024",
-    url: "https://wecloseagency.fr/",
+    url: "/portfolio/weclose",
   },
   {
     id: 2,
@@ -55,7 +56,7 @@ const projects: Project[] = [
     tags: ["Dashboard", "DeFi", "Finance", "TypeScript"],
     client: "Altarys Group",
     year: "2024",
-    url: "https://altarys-group.fr/",
+    url: "/portfolio/altarys",
   },
   {
     id: 3,
@@ -66,7 +67,7 @@ const projects: Project[] = [
     tags: ["Gaming", "Web3", "Community", "Full Stack"],
     client: "Prophecia",
     year: "2024",
-    url: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
+    url: "/portfolio/prophecia",
   },
 ];
 
@@ -287,24 +288,12 @@ export default function Portfolio() {
                           animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
                           transition={{ duration: 0.3 }}
                         >
-                          <motion.button 
-                            onClick={() => setPreviewUrl(project.url)}
+                          <Link 
+                            to={project.url}
                             className="p-3 rounded-full bg-neon-violet/20 border border-neon-violet/40 hover:bg-neon-violet/30 transition-colors"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
                           >
                             <Eye className="h-5 w-5 text-neon-violet" />
-                          </motion.button>
-                          <motion.a 
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-3 rounded-full bg-neon-violet/20 border border-neon-violet/40 hover:bg-neon-violet/30 transition-colors"
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <ExternalLink className="h-5 w-5 text-neon-violet" />
-                          </motion.a>
+                          </Link>
                         </motion.div>
 
                         {/* Category Badge */}
