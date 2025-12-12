@@ -15,6 +15,11 @@ import Cookies from "@/pages/legal/Cookies";
 import MentionsLegales from "@/pages/legal/MentionsLegales";
 import NotFound from "@/pages/NotFound";
 
+// Portfolio project pages
+import WeCloseProject from "@/pages/portfolio/WeCloseProject";
+import AltarysProject from "@/pages/portfolio/AltarysProject";
+import PropheciaProject from "@/pages/portfolio/PropheciaProject";
+
 export function AnimatedRoutes() {
   const location = useLocation();
 
@@ -24,6 +29,9 @@ export function AnimatedRoutes() {
         <Route path="/" element={<PageTransition3D><Index /></PageTransition3D>} />
         <Route path="/studio" element={<PageTransition3D><Studio /></PageTransition3D>} />
         <Route path="/portfolio" element={<PageTransition3D><Portfolio /></PageTransition3D>} />
+        <Route path="/portfolio/weclose" element={<PageTransition3D><WeCloseProject /></PageTransition3D>} />
+        <Route path="/portfolio/altarys" element={<PageTransition3D><AltarysProject /></PageTransition3D>} />
+        <Route path="/portfolio/prophecia" element={<PageTransition3D><PropheciaProject /></PageTransition3D>} />
         <Route path="/contact" element={<PageTransition3D><Contact /></PageTransition3D>} />
         <Route path="/services/web" element={<PageTransition3D><WebService /></PageTransition3D>} />
         <Route path="/services/mobile" element={<PageTransition3D><MobileService /></PageTransition3D>} />
