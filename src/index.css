@@ -73,9 +73,16 @@
     font-family: 'Montserrat', sans-serif;
   }
 
-  html {
-    scroll-behavior: smooth;
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide default cursor on desktop when custom cursor is active */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
   }
+}
 }
 
 @layer components {
