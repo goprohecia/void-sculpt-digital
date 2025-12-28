@@ -65,11 +65,14 @@ export function Header() {
   
   return (
     <motion.header 
-      className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(139,92,246,0.1)]"
+      className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-white/10"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
+      {/* Subtle top highlight */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -83,7 +86,7 @@ export function Header() {
                 transition={{ duration: 0.3 }}
               />
               <motion.span 
-                className="text-xl font-bold text-gradient-neon hidden sm:block"
+                className="text-xl font-bold text-gradient-premium hidden sm:block"
                 whileHover={{ scale: 1.05 }}
               >
                 IMPARTIAL
@@ -121,7 +124,7 @@ export function Header() {
                 </motion.button>
               </MagneticButton>
 
-              {/* Dropdown Menu */}
+              {/* Dropdown Menu - Glass Premium */}
               <AnimatePresence>
                 {isDropdownOpen && (
                   <motion.div 
@@ -132,11 +135,14 @@ export function Header() {
                     transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   >
                     <motion.div 
-                      className="bg-background/80 backdrop-blur-xl rounded-xl p-2 min-w-[220px] border border-neon-violet/30 shadow-[0_10px_40px_rgba(139,92,246,0.2)]"
+                      className="glass-card glass-shimmer min-w-[240px] p-2 overflow-hidden"
                       initial={{ rotateX: -15 }}
                       animate={{ rotateX: 0 }}
                       style={{ transformPerspective: 1000 }}
                     >
+                      {/* Inner highlight */}
+                      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-violet/30 to-transparent" />
+                      
                       {expertises.map((item, index) => (
                         <motion.div
                           key={item.href}
@@ -146,7 +152,7 @@ export function Header() {
                         >
                           <Link 
                             to={item.href} 
-                            className={`block px-4 py-3 rounded-lg transition-all duration-200 hover:bg-neon-violet/10 hover:translate-x-1 ${
+                            className={`relative z-10 block px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 hover:translate-x-1 ${
                               isActive(item.href) ? "text-neon-violet bg-neon-violet/10" : ""
                             }`}
                           >
@@ -188,7 +194,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
             <motion.button
-              className="p-2" 
+              className="glass-button p-2" 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -202,7 +208,7 @@ export function Header() {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <X className="h-6 w-6" />
+                    <X className="h-6 w-6 relative z-10" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -212,7 +218,7 @@ export function Header() {
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Menu className="h-6 w-6" />
+                    <Menu className="h-6 w-6 relative z-10" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -220,18 +226,18 @@ export function Header() {
           </div>
         </nav>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Glass Premium */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
-              className="lg:hidden overflow-hidden pb-6 bg-background"
+              className="lg:hidden overflow-hidden pb-6"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <motion.div 
-                className="flex flex-col gap-2"
+                className="glass-surface rounded-2xl p-4 mt-2"
                 initial="closed"
                 animate="open"
                 variants={{
@@ -245,7 +251,7 @@ export function Header() {
                   <Link 
                     to="/" 
                     onClick={() => setIsMobileMenuOpen(false)} 
-                    className={`px-4 py-3 rounded-lg transition-colors block ${isActive("/") ? "bg-neon-violet/10 text-neon-violet" : ""}`}
+                    className={`relative z-10 px-4 py-3 rounded-xl transition-colors block ${isActive("/") ? "bg-neon-violet/10 text-neon-violet" : ""}`}
                   >
                     Accueil
                   </Link>
@@ -266,12 +272,14 @@ export function Header() {
                     <Link 
                       to={item.href} 
                       onClick={() => setIsMobileMenuOpen(false)} 
-                      className={`px-6 py-3 rounded-lg transition-colors block ${isActive(item.href) ? "bg-neon-violet/10 text-neon-violet" : ""}`}
+                      className={`relative z-10 px-6 py-3 rounded-xl transition-colors block ${isActive(item.href) ? "bg-neon-violet/10 text-neon-violet" : ""}`}
                     >
                       {item.name}
                     </Link>
                   </motion.div>
                 ))}
+
+                <div className="divider-premium my-3" />
 
                 {[
                   { to: "/portfolio", label: "Portfolio" },
@@ -285,7 +293,7 @@ export function Header() {
                     <Link 
                       to={item.to} 
                       onClick={() => setIsMobileMenuOpen(false)} 
-                      className={`px-4 py-3 rounded-lg transition-colors block ${isActive(item.to) ? "bg-neon-violet/10 text-neon-violet" : ""}`}
+                      className={`relative z-10 px-4 py-3 rounded-xl transition-colors block ${isActive(item.to) ? "bg-neon-violet/10 text-neon-violet" : ""}`}
                     >
                       {item.label}
                     </Link>
@@ -300,7 +308,7 @@ export function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setIsMobileMenuOpen(false)} 
-                    className="mx-4 mt-2 btn-gradient px-6 py-3 text-white font-semibold rounded-xl text-center block"
+                    className="mt-4 btn-gradient px-6 py-3 text-white font-semibold rounded-xl text-center block relative z-10"
                   >
                     Prendre rendez-vous
                   </a>
