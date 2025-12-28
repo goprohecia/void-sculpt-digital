@@ -4,7 +4,6 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
 import { MagneticButton, RippleButton } from "@/components/animations";
-import { ThemeToggle } from "./ThemeToggle";
 
 const expertises = [{
   name: "Sites Web & Vitrines",
@@ -174,9 +173,8 @@ export function Header() {
             </NavLink>
           </div>
 
-          {/* CTA Button & Theme Toggle - Right */}
+          {/* CTA Button - Right */}
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
-            <ThemeToggle />
             <MagneticButton as="div" strength={0.25}>
               <RippleButton
                 onClick={() => window.open("https://calendly.com/yannis-bezriche/impartial-games", "_blank")}
@@ -187,10 +185,9 @@ export function Header() {
             </MagneticButton>
           </div>
 
-          {/* Mobile Menu Button & Theme Toggle */}
+          {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center gap-2">
-            <ThemeToggle />
-            <motion.button 
+            <motion.button
               className="p-2" 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
