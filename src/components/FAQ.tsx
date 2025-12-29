@@ -78,7 +78,7 @@ export function FAQ() {
                 <motion.div key={index} variants={faqItemVariants}>
                   <AccordionItem
                     value={`item-${index}`}
-                    className="glass-dark rounded-xl border border-border/50 px-6 data-[state=open]:border-neon-red/30 transition-all duration-300 hover:border-neon-red/20"
+                    className="glass-card rounded-xl px-6 data-[state=open]:border-neon-red/30 transition-all duration-300 hover:border-neon-red/20"
                   >
                     <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-neon-red hover:no-underline transition-colors">
                       {faq.question}

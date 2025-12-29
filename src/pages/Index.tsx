@@ -162,7 +162,7 @@ const Index = () => {
               Démarrer un projet
               <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
             </Link>
-            <Link to="/portfolio" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 border border-border bg-card/50 font-semibold rounded-xl transition-all duration-300 hover:bg-secondary hover:border-primary/50 text-sm md:text-base">
+            <Link to="/portfolio" className="w-full sm:w-auto glass-button inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 font-semibold text-sm md:text-base hover:border-primary/50">
               Voir nos réalisations
             </Link>
           </motion.div>
@@ -242,8 +242,8 @@ const Index = () => {
               }
             };
             const colors = colorClasses[service.color as keyof typeof colorClasses];
-            return <motion.div key={service.href} variants={staggerItemVariants}>
-                <Link to={service.href} className={`group relative block p-6 md:p-8 rounded-xl md:rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}>
+              return <motion.div key={service.href} variants={staggerItemVariants}>
+                <Link to={service.href} className={`group relative block p-6 md:p-8 rounded-xl md:rounded-2xl glass-card transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}>
                   {/* Hover gradient overlay */}
                   <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
                   
@@ -285,9 +285,9 @@ const Index = () => {
         <div className="max-w-4xl mx-auto">
           {/* Glassmorphism Card */}
           <ScrollReveal variant="scaleIn" duration={0.8}>
-            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16 border border-white/10 text-center relative overflow-hidden">
+            <div className="glass-ultra text-center relative overflow-hidden p-8 md:p-12 lg:p-16">
               {/* Inner glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-3xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10 rounded-[inherit]" />
               
               <div className="relative z-10">
                 <ScrollReveal variant="fadeInUp" delay={0.1}>
