@@ -135,7 +135,7 @@ export function PortfolioShowcase() {
                       >
                         <Hover3DCard className="rounded-2xl" rotateStrength={5}>
                           <motion.div 
-                            className={`group bg-glass-dark/80 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 hover:border-neon-violet/40 transition-all duration-500 hover:${colors.shadow}`}
+                            className={`group glass-card rounded-2xl overflow-hidden hover:border-neon-violet/40 transition-all duration-500 hover:${colors.shadow}`}
                             whileHover={{ y: -5 }}
                             transition={{ duration: 0.3 }}
                             onMouseEnter={() => setHoveredProject(project.id)}
@@ -221,7 +221,7 @@ export function PortfolioShowcase() {
               {/* Navigation Buttons */}
               <motion.button
                 onClick={scrollPrev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 p-3 rounded-full bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 p-3 rounded-full glass-button hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -229,7 +229,7 @@ export function PortfolioShowcase() {
               </motion.button>
               <motion.button
                 onClick={scrollNext}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 p-3 rounded-full bg-glass-dark/80 backdrop-blur-xl border border-white/10 hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 p-3 rounded-full glass-button hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >

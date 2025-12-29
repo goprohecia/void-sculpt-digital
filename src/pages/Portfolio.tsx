@@ -160,24 +160,26 @@ export default function Portfolio() {
       </section>
 
       {/* Filter Tabs */}
-      <SectionTransition className="py-8 border-b border-white/10">
+      <SectionTransition className="py-8">
         <div className="container mx-auto px-4">
           <ScrollReveal variant="fadeIn">
-            <div className="flex flex-wrap justify-center gap-3">
-              {categories.map((cat) => (
-                <RippleButton
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${
-                    activeCategory === cat.id
-                      ? "bg-neon-violet/20 text-neon-violet border border-neon-violet/50 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
-                      : "bg-glass-dark/50 backdrop-blur-sm border border-white/10 hover:bg-white/5 hover:border-neon-violet/30"
-                  }`}
-                  rippleColor={activeCategory === cat.id ? "rgba(139, 92, 246, 0.3)" : "rgba(255, 255, 255, 0.2)"}
-                >
-                  {cat.name}
-                </RippleButton>
-              ))}
+            <div className="glass-surface p-4 rounded-2xl max-w-2xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-3">
+                {categories.map((cat) => (
+                  <RippleButton
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${
+                      activeCategory === cat.id
+                        ? "bg-neon-violet/20 text-neon-violet border border-neon-violet/50 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                        : "glass-button hover:border-neon-violet/30"
+                    }`}
+                    rippleColor={activeCategory === cat.id ? "rgba(139, 92, 246, 0.3)" : "rgba(255, 255, 255, 0.2)"}
+                  >
+                    {cat.name}
+                  </RippleButton>
+                ))}
+              </div>
             </div>
           </ScrollReveal>
         </div>
@@ -195,7 +197,7 @@ export default function Portfolio() {
           return (
             <HorizontalScrollItem key={project.id} index={index} className="w-[400px] lg:w-[500px]">
               <Hover3DCard className="rounded-2xl overflow-hidden">
-                <div className="bg-glass-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+                <div className="glass-card rounded-2xl overflow-hidden">
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden">
                     <ImageWithSkeleton
@@ -271,7 +273,7 @@ export default function Portfolio() {
                     rotateStrength={6}
                   >
                     <div
-                      className={`h-full bg-glass-dark/80 backdrop-blur-xl rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 hover:border-neon-violet/40`}
+                      className={`h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-violet/40`}
                       onMouseEnter={() => setHoveredProject(project.id)}
                       onMouseLeave={() => setHoveredProject(null)}
                     >
@@ -350,8 +352,8 @@ export default function Portfolio() {
         
         <div className="container mx-auto px-4 relative z-10">
           <ScrollReveal variant="scaleIn" duration={0.8}>
-            <div className="bg-glass-dark/60 backdrop-blur-xl rounded-3xl p-12 text-center max-w-3xl mx-auto border border-white/10 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/5 via-transparent to-purple-600/5 rounded-3xl" />
+            <div className="glass-ultra p-12 text-center max-w-3xl mx-auto relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10 rounded-[inherit]" />
               
               <div className="relative z-10">
                 <ScrollReveal variant="fadeInUp" delay={0.1}>
