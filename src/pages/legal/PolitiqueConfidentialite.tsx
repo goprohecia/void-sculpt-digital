@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { Sparkles, Shield, Database, Eye, Lock, Users, Globe, Mail } from "lucide-react";
+import { Shield, Database, Eye, Lock, Users, Globe, Mail } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 const PolitiqueConfidentialite = () => {
   return <Layout>
@@ -24,7 +24,7 @@ const PolitiqueConfidentialite = () => {
             animationDelay: "0.1s"
           }}>
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                <Sparkles className="h-4 w-4" />
+                
                 Protection des données
               </div>
             </div>
