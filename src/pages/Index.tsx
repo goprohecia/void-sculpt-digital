@@ -73,10 +73,7 @@ const Index = () => {
             duration: 0.6,
             ease: [0.25, 0.1, 0.25, 1]
           }}>
-            <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-              <Sparkles className="h-4 w-4" />
-              Studio Digital Gaming & Tech
-            </div>
+            
           </motion.div>
 
           {/* Logo */}
@@ -242,7 +239,7 @@ const Index = () => {
               }
             };
             const colors = colorClasses[service.color as keyof typeof colorClasses];
-              return <motion.div key={service.href} variants={staggerItemVariants}>
+            return <motion.div key={service.href} variants={staggerItemVariants}>
                 <Link to={service.href} className={`group relative block p-6 md:p-8 rounded-xl md:rounded-2xl glass-card transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}>
                   {/* Hover gradient overlay */}
                   <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
