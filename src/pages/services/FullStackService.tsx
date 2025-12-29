@@ -1,27 +1,12 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-360.png";
-import { 
-  ScrollReveal, 
-  StaggerContainer,
-  staggerItemVariants,
-  SectionTransition,
-  ParallaxBackground,
-} from "@/components/animations";
-
+import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground } from "@/components/animations";
 const FullStackService = () => {
-  return (
-    <Layout>
-      <ServiceHero
-        title="Domination Digitale Totale"
-        subtitle="L'alliance parfaite : Site + App + Backoffice. La solution ultime pour les startups ambitieuses."
-        image={heroImage}
-        accentColor="gold"
-        badge="Écosystème 360°"
-      />
+  return <Layout>
+      <ServiceHero title="Domination Digitale Totale" subtitle="L'alliance parfaite : Site + App + Backoffice. La solution ultime pour les startups ambitieuses." image={heroImage} accentColor="gold" badge="Écosystème 360°" />
 
       {/* Pricing Section */}
       <SectionTransition className="py-24 relative" parallaxStrength={0.05}>
@@ -33,7 +18,7 @@ const FullStackService = () => {
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/30">
-                <Sparkles className="h-4 w-4 text-violet-400" />
+                
                 <span className="text-sm font-medium text-violet-400">Tarifs</span>
               </div>
             </ScrollReveal>
@@ -49,74 +34,21 @@ const FullStackService = () => {
             </ScrollReveal>
           </div>
 
-          <StaggerContainer 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
-            staggerDelay={0.15}
-            delayStart={0.2}
-          >
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto" staggerDelay={0.15} delayStart={0.2}>
             <motion.div variants={staggerItemVariants}>
-              <PricingCard
-                tier="start"
-                title="Digital Launch"
-                subtitle="Petite structure"
-                price="Sur demande"
-                features={[
-                  "Site vitrine professionnel",
-                  "Mini application mobile",
-                  "Backoffice léger",
-                  "Connexion entre services",
-                  "Formation équipe",
-                ]}
-                upsell="Pack Maintenance 360 – 149€/mois"
-                subject="360° - Offre START (Digital Launch)"
-                index={0}
-              />
+              <PricingCard tier="start" title="Digital Launch" subtitle="Petite structure" price="Sur demande" features={["Site vitrine professionnel", "Mini application mobile", "Backoffice léger", "Connexion entre services", "Formation équipe"]} upsell="Pack Maintenance 360 – 149€/mois" subject="360° - Offre START (Digital Launch)" index={0} />
             </motion.div>
 
             <motion.div variants={staggerItemVariants}>
-              <PricingCard
-                tier="pro"
-                title="Business Engine"
-                subtitle="Entreprise en activité"
-                price="Sur demande"
-                features={[
-                  "Site PRO avec e-commerce",
-                  "App mobile complète",
-                  "Backoffice automatisé",
-                  "Synchronisation temps réel",
-                  "Analytics unifiés",
-                  "Support prioritaire",
-                ]}
-                upsell="Pack Croissance – 249€/mois"
-                subject="360° - Offre PRO (Business Engine)"
-                index={1}
-              />
+              <PricingCard tier="pro" title="Business Engine" subtitle="Entreprise en activité" price="Sur demande" features={["Site PRO avec e-commerce", "App mobile complète", "Backoffice automatisé", "Synchronisation temps réel", "Analytics unifiés", "Support prioritaire"]} upsell="Pack Croissance – 249€/mois" subject="360° - Offre PRO (Business Engine)" index={1} />
             </motion.div>
 
             <motion.div variants={staggerItemVariants}>
-              <PricingCard
-                tier="custom"
-                title="Full Ecosystem"
-                subtitle="Projet ambitieux / Scaleup"
-                price="Sur devis"
-                features={[
-                  "Site custom haute performance",
-                  "App scalable multiplateforme",
-                  "Architecture microservices",
-                  "IA & automatisation avancée",
-                  "Équipe dédiée",
-                  "SLA premium",
-                ]}
-                upsell="Contrat d'accompagnement sur devis"
-                subject="360° - Offre SUR-MESURE (Full Ecosystem)"
-                index={2}
-              />
+              <PricingCard tier="custom" title="Full Ecosystem" subtitle="Projet ambitieux / Scaleup" price="Sur devis" features={["Site custom haute performance", "App scalable multiplateforme", "Architecture microservices", "IA & automatisation avancée", "Équipe dédiée", "SLA premium"]} upsell="Contrat d'accompagnement sur devis" subject="360° - Offre SUR-MESURE (Full Ecosystem)" index={2} />
             </motion.div>
           </StaggerContainer>
         </div>
       </SectionTransition>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default FullStackService;
