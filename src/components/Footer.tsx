@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Mail, Phone, MapPin, ArrowUpRight, Cookie } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight, Cookie } from "lucide-react";
 import { motion } from "framer-motion";
 import { Newsletter } from "@/components/Newsletter";
 import { ScrollReveal, StaggerContainer, staggerItemVariants, RippleButton, MagneticButton } from "@/components/animations";
@@ -57,7 +57,7 @@ export function Footer() {
             }} transition={{
               duration: 0.2
             }}>
-                <Sparkles className="h-4 w-4 text-neon-violet" />
+                
                 <span className="text-sm text-neon-violet font-medium">Gaming & Tech Design</span>
               </motion.div>
             </div>
