@@ -1,18 +1,10 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { ArrowLeft, ExternalLink, Calendar, Users, Zap, Server, Sparkles, Check, Shield, Database, LineChart } from "lucide-react";
+import { ArrowLeft, ExternalLink, Calendar, Users, Zap, Server, Check, Shield, Database, LineChart } from "lucide-react";
 import { motion } from "framer-motion";
-import { 
-  ScrollReveal, 
-  SectionTransition,
-  ParallaxBackground,
-  Hover3DCard,
-  RippleButton,
-} from "@/components/animations";
-
+import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard, RippleButton } from "@/components/animations";
 import altarysImg from "@/assets/portfolio/altarys-logo.png";
-
 const projectDetails = {
   title: "Altarys Group",
   subtitle: "Plateforme DeFi et RWA avec dashboard administratif complet",
@@ -24,43 +16,39 @@ const projectDetails = {
   description: `Altarys Group accompagne les professionnels de la finance dans leur transition vers l'écosystème DeFi et les actifs tokenisés (RWA). Le projet nécessitait une plateforme complète combinant un site vitrine informatif et un dashboard de gestion avancé.
 
 L'interface a été conçue pour simplifier des concepts financiers complexes tout en maintenant un niveau de professionnalisme adapté au secteur. Le dashboard offre une vue claire des opérations et permet une gestion fluide des différents services proposés.`,
-  challenges: [
-    "Vulgariser des concepts DeFi complexes pour un public traditionnel",
-    "Créer un dashboard intuitif pour la gestion multi-services",
-    "Assurer la sécurité des données financières sensibles",
-    "Intégrer des visualisations de données en temps réel",
-  ],
-  solutions: [
-    "Design épuré avec hiérarchie visuelle claire",
-    "Architecture modulaire avec composants réutilisables",
-    "Authentification sécurisée et gestion des rôles",
-    "Graphiques interactifs avec mises à jour live",
-  ],
+  challenges: ["Vulgariser des concepts DeFi complexes pour un public traditionnel", "Créer un dashboard intuitif pour la gestion multi-services", "Assurer la sécurité des données financières sensibles", "Intégrer des visualisations de données en temps réel"],
+  solutions: ["Design épuré avec hiérarchie visuelle claire", "Architecture modulaire avec composants réutilisables", "Authentification sécurisée et gestion des rôles", "Graphiques interactifs avec mises à jour live"],
   technologies: ["React", "TypeScript", "Tailwind CSS", "Supabase", "Chart.js", "Framer Motion"],
-  features: [
-    "Dashboard administratif complet",
-    "Gestion multi-utilisateurs",
-    "Visualisation de données avancée",
-    "Système de notifications",
-    "Rapports automatisés",
-    "Interface responsive",
-  ],
-  results: [
-    { metric: "+85%", label: "Efficacité opérationnelle" },
-    { metric: "50%", label: "Réduction temps admin" },
-    { metric: "99.9%", label: "Uptime garanti" },
-    { metric: "A+", label: "Score sécurité" },
-  ],
-  dashboardFeatures: [
-    { icon: Database, title: "Base de données", description: "Gestion centralisée des données clients et transactions" },
-    { icon: LineChart, title: "Analytics", description: "Tableaux de bord avec métriques en temps réel" },
-    { icon: Shield, title: "Sécurité", description: "Authentification 2FA et chiffrement bout-en-bout" },
-  ],
+  features: ["Dashboard administratif complet", "Gestion multi-utilisateurs", "Visualisation de données avancée", "Système de notifications", "Rapports automatisés", "Interface responsive"],
+  results: [{
+    metric: "+85%",
+    label: "Efficacité opérationnelle"
+  }, {
+    metric: "50%",
+    label: "Réduction temps admin"
+  }, {
+    metric: "99.9%",
+    label: "Uptime garanti"
+  }, {
+    metric: "A+",
+    label: "Score sécurité"
+  }],
+  dashboardFeatures: [{
+    icon: Database,
+    title: "Base de données",
+    description: "Gestion centralisée des données clients et transactions"
+  }, {
+    icon: LineChart,
+    title: "Analytics",
+    description: "Tableaux de bord avec métriques en temps réel"
+  }, {
+    icon: Shield,
+    title: "Sécurité",
+    description: "Authentification 2FA et chiffrement bout-en-bout"
+  }]
 };
-
 export default function AltarysProject() {
-  return (
-    <Layout>
+  return <Layout>
       <FloatingParticles />
       
       {/* Hero Section */}
@@ -72,10 +60,7 @@ export default function AltarysProject() {
         <div className="container mx-auto px-4 relative z-10">
           {/* Back Link */}
           <ScrollReveal variant="fadeInLeft">
-            <Link 
-              to="/portfolio" 
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-blue-400 transition-colors mb-8"
-            >
+            <Link to="/portfolio" className="inline-flex items-center gap-2 text-muted-foreground hover:text-blue-400 transition-colors mb-8">
               <ArrowLeft className="h-4 w-4" />
               Retour au portfolio
             </Link>
@@ -121,12 +106,7 @@ export default function AltarysProject() {
               </ScrollReveal>
 
               <ScrollReveal variant="fadeInUp" delay={0.4}>
-                <a
-                  href={projectDetails.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500/20 border border-blue-500/50 text-blue-400 font-semibold rounded-xl hover:bg-blue-500/30 transition-all"
-                >
+                <a href={projectDetails.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500/20 border border-blue-500/50 text-blue-400 font-semibold rounded-xl hover:bg-blue-500/30 transition-all">
                   Visiter le site
                   <ExternalLink className="h-4 w-4" />
                 </a>
@@ -137,11 +117,7 @@ export default function AltarysProject() {
             <ScrollReveal variant="fadeInRight">
               <Hover3DCard className="rounded-2xl" rotateStrength={5}>
                 <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(59,130,246,0.2)]">
-                  <img
-                    src={altarysImg}
-                    alt={projectDetails.title}
-                    className="w-full h-auto"
-                  />
+                  <img src={altarysImg} alt={projectDetails.title} className="w-full h-auto" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                 </div>
               </Hover3DCard>
@@ -182,8 +158,7 @@ export default function AltarysProject() {
           </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {projectDetails.dashboardFeatures.map((feature, index) => (
-              <ScrollReveal key={feature.title} variant="fadeInUp" delay={index * 0.1}>
+            {projectDetails.dashboardFeatures.map((feature, index) => <ScrollReveal key={feature.title} variant="fadeInUp" delay={index * 0.1}>
                 <Hover3DCard className="rounded-xl h-full">
                   <div className="p-8 bg-glass-dark/60 backdrop-blur-xl rounded-xl border border-white/10 hover:border-blue-500/40 transition-all h-full text-center">
                     <div className="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center mx-auto mb-6">
@@ -193,8 +168,7 @@ export default function AltarysProject() {
                     <p className="text-muted-foreground">{feature.description}</p>
                   </div>
                 </Hover3DCard>
-              </ScrollReveal>
-            ))}
+              </ScrollReveal>)}
           </div>
         </div>
       </SectionTransition>
@@ -209,8 +183,7 @@ export default function AltarysProject() {
           </ScrollReveal>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {projectDetails.results.map((result, index) => (
-              <ScrollReveal key={result.label} variant="scaleIn" delay={index * 0.1}>
+            {projectDetails.results.map((result, index) => <ScrollReveal key={result.label} variant="scaleIn" delay={index * 0.1}>
                 <Hover3DCard className="rounded-xl">
                   <div className="p-6 bg-glass-dark/60 backdrop-blur-xl rounded-xl border border-white/10 text-center hover:border-blue-500/40 transition-all">
                     <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">
@@ -221,8 +194,7 @@ export default function AltarysProject() {
                     </div>
                   </div>
                 </Hover3DCard>
-              </ScrollReveal>
-            ))}
+              </ScrollReveal>)}
           </div>
         </div>
       </SectionTransition>
@@ -242,20 +214,20 @@ export default function AltarysProject() {
                     Défis
                   </h3>
                   <ul className="space-y-4">
-                    {projectDetails.challenges.map((challenge, index) => (
-                      <motion.li
-                        key={index}
-                        className="flex items-start gap-3"
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
+                    {projectDetails.challenges.map((challenge, index) => <motion.li key={index} className="flex items-start gap-3" initial={{
+                    opacity: 0,
+                    x: -20
+                  }} whileInView={{
+                    opacity: 1,
+                    x: 0
+                  }} transition={{
+                    delay: index * 0.1
+                  }}>
                         <div className="w-6 h-6 rounded-full bg-rose-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <span className="text-xs font-bold text-rose-400">{index + 1}</span>
                         </div>
                         <span className="text-muted-foreground">{challenge}</span>
-                      </motion.li>
-                    ))}
+                      </motion.li>)}
                   </ul>
                 </div>
               </Hover3DCard>
@@ -272,20 +244,20 @@ export default function AltarysProject() {
                     Solutions
                   </h3>
                   <ul className="space-y-4">
-                    {projectDetails.solutions.map((solution, index) => (
-                      <motion.li
-                        key={index}
-                        className="flex items-start gap-3"
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
+                    {projectDetails.solutions.map((solution, index) => <motion.li key={index} className="flex items-start gap-3" initial={{
+                    opacity: 0,
+                    x: 20
+                  }} whileInView={{
+                    opacity: 1,
+                    x: 0
+                  }} transition={{
+                    delay: index * 0.1
+                  }}>
                         <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Check className="h-3 w-3 text-emerald-400" />
                         </div>
                         <span className="text-muted-foreground">{solution}</span>
-                      </motion.li>
-                    ))}
+                      </motion.li>)}
                   </ul>
                 </div>
               </Hover3DCard>
@@ -306,18 +278,20 @@ export default function AltarysProject() {
 
             <ScrollReveal variant="fadeIn" delay={0.2}>
               <div className="flex flex-wrap justify-center gap-4">
-                {projectDetails.technologies.map((tech, index) => (
-                  <motion.div
-                    key={tech}
-                    className="px-6 py-3 bg-glass-dark/60 backdrop-blur-xl rounded-xl border border-white/10 hover:border-blue-500/40 transition-all"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ scale: 1.05, y: -3 }}
-                  >
+                {projectDetails.technologies.map((tech, index) => <motion.div key={tech} className="px-6 py-3 bg-glass-dark/60 backdrop-blur-xl rounded-xl border border-white/10 hover:border-blue-500/40 transition-all" initial={{
+                opacity: 0,
+                scale: 0.8
+              }} whileInView={{
+                opacity: 1,
+                scale: 1
+              }} transition={{
+                delay: index * 0.05
+              }} whileHover={{
+                scale: 1.05,
+                y: -3
+              }}>
                     <span className="font-medium">{tech}</span>
-                  </motion.div>
-                ))}
+                  </motion.div>)}
               </div>
             </ScrollReveal>
           </div>
@@ -335,7 +309,7 @@ export default function AltarysProject() {
           <ScrollReveal variant="scaleIn" duration={0.8}>
             <div className="bg-glass-dark/60 backdrop-blur-xl rounded-3xl p-12 text-center max-w-3xl mx-auto border border-white/10">
               <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30">
-                <Sparkles className="h-4 w-4 text-blue-400" />
+                
                 <span className="text-sm font-medium text-blue-400">Votre projet</span>
               </div>
 
@@ -347,16 +321,12 @@ export default function AltarysProject() {
                 Créons ensemble le dashboard parfait pour gérer votre activité.
               </p>
 
-              <RippleButton
-                onClick={() => window.location.href = "/contact"}
-                className="px-8 py-4 bg-blue-500/20 border border-blue-500/50 text-blue-400 font-semibold rounded-xl hover:bg-blue-500/30 transition-all"
-              >
+              <RippleButton onClick={() => window.location.href = "/contact"} className="px-8 py-4 bg-blue-500/20 border border-blue-500/50 text-blue-400 font-semibold rounded-xl hover:bg-blue-500/30 transition-all">
                 Démarrer un projet
               </RippleButton>
             </div>
           </ScrollReveal>
         </div>
       </SectionTransition>
-    </Layout>
-  );
+    </Layout>;
 }
