@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Newsletter } from "@/components/Newsletter";
-import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Sparkles, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
@@ -79,7 +79,7 @@ const Contact = () => {
             <ScrollReveal variant="fadeInUp">
               <div className="mb-6 flex justify-center">
                 <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                  
+                  <Sparkles className="h-4 w-4" />
                   Contactez-nous
                 </div>
               </div>
