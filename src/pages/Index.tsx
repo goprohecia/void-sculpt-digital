@@ -45,8 +45,8 @@ const Index = () => {
     {/* Hero Section */}
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
-      <div className="absolute inset-0 grid-bg" />
+      
+      
       
       {/* Glowing Orbs with Parallax - smaller on mobile */}
       <div className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] lg:w-[500px] h-[250px] md:h-[400px] lg:h-[500px] bg-violet-600/20 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px] animate-pulse-glow" style={{
@@ -240,7 +240,7 @@ const Index = () => {
               }
             };
             const colors = colorClasses[service.color as keyof typeof colorClasses];
-              return <motion.div key={service.href} variants={staggerItemVariants}>
+            return <motion.div key={service.href} variants={staggerItemVariants}>
                 <Link to={service.href} className={`group relative block p-6 md:p-8 rounded-xl md:rounded-2xl glass-card transition-all duration-500 hover:scale-[1.03] hover:-translate-y-2 ${colors.border} ${colors.shadow}`}>
                   {/* Hover gradient overlay */}
                   <div className={`absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.glow}`} />
