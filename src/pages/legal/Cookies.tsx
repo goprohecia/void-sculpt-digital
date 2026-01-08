@@ -1,20 +1,13 @@
 import { Layout } from "@/components/Layout";
-
-
 const Cookies = () => {
-  return (
-    <Layout>
+  return <Layout>
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
         <div className="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-emerald-600/10 rounded-full blur-[120px] animate-pulse-glow" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-8 flex justify-center">
-              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                Politique de cookies
-              </div>
-            </div>
+            
 
             <h1 className="text-4xl md:text-5xl font-extrabold mb-12 text-center">
               <span className="text-gradient-neon">Cookies</span>
@@ -74,7 +67,7 @@ const Cookies = () => {
               <div className="p-6 rounded-2xl bg-glass-dark/80 border border-white/10">
                 <h2 className="text-2xl font-bold mb-4 text-neon-violet">6. Vos droits</h2>
                 <p className="text-muted-foreground">
-                  Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ces droits, contactez-nous à contact@impartialgames.com.
+                  Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ces droits, contactez-nous à contact@impartial.studio.
                 </p>
               </div>
 
@@ -85,8 +78,6 @@ const Cookies = () => {
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Cookies;
