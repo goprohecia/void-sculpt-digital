@@ -5,85 +5,61 @@ import { ArrowRight, Zap, Target, Users, Award } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
-import { 
-  ScrollReveal, 
-  StaggerContainer,
-  staggerItemVariants,
-  SectionTransition,
-  ParallaxBackground,
-  Hover3DCard,
-  RippleButton,
-  HorizontalScrollSection,
-  HorizontalScrollItem,
-} from "@/components/animations";
-
-const values = [
-  {
-    icon: Zap,
-    title: "Innovation",
-    description: "Nous repoussons constamment les limites du possible pour créer des expériences uniques.",
-    color: "neon-violet",
-    bg: "bg-neon-violet/10",
-    iconColor: "text-neon-violet",
-    border: "group-hover:border-neon-violet/50",
-    shadow: "group-hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]",
-  },
-  {
-    icon: Target,
-    title: "Précision",
-    description: "Chaque pixel, chaque ligne de code est pensée pour la perfection.",
-    color: "emerald",
-    bg: "bg-emerald-500/10",
-    iconColor: "text-emerald-400",
-    border: "group-hover:border-emerald-500/50",
-    shadow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]",
-  },
-  {
-    icon: Users,
-    title: "Partenariat",
-    description: "Nous ne sommes pas un prestataire, mais votre partenaire de croissance digital.",
-    color: "rose",
-    bg: "bg-rose-500/10",
-    iconColor: "text-rose-400",
-    border: "group-hover:border-rose-500/50",
-    shadow: "group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]",
-  },
-  {
-    icon: Award,
-    title: "Excellence",
-    description: "Notre standard est l'excellence, notre objectif est de dépasser vos attentes.",
-    color: "violet",
-    bg: "bg-violet-500/10",
-    iconColor: "text-violet-400",
-    border: "group-hover:border-violet-500/50",
-    shadow: "group-hover:shadow-[0_0_40px_rgba(167,139,250,0.15)]",
-  },
-];
-
-const timeline = [
-  {
-    year: "2024",
-    title: "Naissance d'IMPARTIAL",
-    description: "Création du studio avec une vision claire : révolutionner le digital gaming & tech.",
-  },
-  {
-    year: "2025",
-    title: "Innovation 360°",
-    description: "Lancement de notre offre écosystème complet pour accompagner les startups.",
-  },
-  {
-    year: "2026",
-    title: "Expansion internationale",
-    description: "Ouverture vers de nouveaux marchés et consolidation de notre expertise à l'échelle mondiale.",
-  },
-];
-
+import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground, Hover3DCard, RippleButton, HorizontalScrollSection, HorizontalScrollItem } from "@/components/animations";
+const values = [{
+  icon: Zap,
+  title: "Innovation",
+  description: "Nous repoussons constamment les limites du possible pour créer des expériences uniques.",
+  color: "neon-violet",
+  bg: "bg-neon-violet/10",
+  iconColor: "text-neon-violet",
+  border: "group-hover:border-neon-violet/50",
+  shadow: "group-hover:shadow-[0_0_40px_rgba(139,92,246,0.15)]"
+}, {
+  icon: Target,
+  title: "Précision",
+  description: "Chaque pixel, chaque ligne de code est pensée pour la perfection.",
+  color: "emerald",
+  bg: "bg-emerald-500/10",
+  iconColor: "text-emerald-400",
+  border: "group-hover:border-emerald-500/50",
+  shadow: "group-hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]"
+}, {
+  icon: Users,
+  title: "Partenariat",
+  description: "Nous ne sommes pas un prestataire, mais votre partenaire de croissance digital.",
+  color: "rose",
+  bg: "bg-rose-500/10",
+  iconColor: "text-rose-400",
+  border: "group-hover:border-rose-500/50",
+  shadow: "group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]"
+}, {
+  icon: Award,
+  title: "Excellence",
+  description: "Notre standard est l'excellence, notre objectif est de dépasser vos attentes.",
+  color: "violet",
+  bg: "bg-violet-500/10",
+  iconColor: "text-violet-400",
+  border: "group-hover:border-violet-500/50",
+  shadow: "group-hover:shadow-[0_0_40px_rgba(167,139,250,0.15)]"
+}];
+const timeline = [{
+  year: "2024",
+  title: "Naissance d'IMPARTIAL",
+  description: "Création du studio avec une vision claire : révolutionner le digital gaming & tech."
+}, {
+  year: "2025",
+  title: "Innovation 360°",
+  description: "Lancement de notre offre écosystème complet pour accompagner les startups."
+}, {
+  year: "2026",
+  title: "Expansion internationale",
+  description: "Ouverture vers de nouveaux marchés et consolidation de notre expertise à l'échelle mondiale."
+}];
 const Studio = () => {
   const parallaxSlow = useParallax(0.15);
   const parallaxMedium = useParallax(0.25);
-
-  return (
-    <Layout>
+  return <Layout>
       <FloatingParticles />
       
       {/* Hero */}
@@ -91,38 +67,36 @@ const Studio = () => {
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
         <div className="absolute inset-0 grid-bg" />
-        <div 
-          className="absolute top-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-violet-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow"
-          style={{ transform: `translateY(${parallaxSlow}px)` }}
-        />
-        <div 
-          className="absolute bottom-1/4 left-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-600/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] animate-pulse-glow hidden sm:block"
-          style={{ transform: `translateY(${parallaxMedium}px)`, animationDelay: "1s" }}
-        />
+        <div className="absolute top-1/4 right-1/4 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-violet-600/15 rounded-full blur-[80px] md:blur-[120px] lg:blur-[150px] animate-pulse-glow" style={{
+        transform: `translateY(${parallaxSlow}px)`
+      }} />
+        <div className="absolute bottom-1/4 left-1/3 w-[150px] md:w-[250px] lg:w-[300px] h-[150px] md:h-[250px] lg:h-[300px] bg-purple-600/10 rounded-full blur-[60px] md:blur-[100px] lg:blur-[120px] animate-pulse-glow hidden sm:block" style={{
+        transform: `translateY(${parallaxMedium}px)`,
+        animationDelay: "1s"
+      }} />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <ScrollReveal variant="fadeInUp">
-              <div className="mb-6 flex justify-center">
-                <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                  Notre histoire
-                </div>
-              </div>
+              
             </ScrollReveal>
             
-            <motion.div 
-              className="mb-8 flex justify-center"
-              initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            >
+            <motion.div className="mb-8 flex justify-center" initial={{
+            opacity: 0,
+            scale: 0.8,
+            rotate: -10
+          }} animate={{
+            opacity: 1,
+            scale: 1,
+            rotate: 0
+          }} transition={{
+            duration: 0.8,
+            delay: 0.2,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}>
               <div className="relative">
                 <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
-                <img
-                  src={logoHero}
-                  alt="IMPARTIAL"
-                  className="relative w-32 h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]"
-                />
+                <img src={logoHero} alt="IMPARTIAL" className="relative w-32 h-32 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]" />
               </div>
             </motion.div>
             
@@ -200,14 +174,8 @@ const Studio = () => {
       </SectionTransition>
 
       {/* Timeline - Horizontal Scroll */}
-      <HorizontalScrollSection
-        title="Notre parcours"
-        subtitle="Les étapes clés de notre aventure"
-        badge="Timeline"
-        className="bg-gradient-to-b from-transparent via-purple-600/5 to-transparent"
-      >
-        {timeline.map((item, index) => (
-          <HorizontalScrollItem key={item.year} index={index} className="w-[350px] lg:w-[400px]">
+      <HorizontalScrollSection title="Notre parcours" subtitle="Les étapes clés de notre aventure" badge="Timeline" className="bg-gradient-to-b from-transparent via-purple-600/5 to-transparent">
+        {timeline.map((item, index) => <HorizontalScrollItem key={item.year} index={index} className="w-[350px] lg:w-[400px]">
             <Hover3DCard className="h-full rounded-2xl" rotateStrength={5}>
               <div className="h-full glass-card rounded-2xl p-8 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-neon-violet via-purple-500 to-transparent" />
@@ -219,8 +187,7 @@ const Studio = () => {
                 </div>
               </div>
             </Hover3DCard>
-          </HorizontalScrollItem>
-        ))}
+          </HorizontalScrollItem>)}
       </HorizontalScrollSection>
 
       {/* Values Section */}
@@ -232,9 +199,7 @@ const Studio = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
-              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                <span className="text-sm font-medium text-neon-violet">Nos piliers</span>
-              </div>
+              
             </ScrollReveal>
 
             <ScrollReveal variant="fadeInUp" delay={0.1}>
@@ -248,17 +213,10 @@ const Studio = () => {
             </ScrollReveal>
           </div>
 
-          <StaggerContainer 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-            staggerDelay={0.1}
-            delayStart={0.2}
-          >
-            {values.map((value, index) => (
-              <motion.div key={value.title} variants={staggerItemVariants}>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.1} delayStart={0.2}>
+            {values.map((value, index) => <motion.div key={value.title} variants={staggerItemVariants}>
                 <Hover3DCard className="h-full rounded-2xl" rotateStrength={6}>
-                  <div
-                    className={`group h-full p-8 glass-card rounded-2xl transition-all duration-500 ${value.border} ${value.shadow}`}
-                  >
+                  <div className={`group h-full p-8 glass-card rounded-2xl transition-all duration-500 ${value.border} ${value.shadow}`}>
                     <div className={`w-14 h-14 rounded-xl ${value.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                       <value.icon className={`h-7 w-7 ${value.iconColor}`} />
                     </div>
@@ -266,8 +224,7 @@ const Studio = () => {
                     <p className="text-muted-foreground text-sm group-hover:text-gray-300 transition-colors">{value.description}</p>
                   </div>
                 </Hover3DCard>
-              </motion.div>
-            ))}
+              </motion.div>)}
           </StaggerContainer>
         </div>
       </SectionTransition>
@@ -318,8 +275,6 @@ const Studio = () => {
           </div>
         </div>
       </SectionTransition>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Studio;
