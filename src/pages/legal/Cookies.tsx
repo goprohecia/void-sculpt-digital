@@ -74,7 +74,7 @@ const Cookies = () => {
               <div className="p-6 rounded-2xl bg-glass-dark/80 border border-white/10">
                 <h2 className="text-2xl font-bold mb-4 text-neon-violet">6. Vos droits</h2>
                 <p className="text-muted-foreground">
-                  Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ces droits, contactez-nous à contact@impartial.studio.
+                  Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ces droits, contactez-nous à contact@impartialgames.com.
                 </p>
               </div>
 

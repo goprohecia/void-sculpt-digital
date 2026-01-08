@@ -181,10 +181,6 @@ export default function PropheciaProject() {
         </div>
       </SectionTransition>
 
-      {/* Results Section */}
-      <SectionTransition className="py-16 relative" parallaxStrength={0.05}>
-        
-      </SectionTransition>
 
       {/* Challenges & Solutions */}
       <SectionTransition className="py-16 relative" parallaxStrength={0.05}>
