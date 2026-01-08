@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Eye, Wand2, Gauge, Accessibility, Sparkle } from "lucide-react";
-import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground } from "@/components/animations";
+import { ScrollReveal, StaggerContainer, staggerItemVariants } from "@/components/animations";
 
 const principes = [
   {
@@ -20,7 +20,7 @@ const principes = [
   },
   {
     icon: Sparkle,
-    title: "Motion maîtrisé",
+    title: "Motion",
     description: "Animations subtiles. Jamais gratuites, toujours intentionnelles.",
   },
   {
@@ -32,50 +32,48 @@ const principes = [
 
 export function PrincipesSection() {
   return (
-    <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
-      <ParallaxBackground speed={0.1}>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/3 to-transparent" />
-      </ParallaxBackground>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-24 relative">
+      <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
+        <div className="text-center mb-16 max-w-2xl mx-auto">
           <ScrollReveal variant="fadeInUp">
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30">
-              <span className="text-sm font-medium text-blue-400">Nos standards</span>
-            </div>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">
+              Standards
+            </p>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
-              Ce qui fait la{" "}
-              <span className="text-gradient-neon">différence.</span>
+            <h2 className="text-3xl md:text-4xl font-light mb-6">
+              Ce qui fait la <span className="font-medium text-gradient-neon">différence</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>
-            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+            <p className="text-muted-foreground font-light">
               Des principes non-négociables qui guident chacune de nos réalisations.
             </p>
           </ScrollReveal>
         </div>
 
         {/* Grid */}
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto" staggerDelay={0.08} delayStart={0.3}>
+        <StaggerContainer 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-5xl mx-auto" 
+          staggerDelay={0.08}
+        >
           {principes.map((principe) => (
             <motion.div key={principe.title} variants={staggerItemVariants}>
-              <div className="group h-full glass-card glass-noise rounded-2xl p-6 md:p-8 text-center transition-all duration-500 hover:border-blue-500/30 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]">
+              <div className="group h-full p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500 text-center">
                 {/* Icon */}
-                <div className="w-14 h-14 mx-auto rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:border-blue-500/40 transition-all duration-300">
-                  <principe.icon className="h-6 w-6 text-blue-400" />
+                <div className="w-12 h-12 mx-auto rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <principe.icon className="h-5 w-5 text-violet-400" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg font-bold mb-2">{principe.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{principe.description}</p>
+                <h3 className="text-base font-medium mb-2">{principe.title}</h3>
+                <p className="text-sm text-muted-foreground">{principe.description}</p>
               </div>
             </motion.div>
           ))}
         </StaggerContainer>
       </div>
-    </SectionTransition>
+    </section>
   );
 }
