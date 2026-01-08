@@ -44,28 +44,34 @@
     --neon-violet: 265 85% 60%;
 
     /* ========================================
-       GLASSMORPHISM PREMIUM DESIGN SYSTEM
+       GLASSMORPHISM PREMIUM DESIGN SYSTEM V2
        ======================================== */
     
-    /* Glass Base Tokens */
-    --glass-alpha: 0.12;
-    --glass-blur: 24px;
-    --glass-saturation: 1.2;
-    --glass-border-alpha: 0.25;
-    --glass-shadow-alpha: 0.15;
+    /* Glass Base Tokens - Refined */
+    --glass-alpha: 0.08;
+    --glass-blur: 28px;
+    --glass-saturation: 1.3;
+    --glass-border-alpha: 0.18;
+    --glass-shadow-alpha: 0.12;
     --glass-radius: 1.5rem;
-    --glass-noise-opacity: 0.04;
-    --glass-highlight: 0.15;
+    --glass-noise-opacity: 0.035;
+    --glass-highlight: 0.12;
     
-    /* Glass Surface Colors */
-    --glass-bg: 265 30% 15%;
-    --glass-border: 265 30% 35%;
+    /* Glass Surface Colors - Richer */
+    --glass-bg: 265 25% 12%;
+    --glass-border: 265 40% 40%;
     --glass-highlight-color: 0 0% 100%;
     
-    /* Glass Shadows */
-    --glass-shadow-diffuse: 0 20px 50px -15px hsl(265 50% 20% / 0.4);
-    --glass-shadow-sharp: 0 8px 32px hsl(0 0% 0% / 0.3);
-    --glass-shadow-glow: 0 0 60px -10px hsl(265 85% 60% / 0.25);
+    /* Glass Shadows - More depth */
+    --glass-shadow-diffuse: 0 25px 60px -20px hsl(265 50% 15% / 0.5);
+    --glass-shadow-sharp: 0 10px 40px hsl(0 0% 0% / 0.35);
+    --glass-shadow-glow: 0 0 80px -15px hsl(265 85% 60% / 0.3);
+    --glass-shadow-inner: inset 0 1px 1px hsl(0 0% 100% / 0.08);
+    
+    /* Premium Accent Luxe - Iridescent */
+    --accent-luxe: 265 90% 65%;
+    --accent-luxe-secondary: 200 100% 60%;
+    --accent-luxe-tertiary: 320 85% 60%;
     
     /* Atmosphere */
     --atmosphere-primary: 265 85% 60%;
@@ -101,7 +107,20 @@
   html {
     scroll-behavior: smooth;
   }
+}
 
+/* ========================================
+   GLOBAL NOISE OVERLAY
+   ======================================== */
+#root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  mix-blend-mode: overlay;
 }
 
 /* ========================================
@@ -119,31 +138,34 @@
     border-radius: var(--glass-radius);
   }
   
-  /* Specular Highlight (top reflection) */
+  /* Specular Highlight (top reflection) - More refined */
   .glass-base::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(
-      135deg,
-      hsl(var(--glass-highlight-color) / var(--glass-highlight)) 0%,
-      transparent 40%,
-      transparent 60%,
-      hsl(var(--glass-highlight-color) / 0.03) 100%
+      155deg,
+      hsl(var(--glass-highlight-color) / calc(var(--glass-highlight) * 1.2)) 0%,
+      hsl(var(--glass-highlight-color) / calc(var(--glass-highlight) * 0.5)) 15%,
+      transparent 45%,
+      transparent 55%,
+      hsl(var(--glass-highlight-color) / 0.02) 100%
     );
     pointer-events: none;
     z-index: 1;
   }
   
-  /* Inner shadow for depth */
+  /* Inner shadow for depth + subtle inner glow */
   .glass-base::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    box-shadow: inset 0 1px 0 hsl(var(--glass-highlight-color) / 0.1),
-                inset 0 -1px 0 hsl(0 0% 0% / 0.1);
+    box-shadow: 
+      inset 0 1px 0 hsl(var(--glass-highlight-color) / 0.12),
+      inset 0 -1px 0 hsl(0 0% 0% / 0.08),
+      inset 0 0 20px hsl(var(--neon-violet) / 0.03);
     pointer-events: none;
     z-index: 1;
   }
@@ -151,113 +173,148 @@
   /* Glass Surface - For sections, panels, editorial blocks */
   .glass-surface {
     @apply glass-base;
-    --glass-alpha: 0.08;
-    --glass-blur: 30px;
-    --glass-border-alpha: 0.15;
-    --glass-highlight: 0.08;
+    --glass-alpha: 0.06;
+    --glass-blur: 32px;
+    --glass-border-alpha: 0.12;
+    --glass-highlight: 0.06;
     box-shadow: var(--glass-shadow-diffuse);
   }
   
   /* Glass Card - For cards, items */
   .glass-card {
     @apply glass-base;
-    --glass-alpha: 0.12;
-    --glass-blur: 24px;
-    --glass-border-alpha: 0.2;
-    --glass-highlight: 0.12;
+    --glass-alpha: 0.1;
+    --glass-blur: 26px;
+    --glass-border-alpha: 0.16;
+    --glass-highlight: 0.1;
     box-shadow: var(--glass-shadow-sharp);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .glass-card:hover {
-    --glass-alpha: 0.18;
-    --glass-border-alpha: 0.35;
-    --glass-highlight: 0.18;
+    --glass-alpha: 0.16;
+    --glass-border-alpha: 0.28;
+    --glass-highlight: 0.16;
     transform: translateY(-4px);
     box-shadow: var(--glass-shadow-sharp), var(--glass-shadow-glow);
+  }
+  
+  /* Specular hover effect for cards */
+  .glass-card-specular {
+    @apply glass-card;
+    overflow: hidden;
+  }
+  
+  .glass-card-specular::before {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--glass-highlight-color) / 0.15) 0%,
+      transparent 30%,
+      transparent 70%,
+      hsl(var(--glass-highlight-color) / 0.03) 100%
+    );
+    transition: all 0.5s ease;
+  }
+  
+  .glass-card-specular:hover::before {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--glass-highlight-color) / 0.25) 0%,
+      hsl(var(--glass-highlight-color) / 0.08) 20%,
+      transparent 50%,
+      hsl(var(--neon-violet) / 0.05) 100%
+    );
   }
 
   /* Glass Nav - For navbar, menus */
   .glass-nav {
     @apply glass-base;
-    --glass-alpha: 0.15;
-    --glass-blur: 28px;
-    --glass-border-alpha: 0.18;
-    --glass-highlight: 0.1;
-    --glass-radius: 1rem;
-    box-shadow: 0 4px 30px hsl(0 0% 0% / 0.2);
+    --glass-alpha: 0.12;
+    --glass-blur: 30px;
+    --glass-border-alpha: 0.14;
+    --glass-highlight: 0.08;
+    --glass-radius: 0;
+    box-shadow: 0 4px 40px hsl(0 0% 0% / 0.25);
   }
 
   /* Glass Modal - For modals, lightboxes */
   .glass-modal {
     @apply glass-base;
-    --glass-alpha: 0.2;
-    --glass-blur: 40px;
-    --glass-border-alpha: 0.25;
-    --glass-highlight: 0.12;
+    --glass-alpha: 0.18;
+    --glass-blur: 44px;
+    --glass-border-alpha: 0.22;
+    --glass-highlight: 0.1;
     --glass-radius: 2rem;
-    box-shadow: 0 25px 80px -20px hsl(0 0% 0% / 0.5),
+    box-shadow: 0 30px 100px -25px hsl(0 0% 0% / 0.6),
                 var(--glass-shadow-glow);
   }
 
   /* Glass Ultra - For hero elements (use sparingly) */
   .glass-ultra {
     @apply glass-base;
-    --glass-alpha: 0.15;
-    --glass-blur: 40px;
-    --glass-saturation: 1.4;
-    --glass-border-alpha: 0.3;
-    --glass-highlight: 0.2;
+    --glass-alpha: 0.12;
+    --glass-blur: 44px;
+    --glass-saturation: 1.5;
+    --glass-border-alpha: 0.25;
+    --glass-highlight: 0.18;
     --glass-radius: 2rem;
-    box-shadow: 0 30px 100px -20px hsl(265 85% 30% / 0.4),
-                0 0 80px -20px hsl(var(--neon-violet) / 0.3);
+    box-shadow: 
+      0 35px 120px -25px hsl(265 85% 25% / 0.5),
+      0 0 100px -25px hsl(var(--neon-violet) / 0.35),
+      inset 0 0 60px -30px hsl(var(--neon-violet) / 0.1);
   }
   
   .glass-ultra::before {
     background: linear-gradient(
-      135deg,
-      hsl(var(--glass-highlight-color) / 0.25) 0%,
-      transparent 30%,
-      transparent 70%,
-      hsl(var(--glass-highlight-color) / 0.05) 100%
+      145deg,
+      hsl(var(--glass-highlight-color) / 0.22) 0%,
+      hsl(var(--glass-highlight-color) / 0.08) 20%,
+      transparent 40%,
+      transparent 60%,
+      hsl(var(--neon-violet) / 0.04) 100%
     );
   }
 
   /* Glass Button */
   .glass-button {
     @apply glass-base;
-    --glass-alpha: 0.15;
-    --glass-blur: 16px;
-    --glass-border-alpha: 0.25;
-    --glass-highlight: 0.15;
+    --glass-alpha: 0.12;
+    --glass-blur: 18px;
+    --glass-border-alpha: 0.2;
+    --glass-highlight: 0.12;
     --glass-radius: 0.75rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .glass-button:hover {
-    --glass-alpha: 0.25;
-    --glass-border-alpha: 0.4;
+    --glass-alpha: 0.22;
+    --glass-border-alpha: 0.35;
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px hsl(0 0% 0% / 0.2);
+    box-shadow: 0 12px 35px hsl(0 0% 0% / 0.25), 0 0 25px hsl(var(--neon-violet) / 0.15);
+  }
+  
+  .glass-button:active {
+    transform: translateY(0);
   }
 
   /* Glass Input */
   .glass-input {
     @apply glass-base;
-    --glass-alpha: 0.1;
-    --glass-blur: 12px;
-    --glass-border-alpha: 0.15;
-    --glass-highlight: 0.05;
+    --glass-alpha: 0.08;
+    --glass-blur: 14px;
+    --glass-border-alpha: 0.12;
+    --glass-highlight: 0.04;
     --glass-radius: 0.75rem;
     transition: all 0.3s ease;
   }
   
   .glass-input:focus {
-    --glass-border-alpha: 0.4;
-    box-shadow: 0 0 0 3px hsl(var(--neon-violet) / 0.15);
+    --glass-alpha: 0.12;
+    --glass-border-alpha: 0.35;
+    box-shadow: 0 0 0 3px hsl(var(--neon-violet) / 0.12), 0 0 30px hsl(var(--neon-violet) / 0.1);
   }
 
-  /* Shimmer Animation for Glass Borders */
+  /* Shimmer Animation for Glass Borders - Slower, more elegant */
   .glass-shimmer {
     position: relative;
     overflow: hidden;
@@ -272,11 +329,13 @@
     height: 100%;
     background: linear-gradient(
       90deg,
-      transparent,
-      hsl(var(--glass-highlight-color) / 0.1),
-      transparent
+      transparent 0%,
+      hsl(var(--glass-highlight-color) / 0.06) 45%,
+      hsl(var(--glass-highlight-color) / 0.12) 50%,
+      hsl(var(--glass-highlight-color) / 0.06) 55%,
+      transparent 100%
     );
-    animation: glass-shimmer 4s ease-in-out infinite;
+    animation: glass-shimmer 6s ease-in-out infinite;
     pointer-events: none;
   }
   
@@ -285,16 +344,50 @@
     50% { left: 100%; }
   }
 
-  /* Noise Texture Overlay */
+  /* Noise Texture Overlay - More refined */
   .glass-noise::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     opacity: var(--glass-noise-opacity);
     pointer-events: none;
     z-index: 2;
+    mix-blend-mode: overlay;
+  }
+  
+  /* Iridescent border effect */
+  .glass-iridescent {
+    position: relative;
+  }
+  
+  .glass-iridescent::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--accent-luxe) / 0.3) 0%,
+      hsl(var(--accent-luxe-secondary) / 0.2) 33%,
+      hsl(var(--accent-luxe-tertiary) / 0.2) 66%,
+      hsl(var(--accent-luxe) / 0.3) 100%
+    );
+    background-size: 300% 300%;
+    animation: iridescent-flow 8s ease infinite;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .glass-iridescent:hover::after {
+    opacity: 1;
+  }
+  
+  @keyframes iridescent-flow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
   }
 
   /* ========================================
