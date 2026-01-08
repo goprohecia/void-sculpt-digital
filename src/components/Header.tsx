@@ -99,7 +99,7 @@ export function Header() {
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "glass-nav border-b border-white/10 py-0"
+          ? "glass-nav glass-noise border-b border-white/10 py-0"
           : "bg-transparent border-b border-transparent py-2"
       }`}
       initial={{ y: -100, opacity: 0 }}
@@ -167,7 +167,7 @@ export function Header() {
                     transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
                   >
                     <motion.div
-                      className="glass-card glass-shimmer min-w-[240px] p-2 overflow-hidden"
+                      className="glass-card glass-noise glass-shimmer min-w-[240px] p-2 overflow-hidden"
                       initial={{ rotateX: -15 }}
                       animate={{ rotateX: 0 }}
                       style={{ transformPerspective: 1000 }}
@@ -274,7 +274,7 @@ export function Header() {
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <motion.div
-                className="glass-surface rounded-2xl p-4 mt-2"
+                className="glass-surface glass-noise rounded-2xl p-4 mt-2"
                 initial="closed"
                 animate="open"
                 variants={{

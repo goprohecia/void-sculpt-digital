@@ -158,7 +158,7 @@ const Studio = () => {
 
             <ScrollReveal variant="fadeInRight" delay={0.2}>
               <Hover3DCard className="rounded-3xl">
-                <div className="aspect-square glass-ultra flex items-center justify-center relative overflow-hidden">
+                <div className="aspect-square glass-ultra glass-noise flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/15 via-transparent to-purple-600/15" />
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-neon-violet/20 rounded-full blur-[80px] animate-pulse-glow" />
                   
@@ -179,7 +179,7 @@ const Studio = () => {
       <HorizontalScrollSection title="Notre parcours" subtitle="Les étapes clés de notre aventure" badge="Timeline" className="bg-gradient-to-b from-transparent via-purple-600/5 to-transparent">
         {timeline.map((item, index) => <HorizontalScrollItem key={item.year} index={index} className="w-[350px] lg:w-[400px]">
             <Hover3DCard className="h-full rounded-2xl" rotateStrength={5}>
-              <div className="h-full glass-card rounded-2xl p-8 relative overflow-hidden">
+              <div className="h-full glass-card glass-noise rounded-2xl p-8 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-neon-violet via-purple-500 to-transparent" />
                 
                 <div className="relative z-10">
@@ -220,7 +220,7 @@ const Studio = () => {
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.1} delayStart={0.2}>
             {values.map((value, index) => <motion.div key={value.title} variants={staggerItemVariants}>
                 <Hover3DCard className="h-full rounded-2xl" rotateStrength={6}>
-                  <div className={`group h-full p-8 glass-card rounded-2xl transition-all duration-500 ${value.border} ${value.shadow}`}>
+                  <div className={`group h-full p-8 glass-card glass-noise rounded-2xl transition-all duration-500 ${value.border} ${value.shadow}`}>
                     <div className={`w-14 h-14 rounded-xl ${value.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                       <value.icon className={`h-7 w-7 ${value.iconColor}`} />
                     </div>
@@ -243,7 +243,7 @@ const Studio = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto">
             <ScrollReveal variant="scaleIn" duration={0.8}>
-              <div className="glass-ultra p-12 md:p-16 text-center relative overflow-hidden">
+              <div className="glass-ultra glass-noise p-12 md:p-16 text-center relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10 rounded-[inherit]" />
                 
                 <div className="relative z-10">

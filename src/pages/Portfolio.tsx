@@ -168,7 +168,7 @@ export default function Portfolio() {
       <SectionTransition className="py-8">
         <div className="container mx-auto px-4">
           <ScrollReveal variant="fadeIn">
-            <div className="glass-surface p-4 rounded-2xl max-w-2xl mx-auto">
+            <div className="glass-surface glass-noise p-4 rounded-2xl max-w-2xl mx-auto">
               <div className="flex flex-wrap justify-center gap-3">
                 {categories.map(cat => <RippleButton key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${activeCategory === cat.id ? "bg-neon-violet/20 text-neon-violet border border-neon-violet/50 shadow-[0_0_20px_rgba(139,92,246,0.2)]" : "glass-button hover:border-neon-violet/30"}`} rippleColor={activeCategory === cat.id ? "rgba(139, 92, 246, 0.3)" : "rgba(255, 255, 255, 0.2)"}>
                     {cat.name}
@@ -185,7 +185,7 @@ export default function Portfolio() {
         const colors = categoryColors[project.category];
         return <HorizontalScrollItem key={project.id} index={index} className="w-[400px] lg:w-[500px]">
               <Hover3DCard className="rounded-2xl overflow-hidden">
-                <div className="glass-card rounded-2xl overflow-hidden">
+                <div className="glass-card glass-noise rounded-2xl overflow-hidden">
                   {/* Image */}
                   <div className="relative h-64 overflow-hidden">
                     <ImageWithSkeleton src={project.image} alt={project.title} className="w-full h-full object-cover" containerClassName="h-64" />
@@ -235,7 +235,7 @@ export default function Portfolio() {
             const colors = categoryColors[project.category];
             return <motion.div key={project.id} variants={staggerItemVariants}>
                   <Hover3DCard className="h-full rounded-2xl overflow-hidden" rotateStrength={6}>
-                    <div className={`h-full glass-card rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-violet/40`} onMouseEnter={() => setHoveredProject(project.id)} onMouseLeave={() => setHoveredProject(null)}>
+                    <div className={`h-full glass-card glass-noise rounded-2xl overflow-hidden transition-all duration-500 hover:border-neon-violet/40`} onMouseEnter={() => setHoveredProject(project.id)} onMouseLeave={() => setHoveredProject(null)}>
                       {/* Image */}
                       <div className="relative h-56 overflow-hidden">
                         <ImageWithSkeleton src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" containerClassName="w-full h-full" />
@@ -294,7 +294,7 @@ export default function Portfolio() {
         
         <div className="container mx-auto px-4 relative z-10">
           <ScrollReveal variant="scaleIn" duration={0.8}>
-            <div className="glass-ultra p-12 text-center max-w-3xl mx-auto relative overflow-hidden">
+            <div className="glass-ultra glass-noise p-12 text-center max-w-3xl mx-auto relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10 rounded-[inherit]" />
               
               <div className="relative z-10">
@@ -336,7 +336,7 @@ export default function Portfolio() {
       }} exit={{
         opacity: 0
       }}>
-            <motion.div className="relative w-full max-w-6xl h-[80vh] bg-glass-dark rounded-2xl border border-white/10 overflow-hidden" initial={{
+            <motion.div className="relative w-full max-w-6xl h-[80vh] glass-surface glass-noise rounded-2xl overflow-hidden" initial={{
           scale: 0.9,
           rotateX: -10
         }} animate={{
@@ -348,7 +348,7 @@ export default function Portfolio() {
         }} style={{
           perspective: 1000
         }}>
-              <div className="flex items-center justify-between p-4 border-b border-white/10 bg-glass-dark/80">
+              <div className="flex items-center justify-between p-4 border-b border-white/10 glass-surface">
                 <div className="flex items-center gap-3">
                   <div className="flex gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500" />

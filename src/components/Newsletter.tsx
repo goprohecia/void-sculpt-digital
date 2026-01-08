@@ -77,7 +77,7 @@ export function Newsletter({ variant = "card" }: NewsletterProps) {
   }
 
   return (
-    <div className="p-8 glass-surface rounded-2xl relative overflow-hidden">
+    <div className="p-8 glass-surface glass-noise rounded-2xl relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-neon-violet/10 rounded-[inherit]" />
       
       <div className="relative z-10">

@@ -23,7 +23,7 @@ export function Footer() {
     localStorage.removeItem("cookie-consent");
     window.location.reload();
   };
-  return <footer className="relative border-t border-white/10 bg-glass-dark/50 backdrop-blur-xl overflow-hidden">
+  return <footer className="relative border-t border-white/10 glass-surface overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-t from-neon-violet/5 via-transparent to-transparent" />
       <div className="absolute bottom-0 left-1/4 w-[400px] h-[200px] bg-violet-600/10 rounded-full blur-[120px]" />
