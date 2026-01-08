@@ -135,7 +135,7 @@ const Contact = () => {
               <div className="space-y-6">
               <ScrollReveal variant="fadeInLeft" delay={0.1}>
                   <Hover3DCard className="rounded-xl" rotateStrength={5}>
-                    <div className="flex items-start gap-4 group p-4 glass-card rounded-xl hover:border-neon-violet/30 transition-all">
+                    <div className="flex items-start gap-4 group p-4 glass-card glass-noise rounded-xl hover:border-neon-violet/30 transition-all">
                       <div className="w-12 h-12 rounded-xl bg-neon-violet/10 border border-neon-violet/30 flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300">
                         <Mail className="h-5 w-5 text-neon-violet" />
                       </div>
@@ -152,7 +152,7 @@ const Contact = () => {
 
                 <ScrollReveal variant="fadeInLeft" delay={0.3}>
                   <Hover3DCard className="rounded-xl" rotateStrength={5}>
-                    <div className="flex items-start gap-4 group p-4 glass-card rounded-xl hover:border-rose-500/30 transition-all">
+                    <div className="flex items-start gap-4 group p-4 glass-card glass-noise rounded-xl hover:border-rose-500/30 transition-all">
                       <div className="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center flex-shrink-0 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.3)] transition-all duration-300">
                         <MapPin className="h-5 w-5 text-rose-400" />
                       </div>
@@ -170,7 +170,7 @@ const Contact = () => {
               {/* Hours */}
               <ScrollReveal variant="fadeInLeft" delay={0.4}>
                 <Hover3DCard className="rounded-2xl" rotateStrength={4}>
-                  <div className="p-6 glass-card rounded-2xl hover:border-neon-violet/30 transition-all duration-300">
+                  <div className="p-6 glass-card glass-noise rounded-2xl hover:border-neon-violet/30 transition-all duration-300">
                     <h3 className="font-semibold mb-4 text-neon-violet">Horaires</h3>
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <p>Lundi - Vendredi: 9h00 - 18h00</p>
@@ -185,7 +185,7 @@ const Contact = () => {
             <div className="lg:col-span-2">
               <ScrollReveal variant="fadeInRight">
                 <Hover3DCard className="rounded-2xl" rotateStrength={3} glareEnabled={false}>
-                  <form onSubmit={handleSubmit} className="p-8 glass-surface rounded-2xl relative overflow-hidden">
+                  <form onSubmit={handleSubmit} className="p-8 glass-surface glass-noise rounded-2xl relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10 rounded-[inherit]" />
                     
                     <div className="relative z-10">
@@ -309,7 +309,7 @@ const Contact = () => {
             
             <ScrollReveal variant="fadeIn" delay={0.2}>
               <Hover3DCard className="rounded-2xl" rotateStrength={3} glareEnabled={false}>
-                <div className="glass-surface rounded-2xl overflow-hidden">
+                <div className="glass-surface glass-noise rounded-2xl overflow-hidden">
                   <iframe src="https://calendly.com/yannis-bezriche/impartial-games" width="100%" height="700" frameBorder="0" title="Calendly" className="bg-transparent" />
                 </div>
               </Hover3DCard>
