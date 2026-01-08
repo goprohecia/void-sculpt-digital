@@ -58,7 +58,7 @@ const PolitiqueConfidentialite = () => {
               </div>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  IMPARTIAL Studio s'engage à protéger la vie privée des utilisateurs de son site web. Cette politique de confidentialité explique comment nous collectons, utilisons, stockons et protégeons vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.
+                  IMPARTIAL Games s'engage à protéger la vie privée des utilisateurs de son site web. Cette politique de confidentialité explique comment nous collectons, utilisons, stockons et protégeons vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.
                 </p>
                 <p>
                   En utilisant notre site, vous acceptez les pratiques décrites dans cette politique de confidentialité.
