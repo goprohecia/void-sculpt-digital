@@ -20,17 +20,6 @@ interface ShootingStar {
   color: string;
 }
 
-interface Comet {
-  x: number;
-  y: number;
-  tailLength: number;
-  speed: number;
-  angle: number;
-  opacity: number;
-  size: number;
-  color: string;
-  glowColor: string;
-}
 
 interface Nebula {
   x: number;
@@ -67,7 +56,7 @@ export function SpaceBackground() {
   const [isDark, setIsDark] = useState(false);
   const starsRef = useRef<Star[]>([]);
   const shootingStarsRef = useRef<ShootingStar[]>([]);
-  const cometsRef = useRef<Comet[]>([]);
+  
   const nebulaeRef = useRef<Nebula[]>([]);
   const aurorasRef = useRef<Aurora[]>([]);
   const galaxiesRef = useRef<Galaxy[]>([]);
@@ -184,7 +173,7 @@ export function SpaceBackground() {
         },
       ];
 
-      cometsRef.current = [];
+      
     };
 
     const shootingStarColors = [
@@ -192,12 +181,6 @@ export function SpaceBackground() {
       "rgba(139, 92, 246, ",
       "rgba(99, 102, 241, ",
       "rgba(34, 211, 238, ",
-    ];
-
-    const cometColors = [
-      { main: "rgba(100, 200, 255, ", glow: "rgba(50, 150, 255, " },
-      { main: "rgba(255, 255, 255, ", glow: "rgba(200, 220, 255, " },
-      { main: "rgba(180, 140, 255, ", glow: "rgba(139, 92, 246, " },
     ];
 
     const createShootingStar = (): ShootingStar => ({
@@ -209,21 +192,6 @@ export function SpaceBackground() {
       opacity: 1,
       color: shootingStarColors[Math.floor(Math.random() * shootingStarColors.length)],
     });
-
-    const createComet = (): Comet => {
-      const colorSet = cometColors[Math.floor(Math.random() * cometColors.length)];
-      return {
-        x: -100,
-        y: Math.random() * canvas.height * 0.5,
-        tailLength: Math.random() * 200 + 150,
-        speed: Math.random() * 2 + 1.5,
-        angle: (Math.random() * 20 + 10) * (Math.PI / 180),
-        opacity: 0.8,
-        size: Math.random() * 3 + 2,
-        color: colorSet.main,
-        glowColor: colorSet.glow,
-      };
-    };
 
     let time = 0;
 
@@ -340,70 +308,6 @@ export function SpaceBackground() {
       ctx.fill();
     };
 
-    const drawComet = (comet: Comet) => {
-      ctx.save();
-
-      const tailGradient = ctx.createLinearGradient(
-        comet.x,
-        comet.y,
-        comet.x - Math.cos(comet.angle) * comet.tailLength,
-        comet.y - Math.sin(comet.angle) * comet.tailLength
-      );
-      tailGradient.addColorStop(0, `${comet.color}${comet.opacity * 0.9})`);
-      tailGradient.addColorStop(0.3, `${comet.color}${comet.opacity * 0.4})`);
-      tailGradient.addColorStop(0.7, `${comet.glowColor}${comet.opacity * 0.15})`);
-      tailGradient.addColorStop(1, `${comet.glowColor}0)`);
-
-      ctx.beginPath();
-      ctx.moveTo(comet.x, comet.y);
-      
-      const tailEndX = comet.x - Math.cos(comet.angle) * comet.tailLength;
-      const tailEndY = comet.y - Math.sin(comet.angle) * comet.tailLength;
-      
-      ctx.quadraticCurveTo(
-        comet.x - Math.cos(comet.angle) * comet.tailLength * 0.5,
-        comet.y - Math.sin(comet.angle) * comet.tailLength * 0.5 + 5,
-        tailEndX,
-        tailEndY
-      );
-      
-      ctx.strokeStyle = tailGradient;
-      ctx.lineWidth = comet.size * 2;
-      ctx.lineCap = "round";
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(comet.x, comet.y);
-      ctx.quadraticCurveTo(
-        comet.x - Math.cos(comet.angle) * comet.tailLength * 0.6,
-        comet.y - Math.sin(comet.angle) * comet.tailLength * 0.6 - 3,
-        comet.x - Math.cos(comet.angle) * comet.tailLength * 0.8,
-        comet.y - Math.sin(comet.angle) * comet.tailLength * 0.8
-      );
-      ctx.strokeStyle = `${comet.glowColor}${comet.opacity * 0.3})`;
-      ctx.lineWidth = comet.size * 0.8;
-      ctx.stroke();
-
-      const headGlow = ctx.createRadialGradient(
-        comet.x, comet.y, 0,
-        comet.x, comet.y, comet.size * 6
-      );
-      headGlow.addColorStop(0, `${comet.color}${comet.opacity})`);
-      headGlow.addColorStop(0.3, `${comet.glowColor}${comet.opacity * 0.5})`);
-      headGlow.addColorStop(1, `${comet.glowColor}0)`);
-
-      ctx.beginPath();
-      ctx.arc(comet.x, comet.y, comet.size * 6, 0, Math.PI * 2);
-      ctx.fillStyle = headGlow;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(comet.x, comet.y, comet.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${comet.opacity})`;
-      ctx.fill();
-
-      ctx.restore();
-    };
 
     const animate = () => {
       drawBackground();
@@ -480,24 +384,6 @@ export function SpaceBackground() {
         return false;
       });
 
-      if (Math.random() < 0.0008 && cometsRef.current.length < 2) {
-        cometsRef.current.push(createComet());
-      }
-
-      cometsRef.current = cometsRef.current.filter((comet) => {
-        comet.x += Math.cos(comet.angle) * comet.speed;
-        comet.y += Math.sin(comet.angle) * comet.speed;
-
-        if (comet.x > canvas.width + 100) {
-          comet.opacity -= 0.02;
-        }
-
-        if (comet.opacity > 0 && comet.x < canvas.width + 300) {
-          drawComet(comet);
-          return true;
-        }
-        return false;
-      });
 
       animationRef.current = requestAnimationFrame(animate);
     };
