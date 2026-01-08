@@ -144,7 +144,9 @@ export default function Portfolio() {
             </motion.div>
             
             <ScrollReveal variant="fadeInUp">
-              
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                <span className="text-sm font-medium text-neon-violet">Portfolio</span>
+              </div>
             </ScrollReveal>
 
             <ScrollReveal variant="fadeInUp" delay={0.1}>

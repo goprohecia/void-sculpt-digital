@@ -83,7 +83,9 @@ export function HorizontalScrollSection({
         {/* Header */}
         {(title || badge) && <div className="text-center py-12 flex-shrink-0">
             {badge && <ScrollReveal variant="fadeInUp">
-                
+                <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                  <span className="text-sm font-medium text-neon-violet">{badge}</span>
+                </div>
               </ScrollReveal>}
             {title && <ScrollReveal variant="fadeInUp" delay={0.1}>
                 <h2 className="text-3xl md:text-5xl font-bold mb-4">{title}</h2>
