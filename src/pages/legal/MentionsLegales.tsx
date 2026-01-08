@@ -110,7 +110,7 @@ const MentionsLegales = () => {
                   La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.
                 </p>
                 <p>
-                  Les marques et logos figurant sur ce site sont des marques déposées. Toute reproduction totale ou partielle de ces marques ou de ces logos, effectuée à partir des éléments du site sans l'autorisation expresse de IMPARTIAL Games est donc prohibée.
+                  Les marques et logos figurant sur ce site sont des marques déposées. Toute reproduction totale ou partielle de ces marques ou de ces logos, effectuée à partir des éléments du site sans l'autorisation expresse de IMPARTIAL Studio est donc prohibée.
                 </p>
               </div>
             </div>
@@ -123,7 +123,7 @@ const MentionsLegales = () => {
                   Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition aux données personnelles vous concernant.
                 </p>
                 <p>
-                  Pour exercer ces droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à l'adresse suivante : contact@impartialgames.com
+                  Pour exercer ces droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à l'adresse suivante : contact@impartial.studio
                 </p>
                 <p>
                   Pour plus d'informations sur la gestion de vos données personnelles, veuillez consulter notre politique de confidentialité.
@@ -136,13 +136,13 @@ const MentionsLegales = () => {
               <h2 className="text-2xl font-bold mb-6">Limitation de responsabilité</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  IMPARTIAL Games s'efforce d'assurer au mieux de ses possibilités l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, IMPARTIAL Games ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site.
+                  IMPARTIAL Studio s'efforce d'assurer au mieux de ses possibilités l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, IMPARTIAL Studio ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site.
                 </p>
                 <p>
-                  En conséquence, IMPARTIAL Games décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
+                  En conséquence, IMPARTIAL Studio décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
                 </p>
                 <p>
-                  IMPARTIAL Games ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès ou de l'utilisation du site, y compris l'inaccessibilité, les pertes de données, détériorations, destructions ou virus qui pourraient affecter l'équipement informatique de l'utilisateur.
+                  IMPARTIAL Studio ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès ou de l'utilisation du site, y compris l'inaccessibilité, les pertes de données, détériorations, destructions ou virus qui pourraient affecter l'équipement informatique de l'utilisateur.
                 </p>
               </div>
             </div>
@@ -152,10 +152,10 @@ const MentionsLegales = () => {
               <h2 className="text-2xl font-bold mb-6">Liens hypertextes</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  Le site peut contenir des liens hypertextes vers d'autres sites. IMPARTIAL Games n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu ou aux éventuels collectes et transmissions de données personnelles effectuées par ces sites.
+                  Le site peut contenir des liens hypertextes vers d'autres sites. IMPARTIAL Studio n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu ou aux éventuels collectes et transmissions de données personnelles effectuées par ces sites.
                 </p>
                 <p>
-                  La création de liens hypertextes vers le site impartialgames.com est soumise à l'accord préalable du directeur de la publication.
+                  La création de liens hypertextes vers le site impartial.studio est soumise à l'accord préalable du directeur de la publication.
                 </p>
               </div>
             </div>
