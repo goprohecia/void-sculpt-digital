@@ -4,7 +4,7 @@ import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import { FAQ } from "@/components/FAQ";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import TypeWriter from "@/components/TypeWriter";
-import { ArrowRight, Globe, Smartphone, Server, Layers, Sparkles } from "lucide-react";
+import { ArrowRight, Globe, Smartphone, Server, Layers } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import logoHero from "@/assets/logo-hero.png";
 import { motion } from "framer-motion";
@@ -74,7 +74,6 @@ const Index = () => {
             ease: [0.25, 0.1, 0.25, 1]
           }}>
             <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-              <Sparkles className="h-4 w-4" />
               Studio Digital Gaming & Tech
             </div>
           </motion.div>
@@ -195,7 +194,6 @@ const Index = () => {
         <div className="text-center mb-10 md:mb-16">
           <ScrollReveal variant="fadeInUp" delay={0}>
             <div className="inline-flex items-center gap-2 mb-4 px-3 md:px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-              <Sparkles className="h-3 w-3 md:h-4 md:w-4 text-neon-violet" />
               <span className="text-xs md:text-sm font-medium text-neon-violet">Services Premium</span>
             </div>
           </ScrollReveal>
@@ -292,7 +290,6 @@ const Index = () => {
               <div className="relative z-10">
                 <ScrollReveal variant="fadeInUp" delay={0.1}>
                   <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                    <Sparkles className="h-4 w-4 text-neon-violet" />
                     <span className="text-sm font-medium text-neon-violet">Démarrer un projet</span>
                   </div>
                 </ScrollReveal>

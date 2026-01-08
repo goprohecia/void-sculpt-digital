@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Check, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { Hover3DCard, RippleButton } from "@/components/animations";
 
@@ -90,7 +90,6 @@ export function PricingCard({
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <Sparkles className="h-3 w-3" />
             {tierLabels[tier]}
           </motion.div>
 

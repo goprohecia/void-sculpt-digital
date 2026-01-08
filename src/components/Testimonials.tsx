@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { Quote, ChevronLeft, ChevronRight, Star, Sparkles } from "lucide-react";
+import { Quote, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollReveal, SectionTransition, ParallaxBackground } from "@/components/animations";
 
@@ -112,7 +112,6 @@ export function Testimonials() {
         <div className="text-center mb-16">
           <ScrollReveal variant="fadeInUp">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-              <Sparkles className="h-4 w-4 text-neon-violet" />
               <span className="text-sm font-medium text-neon-violet">Témoignages</span>
             </div>
           </ScrollReveal>

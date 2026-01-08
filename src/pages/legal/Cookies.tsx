@@ -1,5 +1,5 @@
 import { Layout } from "@/components/Layout";
-import { Sparkles } from "lucide-react";
+
 
 const Cookies = () => {
   return (
@@ -12,7 +12,6 @@ const Cookies = () => {
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 flex justify-center">
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                <Sparkles className="h-4 w-4" />
                 Politique de cookies
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Sparkles } from "lucide-react";
+
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-backoffice.png";
 import { 
@@ -33,7 +33,6 @@ const BackofficeService = () => {
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/30">
-                <Sparkles className="h-4 w-4 text-rose-400" />
                 <span className="text-sm font-medium text-rose-400">Tarifs</span>
               </div>
             </ScrollReveal>
