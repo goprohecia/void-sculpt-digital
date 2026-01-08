@@ -8,9 +8,7 @@ const CGV = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 flex justify-center">
-              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                Conditions générales de vente
-              </div>
+              
             </div>
 
             <h1 className="text-4xl md:text-5xl font-extrabold mb-12 text-center">
