@@ -20,13 +20,7 @@ const PolitiqueConfidentialite = () => {
               </div>
             </div>
             
-            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
-            animationDelay: "0.1s"
-          }}>
-              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                Protection des données
-              </div>
-            </div>
+            
             <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.2s"
           }}>
@@ -58,7 +52,7 @@ const PolitiqueConfidentialite = () => {
               </div>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  IMPARTIAL Games s'engage à protéger la vie privée des utilisateurs de son site web. Cette politique de confidentialité explique comment nous collectons, utilisons, stockons et protégeons vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.
+                  IMPARTIAL Studio s'engage à protéger la vie privée des utilisateurs de son site web. Cette politique de confidentialité explique comment nous collectons, utilisons, stockons et protégeons vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.
                 </p>
                 <p>
                   En utilisant notre site, vous acceptez les pratiques décrites dans cette politique de confidentialité.
