@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
+import { LineReveal } from "@/components/animations";
 
 export function HeroPremium() {
   // Mouse tracking for subtle gradient shift
@@ -41,53 +42,63 @@ export function HeroPremium() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main content - centered and minimal */}
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            {/* Small brand identifier */}
-            <motion.p
-              className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-12"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+          <div className="text-center">
+            {/* Small brand identifier with reveal */}
+            <motion.div
+              className="overflow-hidden mb-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              IMPARTIAL Studio
-            </motion.p>
+              <motion.p
+                className="text-xs uppercase tracking-[0.3em] text-muted-foreground"
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                IMPARTIAL Studio
+              </motion.p>
+            </motion.div>
 
-            {/* Main headline - large and elegant */}
-            <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 tracking-tight leading-[1.1]"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              <span className="block">Expériences digitales</span>
-              <span className="block mt-2 font-medium text-gradient-neon">
-                sur-mesure.
-              </span>
-            </motion.h1>
+            {/* Main headline with line reveal */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 tracking-tight leading-[1.1]">
+              <LineReveal
+                lines={["Expériences digitales"]}
+                delay={0.4}
+                lineClassName="block"
+              />
+              <div className="mt-2 overflow-hidden">
+                <motion.span
+                  className="block font-medium text-gradient-neon"
+                  initial={{ y: "110%", opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                >
+                  sur-mesure.
+                </motion.span>
+              </div>
+            </h1>
 
-            {/* Refined subtitle */}
-            <motion.p
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-14 leading-relaxed font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-            >
-              Web, mobile & SaaS — design raffiné, 
-              <br className="hidden sm:block" />
-              performance et animations maîtrisées.
-            </motion.p>
+            {/* Refined subtitle with mask reveal */}
+            <div className="overflow-hidden mb-14">
+              <motion.p
+                className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light"
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                Web, mobile & SaaS — design raffiné, 
+                <br className="hidden sm:block" />
+                performance et animations maîtrisées.
+              </motion.p>
+            </div>
 
             {/* Single elegant CTA */}
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
+              transition={{ duration: 0.6, delay: 1 }}
             >
               <motion.a
                 href="https://calendly.com/yannis-bezriche/impartial-games"
@@ -115,7 +126,7 @@ export function HeroPremium() {
                 Découvrir nos offres
               </Link>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -127,7 +138,7 @@ export function HeroPremium() {
         className="absolute bottom-12 left-1/2 -translate-x-1/2 hidden md:block"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
+        transition={{ duration: 0.8, delay: 1.4 }}
       >
         <motion.div
           className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1.5"
