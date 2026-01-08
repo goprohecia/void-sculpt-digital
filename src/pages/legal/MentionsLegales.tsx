@@ -1,6 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { Sparkles, Building2, Mail, Phone, Globe, Server, Shield } from "lucide-react";
+import { Building2, Mail, Phone, Globe, Server, Shield } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 const MentionsLegales = () => {
   return <Layout>
@@ -24,7 +24,6 @@ const MentionsLegales = () => {
             animationDelay: "0.1s"
           }}>
               <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                <Sparkles className="h-4 w-4" />
                 Informations légales
               </div>
             </div>

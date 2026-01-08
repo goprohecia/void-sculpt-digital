@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { ArrowLeft, ExternalLink, Calendar, Users, Zap, Globe, Sparkles, Check } from "lucide-react";
+import { ArrowLeft, ExternalLink, Calendar, Users, Zap, Globe, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { 
   ScrollReveal, 
@@ -333,7 +333,6 @@ export default function WeCloseProject() {
           <ScrollReveal variant="scaleIn" duration={0.8}>
             <div className="bg-glass-dark/60 backdrop-blur-xl rounded-3xl p-12 text-center max-w-3xl mx-auto border border-white/10">
               <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30">
-                <Sparkles className="h-4 w-4 text-amber-400" />
                 <span className="text-sm font-medium text-amber-400">Votre projet</span>
               </div>
 

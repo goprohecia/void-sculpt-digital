@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { FloatingParticles } from "@/components/FloatingParticles";
 import { Link } from "react-router-dom";
-import { ArrowRight, Zap, Target, Users, Sparkles } from "lucide-react";
+import { ArrowRight, Zap, Target, Users, Award } from "lucide-react";
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
@@ -49,7 +49,7 @@ const values = [
     shadow: "group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)]",
   },
   {
-    icon: Sparkles,
+    icon: Award,
     title: "Excellence",
     description: "Notre standard est l'excellence, notre objectif est de dépasser vos attentes.",
     color: "violet",
@@ -105,7 +105,6 @@ const Studio = () => {
             <ScrollReveal variant="fadeInUp">
               <div className="mb-6 flex justify-center">
                 <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                  <Sparkles className="h-4 w-4" />
                   Notre histoire
                 </div>
               </div>
@@ -154,7 +153,6 @@ const Studio = () => {
             <div>
               <ScrollReveal variant="fadeInLeft">
                 <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                  <Sparkles className="h-4 w-4 text-neon-violet" />
                   <span className="text-sm font-medium text-neon-violet">Notre vision</span>
                 </div>
               </ScrollReveal>
@@ -235,7 +233,6 @@ const Studio = () => {
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                <Sparkles className="h-4 w-4 text-neon-violet" />
                 <span className="text-sm font-medium text-neon-violet">Nos piliers</span>
               </div>
             </ScrollReveal>
@@ -291,7 +288,6 @@ const Studio = () => {
                 <div className="relative z-10">
                   <ScrollReveal variant="fadeInUp" delay={0.1}>
                     <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                      <Sparkles className="h-4 w-4 text-neon-violet" />
                       <span className="text-sm font-medium text-neon-violet">Rejoignez-nous</span>
                     </div>
                   </ScrollReveal>

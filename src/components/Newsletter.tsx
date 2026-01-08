@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Loader2, CheckCircle, Sparkles } from "lucide-react";
+import { Mail, Loader2, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface NewsletterProps {
@@ -83,7 +83,7 @@ export function Newsletter({ variant = "card" }: NewsletterProps) {
       <div className="relative z-10">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-3 rounded-xl bg-cyan-500/20 border border-cyan-400/30">
-            <Sparkles className="h-6 w-6 text-cyan-400" />
+            <Mail className="h-6 w-6 text-cyan-400" />
           </div>
           <div>
             <h3 className="text-xl font-bold">Restez informé</h3>

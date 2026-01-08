@@ -1,7 +1,7 @@
 import { Layout } from "@/components/Layout";
 import { ServiceHero } from "@/components/ServiceHero";
 import { PricingCard } from "@/components/PricingCard";
-import { Sparkles } from "lucide-react";
+
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-360.png";
 import { 
@@ -33,7 +33,6 @@ const FullStackService = () => {
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/30">
-                <Sparkles className="h-4 w-4 text-violet-400" />
                 <span className="text-sm font-medium text-violet-400">Tarifs</span>
               </div>
             </ScrollReveal>

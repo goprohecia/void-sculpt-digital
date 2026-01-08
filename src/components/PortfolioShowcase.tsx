@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
-import { ExternalLink, ChevronLeft, ChevronRight, Sparkles, Eye } from "lucide-react";
+import { ExternalLink, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
 
@@ -105,7 +105,6 @@ export function PortfolioShowcase() {
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
               <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                <Sparkles className="h-4 w-4 text-neon-violet" />
                 <span className="text-sm font-medium text-neon-violet">Nos réalisations</span>
               </div>
             </ScrollReveal>

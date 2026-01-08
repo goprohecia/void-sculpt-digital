@@ -1,5 +1,5 @@
 import { FloatingParticles } from "@/components/FloatingParticles";
-import { Sparkles } from "lucide-react";
+
 import { useParallax } from "@/hooks/use-parallax";
 import { motion } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
@@ -114,7 +114,6 @@ export function ServiceHero({
               <ScrollReveal variant="fadeInUp">
                 <div className="mb-4 md:mb-6 flex justify-center lg:justify-start">
                   <div className={`badge-gradient flex items-center gap-2 text-xs md:text-sm font-medium ${badgeColors[accentColor]}`}>
-                    <Sparkles className="h-3 w-3 md:h-4 md:w-4" />
                     {badge}
                   </div>
                 </div>
