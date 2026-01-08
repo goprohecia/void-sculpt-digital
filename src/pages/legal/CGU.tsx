@@ -1,20 +1,13 @@
 import { Layout } from "@/components/Layout";
-
-
 const CGU = () => {
-  return (
-    <Layout>
+  return <Layout>
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
         <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-violet-600/15 rounded-full blur-[120px] animate-pulse-glow" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
-            <div className="mb-8 flex justify-center">
-              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                Conditions générales d'utilisation
-              </div>
-            </div>
+            
 
             <h1 className="text-4xl md:text-5xl font-extrabold mb-12 text-center">
               <span className="text-gradient-neon">CGU</span>
@@ -24,16 +17,16 @@ const CGU = () => {
               <div className="p-6 rounded-2xl bg-glass-dark/80 border border-white/10">
                 <h2 className="text-2xl font-bold mb-4 text-neon-violet">1. Objet</h2>
                 <p className="text-muted-foreground">
-                  Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions d'utilisation des services proposés sur le site IMPARTIAL Games, ainsi que de définir les droits et obligations des parties dans ce cadre.
+                  Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions d'utilisation des services proposés sur le site IMPARTIAL Studio, ainsi que de définir les droits et obligations des parties dans ce cadre.
                 </p>
               </div>
 
               <div className="p-6 rounded-2xl bg-glass-dark/80 border border-white/10">
                 <h2 className="text-2xl font-bold mb-4 text-neon-violet">2. Mentions légales</h2>
                 <p className="text-muted-foreground mb-4">
-                  Le site impartialgames.com est édité par IMPARTIAL Games.<br />
-                  Siège social : Delaware, États-Unis<br />
-                  Email : contact@impartialgames.com
+                  Le site impartial.studio est édité par IMPARTIAL Studio.<br />
+                  Siège social : Paris, France<br />
+                  Email : contact@impartial.studio
                 </p>
               </div>
 
@@ -47,7 +40,7 @@ const CGU = () => {
               <div className="p-6 rounded-2xl bg-glass-dark/80 border border-white/10">
                 <h2 className="text-2xl font-bold mb-4 text-neon-violet">4. Propriété intellectuelle</h2>
                 <p className="text-muted-foreground">
-                  Tout le contenu du présent site, incluant, de façon non limitative, les graphismes, images, textes, vidéos, animations, sons, logos, gifs et icônes ainsi que leur mise en forme sont la propriété exclusive d'IMPARTIAL Games à l'exception des marques, logos ou contenus appartenant à d'autres sociétés partenaires ou auteurs.
+                  Tout le contenu du présent site, incluant, de façon non limitative, les graphismes, images, textes, vidéos, animations, sons, logos, gifs et icônes ainsi que leur mise en forme sont la propriété exclusive d'IMPARTIAL Studio à l'exception des marques, logos ou contenus appartenant à d'autres sociétés partenaires ou auteurs.
                 </p>
               </div>
 
@@ -61,7 +54,7 @@ const CGU = () => {
               <div className="p-6 rounded-2xl bg-glass-dark/80 border border-white/10">
                 <h2 className="text-2xl font-bold mb-4 text-neon-violet">6. Limitation de responsabilité</h2>
                 <p className="text-muted-foreground">
-                  IMPARTIAL Games ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications, soit de l'apparition d'un bug ou d'une incompatibilité.
+                  IMPARTIAL Studio ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications, soit de l'apparition d'un bug ou d'une incompatibilité.
                 </p>
               </div>
 
@@ -79,8 +72,6 @@ const CGU = () => {
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default CGU;
