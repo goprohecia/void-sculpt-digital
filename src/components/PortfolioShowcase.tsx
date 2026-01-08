@@ -9,6 +9,7 @@ import { ScrollReveal, SectionTransition, ParallaxBackground, Hover3DCard } from
 import wecloseImg from "@/assets/portfolio/weclose-logo.jpeg";
 import altarysImg from "@/assets/portfolio/altarys-logo.png";
 import propheciaImg from "@/assets/portfolio/prophecia-logo.jpeg";
+
 interface Project {
   id: number;
   title: string;
@@ -20,73 +21,78 @@ interface Project {
   tags: string[];
   color: string;
 }
-const projects: Project[] = [{
-  id: 1,
-  title: "We Close Agency",
-  category: "Site Web",
-  description: "Site vitrine pour une agence de closers et setters. Design moderne avec animations fluides et une expérience utilisateur immersive.",
-  image: wecloseImg,
-  url: "/portfolio/weclose",
-  externalUrl: "https://wecloseagency.fr/",
-  tags: ["React", "Framer Motion", "Design Premium"],
-  color: "neon-violet"
-}, {
-  id: 2,
-  title: "Altarys Group",
-  category: "Backoffice",
-  description: "Plateforme DeFi et RWA avec dashboard administratif complet. Interface intuitive pour la gestion financière décentralisée.",
-  image: altarysImg,
-  url: "/portfolio/altarys",
-  externalUrl: "https://altarys-group.fr/",
-  tags: ["Dashboard", "DeFi", "Finance"],
-  color: "neon-blue"
-}, {
-  id: 3,
-  title: "Guardian Of Prophecia",
-  category: "Jeu Vidéo",
-  description: "Plateforme gaming avec système d'invitation et rewards. Expérience immersive pour les joueurs passionnés.",
-  image: propheciaImg,
-  url: "/portfolio/prophecia",
-  externalUrl: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
-  tags: ["Gaming", "Web3", "Community"],
-  color: "neon-green"
-}];
+
+const projects: Project[] = [
+  {
+    id: 1,
+    title: "We Close Agency",
+    category: "Site Web",
+    description: "Site vitrine pour une agence de closers et setters. Design moderne avec animations fluides et une expérience utilisateur immersive.",
+    image: wecloseImg,
+    url: "/portfolio/weclose",
+    externalUrl: "https://wecloseagency.fr/",
+    tags: ["React", "Framer Motion", "Design Premium"],
+    color: "neon-violet",
+  },
+  {
+    id: 2,
+    title: "Altarys Group",
+    category: "Backoffice",
+    description: "Plateforme DeFi et RWA avec dashboard administratif complet. Interface intuitive pour la gestion financière décentralisée.",
+    image: altarysImg,
+    url: "/portfolio/altarys",
+    externalUrl: "https://altarys-group.fr/",
+    tags: ["Dashboard", "DeFi", "Finance"],
+    color: "neon-blue",
+  },
+  {
+    id: 3,
+    title: "Guardian Of Prophecia",
+    category: "Jeu Vidéo",
+    description: "Plateforme gaming avec système d'invitation et rewards. Expérience immersive pour les joueurs passionnés.",
+    image: propheciaImg,
+    url: "/portfolio/prophecia",
+    externalUrl: "https://goprophecia.gg?inviteCode=YANNI-DZ94",
+    tags: ["Gaming", "Web3", "Community"],
+    color: "neon-green",
+  },
+];
+
 export function PortfolioShowcase() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: "center",
-    skipSnaps: false
+    skipSnaps: false,
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+
   const scrollPrev = () => emblaApi?.scrollPrev();
   const scrollNext = () => emblaApi?.scrollNext();
-  const colorClasses: Record<string, {
-    border: string;
-    text: string;
-    bg: string;
-    shadow: string;
-  }> = {
-    "neon-violet": {
-      border: "border-neon-violet/50",
-      text: "text-neon-violet",
-      bg: "bg-neon-violet/10",
-      shadow: "shadow-[0_0_30px_rgba(139,92,246,0.3)]"
+
+  const colorClasses: Record<string, { border: string; text: string; bg: string; shadow: string }> = {
+    "neon-violet": { 
+      border: "border-neon-violet/50", 
+      text: "text-neon-violet", 
+      bg: "bg-neon-violet/10", 
+      shadow: "shadow-[0_0_30px_rgba(139,92,246,0.3)]" 
     },
-    "neon-blue": {
-      border: "border-blue-500/50",
-      text: "text-blue-400",
-      bg: "bg-blue-500/10",
-      shadow: "shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+    "neon-blue": { 
+      border: "border-blue-500/50", 
+      text: "text-blue-400", 
+      bg: "bg-blue-500/10", 
+      shadow: "shadow-[0_0_30px_rgba(59,130,246,0.3)]" 
     },
-    "neon-green": {
-      border: "border-emerald-500/50",
-      text: "text-emerald-400",
-      bg: "bg-emerald-500/10",
-      shadow: "shadow-[0_0_30px_rgba(16,185,129,0.3)]"
-    }
+    "neon-green": { 
+      border: "border-emerald-500/50", 
+      text: "text-emerald-400", 
+      bg: "bg-emerald-500/10", 
+      shadow: "shadow-[0_0_30px_rgba(16,185,129,0.3)]" 
+    },
   };
-  return <>
+
+  return (
+    <>
       <SectionTransition className="py-24 relative overflow-hidden" parallaxStrength={0.05}>
         <ParallaxBackground speed={0.2}>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
@@ -98,7 +104,9 @@ export function PortfolioShowcase() {
           {/* Header */}
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
-              
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                <span className="text-sm font-medium text-neon-violet">Nos réalisations</span>
+              </div>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.1}>
               <h2 className="text-3xl md:text-5xl font-bold mb-4">
@@ -117,55 +125,65 @@ export function PortfolioShowcase() {
             <div className="relative max-w-5xl mx-auto">
               <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex">
-                  {projects.map(project => {
-                  const colors = colorClasses[project.color];
-                  return <div key={project.id} className="flex-[0_0_100%] min-w-0 px-4 md:flex-[0_0_80%] lg:flex-[0_0_70%]">
+                  {projects.map((project) => {
+                    const colors = colorClasses[project.color];
+                    return (
+                      <div
+                        key={project.id}
+                        className="flex-[0_0_100%] min-w-0 px-4 md:flex-[0_0_80%] lg:flex-[0_0_70%]"
+                      >
                         <Hover3DCard className="rounded-2xl" rotateStrength={5}>
-                          <motion.div className={`group glass-card rounded-2xl overflow-hidden hover:border-neon-violet/40 transition-all duration-500 hover:${colors.shadow}`} whileHover={{
-                        y: -5
-                      }} transition={{
-                        duration: 0.3
-                      }} onMouseEnter={() => setHoveredProject(project.id)} onMouseLeave={() => setHoveredProject(null)}>
+                          <motion.div 
+                            className={`group glass-card rounded-2xl overflow-hidden hover:border-neon-violet/40 transition-all duration-500 hover:${colors.shadow}`}
+                            whileHover={{ y: -5 }}
+                            transition={{ duration: 0.3 }}
+                            onMouseEnter={() => setHoveredProject(project.id)}
+                            onMouseLeave={() => setHoveredProject(null)}
+                          >
                             {/* Image */}
                             <div className="relative h-64 md:h-80 overflow-hidden">
-                              <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                              <img
+                                src={project.image}
+                                alt={project.title}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              />
                               
                               {/* Hover Overlay with Preview Button */}
                               <AnimatePresence>
-                                {hoveredProject === project.id && <motion.div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center gap-4" initial={{
-                              opacity: 0
-                            }} animate={{
-                              opacity: 1
-                            }} exit={{
-                              opacity: 0
-                            }} transition={{
-                              duration: 0.2
-                            }}>
-                                    <Link to={project.url} className={`px-6 py-3 rounded-xl ${colors.bg} border ${colors.border} ${colors.text} font-medium flex items-center gap-2 hover:scale-105 transition-transform`}>
-                                      <motion.span className="flex items-center gap-2" initial={{
-                                  y: 20,
-                                  opacity: 0
-                                }} animate={{
-                                  y: 0,
-                                  opacity: 1
-                                }} transition={{
-                                  delay: 0.1
-                                }}>
+                                {hoveredProject === project.id && (
+                                  <motion.div
+                                    className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center gap-4"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <Link
+                                      to={project.url}
+                                      className={`px-6 py-3 rounded-xl ${colors.bg} border ${colors.border} ${colors.text} font-medium flex items-center gap-2 hover:scale-105 transition-transform`}
+                                    >
+                                      <motion.span
+                                        className="flex items-center gap-2"
+                                        initial={{ y: 20, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ delay: 0.1 }}
+                                      >
                                         Aperçu <Eye className="h-4 w-4" />
                                       </motion.span>
                                     </Link>
-                                    <motion.a href={project.externalUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-3 rounded-xl bg-neon-violet/20 border border-neon-violet/50 text-neon-violet font-medium flex items-center gap-2 hover:scale-105 transition-transform" initial={{
-                                y: 20,
-                                opacity: 0
-                              }} animate={{
-                                y: 0,
-                                opacity: 1
-                              }} transition={{
-                                delay: 0.15
-                              }}>
+                                    <motion.a
+                                      href={project.externalUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="px-6 py-3 rounded-xl bg-neon-violet/20 border border-neon-violet/50 text-neon-violet font-medium flex items-center gap-2 hover:scale-105 transition-transform"
+                                      initial={{ y: 20, opacity: 0 }}
+                                      animate={{ y: 0, opacity: 1 }}
+                                      transition={{ delay: 0.15 }}
+                                    >
                                       Visiter <ExternalLink className="h-4 w-4" />
                                     </motion.a>
-                                  </motion.div>}
+                                  </motion.div>
+                                )}
                               </AnimatePresence>
 
                               {/* Category Badge */}
@@ -181,31 +199,39 @@ export function PortfolioShowcase() {
                                 {project.description}
                               </p>
                               <div className="flex flex-wrap gap-2">
-                                {project.tags.map(tag => <span key={tag} className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-muted-foreground">
+                                {project.tags.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10 text-muted-foreground"
+                                  >
                                     {tag}
-                                  </span>)}
+                                  </span>
+                                ))}
                               </div>
                             </div>
                           </motion.div>
                         </Hover3DCard>
-                      </div>;
-                })}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Navigation Buttons */}
-              <motion.button onClick={scrollPrev} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 p-3 rounded-full glass-button hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all" whileHover={{
-              scale: 1.1
-            }} whileTap={{
-              scale: 0.95
-            }}>
+              <motion.button
+                onClick={scrollPrev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 p-3 rounded-full glass-button hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <ChevronLeft className="h-6 w-6" />
               </motion.button>
-              <motion.button onClick={scrollNext} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 p-3 rounded-full glass-button hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all" whileHover={{
-              scale: 1.1
-            }} whileTap={{
-              scale: 0.95
-            }}>
+              <motion.button
+                onClick={scrollNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 p-3 rounded-full glass-button hover:border-neon-violet/50 hover:shadow-[0_0_20px_rgba(139,92,246,0.2)] transition-all"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <ChevronRight className="h-6 w-6" />
               </motion.button>
             </div>
@@ -214,18 +240,29 @@ export function PortfolioShowcase() {
           {/* Dots */}
           <ScrollReveal variant="fadeIn" delay={0.4}>
             <div className="flex justify-center gap-2 mt-8">
-              {projects.map((_, index) => <motion.button key={index} onClick={() => emblaApi?.scrollTo(index)} className={`h-2.5 rounded-full transition-all duration-300 ${index === selectedIndex ? "bg-neon-violet w-8 shadow-[0_0_10px_rgba(139,92,246,0.5)]" : "bg-white/20 w-2.5 hover:bg-white/40"}`} whileHover={{
-              scale: 1.2
-            }} whileTap={{
-              scale: 0.9
-            }} />)}
+              {projects.map((_, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => emblaApi?.scrollTo(index)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    index === selectedIndex
+                      ? "bg-neon-violet w-8 shadow-[0_0_10px_rgba(139,92,246,0.5)]"
+                      : "bg-white/20 w-2.5 hover:bg-white/40"
+                  }`}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                />
+              ))}
             </div>
           </ScrollReveal>
 
           {/* View All Link */}
           <ScrollReveal variant="fadeInUp" delay={0.5}>
             <div className="text-center mt-10">
-              <Link to="/portfolio" className="inline-flex items-center gap-2 text-neon-violet hover:text-neon-violet/80 font-medium transition-colors">
+              <Link
+                to="/portfolio"
+                className="inline-flex items-center gap-2 text-neon-violet hover:text-neon-violet/80 font-medium transition-colors"
+              >
                 Voir tous les projets
                 <ExternalLink className="h-4 w-4" />
               </Link>
@@ -233,5 +270,6 @@ export function PortfolioShowcase() {
           </ScrollReveal>
         </div>
       </SectionTransition>
-    </>;
+    </>
+  );
 }

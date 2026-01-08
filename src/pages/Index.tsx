@@ -45,8 +45,8 @@ const Index = () => {
     {/* Hero Section */}
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-12">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
-      <div className="absolute inset-0 grid-bg" />
+      
+      
       
       {/* Glowing Orbs with Parallax - smaller on mobile */}
       <div className="absolute top-1/4 left-1/4 w-[250px] md:w-[400px] lg:w-[500px] h-[250px] md:h-[400px] lg:h-[500px] bg-violet-600/20 rounded-full blur-[100px] md:blur-[150px] lg:blur-[180px] animate-pulse-glow" style={{
@@ -63,7 +63,20 @@ const Index = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-5xl mx-auto">
           {/* Badge */}
-          
+          <motion.div className="mb-4 flex justify-center" initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}>
+            <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
+              Studio Digital Gaming & Tech
+            </div>
+          </motion.div>
 
           {/* Logo */}
           <motion.div className="mb-4 flex justify-center" initial={{
@@ -180,7 +193,9 @@ const Index = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-10 md:mb-16">
           <ScrollReveal variant="fadeInUp" delay={0}>
-            
+            <div className="inline-flex items-center gap-2 mb-4 px-3 md:px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+              <span className="text-xs md:text-sm font-medium text-neon-violet">Services Premium</span>
+            </div>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
             <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">Nos expertises</h2>
@@ -274,7 +289,9 @@ const Index = () => {
               
               <div className="relative z-10">
                 <ScrollReveal variant="fadeInUp" delay={0.1}>
-                  
+                  <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
+                    <span className="text-sm font-medium text-neon-violet">Démarrer un projet</span>
+                  </div>
                 </ScrollReveal>
                 
                 <ScrollReveal variant="fadeInUp" delay={0.2}>
