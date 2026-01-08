@@ -20,13 +20,7 @@ const MentionsLegales = () => {
               </div>
             </div>
             
-            <div className="mb-6 flex justify-center opacity-0 animate-fade-in" style={{
-            animationDelay: "0.1s"
-          }}>
-              <div className="badge-gradient flex items-center gap-2 text-sm font-medium text-violet-300">
-                Informations légales
-              </div>
-            </div>
+            
             <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{
             animationDelay: "0.2s"
           }}>
