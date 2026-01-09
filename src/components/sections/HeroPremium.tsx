@@ -63,7 +63,7 @@ export function HeroPremium() {
             </motion.div>
 
             {/* Main headline with line reveal */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-8 tracking-tight leading-[1.15]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-6 md:mb-8 tracking-tight leading-[1.15]">
               <LineReveal lines={["Expériences digitales"]} delay={0.4} lineClassName="block pb-1" />
               <div className="mt-2 overflow-hidden pb-1">
                 <motion.span className="block font-medium text-gradient-neon" initial={{
