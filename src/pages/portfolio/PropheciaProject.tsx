@@ -131,11 +131,11 @@ export default function PropheciaProject() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 aspect-square">
+            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10">
               <img
                 src={propheciaLogo}
                 alt={projectDetails.title}
-                className="w-full h-full object-cover"
+                className="w-full h-auto"
               />
             </div>
           </motion.div>
