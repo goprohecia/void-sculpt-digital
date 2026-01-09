@@ -100,7 +100,7 @@ export function HeroPremium() {
             </div>
 
             {/* Single elegant CTA */}
-            <motion.div className="flex flex-col sm:flex-row gap-4 justify-center items-center" initial={{
+            <motion.div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center" initial={{
             opacity: 0,
             y: 20
           }} animate={{
@@ -110,7 +110,7 @@ export function HeroPremium() {
             duration: 0.6,
             delay: 1
           }}>
-              <motion.a href="https://calendly.com/yannis-bezriche/impartial-games" target="_blank" rel="noopener noreferrer" className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden" whileHover={{
+              <motion.a href="https://calendly.com/yannis-bezriche/impartial-games" target="_blank" rel="noopener noreferrer" className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden" whileHover={{
               scale: 1.02
             }} whileTap={{
               scale: 0.98
@@ -123,10 +123,10 @@ export function HeroPremium() {
                 <span className="relative text-background group-hover:text-white transition-colors duration-500">
                   Planifier un appel
                 </span>
-                <ArrowRight className="relative h-4 w-4 text-background group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                <ArrowRight className="relative h-3.5 w-3.5 sm:h-4 sm:w-4 text-background group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
               </motion.a>
 
-              <Link to="/#offres" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 px-6 py-4">
+              <Link to="/#offres" className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4">
                 Découvrir nos offres
               </Link>
             </motion.div>
