@@ -94,12 +94,12 @@ export function PricingCard({
           </motion.div>
 
           {/* Title & Subtitle */}
-          <h3 className="text-2xl font-bold mb-2 group-hover:text-white transition-colors">{title}</h3>
-          <p className="text-muted-foreground mb-6 group-hover:text-gray-300 transition-colors">{subtitle}</p>
+          <h3 className="text-2xl font-light mb-2 group-hover:text-white transition-colors">{title}</h3>
+          <p className="text-muted-foreground font-light mb-6 group-hover:text-gray-300 transition-colors">{subtitle}</p>
 
           {/* Price */}
           <div className="mb-8">
-            <span className="text-3xl lg:text-4xl font-extrabold text-gradient-neon">{price}</span>
+            <span className="text-3xl lg:text-4xl font-light text-gradient-neon">{price}</span>
             {price !== "Sur devis" && price !== "Sur demande" && (
               <span className="text-muted-foreground ml-2">HT</span>
             )}
