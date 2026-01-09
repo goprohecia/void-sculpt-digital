@@ -32,21 +32,19 @@ const WebService = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <ScrollReveal variant="fadeInUp">
-              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-                <span className="text-sm font-medium text-neon-violet">Tarifs</span>
-              </div>
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">
+                Tarifs
+              </p>
             </ScrollReveal>
 
             <ScrollReveal variant="fadeInUp" delay={0.1}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-2">Nos Offres <span className="text-gradient-neon">Web</span></h2>
-            </ScrollReveal>
-
-            <ScrollReveal variant="fadeInUp" delay={0.15}>
-              <p className="text-xl font-semibold text-neon-violet mb-4">À partir de 1500€</p>
+              <h2 className="text-3xl md:text-4xl font-light mb-6">
+                Nos Offres <span className="font-medium text-gradient-neon">Web</span>
+              </h2>
             </ScrollReveal>
 
             <ScrollReveal variant="fadeInUp" delay={0.2}>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground font-light max-w-2xl mx-auto">
                 Choisissez la formule adaptée à vos ambitions digitales.
               </p>
             </ScrollReveal>
