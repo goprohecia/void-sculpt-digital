@@ -13,10 +13,6 @@ const expertises = [
 ];
 
 const navLinks = [
-  { name: "Services", href: "/#services" },
-  { name: "Offres", href: "/#offres" },
-  { name: "Réalisations", href: "/#realisations" },
-  { name: "Méthode", href: "/#methode" },
   { name: "Studio", href: "/studio" },
   { name: "Contact", href: "/contact" },
 ];
