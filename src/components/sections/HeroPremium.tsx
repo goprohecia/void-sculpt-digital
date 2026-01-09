@@ -95,9 +95,7 @@ export function HeroPremium() {
               delay: 0.8,
               ease: [0.25, 0.1, 0.25, 1]
             }}>
-                Web, mobile & SaaS — design raffiné,  performance et animations maîtrisées.    
-                <br className="hidden sm:block" />
-                ​
+              Web, mobile & SaaS — design raffiné, performance et animations maîtrisées.
               </motion.p>
             </div>
 
