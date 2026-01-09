@@ -3,7 +3,6 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { SpaceBackground } from "./SpaceBackground";
 import { GlassAtmosphere } from "./GlassAtmosphere";
-import { SideNav } from "./SideNav";
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,7 +14,6 @@ export function Layout({ children }: LayoutProps) {
       <GlassAtmosphere />
       <SpaceBackground />
       <Header />
-      <SideNav />
       <main className="flex-1 relative z-10">{children}</main>
       <Footer />
     </div>
