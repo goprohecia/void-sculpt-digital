@@ -76,9 +76,9 @@ export function OffresSection() {
             </div>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6">
               Des offres claires.{" "}
-              <span className="text-gradient-neon">Un rendu premium.</span>
+              <span className="font-medium text-gradient-neon">Un rendu premium.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>

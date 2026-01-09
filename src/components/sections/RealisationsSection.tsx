@@ -79,9 +79,9 @@ export function RealisationsSection() {
             </div>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6">
               Sélection de{" "}
-              <span className="text-gradient-neon">projets.</span>
+              <span className="font-medium text-gradient-neon">projets.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>
