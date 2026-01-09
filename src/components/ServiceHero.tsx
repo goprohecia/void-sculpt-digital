@@ -109,6 +109,8 @@ export function ServiceHero({
         </div>
       </div>
 
+      {/* Bottom fade accent */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </section>
   );
 }
