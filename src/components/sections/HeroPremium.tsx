@@ -34,40 +34,33 @@ export function HeroPremium() {
   const gradientX = useTransform(smoothMouseX, [-0.5, 0.5], ["40%", "60%"]);
   const gradientY = useTransform(smoothMouseY, [-0.5, 0.5], ["40%", "60%"]);
   return <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-      {/* Intensified mirror/reflection overlay effect */}
+      {/* Subtle mirror/reflection overlay effect */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
-        {/* Primary top reflection - stronger */}
-        <div className="absolute inset-x-0 top-0 h-2/3 bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent" />
-        {/* Bottom mirror reflection - intensified */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/[0.06] via-white/[0.03] to-transparent" />
-        {/* Horizontal light streaks - more visible */}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.04)_20%,transparent_40%,rgba(255,255,255,0.03)_60%,transparent_80%,rgba(255,255,255,0.02)_100%)]" />
-        {/* Primary diagonal glass reflection */}
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0.03)_25%,transparent_50%,rgba(255,255,255,0.02)_75%,rgba(255,255,255,0.06)_100%)]" />
-        {/* Secondary diagonal reflection (opposite direction) */}
-        <div className="absolute inset-0 bg-[linear-gradient(-135deg,rgba(255,255,255,0.06)_0%,transparent_30%,transparent_70%,rgba(255,255,255,0.04)_100%)]" />
-        {/* Floating light bands */}
-        <div className="absolute top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent" />
-        <div className="absolute top-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-        <div className="absolute bottom-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent" />
-        {/* Corner highlights */}
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.08)_0%,transparent_70%)]" />
-        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.05)_0%,transparent_70%)]" />
-        {/* Center glow effect - enhanced */}
+        {/* Top reflection - subtle */}
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent" />
+        {/* Bottom mirror reflection */}
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/[0.02] to-transparent" />
+        {/* Diagonal glass reflection */}
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04)_0%,transparent_40%,transparent_60%,rgba(255,255,255,0.02)_100%)]" />
+        {/* Single floating light band */}
+        <div className="absolute top-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        {/* Corner highlight */}
+        <div className="absolute top-0 left-0 w-1/4 h-1/4 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+        {/* Center glow effect */}
         <motion.div 
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 100% 60% at 50% 50%, rgba(139,92,246,0.06) 0%, rgba(139,92,246,0.02) 40%, transparent 70%)`
+            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,92,246,0.03) 0%, transparent 60%)`
           }}
         />
-        {/* Animated shimmer effect */}
+        {/* Subtle animated shimmer */}
         <motion.div 
-          className="absolute inset-0 bg-[linear-gradient(105deg,transparent_40%,rgba(255,255,255,0.05)_45%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0.05)_55%,transparent_60%)]"
+          className="absolute inset-0 bg-[linear-gradient(105deg,transparent_45%,rgba(255,255,255,0.02)_48%,rgba(255,255,255,0.04)_50%,rgba(255,255,255,0.02)_52%,transparent_55%)]"
           animate={{
             backgroundPosition: ["200% 0%", "-200% 0%"]
           }}
           transition={{
-            duration: 8,
+            duration: 12,
             repeat: Infinity,
             ease: "linear"
           }}
