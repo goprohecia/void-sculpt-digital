@@ -42,8 +42,7 @@ export function HeroPremium() {
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/[0.02] to-transparent" />
         {/* Diagonal glass reflection */}
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04)_0%,transparent_40%,transparent_60%,rgba(255,255,255,0.02)_100%)]" />
-        {/* Single floating light band */}
-        <div className="absolute top-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        {/* Corner highlight */}
         {/* Corner highlight */}
         <div className="absolute top-0 left-0 w-1/4 h-1/4 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
         {/* Center glow effect */}
