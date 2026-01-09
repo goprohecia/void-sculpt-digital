@@ -104,19 +104,19 @@ export function Header() {
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
       <div className="container mx-auto px-4">
-        <nav className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? "h-16" : "h-20"}`}>
+        <nav className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? "h-14 sm:h-16" : "h-16 sm:h-20"}`}>
           {/* Logo */}
           <MagneticButton as="div" strength={0.2}>
-            <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 group flex-shrink-0">
               <motion.img
                 src={logoHero}
                 alt="Impartial Games"
-                className="h-10 md:h-12 w-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] transition-all duration-300"
+                className="h-8 sm:h-10 md:h-12 w-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] transition-all duration-300"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.3 }}
               />
               <motion.span
-                className="text-lg md:text-xl font-bold text-gradient-premium hidden sm:block"
+                className="text-base sm:text-lg md:text-xl font-bold text-gradient-premium hidden sm:block"
                 whileHover={{ scale: 1.05 }}
               >
                 IMPARTIAL
@@ -172,12 +172,13 @@ export function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center">
             <motion.button
-              className="glass-button p-2"
+              className="glass-button p-2 sm:p-2.5"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             >
               <AnimatePresence mode="wait">
                 {isMobileMenuOpen ? (
@@ -188,7 +189,7 @@ export function Header() {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <X className="h-6 w-6 relative z-10" />
+                    <X className="h-5 w-5 sm:h-6 sm:w-6 relative z-10" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -198,7 +199,7 @@ export function Header() {
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Menu className="h-6 w-6 relative z-10" />
+                    <Menu className="h-5 w-5 sm:h-6 sm:w-6 relative z-10" />
                   </motion.div>
                 )}
               </AnimatePresence>
