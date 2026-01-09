@@ -46,27 +46,19 @@ export function HeroPremium() {
         {/* Corner highlight */}
         <div className="absolute top-0 left-0 w-1/4 h-1/4 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
         {/* Center glow effect */}
-        <motion.div 
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,92,246,0.03) 0%, transparent 60%)`
-          }}
-        />
+        <motion.div className="absolute inset-0" style={{
+        background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,92,246,0.03) 0%, transparent 60%)`
+      }} />
         {/* Subtle animated shimmer */}
-        <motion.div 
-          className="absolute inset-0 bg-[linear-gradient(105deg,transparent_45%,rgba(255,255,255,0.02)_48%,rgba(255,255,255,0.04)_50%,rgba(255,255,255,0.02)_52%,transparent_55%)]"
-          animate={{
-            backgroundPosition: ["200% 0%", "-200% 0%"]
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          style={{
-            backgroundSize: "200% 100%"
-          }}
-        />
+        <motion.div className="absolute inset-0 bg-[linear-gradient(105deg,transparent_45%,rgba(255,255,255,0.02)_48%,rgba(255,255,255,0.04)_50%,rgba(255,255,255,0.02)_52%,transparent_55%)]" animate={{
+        backgroundPosition: ["200% 0%", "-200% 0%"]
+      }} transition={{
+        duration: 12,
+        repeat: Infinity,
+        ease: "linear"
+      }} style={{
+        backgroundSize: "200% 100%"
+      }} />
       </div>
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -129,7 +121,7 @@ export function HeroPremium() {
               delay: 0.8,
               ease: [0.25, 0.1, 0.25, 1]
             }}>
-              Web, mobile & SaaS — design raffiné, performance et animations maîtrisées.
+              Web, mobile & SaaS, design raffiné, performance et animations maîtrisées.
               </motion.p>
             </div>
 
