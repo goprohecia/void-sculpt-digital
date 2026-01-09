@@ -59,12 +59,12 @@ export function FAQ() {
         {/* Header */}
         <div className="text-center mb-16">
           <ScrollReveal variant="fadeInUp">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Questions <span className="text-neon-red">Fréquentes</span>
+            <h2 className="text-3xl md:text-4xl font-light mb-4">
+              Questions <span className="font-medium text-gradient-neon">Fréquentes</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-muted-foreground font-light max-w-2xl mx-auto">
               Retrouvez les réponses aux questions les plus courantes sur nos services et notre façon de travailler.
             </p>
           </ScrollReveal>
