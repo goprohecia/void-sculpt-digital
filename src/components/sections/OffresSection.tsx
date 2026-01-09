@@ -146,9 +146,9 @@ export function OffresSection() {
 
                     {/* Price */}
                     <div className="mb-8 pb-8 border-b border-white/10">
-                      <div className="text-3xl md:text-4xl font-bold mb-1">{pack.price}</div>
+                      <div className="text-3xl md:text-4xl font-light tracking-tight mb-1">{pack.price}</div>
                       {pack.delay && (
-                        <p className="text-sm text-muted-foreground">Délai indicatif : {pack.delay}</p>
+                        <p className="text-sm text-muted-foreground font-light">Délai indicatif : {pack.delay}</p>
                       )}
                     </div>
 
