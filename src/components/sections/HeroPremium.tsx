@@ -34,6 +34,24 @@ export function HeroPremium() {
   const gradientX = useTransform(smoothMouseX, [-0.5, 0.5], ["40%", "60%"]);
   const gradientY = useTransform(smoothMouseY, [-0.5, 0.5], ["40%", "60%"]);
   return <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      {/* Mirror/reflection overlay effect */}
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        {/* Top gradient reflection */}
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent" />
+        {/* Bottom mirror reflection */}
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/[0.02] via-white/[0.01] to-transparent" />
+        {/* Horizontal light streaks */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.015)_25%,transparent_50%,rgba(255,255,255,0.01)_75%,transparent_100%)]" />
+        {/* Subtle glass reflection diagonal */}
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04)_0%,transparent_40%,transparent_60%,rgba(255,255,255,0.02)_100%)]" />
+        {/* Center glow effect */}
+        <motion.div 
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,92,246,0.03) 0%, transparent 70%)`
+          }}
+        />
+      </div>
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main content - centered and minimal */}
