@@ -54,8 +54,8 @@ export default function AltarysProject() {
   return (
     <Layout>
       {/* Hero Section - Refined */}
-      <section className="relative min-h-[60svh] flex items-center justify-center overflow-hidden pt-24">
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="relative min-h-[50svh] sm:min-h-[60svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           {/* Back Link */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -64,7 +64,7 @@ export default function AltarysProject() {
           >
             <Link 
               to="/portfolio" 
-              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-12 text-sm"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 sm:mb-12 text-sm"
             >
               <ArrowLeft className="h-4 w-4" />
               Retour au portfolio
@@ -73,7 +73,7 @@ export default function AltarysProject() {
 
           <div className="max-w-4xl mx-auto text-center">
             <motion.p
-              className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-8"
+              className="text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
@@ -82,7 +82,7 @@ export default function AltarysProject() {
             </motion.p>
 
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-light mb-6 tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-4 sm:mb-6 tracking-tight"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -91,7 +91,7 @@ export default function AltarysProject() {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light mb-10"
+              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light mb-8 sm:mb-10 px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -103,7 +103,7 @@ export default function AltarysProject() {
               href={projectDetails.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden"
+              className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -115,15 +115,15 @@ export default function AltarysProject() {
               <span className="relative text-background group-hover:text-white transition-colors duration-500">
                 Visiter le site
               </span>
-              <ExternalLink className="relative h-4 w-4 text-background group-hover:text-white transition-colors duration-500" />
+              <ExternalLink className="relative h-3.5 w-3.5 sm:h-4 sm:w-4 text-background group-hover:text-white transition-colors duration-500" />
             </motion.a>
           </div>
         </div>
       </section>
 
       {/* Project Image */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 40 }}
@@ -131,7 +131,7 @@ export default function AltarysProject() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="rounded-2xl overflow-hidden border border-white/10">
+            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10">
               <img
                 src={altarysImg}
                 alt={projectDetails.title}
@@ -143,11 +143,11 @@ export default function AltarysProject() {
       </section>
 
       {/* Description */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
             <motion.h2
-              className="text-2xl md:text-3xl font-light mb-8"
+              className="text-xl sm:text-2xl md:text-3xl font-light mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -156,7 +156,7 @@ export default function AltarysProject() {
               À propos du <span className="font-medium text-gradient-neon">projet</span>
             </motion.h2>
             <motion.p
-              className="text-muted-foreground leading-relaxed whitespace-pre-line"
+              className="text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -169,10 +169,10 @@ export default function AltarysProject() {
       </section>
 
       {/* Dashboard Features */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.h2
-            className="text-2xl md:text-3xl font-light text-center mb-12"
+            className="text-xl sm:text-2xl md:text-3xl font-light text-center mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -181,21 +181,21 @@ export default function AltarysProject() {
             Fonctionnalités <span className="font-medium text-gradient-neon">Backoffice</span>
           </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-3 gap-4 sm:gap-8 max-w-4xl mx-auto">
             {projectDetails.dashboardFeatures.map((feature, index) => (
               <motion.div
                 key={feature.title}
-                className="text-center p-8 rounded-2xl border border-white/5 bg-white/[0.02]"
+                className="text-center p-6 sm:p-8 rounded-xl sm:rounded-2xl border border-white/5 bg-white/[0.02]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-6">
-                  <feature.icon className="h-6 w-6 text-neon-violet" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <feature.icon className="h-5 w-5 sm:h-6 sm:w-6 text-neon-violet" />
                 </div>
-                <h3 className="text-lg font-medium mb-3">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-3">{feature.title}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -203,10 +203,10 @@ export default function AltarysProject() {
       </section>
 
       {/* Results */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.h2
-            className="text-2xl md:text-3xl font-light text-center mb-12"
+            className="text-xl sm:text-2xl md:text-3xl font-light text-center mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -215,20 +215,20 @@ export default function AltarysProject() {
             Résultats <span className="font-medium text-gradient-neon">obtenus</span>
           </motion.h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-4xl mx-auto">
             {projectDetails.results.map((result, index) => (
               <motion.div
                 key={result.label}
-                className="text-center p-6 rounded-2xl border border-white/5 bg-white/[0.02]"
+                className="text-center p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 bg-white/[0.02]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="text-3xl md:text-4xl font-light text-gradient-neon mb-2">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-light text-gradient-neon mb-1 sm:mb-2">
                   {result.metric}
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs sm:text-sm text-muted-foreground">
                   {result.label}
                 </div>
               </motion.div>
@@ -238,9 +238,9 @@ export default function AltarysProject() {
       </section>
 
       {/* Challenges & Solutions */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12 max-w-4xl mx-auto">
             {/* Challenges */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -248,11 +248,11 @@ export default function AltarysProject() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl font-light mb-6">Défis</h3>
-              <ul className="space-y-4">
+              <h3 className="text-lg sm:text-xl font-light mb-4 sm:mb-6">Défis</h3>
+              <ul className="space-y-3 sm:space-y-4">
                 {projectDetails.challenges.map((challenge, index) => (
-                  <li key={index} className="flex items-start gap-3 text-muted-foreground">
-                    <span className="text-xs font-medium text-foreground mt-1">{String(index + 1).padStart(2, '0')}</span>
+                  <li key={index} className="flex items-start gap-3 text-sm sm:text-base text-muted-foreground">
+                    <span className="text-xs font-medium text-foreground mt-0.5 sm:mt-1">{String(index + 1).padStart(2, '0')}</span>
                     <span>{challenge}</span>
                   </li>
                 ))}
@@ -266,11 +266,11 @@ export default function AltarysProject() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl font-light mb-6">Solutions</h3>
-              <ul className="space-y-4">
+              <h3 className="text-lg sm:text-xl font-light mb-4 sm:mb-6">Solutions</h3>
+              <ul className="space-y-3 sm:space-y-4">
                 {projectDetails.solutions.map((solution, index) => (
-                  <li key={index} className="flex items-start gap-3 text-muted-foreground">
-                    <Check className="h-4 w-4 text-neon-violet mt-1 flex-shrink-0" />
+                  <li key={index} className="flex items-start gap-3 text-sm sm:text-base text-muted-foreground">
+                    <Check className="h-4 w-4 text-neon-violet mt-0.5 sm:mt-1 flex-shrink-0" />
                     <span>{solution}</span>
                   </li>
                 ))}
@@ -281,10 +281,10 @@ export default function AltarysProject() {
       </section>
 
       {/* Technologies */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.h2
-            className="text-2xl md:text-3xl font-light text-center mb-10"
+            className="text-xl sm:text-2xl md:text-3xl font-light text-center mb-8 sm:mb-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -294,7 +294,7 @@ export default function AltarysProject() {
           </motion.h2>
 
           <motion.div
-            className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto"
+            className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -303,7 +303,7 @@ export default function AltarysProject() {
             {projectDetails.technologies.map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 text-sm rounded-full border border-white/10 bg-white/[0.02] text-muted-foreground"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-full border border-white/10 bg-white/[0.02] text-muted-foreground"
               >
                 {tech}
               </span>
@@ -313,10 +313,10 @@ export default function AltarysProject() {
       </section>
 
       {/* Features */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-10 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.h2
-            className="text-2xl md:text-3xl font-light text-center mb-10"
+            className="text-xl sm:text-2xl md:text-3xl font-light text-center mb-8 sm:mb-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -325,18 +325,18 @@ export default function AltarysProject() {
             Fonctionnalités <span className="font-medium text-gradient-neon">clés</span>
           </motion.h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto">
             {projectDetails.features.map((feature, index) => (
               <motion.div
                 key={feature}
-                className="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-white/[0.02]"
+                className="flex items-center gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-white/5 bg-white/[0.02]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
                 <Check className="h-4 w-4 text-neon-violet flex-shrink-0" />
-                <span className="text-sm">{feature}</span>
+                <span className="text-xs sm:text-sm">{feature}</span>
               </motion.div>
             ))}
           </div>
@@ -344,8 +344,8 @@ export default function AltarysProject() {
       </section>
 
       {/* CTA */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
+      <section className="py-16 sm:py-24">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
@@ -353,19 +353,19 @@ export default function AltarysProject() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">Votre projet</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4 sm:mb-6">Votre projet</p>
             
-            <h2 className="text-3xl md:text-4xl font-light mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-4 sm:mb-6">
               Besoin d'un <span className="font-medium text-gradient-neon">backoffice</span> sur mesure ?
             </h2>
 
-            <p className="text-muted-foreground mb-10">
+            <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 px-2">
               Créons ensemble le dashboard parfait pour gérer votre activité.
             </p>
 
             <motion.a
               href="/contact"
-              className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden"
+              className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

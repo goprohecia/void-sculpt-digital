@@ -98,7 +98,7 @@ export default function Portfolio() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-[50svh] flex items-center justify-center overflow-hidden pt-24">
+      <section className="relative min-h-[40svh] sm:min-h-[50svh] flex items-center justify-center overflow-hidden pt-20 sm:pt-24">
         <motion.div
           className="absolute inset-0 opacity-40"
           style={{
@@ -108,7 +108,7 @@ export default function Portfolio() {
 
         
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             className="text-center max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
@@ -116,7 +116,7 @@ export default function Portfolio() {
             transition={{ duration: 1.2 }}
           >
             <motion.p
-              className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-10"
+              className="text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground mb-6 sm:mb-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -125,7 +125,7 @@ export default function Portfolio() {
             </motion.p>
 
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-light mb-8 tracking-tight leading-[1.1]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-6 sm:mb-8 tracking-tight leading-[1.1]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -134,7 +134,7 @@ export default function Portfolio() {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light"
+              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
@@ -146,15 +146,15 @@ export default function Portfolio() {
       </section>
 
       {/* Filter Tabs */}
-      <SectionTransition className="py-8">
-        <div className="container mx-auto px-6">
+      <SectionTransition className="py-6 sm:py-8">
+        <div className="container mx-auto px-4 sm:px-6">
           <ScrollReveal variant="fadeIn">
             <div className="flex flex-wrap justify-center gap-2">
               {categories.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
                     activeCategory === cat.id
                       ? "bg-white text-background"
                       : "text-muted-foreground hover:text-foreground border border-white/10 hover:border-white/20"
@@ -169,10 +169,10 @@ export default function Portfolio() {
       </SectionTransition>
 
       {/* Projects Grid */}
-      <SectionTransition className="py-16 relative">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-10 sm:py-16 relative">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <StaggerContainer 
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto" 
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto" 
             staggerDelay={0.1}
           >
             {filteredProjects.map((project) => (
@@ -183,7 +183,7 @@ export default function Portfolio() {
                   onMouseEnter={() => setHoveredProject(project.id)}
                   onMouseLeave={() => setHoveredProject(null)}
                 >
-                  <div className="rounded-2xl overflow-hidden border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
+                  <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
                     {/* Image */}
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <ImageWithSkeleton
@@ -207,28 +207,28 @@ export default function Portfolio() {
                       </motion.div>
 
                       {/* Category Badge */}
-                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-sm border border-white/10">
+                      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-sm border border-white/10">
                         {project.category === "360" ? "360°" : project.category.charAt(0).toUpperCase() + project.category.slice(1)}
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
+                    <div className="p-4 sm:p-6">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-medium">{project.title}</h3>
+                        <h3 className="text-base sm:text-lg font-medium">{project.title}</h3>
                         <span className="text-xs text-muted-foreground">{project.year}</span>
                       </div>
 
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
                         {project.description}
                       </p>
 
                       {/* Tags */}
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {project.tags.slice(0, 3).map(tag => (
                           <span
                             key={tag}
-                            className="px-2 py-1 text-xs rounded-md bg-white/5 text-muted-foreground"
+                            className="px-2 py-0.5 sm:py-1 text-xs rounded-md bg-white/5 text-muted-foreground"
                           >
                             {tag}
                           </span>
@@ -244,23 +244,23 @@ export default function Portfolio() {
       </SectionTransition>
 
       {/* CTA Section */}
-      <SectionTransition className="py-24 relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-16 sm:py-24 relative overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="fadeInUp">
             <div className="text-center max-w-2xl mx-auto">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">Votre projet</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4 sm:mb-6">Votre projet</p>
               
-              <h2 className="text-3xl md:text-4xl font-light mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-4 sm:mb-6">
                 Le prochain pourrait être <span className="font-medium text-gradient-neon">le vôtre.</span>
               </h2>
 
-              <p className="text-muted-foreground mb-10">
+              <p className="text-sm sm:text-base text-muted-foreground mb-8 sm:mb-10 px-2">
                 Discutons ensemble de votre vision et transformons-la en réalité digitale.
               </p>
 
               <motion.a
                 href="/contact"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden"
+                className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -270,7 +270,7 @@ export default function Portfolio() {
                 <span className="relative text-background group-hover:text-white transition-colors duration-500">
                   Démarrer un projet
                 </span>
-                <ArrowRight className="relative h-4 w-4 text-background group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                <ArrowRight className="relative h-3.5 w-3.5 sm:h-4 sm:w-4 text-background group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
               </motion.a>
             </div>
           </ScrollReveal>
