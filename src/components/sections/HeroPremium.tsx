@@ -73,7 +73,7 @@ export function HeroPremium() {
           {/* Main content - centered and minimal */}
           <div className="text-center">
             {/* Small brand identifier with reveal */}
-            <motion.div className="overflow-hidden mb-12" initial={{
+            <motion.div className="overflow-hidden mb-8 md:mb-10" initial={{
             opacity: 0
           }} animate={{
             opacity: 1
@@ -97,7 +97,7 @@ export function HeroPremium() {
             </motion.div>
 
             {/* Main headline with line reveal */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-6 md:mb-8 tracking-tight leading-[1.15]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-8 md:mb-10 tracking-tight leading-[1.15]">
               <LineReveal lines={["Expériences digitales"]} delay={0.4} lineClassName="block pb-1" />
               <div className="mt-2 overflow-hidden pb-1">
                 <motion.span className="block font-medium text-gradient-neon" initial={{
@@ -117,7 +117,7 @@ export function HeroPremium() {
             </h1>
 
             {/* Refined subtitle with mask reveal */}
-            <div className="overflow-hidden mb-10 md:mb-14">
+            <div className="overflow-hidden mb-8 md:mb-10">
               <motion.p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0" initial={{
               y: 40,
               opacity: 0
