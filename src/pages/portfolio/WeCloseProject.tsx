@@ -126,11 +126,11 @@ export default function WeCloseProject() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10">
+            <div className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 aspect-square">
               <img
                 src={wecloseImg}
                 alt={projectDetails.title}
-                className="w-full h-auto"
+                className="w-full h-full object-cover"
               />
             </div>
           </motion.div>
