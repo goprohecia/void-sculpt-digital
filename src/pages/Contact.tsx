@@ -113,7 +113,7 @@ const Contact = () => {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed font-light"
+              className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light whitespace-nowrap"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
