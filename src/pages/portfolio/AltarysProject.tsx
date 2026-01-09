@@ -8,7 +8,7 @@ const projectDetails = {
   subtitle: "Plateforme DeFi et RWA avec dashboard administratif complet",
   category: "Backoffice",
   client: "Altarys Group",
-  year: "2024",
+  year: "2025",
   duration: "8 semaines",
   url: "https://altarys-group.fr/",
   description: `Altarys Group accompagne les professionnels de la finance dans leur transition vers l'écosystème DeFi et les actifs tokenisés (RWA). Le projet nécessitait une plateforme complète combinant un site vitrine informatif et un dashboard de gestion avancé.
