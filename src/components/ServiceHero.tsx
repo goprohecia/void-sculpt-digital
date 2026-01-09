@@ -1,9 +1,9 @@
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 interface ServiceHeroProps {
   title: string;
-  subtitle: string;
+  subtitle: ReactNode;
   image?: string;
   accentColor: "red" | "green" | "blue" | "gold" | "violet";
   badge?: string;
