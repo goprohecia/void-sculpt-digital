@@ -71,9 +71,9 @@ export function OffresSection() {
         {/* Header */}
         <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
           <ScrollReveal variant="fadeInUp">
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-neon-violet/10 border border-neon-violet/30">
-              <span className="text-sm font-medium text-neon-violet">Nos offres</span>
-            </div>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">
+              Nos offres
+            </p>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6">
