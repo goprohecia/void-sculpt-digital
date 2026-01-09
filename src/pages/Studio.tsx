@@ -78,7 +78,7 @@ const Studio = () => {
           }}
         />
 
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+        
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
