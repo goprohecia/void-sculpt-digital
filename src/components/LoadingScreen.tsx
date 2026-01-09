@@ -22,6 +22,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   return (
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+      style={{ minHeight: '100dvh', height: '100dvh' }}
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
