@@ -106,7 +106,7 @@ export default function Portfolio() {
           }}
         />
 
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+        
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
@@ -130,8 +130,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <span className="block">Nos</span>
-              <span className="block mt-2 font-medium text-gradient-neon">réalisations.</span>
+              Nos <span className="font-medium text-gradient-neon">réalisations.</span>
             </motion.h1>
 
             <motion.p
