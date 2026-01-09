@@ -37,12 +37,6 @@ L'objectif était de créer une expérience gaming haut de gamme qui engage les 
     "Intégration Web3",
     "Chat communautaire",
   ],
-  results: [
-    { metric: "10K+", label: "Utilisateurs actifs" },
-    { metric: "50K+", label: "Invitations générées" },
-    { metric: "95%", label: "Rétention utilisateurs" },
-    { metric: "4.9", label: "Note moyenne" },
-  ],
   gamingFeatures: [
     { icon: Trophy, title: "Compétitions", description: "Tournois et classements pour les meilleurs joueurs" },
     { icon: Gift, title: "Rewards", description: "Système de récompenses tokenisées et exclusives" },
@@ -196,41 +190,6 @@ export default function PropheciaProject() {
                 </div>
                 <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-3">{feature.title}</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Results */}
-      <section className="py-10 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6">
-          <motion.h2
-            className="text-xl sm:text-2xl md:text-3xl font-light text-center mb-8 sm:mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Résultats <span className="font-medium text-gradient-neon">obtenus</span>
-          </motion.h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-4xl mx-auto">
-            {projectDetails.results.map((result, index) => (
-              <motion.div
-                key={result.label}
-                className="text-center p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 bg-white/[0.02]"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="text-2xl sm:text-3xl md:text-4xl font-light text-gradient-neon mb-1 sm:mb-2">
-                  {result.metric}
-                </div>
-                <div className="text-xs sm:text-sm text-muted-foreground">
-                  {result.label}
-                </div>
               </motion.div>
             ))}
           </div>
