@@ -17,7 +17,7 @@ const WebService = () => {
     <Layout>
       <ServiceHero
         title="Architectures Web Immersives"
-        subtitle="De la vitrine épurée au E-commerce puissant. Votre présence en ligne, réinventée."
+        subtitle={<>De la vitrine épurée au E-commerce puissant.<br />Votre présence en ligne, réinventée.</>}
         image={heroImage}
         accentColor="blue"
         badge="Sites Web & Vitrines"
