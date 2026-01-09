@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import logoHero from "@/assets/logo-hero.png";
+import { motion } from "framer-motion";
 
 interface LoadingScreenProps {
   onComplete?: () => void;
@@ -7,17 +7,12 @@ interface LoadingScreenProps {
 
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    // Minimum loading time for effect
     const timer = setTimeout(() => {
-      setIsExiting(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        onComplete?.();
-      }, 600);
-    }, 1800);
+      setIsLoading(false);
+      onComplete?.();
+    }, 2200);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -25,53 +20,79 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
   if (!isLoading) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-background transition-opacity duration-500 ${
-        isExiting ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-blue/5" />
-      <div className="absolute inset-0 grid-bg opacity-50" />
-      
-      {/* Animated Orbs */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-violet-600/30 rounded-full blur-[100px] animate-pulse-glow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-purple-500/20 rounded-full blur-[80px] animate-pulse-glow" style={{ animationDelay: "0.5s" }} />
-      
-      <div className="relative z-10 flex flex-col items-center">
-        {/* Logo Container */}
-        <div className="relative mb-8">
-          {/* Glow rings */}
-          <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-150 animate-loading-glow" />
-          <div className="absolute inset-0 bg-violet-500/30 blur-[40px] rounded-full scale-125 animate-loading-glow" style={{ animationDelay: "0.3s" }} />
-          
-          {/* Spinning ring */}
-          <div className="absolute -inset-4 border-2 border-transparent border-t-neon-violet border-r-neon-violet/50 rounded-full animate-spin-slow" />
-          <div className="absolute -inset-8 border border-transparent border-t-violet-500/30 rounded-full animate-spin-reverse" />
-          
-          {/* Logo */}
-          <img
-            src={logoHero}
-            alt="IMPARTIAL"
-            className="relative w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_0_40px_rgba(139,92,246,0.8)] animate-loading-logo"
-          />
-        </div>
-        
-        {/* Brand Name */}
-        <h1 className="text-2xl md:text-3xl font-black tracking-wider text-logo-gradient animate-loading-text">
-          IMPARTIAL
-        </h1>
-        
-        {/* Loading Bar */}
-        <div className="mt-6 w-48 h-1 bg-white/10 rounded-full overflow-hidden">
-          <div className="h-full bg-gradient-to-r from-neon-violet via-purple-500 to-neon-violet animate-loading-bar rounded-full" />
-        </div>
-        
-        {/* Loading Text */}
-        <p className="mt-4 text-sm text-muted-foreground animate-pulse">
-          Chargement...
-        </p>
+      {/* Subtle ambient gradient */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-neon-violet/20 rounded-full blur-[150px]" />
       </div>
-    </div>
+
+      {/* Minimal accent lines */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-1/3 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-1/3 bg-gradient-to-t from-transparent via-white/10 to-transparent" />
+
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Brand text with reveal animation */}
+        <div className="overflow-hidden">
+          <motion.h1
+            className="text-4xl md:text-6xl font-light tracking-[0.3em] text-foreground"
+            initial={{ y: 60, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            IMPARTIAL
+          </motion.h1>
+        </div>
+
+        {/* Subtle tagline */}
+        <motion.p
+          className="mt-4 text-xs uppercase tracking-[0.4em] text-muted-foreground"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          Studio
+        </motion.p>
+
+        {/* Minimal loading indicator */}
+        <motion.div
+          className="mt-12 flex items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 1.2 }}
+        >
+          <motion.div
+            className="w-8 h-px bg-gradient-to-r from-transparent via-neon-violet to-transparent"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+          <motion.div
+            className="w-1.5 h-1.5 rounded-full bg-neon-violet"
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="w-8 h-px bg-gradient-to-r from-transparent via-neon-violet to-transparent"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
+          />
+        </motion.div>
+      </div>
+
+      {/* Exit animation overlay */}
+      <motion.div
+        className="absolute inset-0 bg-background"
+        initial={{ scaleY: 0 }}
+        animate={{ scaleY: 1 }}
+        transition={{ duration: 0.5, delay: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
+        style={{ transformOrigin: "bottom" }}
+      />
+    </motion.div>
   );
 }
