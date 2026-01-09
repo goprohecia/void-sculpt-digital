@@ -62,8 +62,6 @@ export function ServiceHero({
         }}
       />
 
-      {/* Minimal accent line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -111,8 +109,6 @@ export function ServiceHero({
         </div>
       </div>
 
-      {/* Bottom fade accent */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </section>
   );
 }
