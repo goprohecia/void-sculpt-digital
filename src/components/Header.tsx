@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoHero from "@/assets/logo-hero.png";
 import { MagneticButton, RippleButton } from "@/components/animations";
 
-const expertises = [
-  { name: "Sites Web & Vitrines", href: "/services/web" },
-  { name: "Applications Mobiles", href: "/services/mobile" },
-  { name: "Backoffice & SaaS", href: "/services/backoffice" },
-  { name: "Écosystème 360°", href: "/services/360" },
+const services = [
+  { name: "Web", href: "/services/web" },
+  { name: "Mobile", href: "/services/mobile" },
+  { name: "Backoffice", href: "/services/backoffice" },
+  { name: "360°", href: "/services/360" },
 ];
 
 const navLinks = [
@@ -69,7 +69,6 @@ function NavLink({
 }
 
 export function Header() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -80,7 +79,6 @@ export function Header() {
     }
     return location.pathname === path;
   };
-  const isExpertiseActive = expertises.some((e) => location.pathname === e.href);
 
   // Scroll effect for navbar
   useEffect(() => {
@@ -128,83 +126,32 @@ export function Header() {
 
           {/* Desktop Navigation - Centered */}
           <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
-            {/* Dropdown for Expertises */}
-            <div
-              className="relative"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
+            {/* Studio first */}
+            <NavLink
+              to="/studio"
+              isActive={isActive("/studio")}
             >
-              <MagneticButton as="div" strength={0.15}>
-                <motion.button
-                  className={`flex items-center gap-1 font-medium transition-colors duration-200 hover:text-neon-violet px-2 py-1 ${
-                    isExpertiseActive ? "text-neon-violet" : "text-foreground"
-                  }`}
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Expertises
-                  <motion.span
-                    animate={{ rotate: isDropdownOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </motion.span>
-                </motion.button>
-              </MagneticButton>
+              Studio
+            </NavLink>
 
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {isDropdownOpen && (
-                  <motion.div
-                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                  >
-                    <motion.div
-                      className="glass-card glass-noise glass-shimmer min-w-[240px] p-2 overflow-hidden"
-                      initial={{ rotateX: -15 }}
-                      animate={{ rotateX: 0 }}
-                      style={{ transformPerspective: 1000 }}
-                    >
-                      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-violet/30 to-transparent" />
-                      {expertises.map((item, index) => (
-                        <motion.div
-                          key={item.href}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                        >
-                          <Link
-                            to={item.href}
-                            className={`relative z-10 block px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 hover:translate-x-1 ${
-                              isActive(item.href)
-                                ? "text-neon-violet bg-neon-violet/10"
-                                : ""
-                            }`}
-                          >
-                            {item.name}
-                          </Link>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Main nav links with anchors */}
-            {navLinks.map((link) => (
+            {/* Services links */}
+            {services.map((link) => (
               <NavLink
                 key={link.href}
                 to={link.href}
                 isActive={isActive(link.href)}
-                isAnchor={link.href.startsWith("/#")}
               >
                 {link.name}
               </NavLink>
             ))}
+
+            {/* Contact */}
+            <NavLink
+              to="/contact"
+              isActive={isActive("/contact")}
+            >
+              Contact
+            </NavLink>
           </div>
 
           {/* CTA Button - Right */}
@@ -282,18 +229,38 @@ export function Header() {
                   },
                 }}
               >
-                {/* Expertises section */}
+                {/* Studio first */}
                 <motion.div
                   variants={{
                     open: { opacity: 1, x: 0 },
                     closed: { opacity: 0, x: -20 },
                   }}
-                  className="px-4 py-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider"
                 >
-                  Expertises
+                  <Link
+                    to="/studio"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`relative z-10 px-4 py-3 rounded-xl transition-colors block ${
+                      isActive("/studio")
+                        ? "bg-neon-violet/10 text-neon-violet"
+                        : ""
+                    }`}
+                  >
+                    Studio
+                  </Link>
                 </motion.div>
 
-                {expertises.map((item) => (
+                {/* Services section */}
+                <motion.div
+                  variants={{
+                    open: { opacity: 1, x: 0 },
+                    closed: { opacity: 0, x: -20 },
+                  }}
+                  className="px-4 py-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider mt-2"
+                >
+                  Services
+                </motion.div>
+
+                {services.map((item) => (
                   <motion.div
                     key={item.href}
                     variants={{
