@@ -1,6 +1,5 @@
 import { Layout } from "@/components/Layout";
 import { FAQ } from "@/components/FAQ";
-import { FloatingParticles } from "@/components/FloatingParticles";
 import {
   HeroPremium,
   ProofStrip,
@@ -15,8 +14,6 @@ import {
 const Index = () => {
   return (
     <Layout>
-      {/* Floating Particles Background */}
-      <FloatingParticles />
 
       {/* A. Hero Section - Premium */}
       <HeroPremium />
