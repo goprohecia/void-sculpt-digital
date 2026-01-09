@@ -55,7 +55,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
         >
-          Studio
+          Games
         </motion.p>
 
         {/* Minimal loading indicator */}
