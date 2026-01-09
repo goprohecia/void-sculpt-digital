@@ -109,8 +109,7 @@ const Contact = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <span className="block">Parlons de votre</span>
-              <span className="block mt-2 font-medium text-gradient-neon">projet.</span>
+              Parlons de votre <span className="font-medium text-gradient-neon">projet.</span>
             </motion.h1>
 
             <motion.p
