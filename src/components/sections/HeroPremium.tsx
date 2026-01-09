@@ -28,23 +28,6 @@ export function HeroPremium() {
 
   return (
     <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-      {/* Mirror/Frame effect - outer glow border */}
-      <div className="absolute inset-8 md:inset-16 lg:inset-24 pointer-events-none">
-        {/* Frame borders with gradient */}
-        <div className="absolute inset-0 border border-white/[0.08] rounded-sm" />
-        <div className="absolute inset-[1px] border border-white/[0.04] rounded-sm" />
-        
-        {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-8 h-8 border-l border-t border-white/20" />
-        <div className="absolute top-0 right-0 w-8 h-8 border-r border-t border-white/20" />
-        <div className="absolute bottom-0 left-0 w-8 h-8 border-l border-b border-white/20" />
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-r border-b border-white/20" />
-        
-        {/* Subtle inner reflection/mirror effect */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] via-transparent to-white/[0.01] rounded-sm" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/[0.01] via-transparent to-white/[0.01] rounded-sm" />
-      </div>
-
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Main content - centered and minimal */}
