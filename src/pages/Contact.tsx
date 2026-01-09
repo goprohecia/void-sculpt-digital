@@ -87,9 +87,6 @@ const Contact = () => {
           }}
         />
 
-        {/* Minimal accent line */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-32 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             className="max-w-3xl mx-auto text-center"
@@ -126,6 +123,9 @@ const Contact = () => {
             </motion.p>
           </motion.div>
         </div>
+
+        {/* Bottom fade accent */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </section>
 
       {/* Contact Section */}
