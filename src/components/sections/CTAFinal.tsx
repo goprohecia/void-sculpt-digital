@@ -25,14 +25,14 @@ export function CTAFinal() {
 
               <div className="relative z-10">
                 <ScrollReveal variant="fadeInUp" delay={0.1}>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6 tracking-tight">
                     Prêt à rendre votre produit{" "}
-                    <span className="text-gradient-neon">inoubliable ?</span>
+                    <span className="font-medium text-gradient-neon">inoubliable ?</span>
                   </h2>
                 </ScrollReveal>
 
                 <ScrollReveal variant="fadeInUp" delay={0.2}>
-                  <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+                  <p className="text-lg md:text-xl text-muted-foreground font-light mb-10 max-w-2xl mx-auto leading-relaxed">
                     On vous répond sous 24–48h avec une proposition claire et sans engagement.
                   </p>
                 </ScrollReveal>

@@ -86,12 +86,12 @@ export function Newsletter({ variant = "card" }: NewsletterProps) {
             <Mail className="h-6 w-6 text-cyan-400" />
           </div>
           <div>
-            <h3 className="text-xl font-bold">Restez informé</h3>
-            <p className="text-sm text-muted-foreground">Inscrivez-vous à notre newsletter</p>
+            <h3 className="text-xl font-light">Restez informé</h3>
+            <p className="text-sm text-muted-foreground font-light">Inscrivez-vous à notre newsletter</p>
           </div>
         </div>
 
-        <p className="text-muted-foreground mb-6">
+        <p className="text-muted-foreground font-light mb-6">
           Recevez nos dernières actualités, conseils et tendances du digital directement dans votre boîte mail.
         </p>
 
