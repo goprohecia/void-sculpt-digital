@@ -57,14 +57,14 @@ export function SideNav() {
 
   return (
     <motion.nav
-      className="fixed right-0 top-1/2 -translate-y-1/2 z-50 hidden lg:flex"
+      className="sticky top-1/2 -translate-y-1/2 z-40 hidden lg:flex self-start h-fit"
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {/* Glass sidebar container */}
-      <div className="relative flex flex-col py-6 px-4 rounded-l-2xl border border-white/10 border-r-0 bg-background/60 backdrop-blur-xl">
-        {/* Top accent */}
+      <div className="relative flex flex-col py-6 px-4 rounded-2xl border border-white/10 bg-background/60 backdrop-blur-xl">
+        {/* Left accent */}
         <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-neon-violet/30 to-transparent" />
         
         <div className="flex flex-col gap-1">
