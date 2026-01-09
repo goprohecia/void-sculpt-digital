@@ -76,13 +76,15 @@ export function OffresSection() {
             </p>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6">
+            <h2 className="text-3xl md:text-4xl font-light mb-6">
               Des offres claires.{" "}
               <span className="font-medium text-gradient-neon">Un rendu premium.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>
-            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">Choisissez un cadre simple, on l'élève au niveau studio : design, motion, performance et finitions.</p>
+            <p className="text-muted-foreground font-light">
+              Choisissez un cadre simple, on l'élève au niveau studio : design, motion, performance et finitions.
+            </p>
           </ScrollReveal>
         </div>
 

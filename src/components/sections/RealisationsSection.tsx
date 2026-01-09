@@ -79,13 +79,13 @@ export function RealisationsSection() {
             </p>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6">
+            <h2 className="text-3xl md:text-4xl font-light mb-6">
               Sélection de{" "}
               <span className="font-medium text-gradient-neon">projets.</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>
-            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+            <p className="text-muted-foreground font-light">
               Quelques réalisations qui illustrent notre approche premium.
             </p>
           </ScrollReveal>
