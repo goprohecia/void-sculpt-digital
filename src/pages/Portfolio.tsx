@@ -32,7 +32,7 @@ const projects: Project[] = [
     image: wecloseImg,
     tags: ["React", "Framer Motion", "Design Premium"],
     client: "We Close Agency",
-    year: "2024",
+    year: "2025",
     url: "/portfolio/weclose"
   },
   {
@@ -43,7 +43,7 @@ const projects: Project[] = [
     image: altarysImg,
     tags: ["Dashboard", "DeFi", "Finance", "TypeScript"],
     client: "Altarys Group",
-    year: "2024",
+    year: "2025",
     url: "/portfolio/altarys"
   },
   {

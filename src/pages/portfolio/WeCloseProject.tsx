@@ -8,7 +8,7 @@ const projectDetails = {
   subtitle: "Site vitrine premium pour une agence de closers et setters",
   category: "Site Web",
   client: "We Close Agency",
-  year: "2024",
+  year: "2025",
   duration: "6 semaines",
   url: "https://wecloseagency.fr/",
   description: `We Close Agency est une agence spécialisée dans la mise en relation entre entreprises et professionnels de la vente (closers et setters). Le site devait refléter le professionnalisme et l'efficacité de leurs services tout en offrant une expérience utilisateur immersive.
