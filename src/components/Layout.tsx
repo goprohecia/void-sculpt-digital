@@ -15,12 +15,8 @@ export function Layout({ children }: LayoutProps) {
       <GlassAtmosphere />
       <SpaceBackground />
       <Header />
-      <div className="flex-1 relative z-10 flex">
-        <main className="flex-1">{children}</main>
-        <div className="hidden lg:block pr-4 pt-[50vh]">
-          <SideNav />
-        </div>
-      </div>
+      <SideNav />
+      <main className="flex-1 relative z-10">{children}</main>
       <Footer />
     </div>
   );
