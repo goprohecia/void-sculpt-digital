@@ -11,7 +11,7 @@ const sectionLinks = [
 
 export function SideNav() {
   const [activeSection, setActiveSection] = useState<string>("");
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const location = useLocation();
 
   // Only show on homepage
@@ -21,8 +21,7 @@ export function SideNav() {
     if (!isHomepage) return;
 
     const handleScroll = () => {
-      // Show after scrolling past hero
-      setIsVisible(window.scrollY > window.innerHeight * 0.5);
+      // Always visible on homepage
 
       // Detect active section
       const sections = sectionLinks.map(link => ({
