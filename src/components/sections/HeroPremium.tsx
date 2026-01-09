@@ -83,8 +83,8 @@ export function HeroPremium() {
             </h1>
 
             {/* Refined subtitle with mask reveal */}
-            <div className="overflow-hidden mb-14">
-              <motion.p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light" initial={{
+            <div className="overflow-hidden mb-10 md:mb-14">
+              <motion.p className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0" initial={{
               y: 40,
               opacity: 0
             }} animate={{
