@@ -5,17 +5,17 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText } from "lucide-react";
+import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 
-const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
+const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "Cahier des charges", "En cours", "Livraison", "Terminé"];
 
 function getEtapeIndex(statut: string, cdcComplete: boolean): number {
   switch (statut) {
     case "en_attente": return 1;
-    case "en_cours": return cdcComplete ? 3 : 2; // Block at "Devis accepté" if CDC not complete
-    case "termine": return 5;
+    case "en_cours": return cdcComplete ? 4 : 2;
+    case "termine": return 6;
     case "annule": return -1;
     default: return 0;
   }
@@ -78,6 +78,20 @@ export default function ClientDossierDetail() {
             </motion.div>
           )}
 
+          {/* Admin feedback - read only */}
+          {cahier?.commentairesAdmin && (
+            <motion.div
+              className="glass-card p-4 border border-border/30"
+              variants={staggerItem}
+            >
+              <h2 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-[hsl(200,100%,60%)]" />
+                Retours de l'équipe
+              </h2>
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap">{cahier.commentairesAdmin}</p>
+            </motion.div>
+          )}
+
           {/* Info */}
           <motion.div className="glass-card p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm" variants={staggerItem}>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Montant</p><p className="font-bold text-base sm:text-lg">{dossier.montant.toLocaleString()} €</p></div>
@@ -96,8 +110,15 @@ export default function ClientDossierDetail() {
                     <div className={`flex flex-col items-center flex-1 ${i <= etapeActive ? "text-primary" : "text-muted-foreground"}`}>
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                         i <= etapeActive ? "bg-primary text-primary-foreground" : "bg-muted border border-border"
-                      }`}>{i + 1}</div>
+                      }`}>
+                        {i === 3 ? <FileText className="h-3 w-3" /> : i + 1}
+                      </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
+                      {i === 3 && (
+                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : "text-[hsl(45,100%,50%)]"}`}>
+                          {cdcComplete ? "Validé" : "À remplir"}
+                        </span>
+                      )}
                     </div>
                     {i < etapes.length - 1 && (
                       <div className={`h-0.5 flex-1 min-w-4 ${i < etapeActive ? "bg-primary" : "bg-border"}`} />

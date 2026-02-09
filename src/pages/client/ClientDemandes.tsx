@@ -5,7 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData, type DemandePrestation, type Demande } from "@/contexts/DemoDataContext";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
-import { Send, Plus, FileText } from "lucide-react";
+import { Send, Plus, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,6 +22,7 @@ export default function ClientDemandes() {
   const mesDemandes = getDemandesByClient(DEMO_CLIENT_ID);
   const [open, setOpen] = useState(false);
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
+  const [commentDialogId, setCommentDialogId] = useState<string | null>(null);
   const [titre, setTitre] = useState("");
   const [typePrestation, setTypePrestation] = useState<DemandePrestation>("Site web");
   const [description, setDescription] = useState("");
@@ -113,6 +114,18 @@ export default function ClientDemandes() {
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs text-muted-foreground">{d.reference}</span>
                     {getCdcBadge(d.id)}
+                    {(() => {
+                      const cahier = getCahierByDemande(d.id);
+                      return cahier?.commentairesAdmin ? (
+                        <Badge
+                          variant="outline"
+                          className="text-[10px] px-1.5 py-0 cursor-pointer hover:bg-muted/50 gap-1"
+                          onClick={() => setCommentDialogId(d.id)}
+                        >
+                          <MessageSquare className="h-2.5 w-2.5" /> Retour équipe
+                        </Badge>
+                      ) : null;
+                    })()}
                   </div>
                   <StatusBadge status={d.statut} />
                 </div>
@@ -148,6 +161,22 @@ export default function ClientDemandes() {
             existing={getCahierByDemande(cdcDemandeId)}
             onSave={saveCahierDesCharges}
           />
+        )}
+
+        {/* Comment dialog */}
+        {commentDialogId && (
+          <Dialog open={!!commentDialogId} onOpenChange={(o) => { if (!o) setCommentDialogId(null); }}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4" /> Retour de l'équipe
+                </DialogTitle>
+              </DialogHeader>
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                {getCahierByDemande(commentDialogId)?.commentairesAdmin}
+              </p>
+            </DialogContent>
+          </Dialog>
         )}
       </AdminPageTransition>
     </ClientLayout>

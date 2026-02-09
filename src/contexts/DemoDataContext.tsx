@@ -390,7 +390,15 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   }, []);
   const updateCahierComment = useCallback((demandeId: string, comment: string) => {
     setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, commentairesAdmin: comment } : c));
-  }, []);
+    // Notification + email to client
+    const dem = demandes.find((d) => d.id === demandeId);
+    if (dem) {
+      pushNotif("dossier", "Nouveau commentaire CDC", `L'équipe a laissé un retour sur le cahier des charges de "${dem.titre}"`, "/client/demandes", "client", dem.clientId);
+      pushEmail("validation", dem.clientNom, `Retour sur votre cahier des charges — ${dem.reference}`,
+        `<p>Bonjour,</p><p>Notre équipe a laissé un commentaire sur le cahier des charges de votre demande <strong>"${dem.titre}"</strong>.</p><p>Connectez-vous à votre espace client pour le consulter.</p><p>L'équipe Impartial</p>`,
+        dem.clientId, dem.reference);
+    }
+  }, [demandes, pushNotif, pushEmail]);
 
   return (
     <DemoDataContext.Provider value={{
