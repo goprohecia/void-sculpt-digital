@@ -156,14 +156,6 @@ export function Header() {
 
           {/* CTA Button - Right */}
           <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-            <MagneticButton as="div" strength={0.15}>
-              <Link
-                to="/admin/login"
-                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
-              >
-                Connexion
-              </Link>
-            </MagneticButton>
             <MagneticButton as="div" strength={0.25}>
               <a
                 href="https://calendly.com/yannis-bezriche/impartial-games"
@@ -173,6 +165,14 @@ export function Header() {
               >
                 Planifier un appel
               </a>
+            </MagneticButton>
+            <MagneticButton as="div" strength={0.15}>
+              <Link
+                to="/admin/login"
+                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
+              >
+                Connexion
+              </Link>
             </MagneticButton>
           </div>
 
@@ -338,10 +338,25 @@ export function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="mt-4 btn-gradient px-6 py-3 text-white font-semibold rounded-xl text-center block relative z-10"
+                    className="mt-4 glass-button px-6 py-3 font-medium rounded-xl text-center block relative z-10"
                   >
                     Planifier un appel
                   </a>
+                </motion.div>
+
+                <motion.div
+                  variants={{
+                    open: { opacity: 1, y: 0 },
+                    closed: { opacity: 0, y: 20 },
+                  }}
+                >
+                  <Link
+                    to="/admin/login"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="mt-3 glass-button px-6 py-3 font-medium rounded-xl text-center block relative z-10"
+                  >
+                    Connexion
+                  </Link>
                 </motion.div>
               </motion.div>
             </motion.div>
