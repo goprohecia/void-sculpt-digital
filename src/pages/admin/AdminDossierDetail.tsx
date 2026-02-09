@@ -5,12 +5,14 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
+import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
 
 const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
 
@@ -89,11 +91,14 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
 export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit } = useDemoData();
+  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit, getCahierByDossier, demandes } = useDemoData();
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
   const previewVisits = id ? getPreviewVisitsByDossier(id) : [];
+  const cahier = id ? getCahierByDossier(id) : undefined;
+  const demandeTitre = cahier ? demandes.find((d) => d.id === cahier.demandeId)?.titre : undefined;
+  const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
   if (!dossier) {
     return <AdminLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></AdminLayout>;
@@ -166,6 +171,40 @@ export default function AdminDossierDetail() {
               </div>
             </motion.div>
           )}
+
+          {/* Cahier des charges */}
+          <motion.div className="glass-card p-5" variants={staggerItem}>
+            <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" />
+              Cahier des charges
+              {cahier && (
+                <Badge variant={cahier.statut === "complet" ? "default" : "secondary"} className="ml-1">
+                  {cahier.statut === "complet" ? "Complet" : "Brouillon"}
+                </Badge>
+              )}
+            </h2>
+            {cahier ? (
+              <div className="space-y-3">
+                <div className="text-sm text-muted-foreground line-clamp-3">{cahier.contexte}</div>
+                {cahier.fonctionnalites.length > 0 && (
+                  <div>
+                    <p className="text-xs font-medium text-foreground mb-1">Fonctionnalités ({cahier.fonctionnalites.length})</p>
+                    <ul className="text-xs text-muted-foreground list-disc list-inside space-y-0.5">
+                      {cahier.fonctionnalites.slice(0, 3).map((f, i) => <li key={i}>{f}</li>)}
+                      {cahier.fonctionnalites.length > 3 && <li className="text-primary">+{cahier.fonctionnalites.length - 3} autres…</li>}
+                    </ul>
+                  </div>
+                )}
+                <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setCdcViewOpen(true)}>
+                  <Eye className="h-3.5 w-3.5" /> Voir le cahier des charges complet
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Aucun cahier des charges associé à ce dossier</p>
+            )}
+          </motion.div>
+
+          <CahierDesChargesView open={cdcViewOpen} onOpenChange={setCdcViewOpen} cahier={cahier || null} demandeTitre={demandeTitre} />
 
           {/* Preview Link */}
           <PreviewLinkSection dossier={dossier} onUpdateUrl={updateDossierPreviewUrl} />
