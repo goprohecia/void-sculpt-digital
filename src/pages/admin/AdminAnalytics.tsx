@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
-import { donneesMensuelles, tickets } from "@/data/mockData";
-import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2 } from "lucide-react";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { donneesMensuelles, tickets, clients } from "@/data/mockData";
+import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import {
@@ -13,6 +14,7 @@ import {
   Line,
   BarChart,
   Bar,
+  AreaChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -81,10 +83,52 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function AdminAnalytics() {
   const isMobile = useIsMobile();
   const [exporting, setExporting] = useState(false);
+  const { factures, demandes } = useDemoData();
+
   const totalCA = donneesMensuelles.reduce((acc, d) => acc + d.caTotal, 0);
   const totalEncaissements = donneesMensuelles.reduce((acc, d) => acc + d.encaissements, 0);
   const totalDossiers = donneesMensuelles.reduce((acc, d) => acc + d.dossiers, 0);
   const totalNouveauxClients = donneesMensuelles.reduce((acc, d) => acc + d.nouveauxClients, 0);
+
+  // Dynamic payment distribution
+  const paymentDistribution = useMemo(() => [
+    { name: "Payées", value: factures.filter((f) => f.statut === "payee").length, color: "hsl(155, 100%, 45%)" },
+    { name: "En attente", value: factures.filter((f) => f.statut === "en_attente").length, color: "hsl(45, 93%, 55%)" },
+    { name: "En retard", value: factures.filter((f) => f.statut === "en_retard").length, color: "hsl(0, 84%, 60%)" },
+  ], [factures]);
+
+  // Collection rate per month
+  const tauxEncaissement = useMemo(() =>
+    donneesMensuelles.map((d) => ({
+      mois: d.mois,
+      taux: d.caTotal > 0 ? Math.round((d.encaissements / d.caTotal) * 100) : 0,
+    })), []);
+
+  // Top clients by CA
+  const topClients = useMemo(() => {
+    const caByClient: Record<string, { nom: string; ca: number }> = {};
+    factures.filter((f) => f.statut === "payee").forEach((f) => {
+      if (!caByClient[f.clientId]) caByClient[f.clientId] = { nom: f.clientNom, ca: 0 };
+      caByClient[f.clientId].ca += f.montant;
+    });
+    return Object.values(caByClient).sort((a, b) => b.ca - a.ca).slice(0, 5);
+  }, [factures]);
+
+  // Demandes stats
+  const demandesStats = useMemo(() => ({
+    total: demandes.length,
+    validees: demandes.filter((d) => d.statut === "validee").length,
+    refusees: demandes.filter((d) => d.statut === "refusee").length,
+    enRevue: demandes.filter((d) => d.statut === "en_revue").length,
+    nouvelles: demandes.filter((d) => d.statut === "nouvelle").length,
+  }), [demandes]);
+
+  const demandesDistribution = useMemo(() => [
+    { name: "Nouvelles", value: demandesStats.nouvelles, color: "hsl(200, 100%, 50%)" },
+    { name: "En revue", value: demandesStats.enRevue, color: "hsl(45, 93%, 55%)" },
+    { name: "Validées", value: demandesStats.validees, color: "hsl(155, 100%, 45%)" },
+    { name: "Refusées", value: demandesStats.refusees, color: "hsl(0, 84%, 60%)" },
+  ], [demandesStats]);
 
   const tickFontSize = isMobile ? 10 : 12;
 
@@ -290,6 +334,94 @@ export default function AdminAnalytics() {
               </ResponsiveContainer>
             </div>
           </motion.div>
+
+          {/* ======= SECTION PAIEMENTS & DEMANDES ======= */}
+          <motion.div variants={staggerItem} className="pt-4">
+            <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
+              <CreditCard className="h-5 w-5 text-primary" />
+              Paiements & Demandes
+            </h2>
+          </motion.div>
+
+          {/* KPIs Demandes */}
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={staggerContainer} initial="initial" animate="animate">
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Total demandes" value={demandesStats.total} icon={FileText} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Validées" value={demandesStats.validees} icon={CheckCircle} trend={{ value: demandesStats.total > 0 ? Math.round((demandesStats.validees / demandesStats.total) * 100) : 0, label: "taux" }} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="En revue" value={demandesStats.enRevue} icon={Clock} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Taux d'encaissement" value={`${totalCA > 0 ? Math.round((totalEncaissements / totalCA) * 100) : 0}%`} icon={Euro} />
+            </motion.div>
+          </motion.div>
+
+          {/* Répartition paiements + demandes */}
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4" variants={staggerItem}>
+            <div className="glass-card p-4 sm:p-6">
+              <h3 className="text-sm font-semibold mb-4">Répartition des paiements</h3>
+              <div className="h-48 sm:h-56">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={paymentDistribution} cx="50%" cy="50%" innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 65 : 80} dataKey="value" nameKey="name" label={({ name, value }) => `${name}: ${value}`} labelLine={false} style={{ fontSize: tickFontSize }}>
+                      {paymentDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className="glass-card p-4 sm:p-6">
+              <h3 className="text-sm font-semibold mb-4">Répartition des demandes</h3>
+              <div className="h-48 sm:h-56">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={demandesDistribution} cx="50%" cy="50%" innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 65 : 80} dataKey="value" nameKey="name" label={({ name, value }) => `${name}: ${value}`} labelLine={false} style={{ fontSize: tickFontSize }}>
+                      {demandesDistribution.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Taux d'encaissement */}
+          <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+            <h3 className="text-sm font-semibold mb-4">Évolution du taux d'encaissement</h3>
+            <div className="h-48 sm:h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={tauxEncaissement}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
+                  <XAxis dataKey="mois" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
+                  <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} unit="%" domain={[0, 100]} width={isMobile ? 35 : 50} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area type="monotone" dataKey="taux" name="Taux %" fill="hsl(155, 100%, 45%)" fillOpacity={0.15} stroke="hsl(155, 100%, 45%)" strokeWidth={2.5} dot={isMobile ? false : { r: 4, fill: "hsl(155, 100%, 45%)" }} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Top clients */}
+          {topClients.length > 0 && (
+            <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+              <h3 className="text-sm font-semibold mb-4">Top clients par CA encaissé</h3>
+              <div className="h-48 sm:h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={topClients} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
+                    <XAxis type="number" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
+                    <YAxis dataKey="nom" type="category" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 80 : 120} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Bar dataKey="ca" name="CA €" fill="hsl(265, 85%, 60%)" radius={[0, 4, 4, 0]} opacity={0.85} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </motion.div>
+          )}
 
           {/* ======= SECTION SUPPORT ======= */}
           <motion.div variants={staggerItem} className="pt-4">
