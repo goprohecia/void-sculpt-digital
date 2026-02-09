@@ -34,6 +34,7 @@ import AdminReminders from "@/pages/admin/AdminReminders";
 import AdminAnalytics from "@/pages/admin/AdminAnalytics";
 import AdminSupport from "@/pages/admin/AdminSupport";
 import AdminEmails from "@/pages/admin/AdminEmails";
+import AdminSettings from "@/pages/admin/AdminSettings";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
@@ -46,6 +47,7 @@ import ClientMessaging from "@/pages/client/ClientMessaging";
 import ClientProfile from "@/pages/client/ClientProfile";
 import ClientSupport from "@/pages/client/ClientSupport";
 import ClientPaiement from "@/pages/client/ClientPaiement";
+import ClientSettings from "@/pages/client/ClientSettings";
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -83,6 +85,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/emails" element={<AdminEmails />} />
         <Route path="/admin/support" element={<AdminSupport />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
+        <Route path="/admin/parametres" element={<AdminSettings />} />
         
         {/* Client routes */}
         <Route path="/client" element={<ClientDashboard />} />
@@ -95,6 +98,7 @@ export function AnimatedRoutes() {
         <Route path="/client/messagerie" element={<ClientMessaging />} />
         <Route path="/client/support" element={<ClientSupport />} />
         <Route path="/client/profil" element={<ClientProfile />} />
+        <Route path="/client/parametres" element={<ClientSettings />} />
         
         <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
       </Routes>

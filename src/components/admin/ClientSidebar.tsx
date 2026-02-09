@@ -7,6 +7,7 @@ import {
   MessageSquare,
   LifeBuoy,
   UserCircle,
+  Settings,
   LogOut,
   Send,
 } from "lucide-react";
@@ -37,6 +38,7 @@ const navItems = [
   { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
   { title: "Support", url: "/client/support", icon: LifeBuoy, badge: getOpenTicketsCount(DEMO_CLIENT_ID) },
   { title: "Mon profil", url: "/client/profil", icon: UserCircle },
+  { title: "Paramètres", url: "/client/parametres", icon: Settings },
 ];
 
 export function ClientSidebar() {
