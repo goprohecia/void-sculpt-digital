@@ -10,11 +10,11 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const { login, isAuthenticated } = useDemoAuth();
+  const { login, isAuthenticated, user } = useDemoAuth();
   const navigate = useNavigate();
 
   if (isAuthenticated) {
-    navigate("/admin", { replace: true });
+    navigate(user?.role === "client" ? "/client" : "/admin", { replace: true });
     return null;
   }
 
@@ -23,7 +23,9 @@ export default function AdminLogin() {
     setError("");
     const success = login(email, password);
     if (success) {
-      navigate("/admin", { replace: true });
+      // Role-based redirect will happen on re-render via isAuthenticated check
+      const account = email.toLowerCase().includes("client") ? "/client" : "/admin";
+      navigate(account, { replace: true });
     } else {
       setError("Identifiants incorrects");
     }
