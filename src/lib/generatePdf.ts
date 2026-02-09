@@ -10,6 +10,11 @@ const COMPANY = {
   tel: "01 23 45 67 89",
 };
 
+/** Format number with space as thousands separator */
+function fmt(n: number): string {
+  return n.toLocaleString("fr-FR", { useGrouping: true }).replace(/\u202F/g, " ");
+}
+
 function addHeader(doc: jsPDF, title: string, reference: string) {
   // Company info
   doc.setFontSize(20);
@@ -82,6 +87,9 @@ export function generateFacturePdf(facture: Facture) {
     doc.text(`Dossier associé : ${facture.dossierId}`, 20, 73);
   }
 
+  const ht = facture.montant / 1.2;
+  const tva = facture.montant - ht;
+
   // Table
   autoTable(doc, {
     startY: 82,
@@ -89,12 +97,12 @@ export function generateFacturePdf(facture: Facture) {
     body: [
       [
         `Prestation — ${facture.reference}`,
-        `${(facture.montant / 1.2).toFixed(2)} €`,
-        `${(facture.montant - facture.montant / 1.2).toFixed(2)} €`,
-        `${facture.montant.toLocaleString()} €`,
+        `${fmt(Math.round(ht * 100) / 100)} €`,
+        `${fmt(Math.round(tva * 100) / 100)} €`,
+        `${fmt(facture.montant)} €`,
       ],
     ],
-    foot: [["", "", "Total TTC", `${facture.montant.toLocaleString()} €`]],
+    foot: [["", "", "Total TTC", `${fmt(facture.montant)} €`]],
     headStyles: {
       fillColor: [30, 30, 60],
       textColor: [255, 255, 255],
@@ -127,17 +135,6 @@ export function generateDevisPdf(devisItem: Devis) {
   const doc = new jsPDF();
 
   addHeader(doc, "DEVIS", devisItem.reference);
-
-  // "ACCEPTÉ" badge if signed
-  if (devisItem.statut === "accepte" && devisItem.signatureDataUrl) {
-    doc.setFillColor(34, 170, 85);
-    doc.roundedRect(148, 10, 50, 12, 2, 2, "F");
-    doc.setFontSize(11);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(255, 255, 255);
-    doc.text("ACCEPTÉ", 173, 18, { align: "center" });
-  }
-
   addClientInfo(doc, devisItem.clientNom, 55);
 
   // Dates
@@ -152,6 +149,9 @@ export function generateDevisPdf(devisItem: Devis) {
     devisItem.statut === "expire" ? "Expiré" : "En attente";
   doc.text(`Statut : ${statutLabel}`, 20, 67);
 
+  const ht = devisItem.montant / 1.2;
+  const tva = devisItem.montant - ht;
+
   // Table
   autoTable(doc, {
     startY: 78,
@@ -159,12 +159,12 @@ export function generateDevisPdf(devisItem: Devis) {
     body: [
       [
         devisItem.titre,
-        `${(devisItem.montant / 1.2).toFixed(2)} €`,
-        `${(devisItem.montant - devisItem.montant / 1.2).toFixed(2)} €`,
-        `${devisItem.montant.toLocaleString()} €`,
+        `${fmt(Math.round(ht * 100) / 100)} €`,
+        `${fmt(Math.round(tva * 100) / 100)} €`,
+        `${fmt(devisItem.montant)} €`,
       ],
     ],
-    foot: [["", "", "Total TTC", `${devisItem.montant.toLocaleString()} €`]],
+    foot: [["", "", "Total TTC", `${fmt(devisItem.montant)} €`]],
     headStyles: {
       fillColor: [30, 30, 60],
       textColor: [255, 255, 255],
