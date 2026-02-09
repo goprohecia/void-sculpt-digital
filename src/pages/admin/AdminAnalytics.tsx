@@ -5,7 +5,8 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { donneesMensuelles, tickets, clients } from "@/data/mockData";
-import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard } from "lucide-react";
+import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet } from "lucide-react";
+import { exportCsv } from "@/lib/exportCsv";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import {
@@ -235,14 +236,52 @@ export default function AdminAnalytics() {
               </h1>
               <p className="text-muted-foreground text-sm">Données analytiques 2026</p>
             </div>
-            <button
-              onClick={exportPDF}
-              disabled={exporting}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors self-start"
-            >
-              {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-              Exporter en PDF
-            </button>
+            <div className="flex flex-wrap gap-2 self-start">
+              <button
+                onClick={exportPDF}
+                disabled={exporting}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+              >
+                {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                PDF
+              </button>
+              <button
+                onClick={() => {
+                  exportCsv("factures.csv",
+                    ["Référence", "Client", "Montant", "Statut", "Date émission", "Échéance"],
+                    factures.map((f) => [f.reference, f.clientNom, `${f.montant}`, f.statut, f.dateEmission, f.dateEcheance])
+                  );
+                  toast.success("Export factures CSV téléchargé");
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-sm font-medium hover:bg-muted/50 transition-colors"
+              >
+                <FileSpreadsheet className="h-4 w-4" /> Factures
+              </button>
+              <button
+                onClick={() => {
+                  exportCsv("demandes.csv",
+                    ["Référence", "Client", "Titre", "Type prestation", "Statut", "Date création"],
+                    demandes.map((d) => [d.reference, d.clientNom, d.titre, d.typePrestation, d.statut, d.dateCreation])
+                  );
+                  toast.success("Export demandes CSV téléchargé");
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-sm font-medium hover:bg-muted/50 transition-colors"
+              >
+                <FileSpreadsheet className="h-4 w-4" /> Demandes
+              </button>
+              <button
+                onClick={() => {
+                  exportCsv("clients.csv",
+                    ["Nom", "Prénom", "Email", "Entreprise", "Statut", "Date création", "Nb dossiers"],
+                    clients.map((c) => [c.nom, c.prenom, c.email, c.entreprise, c.statut, c.dateCreation, `${c.nombreDossiers}`])
+                  );
+                  toast.success("Export clients CSV téléchargé");
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-sm font-medium hover:bg-muted/50 transition-colors"
+              >
+                <FileSpreadsheet className="h-4 w-4" /> Clients
+              </button>
+            </div>
           </motion.div>
 
           {/* KPIs */}

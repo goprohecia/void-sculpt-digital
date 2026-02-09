@@ -33,6 +33,7 @@ import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminReminders from "@/pages/admin/AdminReminders";
 import AdminAnalytics from "@/pages/admin/AdminAnalytics";
 import AdminSupport from "@/pages/admin/AdminSupport";
+import AdminEmails from "@/pages/admin/AdminEmails";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
@@ -79,6 +80,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/messagerie" element={<AdminMessaging />} />
         <Route path="/admin/facturation" element={<AdminBilling />} />
         <Route path="/admin/relances" element={<AdminReminders />} />
+        <Route path="/admin/emails" element={<AdminEmails />} />
         <Route path="/admin/support" element={<AdminSupport />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
         
