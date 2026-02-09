@@ -4,7 +4,7 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, CreditCard } from "lucide-react";
+import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
@@ -79,6 +79,24 @@ export default function ClientDossierDetail() {
                     )}
                   </div>
                 ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Preview Link */}
+          {dossier.previewUrl && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                <Link2 className="h-4 w-4 text-[hsl(200,100%,60%)]" />
+                Preview du projet
+              </h2>
+              <div className="flex items-center gap-3">
+                <p className="text-sm text-muted-foreground flex-1">Consultez l'avancement de votre projet en temps réel</p>
+                <a href={dossier.previewUrl} target="_blank" rel="noopener noreferrer">
+                  <Button size="sm" className="gap-1.5">
+                    <ExternalLink className="h-3.5 w-3.5" /> Voir la preview
+                  </Button>
+                </a>
               </div>
             </motion.div>
           )}

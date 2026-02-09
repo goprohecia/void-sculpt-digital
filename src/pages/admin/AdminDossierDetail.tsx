@@ -5,8 +5,9 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
@@ -23,10 +24,72 @@ function getEtapeIndex(statut: string): number {
   }
 }
 
+function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; previewUrl?: string }; onUpdateUrl: (id: string, url: string) => void }) {
+  const [copied, setCopied] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [urlInput, setUrlInput] = useState(dossier.previewUrl || "");
+
+  const copyToClipboard = () => {
+    if (!dossier.previewUrl) return;
+    navigator.clipboard.writeText(dossier.previewUrl);
+    setCopied(true);
+    toast.success("Lien copié dans le presse-papier");
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const saveUrl = () => {
+    onUpdateUrl(dossier.id, urlInput);
+    setEditing(false);
+    toast.success("Lien de preview mis à jour");
+  };
+
+  return (
+    <motion.div className="glass-card p-5" variants={staggerItem}>
+      <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+        <Link2 className="h-4 w-4 text-primary" />
+        Lien de preview client
+      </h2>
+      {editing ? (
+        <div className="flex gap-2">
+          <Input
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            placeholder="https://projet-preview.lovable.app"
+            className="flex-1"
+          />
+          <Button size="sm" onClick={saveUrl}>Enregistrer</Button>
+          <Button size="sm" variant="ghost" onClick={() => { setEditing(false); setUrlInput(dossier.previewUrl || ""); }}>Annuler</Button>
+        </div>
+      ) : dossier.previewUrl ? (
+        <div className="flex items-center gap-2 flex-wrap">
+          <code className="text-xs bg-muted px-2 py-1 rounded flex-1 min-w-0 truncate">{dossier.previewUrl}</code>
+          <Button size="sm" variant="outline" className="gap-1.5" onClick={copyToClipboard}>
+            {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            {copied ? "Copié" : "Copier"}
+          </Button>
+          <a href={dossier.previewUrl} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" variant="outline" className="gap-1.5">
+              <ExternalLink className="h-3.5 w-3.5" /> Ouvrir
+            </Button>
+          </a>
+          <Button size="sm" variant="ghost" className="gap-1.5" onClick={() => setEditing(true)}>
+            <Pencil className="h-3.5 w-3.5" /> Modifier
+          </Button>
+        </div>
+      ) : (
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-muted-foreground">Aucun lien de preview configuré</p>
+          <Button size="sm" variant="outline" onClick={() => setEditing(true)}>Ajouter un lien</Button>
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
 export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut } = useDemoData();
+  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl } = useDemoData();
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
@@ -102,6 +165,9 @@ export default function AdminDossierDetail() {
               </div>
             </motion.div>
           )}
+
+          {/* Preview Link */}
+          <PreviewLinkSection dossier={dossier} onUpdateUrl={updateDossierPreviewUrl} />
 
           {/* Devis */}
           <motion.div className="glass-card p-5" variants={staggerItem}>
