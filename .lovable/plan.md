@@ -1,52 +1,99 @@
 
-# Espace Rendez-vous Calendly -- Client et Admin
+# Cahier des charges pour chaque demande de projet
 
-## Ce qui sera mis en place
+## Objectif
+Permettre au client de remplir un cahier des charges structure pour chaque demande de projet. Ce cahier des charges sera visible et consultable par l'administrateur pour le transmettre a l'equipe de developpement.
 
-### 1. Pop-up de bienvenue avec Calendly (premiere connexion client)
-Quand un client se connecte pour la premiere fois a son espace, un dialog s'affiche automatiquement pour l'inviter a prendre rendez-vous via l'iframe Calendly deja en place sur le site (`https://calendly.com/yannis-bezriche/impartial-games`). Le client peut fermer le pop-up s'il ne souhaite pas prendre rendez-vous tout de suite. L'etat "premiere visite" sera stocke en localStorage pour ne pas re-afficher le pop-up.
+## Fonctionnalites
 
-### 2. Page "Rendez-vous" dans l'espace client (`/client/rendez-vous`)
-Une nouvelle page accessible depuis la sidebar client avec :
-- Un bouton "Prendre un rendez-vous" qui ouvre l'iframe Calendly dans un dialog
-- Une liste de rendez-vous (donnees mock pour la demo) avec date, heure, statut (a venir / passe / annule)
-- Possibilite de reprogrammer (redirige vers Calendly)
+### Cote client
+- Sur chaque carte de demande dans `/client/demandes`, un bouton "Cahier des charges" apparait
+- Au clic, un dialog/page s'ouvre avec un formulaire structure en sections :
+  - **Contexte du projet** : presentation de l'entreprise, objectifs du projet
+  - **Public cible** : utilisateurs vises, personas
+  - **Fonctionnalites attendues** : liste des features souhaitees (ajout dynamique de lignes)
+  - **Design et charte graphique** : preferences visuelles, couleurs, inspirations (URLs)
+  - **Contraintes techniques** : technologies imposees, hebergement, integrations tierces
+  - **Planning souhaite** : date de livraison souhaitee, jalons
+  - **Budget complementaire** : informations budgetaires additionnelles
+  - **Documents / Remarques** : champ libre pour notes supplementaires
+- Le client peut sauvegarder un brouillon et finaliser plus tard
+- Un badge "Cahier des charges" (complet / brouillon / vide) s'affiche sur chaque demande
 
-### 3. Page "Rendez-vous" dans l'espace admin (`/admin/rendez-vous`)
-Une nouvelle page accessible depuis la sidebar admin avec :
-- Un calendrier visuel (vue mensuelle) affichant les rendez-vous des clients
-- Liste des rendez-vous a venir avec nom du client, date, heure et statut
-- Vue d'ensemble des prochains rendez-vous
+### Cote admin
+- Dans l'onglet "Demandes" de `/admin/dossiers`, chaque demande affiche un bouton "Voir cahier des charges"
+- Au clic, un dialog en lecture seule affiche le cahier des charges du client, bien structure et lisible
+- Possibilite de copier le contenu ou de le consulter facilement pour transmission a l'equipe
 
 ---
 
 ## Details techniques
 
-### Fichiers a creer
-- `src/pages/client/ClientRendezVous.tsx` -- Page rendez-vous client avec iframe Calendly et liste mock
-- `src/pages/admin/AdminRendezVous.tsx` -- Page admin avec calendrier et liste des RDV
-- `src/components/admin/CalendlyBookingDialog.tsx` -- Dialog reutilisable avec iframe Calendly
-- `src/components/admin/WelcomeBookingDialog.tsx` -- Pop-up premiere connexion client
+### Nouveau type de donnees
 
-### Fichiers a modifier
-- `src/components/AnimatedRoutes.tsx` -- Ajouter les routes `/client/rendez-vous` et `/admin/rendez-vous`
-- `src/components/admin/ClientSidebar.tsx` -- Ajouter l'entree "Rendez-vous" avec icone `CalendarDays`
-- `src/components/admin/AdminSidebar.tsx` -- Ajouter l'entree "Rendez-vous" avec icone `CalendarDays`
-- `src/data/mockData.ts` -- Ajouter les donnees mock de rendez-vous (interface `RendezVous` + tableau)
-- `src/pages/client/ClientDashboard.tsx` -- Integrer le `WelcomeBookingDialog` pour la premiere connexion
+Ajout dans `DemoDataContext.tsx` :
 
-### Donnees mock
 ```text
-Interface RendezVous {
-  id, clientId, clientNom, date, heure, sujet, statut (a_venir | passe | annule)
+Interface CahierDesCharges {
+  id: string
+  demandeId: string
+  contexte: string
+  publicCible: string
+  fonctionnalites: string[]
+  designNotes: string
+  contraintesTechniques: string
+  planningSouhaite: string
+  budgetComplementaire: string
+  remarques: string
+  statut: "brouillon" | "complet"
+  dateMiseAJour: string
 }
 ```
-5-6 rendez-vous mock repartis entre passes et a venir.
 
-### Logique premiere connexion
-- Verification de `localStorage.getItem("impartial_first_visit_done")`
-- Si absent : afficher le dialog de bienvenue avec Calendly
-- Au clic "Fermer" ou "Plus tard" : stocker la cle pour ne plus afficher
+### Fichiers a creer
 
-### URL Calendly utilisee
-`https://calendly.com/yannis-bezriche/impartial-games` (deja en place sur le site)
+1. **`src/components/admin/CahierDesChargesForm.tsx`**
+   - Formulaire multi-sections dans un Dialog
+   - Utilise par le client pour remplir/modifier le cahier des charges
+   - Gestion de l'ajout dynamique de fonctionnalites (liste)
+   - Bouton "Enregistrer brouillon" et "Finaliser"
+
+2. **`src/components/admin/CahierDesChargesView.tsx`**
+   - Composant en lecture seule pour l'admin
+   - Affiche le cahier des charges de maniere structuree dans un Dialog
+   - Badge de statut (brouillon/complet/vide)
+
+### Fichiers a modifier
+
+1. **`src/contexts/DemoDataContext.tsx`**
+   - Ajouter l'interface `CahierDesCharges` et l'etat `cahiersDesCharges`
+   - Ajouter les fonctions `getCahierByDemande`, `saveCahierDesCharges`
+   - Donnees mock initiales pour la demande "dem1" (pre-remplie comme exemple)
+
+2. **`src/pages/client/ClientDemandes.tsx`**
+   - Ajouter un bouton "Cahier des charges" sur chaque carte de demande
+   - Ouvrir le `CahierDesChargesForm` au clic
+   - Afficher un badge de statut (brouillon/complet/vide) sur chaque demande
+
+3. **`src/pages/admin/AdminDossiers.tsx`**
+   - Dans l'onglet "Demandes", ajouter un bouton "Voir CDC" sur chaque demande
+   - Ouvrir le `CahierDesChargesView` en lecture seule au clic
+   - Badge indiquant si le CDC est rempli ou non
+
+### Donnees mock
+
+Un cahier des charges pre-rempli pour la demande `dem1` (Refonte e-commerce Luxe et Mode) avec des donnees realistes pour servir d'exemple dans la demo.
+
+### Flux utilisateur
+
+```text
+Client : Demande existante --> Clic "Cahier des charges"
+  --> Formulaire s'ouvre (vide ou pre-rempli si brouillon)
+  --> Remplit les sections
+  --> "Enregistrer brouillon" ou "Finaliser"
+  --> Badge mis a jour sur la carte
+
+Admin : Onglet Demandes --> Clic "Voir CDC"
+  --> Dialog lecture seule avec toutes les sections
+  --> Peut consulter et transmettre a l'equipe
+```
