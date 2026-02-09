@@ -78,7 +78,7 @@ function generateMockVisits(): PreviewVisit[] {
 export type DemandeStatus = "nouvelle" | "en_revue" | "validee" | "refusee";
 export type DemandePrestation = "Site web" | "App mobile" | "E-commerce" | "Back-office" | "360" | "Autre";
 
-export type CdcHistoriqueAction = "creation" | "mise_a_jour" | "soumission" | "commentaire_admin" | "validation";
+export type CdcHistoriqueAction = "creation" | "mise_a_jour" | "soumission" | "commentaire_admin" | "validation" | "rejet";
 
 export interface CdcHistoriqueEntry {
   id: string;
@@ -100,7 +100,8 @@ export interface CahierDesCharges {
   budgetComplementaire: string;
   remarques: string;
   commentairesAdmin?: string;
-  statut: "brouillon" | "complet" | "validé";
+  motifRejet?: string;
+  statut: "brouillon" | "complet" | "validé" | "rejeté";
   dateMiseAJour: string;
   historique: CdcHistoriqueEntry[];
 }
@@ -220,6 +221,7 @@ interface DemoDataContextType {
   saveCahierDesCharges: (cahier: CahierDesCharges) => void;
   updateCahierComment: (demandeId: string, comment: string) => void;
   validateCahier: (demandeId: string) => void;
+  rejectCahier: (demandeId: string, motif: string) => void;
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
@@ -434,6 +436,19 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     }
   }, [demandes, pushNotif, pushEmail]);
 
+  const rejectCahier = useCallback((demandeId: string, motif: string) => {
+    const now = new Date().toISOString();
+    const entry: CdcHistoriqueEntry = { id: `h_${Date.now()}`, action: "rejet", auteur: "admin", description: `Cahier des charges rejeté : ${motif}`, date: now };
+    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, statut: "rejeté" as const, motifRejet: motif, dateMiseAJour: now.split("T")[0], historique: [...c.historique, entry] } : c));
+    const dem = demandes.find((d) => d.id === demandeId);
+    if (dem) {
+      pushNotif("dossier", "Cahier des charges rejeté", `Votre cahier des charges pour "${dem.titre}" nécessite des modifications. Motif : ${motif}`, "/client/dossiers", "client", dem.clientId);
+      pushEmail("validation", dem.clientNom, `Cahier des charges à modifier — ${dem.reference}`,
+        `<p>Bonjour,</p><p>Votre cahier des charges pour <strong>"${dem.titre}"</strong> nécessite des modifications.</p><p><strong>Motif :</strong> ${motif}</p><p>Merci de le corriger et de le soumettre à nouveau depuis votre espace client.</p><p>L'équipe Impartial</p>`,
+        dem.clientId, dem.reference);
+    }
+  }, [demandes, pushNotif, pushEmail]);
+
   return (
     <DemoDataContext.Provider value={{
       factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs, previewVisits,
@@ -443,7 +458,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
-      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier,
+      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier,
     }}>
       {children}
     </DemoDataContext.Provider>

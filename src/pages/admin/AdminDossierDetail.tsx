@@ -106,6 +106,7 @@ export default function AdminDossierDetail() {
 
   const cdcComplete = cahier?.statut === "validé";
   const cdcSubmitted = cahier?.statut === "complet" || cahier?.statut === "validé";
+  const cdcRejected = cahier?.statut === "rejeté";
   const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
 
   const handleStatutChange = (val: string) => {
@@ -167,8 +168,8 @@ export default function AdminDossierDetail() {
                       </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
                       {i === 3 && (
-                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-muted-foreground"}`}>
-                          {cdcComplete ? "Validé" : cdcSubmitted ? "En validation" : "En attente"}
+                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcRejected ? "text-destructive" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-muted-foreground"}`}>
+                          {cdcComplete ? "Validé" : cdcRejected ? "Rejeté" : cdcSubmitted ? "En validation" : "En attente"}
                         </span>
                       )}
                     </div>
@@ -187,8 +188,8 @@ export default function AdminDossierDetail() {
               <FileText className="h-4 w-4 text-primary" />
               Cahier des charges
               {cahier && (
-                <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "complet" ? "secondary" : "outline"} className="ml-1">
-                  {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
+                <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "rejeté" ? "destructive" : cahier.statut === "complet" ? "secondary" : "outline"} className="ml-1">
+                  {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "rejeté" ? "✗ Rejeté" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
                 </Badge>
               )}
             </h2>
