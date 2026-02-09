@@ -6,6 +6,7 @@ import {
   MessageSquare,
   Receipt,
   Bell,
+  Mail,
   BarChart3,
   LifeBuoy,
   LogOut,
@@ -33,6 +34,7 @@ const navItems = [
   { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus },
   { title: "Facturation", url: "/admin/facturation", icon: Receipt },
   { title: "Relances", url: "/admin/relances", icon: Bell },
+  { title: "Emails", url: "/admin/emails", icon: Mail },
   { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: getOpenTicketsCount() },
   { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
 ];
