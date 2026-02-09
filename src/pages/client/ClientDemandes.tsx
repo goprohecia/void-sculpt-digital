@@ -55,8 +55,9 @@ export default function ClientDemandes() {
   const getCdcBadge = (demandeId: string) => {
     const cahier = getCahierByDemande(demandeId);
     if (!cahier) return <Badge variant="outline" className="text-[10px] px-1.5 py-0">CDC vide</Badge>;
-    if (cahier.statut === "complet") return <Badge variant="default" className="text-[10px] px-1.5 py-0 bg-green-600">CDC complet</Badge>;
-    return <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CDC brouillon</Badge>;
+    if (cahier.statut === "validé") return <Badge variant="default" className="text-[10px] px-1.5 py-0 bg-green-600">CDC validé</Badge>;
+    if (cahier.statut === "complet") return <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CDC en validation</Badge>;
+    return <Badge variant="outline" className="text-[10px] px-1.5 py-0">CDC brouillon</Badge>;
   };
 
   return (

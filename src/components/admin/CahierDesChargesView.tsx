@@ -85,8 +85,8 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
           <div className="flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
             <DialogTitle>Cahier des charges</DialogTitle>
-            <Badge variant={cahier.statut === "complet" ? "default" : "secondary"}>
-              {cahier.statut === "complet" ? "Complet" : "Brouillon"}
+            <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "complet" ? "secondary" : "outline"}>
+              {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
             </Badge>
           </div>
           {demandeTitre && <p className="text-sm text-muted-foreground mt-1">{demandeTitre}</p>}

@@ -35,8 +35,10 @@ export default function ClientDossierDetail() {
     return <ClientLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></ClientLayout>;
   }
 
-  const cdcComplete = cahier?.statut === "complet";
-  const isCdcRequired = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && !cdcComplete;
+  const cdcComplete = cahier?.statut === "validé";
+  const cdcSubmitted = cahier?.statut === "complet" || cahier?.statut === "validé";
+  const isCdcRequired = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && !cdcSubmitted;
+  const isCdcPendingValidation = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && cahier?.statut === "complet";
   const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
 
   return (
@@ -69,12 +71,28 @@ export default function ClientDossierDetail() {
                 <AlertTriangle className="h-5 w-5 text-[hsl(45,100%,50%)] shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-semibold text-foreground">Cahier des charges requis</p>
-                  <p className="text-xs text-muted-foreground">Vous devez compléter le cahier des charges pour que le développement puisse commencer.</p>
+                  <p className="text-xs text-muted-foreground">Vous devez compléter et soumettre le cahier des charges pour que le développement puisse commencer.</p>
                 </div>
               </div>
               <Button size="sm" onClick={() => setCdcFormOpen(true)} className="gap-1.5 shrink-0">
                 <FileText className="h-3.5 w-3.5" /> Remplir le cahier des charges
               </Button>
+            </motion.div>
+          )}
+
+          {/* CDC pending admin validation */}
+          {isCdcPendingValidation && (
+            <motion.div
+              className="rounded-lg border border-[hsl(200,100%,60%)]/30 bg-[hsl(200,100%,60%)]/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              variants={staggerItem}
+            >
+              <div className="flex items-start gap-3 flex-1">
+                <FileText className="h-5 w-5 text-[hsl(200,100%,60%)] shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Cahier des charges en attente de validation</p>
+                  <p className="text-xs text-muted-foreground">Votre cahier des charges a été soumis. L'équipe doit le valider avant de commencer le développement.</p>
+                </div>
+              </div>
             </motion.div>
           )}
 
@@ -115,8 +133,8 @@ export default function ClientDossierDetail() {
                       </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
                       {i === 3 && (
-                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : "text-[hsl(45,100%,50%)]"}`}>
-                          {cdcComplete ? "Validé" : "À remplir"}
+                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-[hsl(45,100%,50%)]"}`}>
+                          {cdcComplete ? "Validé" : cdcSubmitted ? "En validation" : "À remplir"}
                         </span>
                       )}
                     </div>
