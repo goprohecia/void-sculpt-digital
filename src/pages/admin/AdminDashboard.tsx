@@ -1,29 +1,61 @@
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight } from "lucide-react";
+import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   dossiers,
   clients,
   factures,
+  relances,
   activites,
   donneesMensuelles,
   totalNonLus,
 } from "@/data/mockData";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, getDay } from "date-fns";
+import { fr } from "date-fns/locale";
+
+type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" | "relance"; color: string };
 
 export default function AdminDashboard() {
+  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1));
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+
   const dossiersActifs = dossiers.filter((d) => d.statut === "en_cours").length;
   const nouveauxClients = clients.filter((c) => c.dateCreation >= "2026-02-01").length;
   const facturesEnAttente = factures.filter((f) => f.statut === "en_attente").length;
   const caFevrier = donneesMensuelles[1]?.caTotal || 0;
 
   const sparklineData = donneesMensuelles.slice(0, 6).map((d) => ({ ca: d.caTotal }));
-
   const dossiersRecents = dossiers.slice(0, 5);
+
+  const calendarEvents = useMemo<CalendarEvent[]>(() => {
+    const events: CalendarEvent[] = [];
+    dossiers.forEach((d) => {
+      if (d.dateEcheance) events.push({ date: d.dateEcheance, label: `${d.reference} — ${d.clientNom}`, type: "dossier", color: "hsl(200,100%,50%)" });
+    });
+    factures.forEach((f) => {
+      if (f.dateEcheance) events.push({ date: f.dateEcheance, label: `${f.reference} — ${f.clientNom} (${f.montant.toLocaleString()} €)`, type: "facture", color: "hsl(45,93%,55%)" });
+    });
+    relances.forEach((r) => {
+      if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(0,84%,60%)" });
+    });
+    return events;
+  }, []);
+
+  const monthStart = startOfMonth(currentMonth);
+  const monthEnd = endOfMonth(currentMonth);
+  const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+  const startDayOfWeek = (getDay(monthStart) + 6) % 7;
+
+  const getEventsForDay = (day: Date) =>
+    calendarEvents.filter((e) => isSameDay(new Date(e.date), day));
+
+  const selectedEvents = selectedDay ? getEventsForDay(selectedDay) : [];
 
   return (
     <AdminLayout>
@@ -128,6 +160,81 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </motion.div>
+
+          {/* Calendrier des échéances */}
+          <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold flex items-center gap-2">
+                <CalendarDays className="h-4 w-4 text-primary" />
+                Calendrier des échéances
+              </h3>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 text-[10px]">
+                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(200,100%,50%)]" />Dossiers</span>
+                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(45,93%,55%)]" />Factures</span>
+                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(0,84%,60%)]" />Relances</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mb-3">
+              <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-1.5 rounded-lg hover:bg-muted/50 transition-colors">
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <span className="text-sm font-medium capitalize">{format(currentMonth, "MMMM yyyy", { locale: fr })}</span>
+              <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-1.5 rounded-lg hover:bg-muted/50 transition-colors">
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-7 gap-px text-center text-[10px] text-muted-foreground mb-1">
+              {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((d) => <div key={d} className="py-1">{d}</div>)}
+            </div>
+            <div className="grid grid-cols-7 gap-px">
+              {Array.from({ length: startDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
+              {days.map((day) => {
+                const dayEvents = getEventsForDay(day);
+                const isSelected = selectedDay && isSameDay(day, selectedDay);
+                const isToday = isSameDay(day, new Date(2026, 1, 9)); // simulated today
+                return (
+                  <button
+                    key={day.toISOString()}
+                    onClick={() => setSelectedDay(isSelected ? null : day)}
+                    className={`relative py-2 rounded-lg text-xs transition-colors ${isSelected ? "bg-primary/20 text-primary font-semibold" : isToday ? "bg-muted/60 font-semibold" : "hover:bg-muted/30"}`}
+                  >
+                    {format(day, "d")}
+                    {dayEvents.length > 0 && (
+                      <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 flex gap-0.5">
+                        {dayEvents.slice(0, 3).map((e, i) => (
+                          <span key={i} className="h-1 w-1 rounded-full" style={{ backgroundColor: e.color }} />
+                        ))}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Selected day events */}
+            {selectedDay && (
+              <div className="mt-4 border-t border-border/50 pt-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">{format(selectedDay, "EEEE d MMMM yyyy", { locale: fr })}</p>
+                {selectedEvents.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">Aucune échéance</p>
+                ) : (
+                  selectedEvents.map((e, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs">
+                      <span className="mt-1 h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: e.color }} />
+                      <div>
+                        <span className="font-medium capitalize">{e.type}</span>
+                        <span className="text-muted-foreground"> — {e.label}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </motion.div>
 
           {/* Messages non lus */}
