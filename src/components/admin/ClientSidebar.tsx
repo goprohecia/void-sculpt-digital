@@ -5,6 +5,7 @@ import {
   FileText,
   Receipt,
   MessageSquare,
+  UserCircle,
   LogOut,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
@@ -31,6 +32,7 @@ const navItems = [
   { title: "Devis", url: "/client/devis", icon: FileText },
   { title: "Factures", url: "/client/factures", icon: Receipt },
   { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
+  { title: "Mon profil", url: "/client/profil", icon: UserCircle },
 ];
 
 export function ClientSidebar() {
