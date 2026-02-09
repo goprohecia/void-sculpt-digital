@@ -46,20 +46,33 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
   const removeFonctionnalite = (idx: number) => setFonctionnalites((prev) => prev.filter((_, i) => i !== idx));
   const updateFonctionnalite = (idx: number, val: string) => setFonctionnalites((prev) => prev.map((f, i) => (i === idx ? val : f)));
 
-  const buildCahier = (statut: "brouillon" | "complet"): CahierDesCharges => ({
-    id: existing?.id || `cdc_${Date.now()}`,
-    demandeId,
-    contexte: contexte.trim(),
-    publicCible: publicCible.trim(),
-    fonctionnalites: fonctionnalites.map((f) => f.trim()).filter(Boolean),
-    designNotes: designNotes.trim(),
-    contraintesTechniques: contraintesTechniques.trim(),
-    planningSouhaite: planningSouhaite.trim(),
-    budgetComplementaire: budgetComplementaire.trim(),
-    remarques: remarques.trim(),
-    statut,
-    dateMiseAJour: new Date().toISOString().split("T")[0],
-  });
+  const buildCahier = (statut: "brouillon" | "complet"): CahierDesCharges => {
+    const now = new Date().toISOString();
+    const isNew = !existing;
+    const prevHistorique = existing?.historique || [];
+    const newEntry = {
+      id: `h_${Date.now()}`,
+      action: isNew && statut === "brouillon" ? "creation" as const : statut === "complet" ? "soumission" as const : "mise_a_jour" as const,
+      auteur: "client" as const,
+      description: isNew && statut === "brouillon" ? "Cahier des charges créé" : statut === "complet" ? "Cahier des charges soumis pour validation" : "Cahier des charges mis à jour",
+      date: now,
+    };
+    return {
+      id: existing?.id || `cdc_${Date.now()}`,
+      demandeId,
+      contexte: contexte.trim(),
+      publicCible: publicCible.trim(),
+      fonctionnalites: fonctionnalites.map((f) => f.trim()).filter(Boolean),
+      designNotes: designNotes.trim(),
+      contraintesTechniques: contraintesTechniques.trim(),
+      planningSouhaite: planningSouhaite.trim(),
+      budgetComplementaire: budgetComplementaire.trim(),
+      remarques: remarques.trim(),
+      statut,
+      dateMiseAJour: now.split("T")[0],
+      historique: [...prevHistorique, newEntry],
+    };
+  };
 
   const handleSaveDraft = () => {
     onSave(buildCahier("brouillon"));

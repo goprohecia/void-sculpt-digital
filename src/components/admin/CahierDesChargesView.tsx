@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, FileText, Download, MessageSquare, Save } from "lucide-react";
+import { Copy, FileText, Download, MessageSquare, Save, Clock, CheckCircle2, PenLine, Send, UserCheck } from "lucide-react";
 import { toast } from "sonner";
 import type { CahierDesCharges } from "@/contexts/DemoDataContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
@@ -117,6 +117,39 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
               <Save className="h-3.5 w-3.5" /> Enregistrer le commentaire
             </Button>
           </div>
+
+          {/* Historique */}
+          {cahier.historique && cahier.historique.length > 0 && (
+            <div className="border-t border-border/40 pt-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary" />
+                <h4 className="text-sm font-semibold text-foreground">Historique</h4>
+              </div>
+              <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                {[...cahier.historique].reverse().map((entry) => {
+                  const iconMap = {
+                    creation: <FileText className="h-3 w-3 text-muted-foreground" />,
+                    mise_a_jour: <PenLine className="h-3 w-3 text-muted-foreground" />,
+                    soumission: <Send className="h-3 w-3 text-[hsl(200,100%,60%)]" />,
+                    commentaire_admin: <MessageSquare className="h-3 w-3 text-primary" />,
+                    validation: <CheckCircle2 className="h-3 w-3 text-green-400" />,
+                  };
+                  return (
+                    <div key={entry.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 text-xs">
+                      {iconMap[entry.action]}
+                      <span className="flex-1">{entry.description}</span>
+                      <Badge variant="outline" className="text-[9px] px-1 py-0">
+                        {entry.auteur === "admin" ? "Admin" : "Client"}
+                      </Badge>
+                      <span className="text-muted-foreground whitespace-nowrap">
+                        {new Date(entry.date).toLocaleDateString("fr-FR")} à {new Date(entry.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           <div className="text-xs text-muted-foreground pt-2 border-t border-border/20">
             Dernière mise à jour : {new Date(cahier.dateMiseAJour).toLocaleDateString("fr-FR")}
