@@ -5,18 +5,22 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare, Clock, PenLine, Send, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare, Clock, PenLine, Send, CheckCircle2, XCircle, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
+import { CalendlyBookingDialog } from "@/components/admin/CalendlyBookingDialog";
 
-const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "Cahier des charges", "En cours", "Livraison", "Terminé"];
+const etapes = ["Demande reçue", "Rendez-vous", "Cahier des charges", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
 
-function getEtapeIndex(statut: string, cdcComplete: boolean): number {
+function getEtapeIndex(statut: string, rdvEffectue: boolean, cdcComplete: boolean): number {
   switch (statut) {
-    case "en_attente": return 1;
-    case "en_cours": return cdcComplete ? 4 : 2;
-    case "termine": return 6;
+    case "en_attente":
+      if (!rdvEffectue) return 0;
+      if (!cdcComplete) return 1;
+      return 2;
+    case "en_cours": return 5;
+    case "termine": return 7;
     case "annule": return -1;
     default: return 0;
   }
@@ -31,6 +35,7 @@ export default function ClientDossierDetail() {
   const devisDossier = id ? getDevisByDossier(id) : [];
   const cahier = id ? getCahierByDossier(id) : undefined;
   const [cdcFormOpen, setCdcFormOpen] = useState(false);
+  const [calendlyOpen, setCalendlyOpen] = useState(false);
 
   if (!dossier) {
     return <ClientLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></ClientLayout>;
@@ -39,9 +44,10 @@ export default function ClientDossierDetail() {
   const cdcComplete = cahier?.statut === "validé";
   const cdcSubmitted = cahier?.statut === "complet" || cahier?.statut === "validé";
   const cdcRejected = cahier?.statut === "rejeté";
-  const isCdcRequired = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && !cdcSubmitted && !cdcRejected;
-  const isCdcPendingValidation = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && cahier?.statut === "complet";
-  const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
+  const rdvEffectue = dossier.rdvEffectue === true;
+  const isCdcRequired = rdvEffectue && (dossier.statut === "en_cours" || dossier.statut === "en_attente" || dossier.statut === "termine") && dossier.demandeId && !cdcSubmitted && !cdcRejected;
+  const isCdcPendingValidation = dossier.demandeId && cahier?.statut === "complet";
+  const etapeActive = getEtapeIndex(dossier.statut, rdvEffectue, cdcComplete);
 
   return (
     <ClientLayout>
@@ -62,6 +68,25 @@ export default function ClientDossierDetail() {
               <StatusBadge status={dossier.statut} />
             </div>
           </motion.div>
+
+          {/* RDV Required Banner */}
+          {!rdvEffectue && dossier.statut === "en_attente" && (
+            <motion.div
+              className="rounded-lg border border-primary/30 bg-primary/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              variants={staggerItem}
+            >
+              <div className="flex items-start gap-3 flex-1">
+                <CalendarDays className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Rendez-vous requis</p>
+                  <p className="text-xs text-muted-foreground">Un rendez-vous est nécessaire pour discuter de votre projet avant de poursuivre.</p>
+                </div>
+              </div>
+              <Button size="sm" onClick={() => setCalendlyOpen(true)} className="gap-1.5 shrink-0">
+                <CalendarDays className="h-3.5 w-3.5" /> Prendre rendez-vous
+              </Button>
+            </motion.div>
+          )}
 
           {/* CDC Required Banner */}
           {isCdcRequired && (
@@ -186,10 +211,15 @@ export default function ClientDossierDetail() {
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                         i <= etapeActive ? "bg-primary text-primary-foreground" : "bg-muted border border-border"
                       }`}>
-                        {i === 3 ? <FileText className="h-3 w-3" /> : i + 1}
+                        {i === 1 ? <CalendarDays className="h-3 w-3" /> : i === 2 ? <FileText className="h-3 w-3" /> : i + 1}
                       </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
-                      {i === 3 && (
+                      {i === 1 && (
+                        <span className={`text-[8px] ${rdvEffectue ? "text-green-400" : "text-muted-foreground"}`}>
+                          {rdvEffectue ? "Effectué" : "À planifier"}
+                        </span>
+                      )}
+                      {i === 2 && (
                         <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcRejected ? "text-destructive" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-[hsl(45,100%,50%)]"}`}>
                           {cdcComplete ? "Validé" : cdcRejected ? "À corriger" : cdcSubmitted ? "En validation" : "À remplir"}
                         </span>
@@ -276,6 +306,9 @@ export default function ClientDossierDetail() {
             onSave={saveCahierDesCharges}
           />
         )}
+
+        {/* Calendly Booking Dialog */}
+        <CalendlyBookingDialog open={calendlyOpen} onOpenChange={setCalendlyOpen} />
       </AdminPageTransition>
     </ClientLayout>
   );
