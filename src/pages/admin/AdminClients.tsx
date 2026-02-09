@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { clients, type Client } from "@/data/mockData";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { Search, Users, Eye, X } from "lucide-react";
+import { Search, Users, Eye, X, Building2, MapPin } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function AdminClients() {
@@ -31,45 +32,75 @@ export default function AdminClients() {
   const clientDemandes = selectedClient ? getDemandesByClient(selectedClient.id) : [];
 
   const ClientDetail = () => (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4 text-sm">
-        <div><p className="text-muted-foreground">Email</p><p className="break-all">{selectedClient?.email}</p></div>
-        <div><p className="text-muted-foreground">Téléphone</p><p>{selectedClient?.telephone}</p></div>
-        <div><p className="text-muted-foreground">Statut</p><StatusBadge status={selectedClient?.statut || "actif"} /></div>
-        <div><p className="text-muted-foreground">Depuis</p><p>{selectedClient ? new Date(selectedClient.dateCreation).toLocaleDateString("fr-FR") : ""}</p></div>
-      </div>
+    <Tabs defaultValue="general" className="space-y-4">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="general">Général</TabsTrigger>
+        <TabsTrigger value="coordonnees" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Coordonnées</TabsTrigger>
+      </TabsList>
 
-      <div>
-        <h3 className="text-sm font-semibold mb-3">Dossiers ({clientDossiers.length})</h3>
-        {clientDossiers.length > 0 ? (
-          <div className="space-y-2">
-            {clientDossiers.map((d) => (
-              <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-                <div><p className="text-sm font-mono">{d.reference}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
+      <TabsContent value="general" className="space-y-6">
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div><p className="text-muted-foreground">Email</p><p className="break-all">{selectedClient?.email}</p></div>
+          <div><p className="text-muted-foreground">Téléphone</p><p>{selectedClient?.telephone}</p></div>
+          <div><p className="text-muted-foreground">Statut</p><StatusBadge status={selectedClient?.statut || "actif"} /></div>
+          <div><p className="text-muted-foreground">Depuis</p><p>{selectedClient ? new Date(selectedClient.dateCreation).toLocaleDateString("fr-FR") : ""}</p></div>
+        </div>
+
+        <div>
+          <h3 className="text-sm font-semibold mb-3">Dossiers ({clientDossiers.length})</h3>
+          {clientDossiers.length > 0 ? (
+            <div className="space-y-2">
+              {clientDossiers.map((d) => (
+                <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
+                  <div><p className="text-sm font-mono">{d.reference}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
+                    <StatusBadge status={d.statut} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : <p className="text-sm text-muted-foreground">Aucun dossier</p>}
+        </div>
+
+        {clientDemandes.length > 0 && (
+          <div>
+            <h3 className="text-sm font-semibold mb-3">Demandes ({clientDemandes.length})</h3>
+            <div className="space-y-2">
+              {clientDemandes.map((d) => (
+                <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
+                  <div><p className="text-sm font-medium">{d.titre}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
                   <StatusBadge status={d.statut} />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        ) : <p className="text-sm text-muted-foreground">Aucun dossier</p>}
-      </div>
+        )}
+      </TabsContent>
 
-      {clientDemandes.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold mb-3">Demandes ({clientDemandes.length})</h3>
-          <div className="space-y-2">
-            {clientDemandes.map((d) => (
-              <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
-                <div><p className="text-sm font-medium">{d.titre}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
-                <StatusBadge status={d.statut} />
-              </div>
-            ))}
-          </div>
+      <TabsContent value="coordonnees" className="space-y-4">
+        <div className="grid grid-cols-2 gap-4 text-sm">
+          <div><p className="text-muted-foreground">Entreprise</p><p className="font-medium">{selectedClient?.entreprise || "—"}</p></div>
+          <div><p className="text-muted-foreground">SIRET</p><p>{selectedClient?.siret || "Non renseigné"}</p></div>
         </div>
-      )}
-    </div>
+        <div className="text-sm">
+          <p className="text-muted-foreground flex items-center gap-1.5 mb-1"><MapPin className="h-3.5 w-3.5" /> Adresse</p>
+          {selectedClient?.adresse ? (
+            <div>
+              <p>{selectedClient.adresse}</p>
+              <p>{selectedClient.codePostal} {selectedClient.ville}</p>
+              {selectedClient.pays && <p>{selectedClient.pays}</p>}
+            </div>
+          ) : (
+            <p className="text-muted-foreground italic">Non renseignée par le client</p>
+          )}
+        </div>
+        <div className="grid grid-cols-2 gap-4 text-sm pt-2 border-t border-border/30">
+          <div><p className="text-muted-foreground">Email</p><p className="break-all">{selectedClient?.email}</p></div>
+          <div><p className="text-muted-foreground">Téléphone</p><p>{selectedClient?.telephone}</p></div>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 
   return (
