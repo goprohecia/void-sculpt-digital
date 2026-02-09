@@ -253,9 +253,9 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export factures CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
               >
-                <FileSpreadsheet className="h-4 w-4" /> Factures
+                <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Factures</span><span className="sm:hidden">Fact.</span>
               </button>
               <button
                 onClick={() => {
@@ -265,9 +265,9 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export demandes CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
               >
-                <FileSpreadsheet className="h-4 w-4" /> Demandes
+                <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Demandes</span><span className="sm:hidden">Dem.</span>
               </button>
               <button
                 onClick={() => {
@@ -277,9 +277,9 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export clients CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
               >
-                <FileSpreadsheet className="h-4 w-4" /> Clients
+                <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Clients</span><span className="sm:hidden">Cli.</span>
               </button>
             </div>
           </motion.div>

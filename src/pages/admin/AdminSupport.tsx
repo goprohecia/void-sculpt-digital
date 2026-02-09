@@ -70,7 +70,7 @@ export default function AdminSupport() {
           </motion.div>
 
           {/* Filters */}
-          <motion.div variants={staggerItem} className="flex flex-wrap gap-3 items-center">
+          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center">
             <div className="flex gap-2 flex-wrap">
               {statusFilters.map((f) => (
                 <button key={f.value} onClick={() => setFilterStatus(f.value)}

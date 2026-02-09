@@ -167,17 +167,15 @@ export default function AdminDashboard() {
 
           {/* Calendrier des échéances */}
           <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
               <h3 className="text-sm font-semibold flex items-center gap-2">
                 <CalendarDays className="h-4 w-4 text-primary" />
                 Calendrier des échéances
               </h3>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3 text-[10px]">
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(200,100%,50%)]" />Dossiers</span>
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(45,93%,55%)]" />Factures</span>
-                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(0,84%,60%)]" />Relances</span>
-                </div>
+              <div className="flex items-center gap-3 text-[10px]">
+                <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(200,100%,50%)]" />Dossiers</span>
+                <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(45,93%,55%)]" />Factures</span>
+                <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[hsl(0,84%,60%)]" />Relances</span>
               </div>
             </div>
 

@@ -169,7 +169,35 @@ export default function AdminBilling() {
                   </button>
                 ))}
               </motion.div>
-              <motion.div className="glass-card overflow-hidden" variants={staggerItem}>
+              {/* Mobile cards factures */}
+              <div className="sm:hidden space-y-3">
+                {filteredFactures.length === 0 ? (
+                  <div className="p-8 text-center text-muted-foreground">Aucune facture trouvée</div>
+                ) : filteredFactures.map((f) => (
+                  <div key={f.id} className="glass-card p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs">{f.reference}</span>
+                      <StatusBadge status={f.statut} />
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">{f.clientNom}</span>
+                      <span className="font-medium">{f.montant.toLocaleString()} €</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</span>
+                      <button
+                        onClick={() => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); }}
+                        className="flex items-center gap-1 text-primary hover:underline"
+                      >
+                        <Download className="h-3 w-3" /> PDF
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop table factures */}
+              <motion.div className="glass-card overflow-hidden hidden sm:block" variants={staggerItem}>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
@@ -209,7 +237,35 @@ export default function AdminBilling() {
             </TabsContent>
 
             <TabsContent value="devis" className="space-y-4 mt-4">
-              <motion.div className="glass-card overflow-hidden" variants={staggerItem}>
+              {/* Mobile cards devis */}
+              <div className="sm:hidden space-y-3">
+                {devis.length === 0 ? (
+                  <div className="p-8 text-center text-muted-foreground">Aucun devis</div>
+                ) : devis.map((d) => (
+                  <div key={d.id} className="glass-card p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs">{d.reference}</span>
+                      <StatusBadge status={d.statut} />
+                    </div>
+                    <p className="text-sm font-medium">{d.titre}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">{d.clientNom}</span>
+                      <span className="font-medium">{d.montant.toLocaleString()} €</span>
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
+                        className="flex items-center gap-1 text-xs text-primary hover:underline"
+                      >
+                        <Download className="h-3 w-3" /> PDF
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop table devis */}
+              <motion.div className="glass-card overflow-hidden hidden sm:block" variants={staggerItem}>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
