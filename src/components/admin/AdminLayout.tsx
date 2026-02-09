@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { useDemoData } from "@/contexts/DemoDataContext";
 import { AdminSidebar } from "./AdminSidebar";
 import { NotificationPanel } from "./NotificationPanel";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { getNotificationsAdmin } from "@/data/mockData";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -11,6 +11,7 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const { isAuthenticated } = useDemoAuth();
+  const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useDemoData();
 
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
@@ -24,7 +25,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <header className="h-14 border-b border-border/50 flex items-center px-4 gap-4 glass-nav">
             <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
             <div className="flex-1" />
-            <NotificationPanel notifications={getNotificationsAdmin()} />
+            <NotificationPanel
+              notifications={getNotificationsAdmin()}
+              onMarkRead={markNotificationRead}
+              onMarkAllRead={() => markAllNotificationsRead("admin")}
+            />
             <span className="text-xs text-muted-foreground px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
               Mode démo
             </span>

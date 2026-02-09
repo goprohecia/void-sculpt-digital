@@ -4,15 +4,15 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { clients, type FactureStatus, type DevisStatus } from "@/data/mockData";
-import { Receipt, Euro, AlertTriangle, Plus, FileText } from "lucide-react";
+import { clients, type FactureStatus } from "@/data/mockData";
+import { Receipt, Euro, AlertTriangle, Plus, Download } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { generateFacturePdf, generateDevisPdf } from "@/lib/generatePdf";
 
 const factureFilters: { key: "tous" | FactureStatus; label: string }[] = [
   { key: "tous", label: "Toutes" },
@@ -22,7 +22,7 @@ const factureFilters: { key: "tous" | FactureStatus; label: string }[] = [
 ];
 
 export default function AdminBilling() {
-  const { factures, devis, dossiers, addFacture, addDevis, getDossiersByClient } = useDemoData();
+  const { factures, devis, addFacture, addDevis, getDossiersByClient } = useDemoData();
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
   const [openDevis, setOpenDevis] = useState(false);
@@ -179,7 +179,7 @@ export default function AdminBilling() {
                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Échéance</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">PDF</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -190,7 +190,15 @@ export default function AdminBilling() {
                           <td className="py-3 px-4 text-right font-medium">{f.montant.toLocaleString()} €</td>
                           <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
-                          <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</td>
+                          <td className="py-3 px-4 text-center">
+                            <button
+                              onClick={() => { generateFacturePdf(f); toast.success(`PDF ${f.reference} téléchargé`); }}
+                              className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                              title="Télécharger PDF"
+                            >
+                              <Download className="h-4 w-4" />
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -211,7 +219,7 @@ export default function AdminBilling() {
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Titre</th>
                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Validité</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">PDF</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -222,7 +230,15 @@ export default function AdminBilling() {
                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.titre}</td>
                           <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
                           <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
-                          <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(d.dateValidite).toLocaleDateString("fr-FR")}</td>
+                          <td className="py-3 px-4 text-center">
+                            <button
+                              onClick={() => { generateDevisPdf(d); toast.success(`PDF ${d.reference} téléchargé`); }}
+                              className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                              title="Télécharger PDF"
+                            >
+                              <Download className="h-4 w-4" />
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

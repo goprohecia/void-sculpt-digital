@@ -4,12 +4,14 @@ import {
   devis as initialDevis,
   dossiers as initialDossiers,
   clients,
+  notifications as initialNotifications,
   type Facture,
   type FactureStatus,
   type Devis,
   type DevisStatus,
   type Dossier,
   type DossierStatus,
+  type Notification,
 } from "@/data/mockData";
 
 // ---- Demande type ----
@@ -59,6 +61,7 @@ interface DemoDataContextType {
   devis: Devis[];
   dossiers: Dossier[];
   demandes: Demande[];
+  notifications: Notification[];
   updateFactureStatut: (id: string, statut: FactureStatus) => void;
   updateDevisStatut: (id: string, statut: DevisStatus) => void;
   updateDossierStatut: (id: string, statut: DossierStatus) => void;
@@ -67,6 +70,7 @@ interface DemoDataContextType {
   addDevis: (d: Devis) => void;
   addFacture: (f: Facture) => void;
   addDossier: (d: Dossier) => void;
+  addNotification: (n: Notification) => void;
   getDemandesByClient: (clientId: string) => Demande[];
   getDossiersByClient: (clientId: string) => Dossier[];
   getFacturesByClient: (clientId: string) => Facture[];
@@ -75,23 +79,73 @@ interface DemoDataContextType {
   getDevisByDossier: (dossierId: string) => Devis[];
   getDossierById: (id: string) => Dossier | undefined;
   getFactureById: (id: string) => Facture | undefined;
+  getNotificationsAdmin: () => Notification[];
+  getNotificationsByClient: (clientId: string) => Notification[];
+  markNotificationRead: (id: string) => void;
+  markAllNotificationsRead: (role: "admin" | "client", clientId?: string) => void;
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
+
+function nowISO() {
+  return new Date().toISOString().replace("T", " ").slice(0, 16);
+}
 
 export function DemoDataProvider({ children }: { children: ReactNode }) {
   const [factures, setFactures] = useState<Facture[]>([...initialFactures]);
   const [devisState, setDevis] = useState<Devis[]>([...initialDevis]);
   const [dossiersState, setDossiers] = useState<Dossier[]>([...initialDossiers]);
   const [demandes, setDemandes] = useState<Demande[]>([...initialDemandes]);
+  const [notifs, setNotifs] = useState<Notification[]>([...initialNotifications]);
+
+  const addNotification = useCallback((n: Notification) => {
+    setNotifs((prev) => [n, ...prev]);
+  }, []);
+
+  const markNotificationRead = useCallback((id: string) => {
+    setNotifs((prev) => prev.map((n) => (n.id === id ? { ...n, lu: true } : n)));
+  }, []);
+
+  const markAllNotificationsRead = useCallback((role: "admin" | "client", clientId?: string) => {
+    setNotifs((prev) =>
+      prev.map((n) => {
+        if (role === "admin" && (n.destinataire === "admin" || n.destinataire === "all")) return { ...n, lu: true };
+        if (role === "client" && (n.destinataire === "client" || n.destinataire === "all") && (!clientId || n.clientId === clientId)) return { ...n, lu: true };
+        return n;
+      })
+    );
+  }, []);
+
+  const pushNotif = useCallback((type: Notification["type"], titre: string, description: string, lien: string, destinataire: Notification["destinataire"], clientId?: string) => {
+    const n: Notification = {
+      id: `n_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      type, titre, description, date: nowISO(), lu: false, lien, destinataire, clientId,
+    };
+    setNotifs((prev) => [n, ...prev]);
+  }, []);
 
   const updateFactureStatut = useCallback((id: string, statut: FactureStatus) => {
-    setFactures((prev) => prev.map((f) => (f.id === id ? { ...f, statut } : f)));
-  }, []);
+    setFactures((prev) => {
+      const facture = prev.find((f) => f.id === id);
+      if (facture && statut === "payee") {
+        pushNotif("facture", "Paiement reçu", `${facture.clientNom} a réglé la facture ${facture.reference} (${facture.montant.toLocaleString()} €)`, "/admin/facturation", "admin");
+        pushNotif("facture", "Paiement confirmé", `Votre paiement de ${facture.montant.toLocaleString()} € pour ${facture.reference} est confirmé`, "/client/factures", "client", facture.clientId);
+      }
+      return prev.map((f) => (f.id === id ? { ...f, statut } : f));
+    });
+  }, [pushNotif]);
 
   const updateDevisStatut = useCallback((id: string, statut: DevisStatus) => {
-    setDevis((prev) => prev.map((d) => (d.id === id ? { ...d, statut } : d)));
-  }, []);
+    setDevis((prev) => {
+      const d = prev.find((x) => x.id === id);
+      if (d && statut === "accepte") {
+        pushNotif("devis", "Devis accepté", `${d.clientNom} a accepté le devis ${d.reference} (${d.montant.toLocaleString()} €)`, "/admin/facturation", "admin");
+      } else if (d && statut === "refuse") {
+        pushNotif("devis", "Devis refusé", `${d.clientNom} a refusé le devis ${d.reference}`, "/admin/facturation", "admin");
+      }
+      return prev.map((x) => (x.id === id ? { ...x, statut } : x));
+    });
+  }, [pushNotif]);
 
   const updateDossierStatut = useCallback((id: string, statut: DossierStatus) => {
     setDossiers((prev) => prev.map((d) => (d.id === id ? { ...d, statut } : d)));
@@ -99,19 +153,30 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
 
   const addDemande = useCallback((demande: Demande) => {
     setDemandes((prev) => [demande, ...prev]);
-  }, []);
+    pushNotif("dossier", "Nouvelle demande", `${demande.clientNom} a soumis une demande : "${demande.titre}"`, "/admin/dossiers", "admin");
+    pushNotif("dossier", "Demande envoyée", `Votre demande "${demande.titre}" a bien été envoyée`, "/client/demandes", "client", demande.clientId);
+  }, [pushNotif]);
 
   const updateDemandeStatut = useCallback((id: string, statut: DemandeStatus) => {
-    setDemandes((prev) => prev.map((d) => (d.id === id ? { ...d, statut, dateMiseAJour: new Date().toISOString().split("T")[0] } : d)));
-  }, []);
+    setDemandes((prev) => {
+      const dem = prev.find((d) => d.id === id);
+      if (dem && (statut === "validee" || statut === "refusee")) {
+        const label = statut === "validee" ? "validée" : "refusée";
+        pushNotif("dossier", `Demande ${label}`, `Votre demande "${dem.titre}" a été ${label}`, "/client/demandes", "client", dem.clientId);
+      }
+      return prev.map((d) => (d.id === id ? { ...d, statut, dateMiseAJour: new Date().toISOString().split("T")[0] } : d));
+    });
+  }, [pushNotif]);
 
   const addDevis = useCallback((d: Devis) => {
     setDevis((prev) => [d, ...prev]);
-  }, []);
+    pushNotif("devis", "Nouveau devis", `Un devis "${d.titre}" (${d.montant.toLocaleString()} €) est disponible`, "/client/devis", "client", d.clientId);
+  }, [pushNotif]);
 
   const addFacture = useCallback((f: Facture) => {
     setFactures((prev) => [f, ...prev]);
-  }, []);
+    pushNotif("facture", "Nouvelle facture", `Facture ${f.reference} (${f.montant.toLocaleString()} €) disponible`, "/client/factures", "client", f.clientId);
+  }, [pushNotif]);
 
   const addDossier = useCallback((d: Dossier) => {
     setDossiers((prev) => [d, ...prev]);
@@ -125,14 +190,18 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const getDevisByDossier = useCallback((dossierId: string) => devisState.filter((d) => d.dossierId === dossierId), [devisState]);
   const getDossierById = useCallback((id: string) => dossiersState.find((d) => d.id === id), [dossiersState]);
   const getFactureById = useCallback((id: string) => factures.find((f) => f.id === id), [factures]);
+  const getNotificationsAdmin = useCallback(() => notifs.filter((n) => n.destinataire === "admin" || n.destinataire === "all"), [notifs]);
+  const getNotificationsByClient = useCallback((clientId: string) => notifs.filter((n) => (n.destinataire === "client" || n.destinataire === "all") && n.clientId === clientId), [notifs]);
 
   return (
     <DemoDataContext.Provider value={{
-      factures, devis: devisState, dossiers: dossiersState, demandes,
+      factures, devis: devisState, dossiers: dossiersState, demandes, notifications: notifs,
       updateFactureStatut, updateDevisStatut, updateDossierStatut,
-      addDemande, updateDemandeStatut, addDevis, addFacture, addDossier,
+      addDemande, updateDemandeStatut, addDevis, addFacture, addDossier, addNotification,
       getDemandesByClient, getDossiersByClient, getFacturesByClient, getDevisByClient,
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById,
+      getNotificationsAdmin, getNotificationsByClient,
+      markNotificationRead, markAllNotificationsRead,
     }}>
       {children}
     </DemoDataContext.Provider>
