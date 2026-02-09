@@ -5,7 +5,7 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare, Clock, PenLine, Send, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare, Clock, PenLine, Send, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
@@ -38,7 +38,8 @@ export default function ClientDossierDetail() {
 
   const cdcComplete = cahier?.statut === "validé";
   const cdcSubmitted = cahier?.statut === "complet" || cahier?.statut === "validé";
-  const isCdcRequired = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && !cdcSubmitted;
+  const cdcRejected = cahier?.statut === "rejeté";
+  const isCdcRequired = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && !cdcSubmitted && !cdcRejected;
   const isCdcPendingValidation = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && cahier?.statut === "complet";
   const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
 
@@ -97,6 +98,28 @@ export default function ClientDossierDetail() {
             </motion.div>
           )}
 
+          {/* CDC rejected - needs rework */}
+          {cdcRejected && (
+            <motion.div
+              className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              variants={staggerItem}
+            >
+              <div className="flex items-start gap-3 flex-1">
+                <XCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Cahier des charges rejeté</p>
+                  <p className="text-xs text-muted-foreground">Votre cahier des charges nécessite des modifications avant validation.</p>
+                  {cahier?.motifRejet && (
+                    <p className="text-xs text-destructive mt-1"><strong>Motif :</strong> {cahier.motifRejet}</p>
+                  )}
+                </div>
+              </div>
+              <Button size="sm" variant="destructive" onClick={() => setCdcFormOpen(true)} className="gap-1.5 shrink-0">
+                <FileText className="h-3.5 w-3.5" /> Modifier le cahier des charges
+              </Button>
+            </motion.div>
+          )}
+
           {/* Admin feedback - read only */}
           {cahier?.commentairesAdmin && (
             <motion.div
@@ -120,12 +143,13 @@ export default function ClientDossierDetail() {
               </h2>
               <div className="space-y-1.5 max-h-48 overflow-y-auto">
                 {[...cahier.historique].reverse().map((entry) => {
-                  const iconMap = {
+                  const iconMap: Record<string, React.ReactNode> = {
                     creation: <FileText className="h-3 w-3 text-muted-foreground" />,
                     mise_a_jour: <PenLine className="h-3 w-3 text-muted-foreground" />,
                     soumission: <Send className="h-3 w-3 text-[hsl(200,100%,60%)]" />,
                     commentaire_admin: <MessageSquare className="h-3 w-3 text-primary" />,
                     validation: <CheckCircle2 className="h-3 w-3 text-green-400" />,
+                    rejet: <XCircle className="h-3 w-3 text-destructive" />,
                   };
                   return (
                     <div key={entry.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 text-xs">
@@ -166,8 +190,8 @@ export default function ClientDossierDetail() {
                       </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
                       {i === 3 && (
-                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-[hsl(45,100%,50%)]"}`}>
-                          {cdcComplete ? "Validé" : cdcSubmitted ? "En validation" : "À remplir"}
+                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcRejected ? "text-destructive" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-[hsl(45,100%,50%)]"}`}>
+                          {cdcComplete ? "Validé" : cdcRejected ? "À corriger" : cdcSubmitted ? "En validation" : "À remplir"}
                         </span>
                       )}
                     </div>

@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, FileText, Download, MessageSquare, Save, Clock, CheckCircle2, PenLine, Send, UserCheck } from "lucide-react";
+import { Copy, FileText, Download, MessageSquare, Save, Clock, CheckCircle2, PenLine, Send, UserCheck, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import type { CahierDesCharges } from "@/contexts/DemoDataContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
@@ -33,13 +33,17 @@ function Section({ title, content }: { title: string; content: string | string[]
 }
 
 export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre }: CahierDesChargesViewProps) {
-  const { updateCahierComment } = useDemoData();
+  const { updateCahierComment, rejectCahier } = useDemoData();
   const [comment, setComment] = useState("");
   const [initialized, setInitialized] = useState(false);
+  const [rejectMode, setRejectMode] = useState(false);
+  const [rejectMotif, setRejectMotif] = useState("");
 
   // Sync local state when dialog opens with a new cahier
   if (cahier && open && !initialized) {
     setComment(cahier.commentairesAdmin || "");
+    setRejectMotif("");
+    setRejectMode(false);
     setInitialized(true);
   }
   if (!open && initialized) {
@@ -78,6 +82,26 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
     toast.success("Commentaire enregistré");
   };
 
+  const handleReject = () => {
+    if (!rejectMotif.trim()) {
+      toast.error("Veuillez indiquer un motif de rejet");
+      return;
+    }
+    rejectCahier(cahier.demandeId, rejectMotif.trim());
+    toast.success("Cahier des charges rejeté — le client sera notifié");
+    setRejectMode(false);
+    setRejectMotif("");
+  };
+
+  const statutBadge = () => {
+    switch (cahier.statut) {
+      case "validé": return <Badge variant="default">✓ Validé</Badge>;
+      case "complet": return <Badge variant="secondary">En attente de validation</Badge>;
+      case "rejeté": return <Badge variant="destructive">✗ Rejeté</Badge>;
+      default: return <Badge variant="outline">Brouillon</Badge>;
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
@@ -85,13 +109,19 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
           <div className="flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
             <DialogTitle>Cahier des charges</DialogTitle>
-            <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "complet" ? "secondary" : "outline"}>
-              {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
-            </Badge>
+            {statutBadge()}
           </div>
           {demandeTitre && <p className="text-sm text-muted-foreground mt-1">{demandeTitre}</p>}
         </DialogHeader>
         <div className="space-y-4 pt-2">
+          {/* Motif de rejet affiché */}
+          {cahier.statut === "rejeté" && cahier.motifRejet && (
+            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3">
+              <p className="text-xs font-semibold text-destructive mb-1 flex items-center gap-1"><XCircle className="h-3.5 w-3.5" /> Motif du rejet</p>
+              <p className="text-sm text-muted-foreground">{cahier.motifRejet}</p>
+            </div>
+          )}
+
           <Section title="Contexte du projet" content={cahier.contexte} />
           <Section title="Public cible" content={cahier.publicCible} />
           <Section title="Fonctionnalités attendues" content={cahier.fonctionnalites} />
@@ -118,6 +148,36 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
             </Button>
           </div>
 
+          {/* Reject section */}
+          {cahier.statut === "complet" && (
+            <div className="border-t border-border/40 pt-4 space-y-2">
+              {rejectMode ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <XCircle className="h-4 w-4 text-destructive" />
+                    <h4 className="text-sm font-semibold text-foreground">Motif du rejet</h4>
+                  </div>
+                  <Textarea
+                    value={rejectMotif}
+                    onChange={(e) => setRejectMotif(e.target.value)}
+                    placeholder="Expliquez les modifications à apporter au cahier des charges..."
+                    className="min-h-[80px] text-sm border-destructive/30"
+                  />
+                  <div className="flex gap-2">
+                    <Button variant="destructive" size="sm" onClick={handleReject} className="gap-1">
+                      <XCircle className="h-3.5 w-3.5" /> Confirmer le rejet
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => { setRejectMode(false); setRejectMotif(""); }}>Annuler</Button>
+                  </div>
+                </div>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => setRejectMode(true)} className="gap-1 text-destructive border-destructive/30 hover:bg-destructive/10">
+                  <XCircle className="h-3.5 w-3.5" /> Rejeter le CDC
+                </Button>
+              )}
+            </div>
+          )}
+
           {/* Historique */}
           {cahier.historique && cahier.historique.length > 0 && (
             <div className="border-t border-border/40 pt-4 space-y-2">
@@ -127,12 +187,13 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
               </div>
               <div className="space-y-1.5 max-h-48 overflow-y-auto">
                 {[...cahier.historique].reverse().map((entry) => {
-                  const iconMap = {
+                  const iconMap: Record<string, React.ReactNode> = {
                     creation: <FileText className="h-3 w-3 text-muted-foreground" />,
                     mise_a_jour: <PenLine className="h-3 w-3 text-muted-foreground" />,
                     soumission: <Send className="h-3 w-3 text-[hsl(200,100%,60%)]" />,
                     commentaire_admin: <MessageSquare className="h-3 w-3 text-primary" />,
                     validation: <CheckCircle2 className="h-3 w-3 text-green-400" />,
+                    rejet: <XCircle className="h-3 w-3 text-destructive" />,
                   };
                   return (
                     <div key={entry.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 text-xs">
