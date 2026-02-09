@@ -261,6 +261,37 @@ export default function AdminAnalytics() {
         styles: { fontSize: 8 },
       });
 
+      // Ventes par type de projet
+      const afterMonthly = (doc as any).lastAutoTable?.finalY || 120;
+      doc.setFontSize(14);
+      doc.text("Ventes par type de projet", 14, afterMonthly + 10);
+      autoTable(doc, {
+        startY: afterMonthly + 14,
+        head: [["Mois", ...CATS.map((c) => `${c} (CA)`), ...CATS.map((c) => `${c} (Nb)`), "Total CA"]],
+        body: ventesParType.map((row) => [
+          row.mois as string,
+          ...CATS.map((c) => (row[c] as number) > 0 ? `${((row[c] as number) / 1000).toFixed(1)}k €` : "–"),
+          ...CATS.map((c) => (row[c + "_n"] as number) > 0 ? String(row[c + "_n"]) : "–"),
+          `${(CATS.reduce((s, c) => s + ((row[c] as number) || 0), 0) / 1000).toFixed(1)}k €`,
+        ]),
+        foot: [[
+          "Total",
+          ...CATS.map((c) => ventesTotaux[c].ca > 0 ? `${(ventesTotaux[c].ca / 1000).toFixed(1)}k €` : "–"),
+          ...CATS.map((c) => ventesTotaux[c].count > 0 ? String(ventesTotaux[c].count) : "–"),
+          `${(Object.values(ventesTotaux).reduce((s, v) => s + v.ca, 0) / 1000).toFixed(1)}k €`,
+        ], [
+          "Panier moy.",
+          ...CATS.map((c) => ventesTotaux[c].count > 0 ? `${Math.round(ventesTotaux[c].ca / ventesTotaux[c].count).toLocaleString()} €` : "–"),
+          ...CATS.map(() => ""),
+          (() => { const t = Object.values(ventesTotaux).reduce((s, v) => s + v.ca, 0); const n = Object.values(ventesTotaux).reduce((s, v) => s + v.count, 0); return n > 0 ? `${Math.round(t / n).toLocaleString()} €` : "–"; })(),
+        ]],
+        theme: "striped",
+        headStyles: { fillColor: [100, 60, 180], fontSize: 6 },
+        bodyStyles: { fontSize: 6 },
+        footStyles: { fillColor: [240, 240, 250], textColor: [40, 40, 40], fontSize: 6 },
+        styles: { cellPadding: 1.5 },
+      });
+
       // Support section — new page
       doc.addPage();
       doc.setFontSize(16);
