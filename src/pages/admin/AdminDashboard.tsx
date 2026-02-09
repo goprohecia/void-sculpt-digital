@@ -4,7 +4,9 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   dossiers,
@@ -24,6 +26,7 @@ type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" 
 export default function AdminDashboard() {
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const { emailLogs } = useDemoData();
 
   const dossiersActifs = dossiers.filter((d) => d.statut === "en_cours").length;
   const nouveauxClients = clients.filter((c) => c.dateCreation >= "2026-02-01").length;
@@ -236,6 +239,20 @@ export default function AdminDashboard() {
               </div>
             )}
           </motion.div>
+
+          {/* Derniers emails envoyés */}
+          {emailLogs.length > 0 && (
+            <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-primary" />
+                  Derniers emails envoyés
+                </h3>
+                <span className="text-xs text-muted-foreground">{emailLogs.length} email{emailLogs.length > 1 ? "s" : ""}</span>
+              </div>
+              <EmailLogPanel emails={emailLogs} maxItems={5} />
+            </motion.div>
+          )}
 
           {/* Messages non lus */}
           {totalNonLus > 0 && (
