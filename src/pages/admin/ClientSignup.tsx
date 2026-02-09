@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UserPlus, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
+import { UserPlus, Eye, EyeOff, ArrowLeft, CheckCircle, Home } from "lucide-react";
+import logoHero from "@/assets/logo-hero.png";
 
 export default function ClientSignup() {
   const [nom, setNom] = useState("");
@@ -85,9 +86,9 @@ export default function ClientSignup() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/20 neon-glow-violet">
-            <span className="text-xl font-bold text-primary">IM</span>
-          </div>
+          <Link to="/">
+            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
+          </Link>
           <h1 className="text-2xl font-bold">Créer un compte client</h1>
           <p className="text-muted-foreground text-sm">Inscrivez-vous pour accéder à votre espace</p>
         </div>
@@ -175,13 +176,17 @@ export default function ClientSignup() {
             </Button>
           </form>
 
-          <div className="text-center">
+          <div className="text-center space-y-3">
             <p className="text-sm text-muted-foreground">
               Déjà un compte ?{" "}
               <Link to="/admin/login" className="text-primary hover:underline font-medium">
                 Se connecter
               </Link>
             </p>
+            <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Home className="h-3.5 w-3.5" />
+              Retour à l'accueil
+            </Link>
           </div>
         </div>
       </div>
