@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   Send,
+  CalendarDays,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
@@ -37,6 +38,7 @@ const navItems = [
   { title: "Devis", url: "/client/devis", icon: FileText },
   { title: "Factures", url: "/client/factures", icon: Receipt },
   { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
+  { title: "Rendez-vous", url: "/client/rendez-vous", icon: CalendarDays },
   { title: "Support", url: "/client/support", icon: LifeBuoy, badge: getOpenTicketsCount(DEMO_CLIENT_ID) },
   { title: "Mon profil", url: "/client/profil", icon: UserCircle },
   { title: "Paramètres", url: "/client/parametres", icon: Settings },

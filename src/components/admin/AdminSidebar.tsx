@@ -11,6 +11,7 @@ import {
   LifeBuoy,
   Settings,
   LogOut,
+  CalendarDays,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { totalNonLus, getOpenTicketsCount } from "@/data/mockData";
@@ -36,6 +37,7 @@ const navItems = [
   { title: "Facturation", url: "/admin/facturation", icon: Receipt },
   { title: "Relances", url: "/admin/relances", icon: Bell },
   { title: "Emails", url: "/admin/emails", icon: Mail },
+  { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays },
   { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: getOpenTicketsCount() },
   { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
   { title: "Paramètres", url: "/admin/parametres", icon: Settings },

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
@@ -7,9 +8,18 @@ import { FolderOpen, FileText, Receipt, MessageSquare, ArrowRight, Send } from "
 import { Link } from "react-router-dom";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { getConversationsByClient, DEMO_CLIENT_ID } from "@/data/mockData";
+import { WelcomeBookingDialog } from "@/components/admin/WelcomeBookingDialog";
 
 export default function ClientDashboard() {
+  const [showWelcome, setShowWelcome] = useState(false);
   const { getDossiersByClient, getFacturesByClient, getDevisByClient, getDemandesByClient } = useDemoData();
+
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("impartial_first_visit_done");
+    if (!hasVisited) {
+      setShowWelcome(true);
+    }
+  }, []);
   const mesDossiers = getDossiersByClient(DEMO_CLIENT_ID);
   const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
   const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
@@ -119,6 +129,8 @@ export default function ClientDashboard() {
           )}
         </motion.div>
       </AdminPageTransition>
+
+      <WelcomeBookingDialog open={showWelcome} onOpenChange={setShowWelcome} />
     </ClientLayout>
   );
 }

@@ -8,7 +8,8 @@ type StatusType =
   | "actif" | "inactif"
   | "ouvert" | "resolu" | "ferme"
   | "basse" | "normale" | "haute" | "urgente"
-  | "nouvelle" | "en_revue" | "validee" | "refusee";
+  | "nouvelle" | "en_revue" | "validee" | "refusee"
+  | "a_venir" | "passe";
 
 const statusConfig: Record<StatusType, { label: string; className: string }> = {
   en_cours: { label: "En cours", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
@@ -39,6 +40,9 @@ const statusConfig: Record<StatusType, { label: string; className: string }> = {
   en_revue: { label: "En revue", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
   validee: { label: "Validée", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
   refusee: { label: "Refusée", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
+  // Rendez-vous statuses
+  a_venir: { label: "À venir", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
+  passe: { label: "Passé", className: "bg-muted text-muted-foreground border-border" },
 };
 
 export function StatusBadge({ status }: { status: StatusType }) {
