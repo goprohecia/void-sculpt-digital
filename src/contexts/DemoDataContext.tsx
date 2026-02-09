@@ -29,7 +29,18 @@ export interface EmailLog {
   reference?: string;
 }
 
-// ---- Demande type ----
+// ---- SendLog type ----
+export type SendLogDocType = "facture" | "devis";
+
+export interface SendLog {
+  id: string;
+  docType: SendLogDocType;
+  docReference: string;
+  clientId: string;
+  clientNom: string;
+  dateEnvoi: string;
+}
+
 export type DemandeStatus = "nouvelle" | "en_revue" | "validee" | "refusee";
 export type DemandePrestation = "Site web" | "App mobile" | "E-commerce" | "Back-office" | "360" | "Autre";
 
@@ -79,6 +90,7 @@ interface DemoDataContextType {
   clients: Client[];
   notifications: Notification[];
   emailLogs: EmailLog[];
+  sendLogs: SendLog[];
   updateFactureStatut: (id: string, statut: FactureStatus) => void;
   updateDevisStatut: (id: string, statut: DevisStatus) => void;
   updateDevisSignature: (id: string, signatureDataUrl: string, signataireNom: string, dateSignature: string) => void;
@@ -91,6 +103,7 @@ interface DemoDataContextType {
   addDossier: (d: Dossier) => void;
   addNotification: (n: Notification) => void;
   pushEmail: (type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => void;
+  addSendLog: (docType: SendLogDocType, docReference: string, clientId: string, clientNom: string) => void;
   getDemandesByClient: (clientId: string) => Demande[];
   getDossiersByClient: (clientId: string) => Dossier[];
   getFacturesByClient: (clientId: string) => Facture[];
@@ -120,6 +133,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const [demandes, setDemandes] = useState<Demande[]>([...initialDemandes]);
   const [notifs, setNotifs] = useState<Notification[]>([...initialNotifications]);
   const [emailLogs, setEmailLogs] = useState<EmailLog[]>([]);
+  const [sendLogs, setSendLogs] = useState<SendLog[]>([]);
 
   const pushEmail = useCallback((type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => {
     const email: EmailLog = {
@@ -129,6 +143,15 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       clientId, reference,
     };
     setEmailLogs((prev) => [email, ...prev]);
+  }, []);
+
+  const addSendLog = useCallback((docType: SendLogDocType, docReference: string, clientId: string, clientNom: string) => {
+    const log: SendLog = {
+      id: `sl_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      docType, docReference, clientId, clientNom,
+      dateEnvoi: new Date().toISOString(),
+    };
+    setSendLogs((prev) => [log, ...prev]);
   }, []);
 
   const addNotification = useCallback((n: Notification) => {
@@ -255,9 +278,9 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
 
   return (
     <DemoDataContext.Provider value={{
-      factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs,
+      factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs,
       updateFactureStatut, updateDevisStatut, updateDevisSignature, updateDossierStatut, updateClient,
-      addDemande, updateDemandeStatut, addDevis, addFacture, addDossier, addNotification, pushEmail,
+      addDemande, updateDemandeStatut, addDevis, addFacture, addDossier, addNotification, pushEmail, addSendLog,
       getDemandesByClient, getDossiersByClient, getFacturesByClient, getDevisByClient,
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient,

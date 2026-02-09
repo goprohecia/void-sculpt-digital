@@ -5,8 +5,9 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { PdfPreviewDialog } from "@/components/admin/PdfPreviewDialog";
 import { useDemoData } from "@/contexts/DemoDataContext";
+import type { SendLogDocType } from "@/contexts/DemoDataContext";
 import { clients, type FactureStatus, type Facture, type Devis } from "@/data/mockData";
-import { Receipt, Euro, AlertTriangle, Plus, Download, Eye } from "lucide-react";
+import { Receipt, Euro, AlertTriangle, Plus, Download, Eye, Send, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,7 @@ const factureFilters: { key: "tous" | FactureStatus; label: string }[] = [
 ];
 
 export default function AdminBilling() {
-  const { factures, devis, addFacture, addDevis, getDossiersByClient, getClientById } = useDemoData();
+  const { factures, devis, addFacture, addDevis, getDossiersByClient, getClientById, sendLogs, addSendLog } = useDemoData();
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
   const [openDevis, setOpenDevis] = useState(false);
@@ -32,6 +33,7 @@ export default function AdminBilling() {
   const [previewClientName, setPreviewClientName] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewDownload, setPreviewDownload] = useState<(() => void) | null>(null);
+  const [previewSend, setPreviewSend] = useState<(() => void) | null>(null);
 
   const handlePreviewFacture = useCallback((f: Facture) => {
     const url = previewFacturePdf(f, getClientById(f.clientId));
@@ -39,8 +41,9 @@ export default function AdminBilling() {
     setPreviewTitle(`Facture ${f.reference}`);
     setPreviewClientName(f.clientNom);
     setPreviewDownload(() => () => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); });
+    setPreviewSend(() => () => { addSendLog("facture", f.reference, f.clientId, f.clientNom); });
     setPreviewOpen(true);
-  }, [getClientById]);
+  }, [getClientById, addSendLog]);
 
   const handlePreviewDevis = useCallback((d: Devis) => {
     const url = previewDevisPdf(d, getClientById(d.clientId));
@@ -48,8 +51,9 @@ export default function AdminBilling() {
     setPreviewTitle(`Devis ${d.reference}`);
     setPreviewClientName(d.clientNom);
     setPreviewDownload(() => () => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); });
+    setPreviewSend(() => () => { addSendLog("devis", d.reference, d.clientId, d.clientNom); });
     setPreviewOpen(true);
-  }, [getClientById]);
+  }, [getClientById, addSendLog]);
 
   // New facture form
   const [fClientId, setFClientId] = useState("");
@@ -132,6 +136,10 @@ export default function AdminBilling() {
               <TabsList>
                 <TabsTrigger value="factures">Factures ({factures.length})</TabsTrigger>
                 <TabsTrigger value="devis">Devis ({devis.length})</TabsTrigger>
+                <TabsTrigger value="historique" className="gap-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  Envois ({sendLogs.length})
+                </TabsTrigger>
               </TabsList>
               <div className="flex gap-2">
                 <Dialog open={openFacture} onOpenChange={setOpenFacture}>
@@ -359,6 +367,74 @@ export default function AdminBilling() {
                 {devis.length === 0 && <div className="p-8 text-center text-muted-foreground">Aucun devis</div>}
               </motion.div>
             </TabsContent>
+
+            <TabsContent value="historique" className="space-y-4 mt-4">
+              {sendLogs.length === 0 ? (
+                <div className="glass-card p-8 text-center text-muted-foreground">
+                  <Send className="h-8 w-8 mx-auto mb-3 opacity-40" />
+                  <p>Aucun envoi pour le moment</p>
+                  <p className="text-xs mt-1">Les documents envoyés via l'aperçu apparaîtront ici</p>
+                </div>
+              ) : (
+                <>
+                  {/* Mobile cards */}
+                  <div className="sm:hidden space-y-3">
+                    {sendLogs.map((log) => (
+                      <div key={log.id} className="glass-card p-4 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-xs">{log.docReference}</span>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                            log.docType === "facture" ? "bg-primary/10 text-primary" : "bg-accent/50 text-accent-foreground"
+                          }`}>
+                            {log.docType === "facture" ? "Facture" : "Devis"}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">{log.clientNom}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(log.dateEnvoi).toLocaleDateString("fr-FR")} à {new Date(log.dateEnvoi).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Desktop table */}
+                  <motion.div className="glass-card overflow-hidden hidden sm:block" variants={staggerItem}>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-border/50 bg-muted/20">
+                            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Type</th>
+                            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
+                            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                            <th className="text-left py-3 px-4 text-muted-foreground font-medium">Date d'envoi</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sendLogs.map((log) => (
+                            <tr key={log.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                              <td className="py-3 px-4">
+                                <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                                  log.docType === "facture" ? "bg-primary/10 text-primary" : "bg-accent/50 text-accent-foreground"
+                                }`}>
+                                  {log.docType === "facture" ? "Facture" : "Devis"}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 font-mono text-xs">{log.docReference}</td>
+                              <td className="py-3 px-4">{log.clientNom}</td>
+                              <td className="py-3 px-4 text-muted-foreground">
+                                {new Date(log.dateEnvoi).toLocaleDateString("fr-FR")} à {new Date(log.dateEnvoi).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </TabsContent>
           </Tabs>
         </motion.div>
 
@@ -369,6 +445,7 @@ export default function AdminBilling() {
           title={previewTitle}
           clientName={previewClientName}
           onDownload={previewDownload || undefined}
+          onSend={previewSend || undefined}
         />
       </AdminPageTransition>
     </AdminLayout>
