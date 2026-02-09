@@ -1,66 +1,59 @@
 
-# Commentaires admin visibles client + Notifications CDC + Etape CDC dans la timeline
 
-## 1. Commentaires admin visibles cote client (lecture seule)
+# Refonte de la timeline : Rendez-vous obligatoire + reordonnancement CDC / Devis
 
-### Fichier : `src/pages/client/ClientDossierDetail.tsx`
-- Apres la section CDC (banniere ou section cahier des charges), afficher une carte "Retours de l'equipe" si `cahier?.commentairesAdmin` existe
-- Affichage en lecture seule avec icone MessageSquare et texte du commentaire
-- Style discret : carte glass avec bordure subtile
+## Objectif
 
-### Fichier : `src/pages/client/ClientDemandes.tsx`
-- Sur chaque carte de demande, si le CDC a un commentaire admin, afficher un petit indicateur "Retour equipe" cliquable
-- Au clic, ouvrir un petit dialog ou toast affichant le commentaire
-
-## 2. Notifications quand l'admin commente le CDC
-
-### Fichier : `src/contexts/DemoDataContext.tsx`
-- Modifier la fonction `updateCahierComment` pour :
-  - Retrouver la demande associee au `demandeId`
-  - Appeler `pushNotif` avec type `"dossier"`, titre "Nouveau commentaire CDC", description incluant le titre de la demande
-  - Destinataire : `"client"` avec le `clientId` de la demande
-  - Lien vers `/client/dossiers` ou `/client/demandes`
-  - Envoyer aussi un email log via `pushEmail`
-
-## 3. Etape "Cahier des charges" dans la barre de progression
-
-### Fichiers : `src/pages/client/ClientDossierDetail.tsx` et `src/pages/admin/AdminDossierDetail.tsx`
-
-Modifier la liste des etapes de 6 a 7 :
+Passer de la timeline actuelle a 7 etapes a une nouvelle timeline a 8 etapes avec un ordre different :
 
 ```text
-Actuel :  Demande recue > Devis envoye > Devis accepte > En cours > Livraison > Termine
-Nouveau : Demande recue > Devis envoye > Devis accepte > Cahier des charges > En cours > Livraison > Termine
+Actuel :  1.Demande recue > 2.Devis envoye > 3.Devis accepte > 4.CDC > 5.En cours > 6.Livraison > 7.Termine
+Nouveau : 1.Demande recue > 2.Rendez-vous > 3.CDC > 4.Devis envoye > 5.Devis accepte > 6.En cours > 7.Livraison > 8.Termine
 ```
 
-- L'etape "Cahier des charges" (index 3) est validee uniquement quand le CDC a le statut "complet"
-- Si le dossier est "en_cours" mais le CDC n'est pas complet, la progression s'arrete a l'etape 3 (Devis accepte) et l'etape 4 (CDC) est en attente
-- Si le CDC est complet, l'etape 4 est validee et la progression continue normalement
+Le rendez-vous devient obligatoire apres la demande recue, le CDC est rempli apres le rendez-vous, puis le devis est envoye sur la base du CDC valide.
 
-Mise a jour de la fonction `getEtapeIndex` dans les deux fichiers :
+---
 
-```text
-Client :
-  en_attente -> 1
-  en_cours + CDC non complet -> 2 (bloque a Devis accepte)
-  en_cours + CDC complet -> 4 (En cours)
-  termine -> 6
+## Modifications prevues
 
-Admin :
-  en_attente -> 1
-  en_cours + CDC non complet -> 2
-  en_cours + CDC complet -> 4
-  termine -> 6
-```
+### 1. Modele de donnees - `src/data/mockData.ts`
 
-- L'etape "Cahier des charges" dans la timeline aura une icone FileText distincte au lieu du numero
-- Cote client, l'etape affichera "A remplir" ou "Valide" en sous-texte
+- Ajouter un champ optionnel `rdvEffectue?: boolean` a l'interface `Dossier` pour indiquer si le rendez-vous initial a eu lieu
+- Mettre a jour les dossiers mock existants avec ce champ
 
-## Resume des fichiers concernes
+### 2. Contexte - `src/contexts/DemoDataContext.tsx`
 
-| Fichier | Modifications |
-|---------|--------------|
-| `src/contexts/DemoDataContext.tsx` | Notification + email dans `updateCahierComment` |
-| `src/pages/client/ClientDossierDetail.tsx` | Commentaire admin en lecture seule, timeline 7 etapes, logique CDC |
-| `src/pages/admin/AdminDossierDetail.tsx` | Timeline 7 etapes avec etape CDC, logique adaptee |
-| `src/pages/client/ClientDemandes.tsx` | Indicateur retour equipe sur les cartes |
+- Ajouter une fonction `marquerRdvEffectue(dossierId: string)` pour que l'admin puisse marquer le RDV comme effectue
+- Exposer cette fonction dans le contexte
+
+### 3. Timeline admin - `src/pages/admin/AdminDossierDetail.tsx`
+
+- Changer le tableau `etapes` vers les 8 nouvelles etapes
+- Mettre a jour `getEtapeIndex` :
+  - `en_attente` sans RDV effectue : index 0 (bloque a Demande recue)
+  - `en_attente` avec RDV effectue, sans CDC valide : index 1 (Rendez-vous fait)
+  - `en_attente` avec CDC valide : index 2 (CDC valide)
+  - `en_cours` : index 5 (En cours)
+  - `termine` : index 7
+- Ajouter icone CalendarDays sur l'etape 2 (Rendez-vous) et FileText sur l'etape 3 (CDC)
+- Sous-textes : "A planifier" / "Effectue" pour l'etape RDV, "A remplir" / "En validation" / "Valide" pour le CDC
+- Ajouter un bouton "Marquer RDV effectue" quand le dossier n'a pas encore `rdvEffectue`
+
+### 4. Timeline client - `src/pages/client/ClientDossierDetail.tsx`
+
+- Meme tableau `etapes` a 8 etapes
+- Meme logique `getEtapeIndex` adaptee
+- Icone CalendarDays pour l'etape Rendez-vous, FileText pour le CDC
+- Sous-texte "A planifier" / "Effectue" sur l'etape RDV
+- Banniere d'action "Prendre rendez-vous" (ouvrant le CalendlyBookingDialog) si le RDV n'est pas encore effectue
+
+### 5. Fichiers concernes
+
+| Fichier | Modification |
+|---------|-------------|
+| `src/data/mockData.ts` | Ajout `rdvEffectue` a l'interface Dossier + mise a jour mock |
+| `src/contexts/DemoDataContext.tsx` | Fonction `marquerRdvEffectue`, exposee dans le contexte |
+| `src/pages/admin/AdminDossierDetail.tsx` | Timeline 8 etapes, bouton marquer RDV, nouvelle logique |
+| `src/pages/client/ClientDossierDetail.tsx` | Timeline 8 etapes, banniere prise de RDV, CalendlyBookingDialog |
+
