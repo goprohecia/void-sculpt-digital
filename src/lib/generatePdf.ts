@@ -104,7 +104,7 @@ function addFooter(doc: jsPDF) {
   );
 }
 
-export function generateFacturePdf(facture: Facture, client?: Client) {
+function buildFactureDoc(facture: Facture, client?: Client): jsPDF {
   const doc = new jsPDF();
 
   addHeader(doc, "FACTURE", facture.reference);
@@ -126,7 +126,6 @@ export function generateFacturePdf(facture: Facture, client?: Client) {
   const ht = facture.montant / 1.2;
   const tva = facture.montant - ht;
 
-  // Table
   autoTable(doc, {
     startY: 82,
     head: [["Description", "Montant HT", "TVA (20%)", "Montant TTC"]],
@@ -139,24 +138,13 @@ export function generateFacturePdf(facture: Facture, client?: Client) {
       ],
     ],
     foot: [["", "", "Total TTC", `${fmt(facture.montant)} €`]],
-    headStyles: {
-      fillColor: [30, 30, 60],
-      textColor: [255, 255, 255],
-      fontSize: 9,
-      fontStyle: "bold",
-    },
+    headStyles: { fillColor: [30, 30, 60], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
     bodyStyles: { fontSize: 9, textColor: [50, 50, 70] },
-    footStyles: {
-      fillColor: [240, 240, 250],
-      textColor: [30, 30, 60],
-      fontSize: 10,
-      fontStyle: "bold",
-    },
+    footStyles: { fillColor: [240, 240, 250], textColor: [30, 30, 60], fontSize: 10, fontStyle: "bold" },
     theme: "grid",
     styles: { cellPadding: 6 },
   });
 
-  // Payment terms
   const finalY = (doc as any).lastAutoTable?.finalY || 130;
   doc.setFontSize(8);
   doc.setTextColor(100, 100, 120);
@@ -164,16 +152,25 @@ export function generateFacturePdf(facture: Facture, client?: Client) {
   doc.text("En cas de retard, des pénalités de 3 fois le taux d'intérêt légal seront appliquées.", 20, finalY + 17);
 
   addFooter(doc);
+  return doc;
+}
+
+export function generateFacturePdf(facture: Facture, client?: Client) {
+  const doc = buildFactureDoc(facture, client);
   doc.save(`${facture.reference}.pdf`);
 }
 
-export function generateDevisPdf(devisItem: Devis, client?: Client) {
+export function previewFacturePdf(facture: Facture, client?: Client): string {
+  const doc = buildFactureDoc(facture, client);
+  return doc.output("bloburl") as unknown as string;
+}
+
+function buildDevisDoc(devisItem: Devis, client?: Client): jsPDF {
   const doc = new jsPDF();
 
   addHeader(doc, "DEVIS", devisItem.reference);
   addClientInfo(doc, devisItem.clientNom, 55, client);
 
-  // Dates
   doc.setFontSize(9);
   doc.setTextColor(80, 80, 100);
   doc.text(`Date d'émission : ${new Date(devisItem.dateEmission).toLocaleDateString("fr-FR")}`, 20, 55);
@@ -188,7 +185,6 @@ export function generateDevisPdf(devisItem: Devis, client?: Client) {
   const ht = devisItem.montant / 1.2;
   const tva = devisItem.montant - ht;
 
-  // Table
   autoTable(doc, {
     startY: 78,
     head: [["Description", "Montant HT", "TVA (20%)", "Montant TTC"]],
@@ -201,19 +197,9 @@ export function generateDevisPdf(devisItem: Devis, client?: Client) {
       ],
     ],
     foot: [["", "", "Total TTC", `${fmt(devisItem.montant)} €`]],
-    headStyles: {
-      fillColor: [30, 30, 60],
-      textColor: [255, 255, 255],
-      fontSize: 9,
-      fontStyle: "bold",
-    },
+    headStyles: { fillColor: [30, 30, 60], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
     bodyStyles: { fontSize: 9, textColor: [50, 50, 70] },
-    footStyles: {
-      fillColor: [240, 240, 250],
-      textColor: [30, 30, 60],
-      fontSize: 10,
-      fontStyle: "bold",
-    },
+    footStyles: { fillColor: [240, 240, 250], textColor: [30, 30, 60], fontSize: 10, fontStyle: "bold" },
     theme: "grid",
     styles: { cellPadding: 6 },
   });
@@ -221,41 +207,38 @@ export function generateDevisPdf(devisItem: Devis, client?: Client) {
   const finalY = (doc as any).lastAutoTable?.finalY || 130;
 
   if (devisItem.statut === "accepte" && devisItem.signatureDataUrl) {
-    // "Bon pour accord" text
     doc.setFontSize(11);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(34, 170, 85);
     doc.text("Bon pour accord", 20, finalY + 14);
-
-    // Signature image
     try {
       doc.addImage(devisItem.signatureDataUrl, "PNG", 20, finalY + 18, 70, 28);
-    } catch {
-      // fallback if image fails
-    }
-
-    // Signatory info
+    } catch { /* fallback */ }
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(80, 80, 100);
-    if (devisItem.signataireNom) {
-      doc.text(`Signataire : ${devisItem.signataireNom}`, 20, finalY + 50);
-    }
-    if (devisItem.dateSignature) {
-      doc.text(`Date de signature : ${new Date(devisItem.dateSignature).toLocaleDateString("fr-FR")}`, 20, finalY + 55);
-    }
+    if (devisItem.signataireNom) doc.text(`Signataire : ${devisItem.signataireNom}`, 20, finalY + 50);
+    if (devisItem.dateSignature) doc.text(`Date de signature : ${new Date(devisItem.dateSignature).toLocaleDateString("fr-FR")}`, 20, finalY + 55);
   } else {
     doc.setFontSize(8);
     doc.setTextColor(100, 100, 120);
     doc.text(`Ce devis est valable jusqu'au ${new Date(devisItem.dateValidite).toLocaleDateString("fr-FR")}.`, 20, finalY + 12);
     doc.text("Signature et mention « Bon pour accord » :", 20, finalY + 22);
-
-    // Empty signature box
     doc.setDrawColor(180, 180, 200);
     doc.setLineWidth(0.3);
     doc.rect(20, finalY + 26, 80, 30);
   }
 
   addFooter(doc);
+  return doc;
+}
+
+export function generateDevisPdf(devisItem: Devis, client?: Client) {
+  const doc = buildDevisDoc(devisItem, client);
   doc.save(`${devisItem.reference}.pdf`);
+}
+
+export function previewDevisPdf(devisItem: Devis, client?: Client): string {
+  const doc = buildDevisDoc(devisItem, client);
+  return doc.output("bloburl") as unknown as string;
 }
