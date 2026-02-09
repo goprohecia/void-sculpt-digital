@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
+import { PdfPreviewDialog } from "@/components/admin/PdfPreviewDialog";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { clients, type FactureStatus } from "@/data/mockData";
-import { Receipt, Euro, AlertTriangle, Plus, Download } from "lucide-react";
+import { clients, type FactureStatus, type Facture, type Devis } from "@/data/mockData";
+import { Receipt, Euro, AlertTriangle, Plus, Download, Eye } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { generateFacturePdf, generateDevisPdf } from "@/lib/generatePdf";
+import { generateFacturePdf, generateDevisPdf, previewFacturePdf, previewDevisPdf } from "@/lib/generatePdf";
 
 const factureFilters: { key: "tous" | FactureStatus; label: string }[] = [
   { key: "tous", label: "Toutes" },
@@ -26,6 +27,26 @@ export default function AdminBilling() {
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
   const [openDevis, setOpenDevis] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewDownload, setPreviewDownload] = useState<(() => void) | null>(null);
+
+  const handlePreviewFacture = useCallback((f: Facture) => {
+    const url = previewFacturePdf(f, getClientById(f.clientId));
+    setPreviewUrl(url);
+    setPreviewTitle(`Facture ${f.reference}`);
+    setPreviewDownload(() => () => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); });
+    setPreviewOpen(true);
+  }, [getClientById]);
+
+  const handlePreviewDevis = useCallback((d: Devis) => {
+    const url = previewDevisPdf(d, getClientById(d.clientId));
+    setPreviewUrl(url);
+    setPreviewTitle(`Devis ${d.reference}`);
+    setPreviewDownload(() => () => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); });
+    setPreviewOpen(true);
+  }, [getClientById]);
 
   // New facture form
   const [fClientId, setFClientId] = useState("");
@@ -185,12 +206,20 @@ export default function AdminBilling() {
                     </div>
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</span>
-                      <button
-                        onClick={() => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); }}
-                        className="flex items-center gap-1 text-primary hover:underline"
-                      >
-                        <Download className="h-3 w-3" /> PDF
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handlePreviewFacture(f)}
+                          className="flex items-center gap-1 text-primary hover:underline"
+                        >
+                          <Eye className="h-3 w-3" /> Aperçu
+                        </button>
+                        <button
+                          onClick={() => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); }}
+                          className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
+                        >
+                          <Download className="h-3 w-3" /> PDF
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -206,8 +235,8 @@ export default function AdminBilling() {
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">PDF</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -219,13 +248,22 @@ export default function AdminBilling() {
                           <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
                           <td className="py-3 px-4 text-center">
-                            <button
-                              onClick={() => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); }}
-                              className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
-                              title="Télécharger PDF"
-                            >
-                              <Download className="h-4 w-4" />
-                            </button>
+                            <div className="flex items-center justify-center gap-1">
+                              <button
+                                onClick={() => handlePreviewFacture(f)}
+                                className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-primary hover:text-primary/80"
+                                title="Aperçu"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </button>
+                              <button
+                                onClick={() => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); }}
+                                className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                                title="Télécharger PDF"
+                              >
+                                <Download className="h-4 w-4" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -252,10 +290,16 @@ export default function AdminBilling() {
                       <span className="text-muted-foreground">{d.clientNom}</span>
                       <span className="font-medium">{d.montant.toLocaleString()} €</span>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => handlePreviewDevis(d)}
+                        className="flex items-center gap-1 text-xs text-primary hover:underline"
+                      >
+                        <Eye className="h-3 w-3" /> Aperçu
+                      </button>
                       <button
                         onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
-                        className="flex items-center gap-1 text-xs text-primary hover:underline"
+                        className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                       >
                         <Download className="h-3 w-3" /> PDF
                       </button>
@@ -275,7 +319,7 @@ export default function AdminBilling() {
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Titre</th>
                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">PDF</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -287,13 +331,22 @@ export default function AdminBilling() {
                           <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
                           <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
                           <td className="py-3 px-4 text-center">
-                            <button
-                              onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
-                              className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
-                              title="Télécharger PDF"
-                            >
-                              <Download className="h-4 w-4" />
-                            </button>
+                            <div className="flex items-center justify-center gap-1">
+                              <button
+                                onClick={() => handlePreviewDevis(d)}
+                                className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-primary hover:text-primary/80"
+                                title="Aperçu"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </button>
+                              <button
+                                onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
+                                className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                                title="Télécharger PDF"
+                              >
+                                <Download className="h-4 w-4" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -305,6 +358,14 @@ export default function AdminBilling() {
             </TabsContent>
           </Tabs>
         </motion.div>
+
+        <PdfPreviewDialog
+          open={previewOpen}
+          onOpenChange={setPreviewOpen}
+          pdfUrl={previewUrl}
+          title={previewTitle}
+          onDownload={previewDownload || undefined}
+        />
       </AdminPageTransition>
     </AdminLayout>
   );
