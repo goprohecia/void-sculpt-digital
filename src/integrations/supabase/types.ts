@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      objectifs_mensuels: {
+        Row: {
+          id: string
+          mois: string
+          objectif: number
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          mois: string
+          objectif: number
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          mois?: string
+          objectif?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
