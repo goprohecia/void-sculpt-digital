@@ -36,6 +36,7 @@ export interface Dossier {
   statut: DossierStatus;
   dateCreation: string;
   dateEcheance: string;
+  previewUrl?: string;
 }
 
 export interface Facture {
@@ -135,30 +136,30 @@ export const clients: Client[] = [
 
 // ---- DOSSIERS ----
 export const dossiers: Dossier[] = [
-  { id: "d1", reference: "DOS-2026-001", clientId: "c1", clientNom: "TechSolutions", typePrestation: "Site web vitrine", montant: 4500, statut: "en_cours", dateCreation: "2026-01-05", dateEcheance: "2026-03-15" },
+  { id: "d1", reference: "DOS-2026-001", clientId: "c1", clientNom: "TechSolutions", typePrestation: "Site web vitrine", montant: 4500, statut: "en_cours", dateCreation: "2026-01-05", dateEcheance: "2026-03-15", previewUrl: "https://techsolutions-preview.lovable.app" },
   { id: "d2", reference: "DOS-2026-002", clientId: "c1", clientNom: "TechSolutions", typePrestation: "Application mobile", montant: 12000, statut: "en_attente", dateCreation: "2026-01-20", dateEcheance: "2026-06-30" },
-  { id: "d3", reference: "DOS-2026-003", clientId: "c1", clientNom: "TechSolutions", typePrestation: "Back-office", montant: 8000, statut: "termine", dateCreation: "2025-11-15", dateEcheance: "2026-01-30" },
-  { id: "d4", reference: "DOS-2026-004", clientId: "c2", clientNom: "GreenLeaf Bio", typePrestation: "E-commerce", montant: 15000, statut: "en_cours", dateCreation: "2026-01-12", dateEcheance: "2026-04-20" },
+  { id: "d3", reference: "DOS-2026-003", clientId: "c1", clientNom: "TechSolutions", typePrestation: "Back-office", montant: 8000, statut: "termine", dateCreation: "2025-11-15", dateEcheance: "2026-01-30", previewUrl: "https://techsolutions-backoffice.lovable.app" },
+  { id: "d4", reference: "DOS-2026-004", clientId: "c2", clientNom: "GreenLeaf Bio", typePrestation: "E-commerce", montant: 15000, statut: "en_cours", dateCreation: "2026-01-12", dateEcheance: "2026-04-20", previewUrl: "https://greenleaf-ecommerce.lovable.app" },
   { id: "d5", reference: "DOS-2026-005", clientId: "c2", clientNom: "GreenLeaf Bio", typePrestation: "SEO / Référencement", montant: 3000, statut: "en_cours", dateCreation: "2026-02-01", dateEcheance: "2026-05-01" },
-  { id: "d6", reference: "DOS-2026-006", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Application 360°", montant: 25000, statut: "en_cours", dateCreation: "2025-12-10", dateEcheance: "2026-05-30" },
-  { id: "d7", reference: "DOS-2026-007", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Site web vitrine", montant: 6000, statut: "termine", dateCreation: "2025-10-01", dateEcheance: "2025-12-15" },
+  { id: "d6", reference: "DOS-2026-006", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Application 360°", montant: 25000, statut: "en_cours", dateCreation: "2025-12-10", dateEcheance: "2026-05-30", previewUrl: "https://luxemode-360.lovable.app" },
+  { id: "d7", reference: "DOS-2026-007", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Site web vitrine", montant: 6000, statut: "termine", dateCreation: "2025-10-01", dateEcheance: "2025-12-15", previewUrl: "https://luxemode-vitrine.lovable.app" },
   { id: "d8", reference: "DOS-2026-008", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Maintenance", montant: 2400, statut: "en_cours", dateCreation: "2026-01-01", dateEcheance: "2026-12-31" },
   { id: "d9", reference: "DOS-2026-009", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Application mobile", montant: 18000, statut: "en_attente", dateCreation: "2026-02-05", dateEcheance: "2026-07-30" },
-  { id: "d10", reference: "DOS-2026-010", clientId: "c4", clientNom: "ArchiBat", typePrestation: "Site web vitrine", montant: 5500, statut: "en_cours", dateCreation: "2026-01-22", dateEcheance: "2026-03-30" },
-  { id: "d11", reference: "DOS-2026-011", clientId: "c5", clientNom: "FoodLab", typePrestation: "E-commerce", montant: 9000, statut: "termine", dateCreation: "2025-10-10", dateEcheance: "2025-12-20" },
-  { id: "d12", reference: "DOS-2026-012", clientId: "c5", clientNom: "FoodLab", typePrestation: "Application mobile", montant: 14000, statut: "en_cours", dateCreation: "2026-01-15", dateEcheance: "2026-05-15" },
+  { id: "d10", reference: "DOS-2026-010", clientId: "c4", clientNom: "ArchiBat", typePrestation: "Site web vitrine", montant: 5500, statut: "en_cours", dateCreation: "2026-01-22", dateEcheance: "2026-03-30", previewUrl: "https://archibat-preview.lovable.app" },
+  { id: "d11", reference: "DOS-2026-011", clientId: "c5", clientNom: "FoodLab", typePrestation: "E-commerce", montant: 9000, statut: "termine", dateCreation: "2025-10-10", dateEcheance: "2025-12-20", previewUrl: "https://foodlab-shop.lovable.app" },
+  { id: "d12", reference: "DOS-2026-012", clientId: "c5", clientNom: "FoodLab", typePrestation: "Application mobile", montant: 14000, statut: "en_cours", dateCreation: "2026-01-15", dateEcheance: "2026-05-15", previewUrl: "https://foodlab-mobile.lovable.app" },
   { id: "d13", reference: "DOS-2026-013", clientId: "c6", clientNom: "DigitalMind", typePrestation: "Consulting", montant: 3500, statut: "annule", dateCreation: "2025-09-01", dateEcheance: "2025-10-15" },
-  { id: "d14", reference: "DOS-2026-014", clientId: "c7", clientNom: "HealthPlus", typePrestation: "Application web", montant: 11000, statut: "en_cours", dateCreation: "2026-02-01", dateEcheance: "2026-05-30" },
+  { id: "d14", reference: "DOS-2026-014", clientId: "c7", clientNom: "HealthPlus", typePrestation: "Application web", montant: 11000, statut: "en_cours", dateCreation: "2026-02-01", dateEcheance: "2026-05-30", previewUrl: "https://healthplus-app.lovable.app" },
   { id: "d15", reference: "DOS-2026-015", clientId: "c7", clientNom: "HealthPlus", typePrestation: "Back-office", montant: 7500, statut: "en_attente", dateCreation: "2026-02-05", dateEcheance: "2026-04-30" },
-  { id: "d16", reference: "DOS-2026-016", clientId: "c8", clientNom: "AutoElec", typePrestation: "E-commerce", montant: 13000, statut: "en_cours", dateCreation: "2025-12-01", dateEcheance: "2026-03-15" },
+  { id: "d16", reference: "DOS-2026-016", clientId: "c8", clientNom: "AutoElec", typePrestation: "E-commerce", montant: 13000, statut: "en_cours", dateCreation: "2025-12-01", dateEcheance: "2026-03-15", previewUrl: "https://autoelec-shop.lovable.app" },
   { id: "d17", reference: "DOS-2026-017", clientId: "c8", clientNom: "AutoElec", typePrestation: "SEO / Référencement", montant: 2500, statut: "termine", dateCreation: "2025-09-15", dateEcheance: "2025-11-30" },
   { id: "d18", reference: "DOS-2026-018", clientId: "c8", clientNom: "AutoElec", typePrestation: "Maintenance", montant: 1800, statut: "en_cours", dateCreation: "2026-01-01", dateEcheance: "2026-12-31" },
   { id: "d19", reference: "DOS-2026-019", clientId: "c9", clientNom: "ArtVisuel", typePrestation: "Site web vitrine", montant: 4000, statut: "annule", dateCreation: "2025-08-01", dateEcheance: "2025-09-30" },
-  { id: "d20", reference: "DOS-2026-020", clientId: "c10", clientNom: "SportNow", typePrestation: "Application mobile", montant: 16000, statut: "en_cours", dateCreation: "2026-01-08", dateEcheance: "2026-05-08" },
+  { id: "d20", reference: "DOS-2026-020", clientId: "c10", clientNom: "SportNow", typePrestation: "Application mobile", montant: 16000, statut: "en_cours", dateCreation: "2026-01-08", dateEcheance: "2026-05-08", previewUrl: "https://sportnow-mobile.lovable.app" },
   { id: "d21", reference: "DOS-2026-021", clientId: "c10", clientNom: "SportNow", typePrestation: "Back-office", montant: 6500, statut: "en_attente", dateCreation: "2026-02-03", dateEcheance: "2026-04-15" },
-  { id: "d22", reference: "DOS-2026-022", clientId: "c11", clientNom: "EcoShop", typePrestation: "E-commerce", montant: 11500, statut: "en_cours", dateCreation: "2026-01-28", dateEcheance: "2026-04-28" },
+  { id: "d22", reference: "DOS-2026-022", clientId: "c11", clientNom: "EcoShop", typePrestation: "E-commerce", montant: 11500, statut: "en_cours", dateCreation: "2026-01-28", dateEcheance: "2026-04-28", previewUrl: "https://ecoshop-preview.lovable.app" },
   { id: "d23", reference: "DOS-2026-023", clientId: "c11", clientNom: "EcoShop", typePrestation: "SEO / Référencement", montant: 2800, statut: "en_cours", dateCreation: "2026-02-01", dateEcheance: "2026-05-01" },
-  { id: "d24", reference: "DOS-2026-024", clientId: "c12", clientNom: "ImmoPlus", typePrestation: "Application web", montant: 9500, statut: "en_cours", dateCreation: "2025-12-15", dateEcheance: "2026-03-30" },
+  { id: "d24", reference: "DOS-2026-024", clientId: "c12", clientNom: "ImmoPlus", typePrestation: "Application web", montant: 9500, statut: "en_cours", dateCreation: "2025-12-15", dateEcheance: "2026-03-30", previewUrl: "https://immoplus-app.lovable.app" },
   { id: "d25", reference: "DOS-2026-025", clientId: "c12", clientNom: "ImmoPlus", typePrestation: "Application mobile", montant: 14500, statut: "en_attente", dateCreation: "2026-02-08", dateEcheance: "2026-06-30" },
 ];
 
