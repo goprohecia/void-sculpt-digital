@@ -5,7 +5,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -89,10 +89,11 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
 export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl } = useDemoData();
+  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit } = useDemoData();
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
+  const previewVisits = id ? getPreviewVisitsByDossier(id) : [];
 
   if (!dossier) {
     return <AdminLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></AdminLayout>;
@@ -168,6 +169,56 @@ export default function AdminDossierDetail() {
 
           {/* Preview Link */}
           <PreviewLinkSection dossier={dossier} onUpdateUrl={updateDossierPreviewUrl} />
+
+          {/* Preview Visits */}
+          {dossier.previewUrl && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Eye className="h-4 w-4 text-primary" />
+                  Historique des visites ({previewVisits.length})
+                </h2>
+                <Button size="sm" variant="outline" className="gap-1.5 text-xs" onClick={() => addPreviewVisit(dossier.id)}>
+                  + Simuler une visite
+                </Button>
+              </div>
+              {previewVisits.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-3 gap-3 mb-4">
+                    <div className="bg-muted/30 rounded-lg p-3 text-center">
+                      <p className="text-2xl font-bold">{previewVisits.length}</p>
+                      <p className="text-xs text-muted-foreground">Total visites</p>
+                    </div>
+                    <div className="bg-muted/30 rounded-lg p-3 text-center">
+                      <p className="text-2xl font-bold">{previewVisits.filter(v => { const d = new Date(v.date); const now = new Date(); return d.toDateString() === now.toDateString(); }).length}</p>
+                      <p className="text-xs text-muted-foreground">Aujourd'hui</p>
+                    </div>
+                    <div className="bg-muted/30 rounded-lg p-3 text-center">
+                      <p className="text-2xl font-bold">{previewVisits.filter(v => { const d = new Date(v.date); const now = new Date(); const weekAgo = new Date(); weekAgo.setDate(now.getDate() - 7); return d >= weekAgo; }).length}</p>
+                      <p className="text-xs text-muted-foreground">7 derniers jours</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5 max-h-52 overflow-y-auto">
+                    {previewVisits.slice(0, 20).map((v) => (
+                      <div key={v.id} className="flex items-center justify-between p-2 rounded-lg bg-muted/10 text-xs">
+                        <div className="flex items-center gap-2">
+                          {v.device === "desktop" && <Monitor className="h-3.5 w-3.5 text-muted-foreground" />}
+                          {v.device === "mobile" && <Smartphone className="h-3.5 w-3.5 text-muted-foreground" />}
+                          {v.device === "tablet" && <Tablet className="h-3.5 w-3.5 text-muted-foreground" />}
+                          <span className="capitalize">{v.device}</span>
+                        </div>
+                        <span className="text-muted-foreground">
+                          {new Date(v.date).toLocaleDateString("fr-FR")} à {new Date(v.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground">Aucune visite enregistrée</p>
+              )}
+            </motion.div>
+          )}
 
           {/* Devis */}
           <motion.div className="glass-card p-5" variants={staggerItem}>
