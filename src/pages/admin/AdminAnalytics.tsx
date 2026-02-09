@@ -1,11 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { donneesMensuelles, tickets, clients } from "@/data/mockData";
-import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet } from "lucide-react";
+import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet, Pencil, Check, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { exportCsv } from "@/lib/exportCsv";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
@@ -86,10 +87,39 @@ export default function AdminAnalytics() {
   const [exporting, setExporting] = useState(false);
   const { factures, demandes } = useDemoData();
 
-  const totalCA = donneesMensuelles.reduce((acc, d) => acc + d.caTotal, 0);
-  const totalEncaissements = donneesMensuelles.reduce((acc, d) => acc + d.encaissements, 0);
-  const totalDossiers = donneesMensuelles.reduce((acc, d) => acc + d.dossiers, 0);
-  const totalNouveauxClients = donneesMensuelles.reduce((acc, d) => acc + d.nouveauxClients, 0);
+  // Editable objectives
+  const [objectifs, setObjectifs] = useState<Record<string, number>>(
+    () => Object.fromEntries(donneesMensuelles.map((d) => [d.mois, d.objectif]))
+  );
+  const [editingMonth, setEditingMonth] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState("");
+
+  const dataWithObjectifs = useMemo(
+    () => donneesMensuelles.map((d) => ({ ...d, objectif: objectifs[d.mois] ?? d.objectif })),
+    [objectifs]
+  );
+
+  const startEdit = useCallback((mois: string) => {
+    setEditingMonth(mois);
+    setEditValue(String(objectifs[mois]));
+  }, [objectifs]);
+
+  const confirmEdit = useCallback(() => {
+    if (!editingMonth) return;
+    const val = parseInt(editValue.replace(/\s/g, ""), 10);
+    if (!isNaN(val) && val >= 0) {
+      setObjectifs((prev) => ({ ...prev, [editingMonth]: val }));
+      toast.success(`Objectif ${editingMonth} mis à jour : ${val.toLocaleString()} €`);
+    }
+    setEditingMonth(null);
+  }, [editingMonth, editValue]);
+
+  const cancelEdit = useCallback(() => setEditingMonth(null), []);
+
+  const totalCA = dataWithObjectifs.reduce((acc, d) => acc + d.caTotal, 0);
+  const totalEncaissements = dataWithObjectifs.reduce((acc, d) => acc + d.encaissements, 0);
+  const totalDossiers = dataWithObjectifs.reduce((acc, d) => acc + d.dossiers, 0);
+  const totalNouveauxClients = dataWithObjectifs.reduce((acc, d) => acc + d.nouveauxClients, 0);
 
   // Dynamic payment distribution
   const paymentDistribution = useMemo(() => [
@@ -173,7 +203,7 @@ export default function AdminAnalytics() {
       autoTable(doc, {
         startY: afterKpi + 14,
         head: [["Mois", "Objectif", "CA Total", "Encaissements", "Dossiers", "Panier moy."]],
-        body: donneesMensuelles.map((d) => [
+        body: dataWithObjectifs.map((d) => [
           d.mois,
           `${d.objectif.toLocaleString()} €`,
           `${d.caTotal.toLocaleString()} €`,
@@ -316,10 +346,33 @@ export default function AdminAnalytics() {
                   </tr>
                 </thead>
                 <tbody>
-                  {donneesMensuelles.map((d) => (
+                  {dataWithObjectifs.map((d) => (
                     <tr key={d.mois} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
                       <td className="py-2 px-3 font-medium">{d.mois}</td>
-                      <td className="py-2 px-3 text-right text-muted-foreground">{d.objectif.toLocaleString()} €</td>
+                      <td className="py-2 px-3 text-right">
+                        {editingMonth === d.mois ? (
+                          <div className="flex items-center justify-end gap-1">
+                            <Input
+                              type="number"
+                              value={editValue}
+                              onChange={(e) => setEditValue(e.target.value)}
+                              onKeyDown={(e) => { if (e.key === "Enter") confirmEdit(); if (e.key === "Escape") cancelEdit(); }}
+                              className="h-7 w-28 text-right text-xs"
+                              autoFocus
+                            />
+                            <button onClick={confirmEdit} className="p-1 text-green-400 hover:text-green-300"><Check className="h-3.5 w-3.5" /></button>
+                            <button onClick={cancelEdit} className="p-1 text-red-400 hover:text-red-300"><X className="h-3.5 w-3.5" /></button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => startEdit(d.mois)}
+                            className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors group"
+                          >
+                            {d.objectif.toLocaleString()} €
+                            <Pencil className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        )}
+                      </td>
                       <td className="py-2 px-3 text-right font-medium"
                         style={{ color: d.caTotal >= d.objectif ? "hsl(155,100%,65%)" : "hsl(0,84%,70%)" }}
                       >
@@ -340,7 +393,7 @@ export default function AdminAnalytics() {
             <h3 className="text-sm font-semibold mb-4">Évolution du chiffre d'affaires</h3>
             <div className="h-48 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={donneesMensuelles}>
+                <LineChart data={dataWithObjectifs}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
                   <XAxis dataKey="mois" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
                   <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 40 : 60} />
@@ -359,7 +412,7 @@ export default function AdminAnalytics() {
             <h3 className="text-sm font-semibold mb-4">Analyse quantitative des ventes</h3>
             <div className="h-48 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={donneesMensuelles}>
+                <BarChart data={dataWithObjectifs}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
                   <XAxis dataKey="mois" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
                   <YAxis yAxisId="left" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 35 : 60} />
