@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { donneesMensuelles, tickets } from "@/data/mockData";
-import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle } from "lucide-react";
+import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
 import {
   ResponsiveContainer,
   LineChart,
@@ -78,6 +80,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function AdminAnalytics() {
   const isMobile = useIsMobile();
+  const [exporting, setExporting] = useState(false);
   const totalCA = donneesMensuelles.reduce((acc, d) => acc + d.caTotal, 0);
   const totalEncaissements = donneesMensuelles.reduce((acc, d) => acc + d.encaissements, 0);
   const totalDossiers = donneesMensuelles.reduce((acc, d) => acc + d.dossiers, 0);
@@ -85,16 +88,117 @@ export default function AdminAnalytics() {
 
   const tickFontSize = isMobile ? 10 : 12;
 
+  const exportPDF = async () => {
+    setExporting(true);
+    try {
+      const { default: jsPDF } = await import("jspdf");
+      const { default: autoTable } = await import("jspdf-autotable");
+
+      const doc = new jsPDF();
+      const now = new Date().toLocaleDateString("fr-FR");
+
+      // Title
+      doc.setFontSize(20);
+      doc.text("Rapport Analytique — Impartial", 14, 20);
+      doc.setFontSize(10);
+      doc.setTextColor(120);
+      doc.text(`Généré le ${now}`, 14, 28);
+
+      // KPIs
+      doc.setFontSize(14);
+      doc.setTextColor(40);
+      doc.text("Indicateurs clés 2026", 14, 40);
+      autoTable(doc, {
+        startY: 44,
+        head: [["CA Total", "Encaissements", "Dossiers", "Nouveaux clients"]],
+        body: [[
+          `${(totalCA / 1000).toFixed(0)}k €`,
+          `${(totalEncaissements / 1000).toFixed(0)}k €`,
+          String(totalDossiers),
+          String(totalNouveauxClients),
+        ]],
+        theme: "grid",
+        headStyles: { fillColor: [100, 60, 180] },
+      });
+
+      // Monthly table
+      const afterKpi = (doc as any).lastAutoTable?.finalY || 60;
+      doc.setFontSize(14);
+      doc.text("Tendances mensuelles", 14, afterKpi + 10);
+      autoTable(doc, {
+        startY: afterKpi + 14,
+        head: [["Mois", "Objectif", "CA Total", "Encaissements", "Dossiers", "Panier moy."]],
+        body: donneesMensuelles.map((d) => [
+          d.mois,
+          `${d.objectif.toLocaleString()} €`,
+          `${d.caTotal.toLocaleString()} €`,
+          `${d.encaissements.toLocaleString()} €`,
+          String(d.dossiers),
+          `${d.panierMoyen.toLocaleString()} €`,
+        ]),
+        theme: "striped",
+        headStyles: { fillColor: [100, 60, 180] },
+        styles: { fontSize: 8 },
+      });
+
+      // Support section — new page
+      doc.addPage();
+      doc.setFontSize(16);
+      doc.text("Activité Support", 14, 20);
+
+      const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
+      const resolvedTickets = tickets.filter((t) => t.statut === "resolu" || t.statut === "ferme").length;
+      doc.setFontSize(10);
+      doc.text(`Tickets ouverts : ${openTickets}  |  Résolus/Fermés : ${resolvedTickets}  |  Temps rép. moyen : 4.4h  |  Taux résolution : ${Math.round((resolvedTickets / tickets.length) * 100)}%`, 14, 30);
+
+      autoTable(doc, {
+        startY: 36,
+        head: [["Semaine", "Ouverts", "Fermés"]],
+        body: ticketsByWeek.map((w) => [w.semaine, String(w.ouverts), String(w.fermes)]),
+        theme: "grid",
+        headStyles: { fillColor: [0, 150, 200] },
+      });
+
+      const afterSupport = (doc as any).lastAutoTable?.finalY || 80;
+      autoTable(doc, {
+        startY: afterSupport + 6,
+        head: [["Réf.", "Client", "Sujet", "Priorité", "Statut"]],
+        body: tickets.map((t) => [t.reference, t.clientNom, t.sujet, t.priorite, t.statut]),
+        theme: "striped",
+        headStyles: { fillColor: [0, 150, 200] },
+        styles: { fontSize: 8 },
+      });
+
+      doc.save(`rapport-impartial-${now.replace(/\//g, "-")}.pdf`);
+      toast.success("Rapport PDF exporté avec succès");
+    } catch (err) {
+      toast.error("Erreur lors de l'export PDF");
+      console.error(err);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <BarChart3 className="h-6 w-6 text-primary" />
-              Analyse
-            </h1>
-            <p className="text-muted-foreground text-sm">Données analytiques 2026</p>
+          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <BarChart3 className="h-6 w-6 text-primary" />
+                Analyse
+              </h1>
+              <p className="text-muted-foreground text-sm">Données analytiques 2026</p>
+            </div>
+            <button
+              onClick={exportPDF}
+              disabled={exporting}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors self-start"
+            >
+              {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              Exporter en PDF
+            </button>
           </motion.div>
 
           {/* KPIs */}
