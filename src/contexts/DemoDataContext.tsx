@@ -78,6 +78,21 @@ function generateMockVisits(): PreviewVisit[] {
 export type DemandeStatus = "nouvelle" | "en_revue" | "validee" | "refusee";
 export type DemandePrestation = "Site web" | "App mobile" | "E-commerce" | "Back-office" | "360" | "Autre";
 
+export interface CahierDesCharges {
+  id: string;
+  demandeId: string;
+  contexte: string;
+  publicCible: string;
+  fonctionnalites: string[];
+  designNotes: string;
+  contraintesTechniques: string;
+  planningSouhaite: string;
+  budgetComplementaire: string;
+  remarques: string;
+  statut: "brouillon" | "complet";
+  dateMiseAJour: string;
+}
+
 export interface Demande {
   id: string;
   reference: string;
@@ -91,6 +106,30 @@ export interface Demande {
   dateCreation: string;
   dateMiseAJour: string;
 }
+
+const initialCahiers: CahierDesCharges[] = [
+  {
+    id: "cdc1",
+    demandeId: "dem1",
+    contexte: "Luxe & Mode est une maison de mode haut de gamme fondée en 2015. Nous souhaitons moderniser notre présence e-commerce pour offrir une expérience d'achat en ligne à la hauteur de notre positionnement premium. L'objectif est d'augmenter le taux de conversion de 30% et d'améliorer la fidélisation client.",
+    publicCible: "Femmes 25-55 ans, CSP+, passionnées de mode et de luxe. Personas principales : la fashionista connectée (28-35 ans) et la cliente fidèle (40-55 ans) qui privilégie la qualité.",
+    fonctionnalites: [
+      "Catalogue produits avec filtres avancés (taille, couleur, matière, prix)",
+      "Panier et tunnel d'achat optimisé mobile-first",
+      "Programme de fidélité avec points et avantages exclusifs",
+      "Wishlist et alertes de disponibilité",
+      "Intégration des avis clients vérifiés",
+      "Click & Collect en boutique",
+    ],
+    designNotes: "Charte graphique minimaliste et élégante. Couleurs : noir, blanc, doré. Typographie : serif pour les titres, sans-serif pour le corps. Inspirations : Net-a-Porter, Farfetch. Priorité à l'image produit grand format.",
+    contraintesTechniques: "Hébergement cloud scalable. Intégration Shopify ou solution headless. API paiement : Stripe + PayPal. Compatibilité IE11 non requise. Performance : LCP < 2.5s.",
+    planningSouhaite: "Livraison souhaitée mi-juin 2026. Jalons : maquettes validées fin février, développement mars-mai, recette début juin.",
+    budgetComplementaire: "Budget dédié à l'UX/UI design déjà alloué séparément (5 000 €). Le budget mentionné dans la demande couvre uniquement le développement.",
+    remarques: "Nous disposons déjà d'un stock photo professionnel. Un accès au back-office actuel sera fourni pour la migration des données produits.",
+    statut: "complet",
+    dateMiseAJour: "2026-02-04",
+  },
+];
 
 const initialDemandes: Demande[] = [
   {
@@ -155,6 +194,9 @@ interface DemoDataContextType {
   addPreviewVisit: (dossierId: string) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: (role: "admin" | "client", clientId?: string) => void;
+  cahiersDesCharges: CahierDesCharges[];
+  getCahierByDemande: (demandeId: string) => CahierDesCharges | undefined;
+  saveCahierDesCharges: (cahier: CahierDesCharges) => void;
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
@@ -173,6 +215,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const [emailLogs, setEmailLogs] = useState<EmailLog[]>([]);
   const [sendLogs, setSendLogs] = useState<SendLog[]>([]);
   const [previewVisits, setPreviewVisits] = useState<PreviewVisit[]>(generateMockVisits());
+  const [cahiersDesCharges, setCahiersDesCharges] = useState<CahierDesCharges[]>([...initialCahiers]);
   const pushEmail = useCallback((type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => {
     const email: EmailLog = {
       id: `em_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -328,6 +371,14 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     };
     setPreviewVisits((prev) => [visit, ...prev]);
   }, []);
+  const getCahierByDemande = useCallback((demandeId: string) => cahiersDesCharges.find((c) => c.demandeId === demandeId), [cahiersDesCharges]);
+  const saveCahierDesCharges = useCallback((cahier: CahierDesCharges) => {
+    setCahiersDesCharges((prev) => {
+      const idx = prev.findIndex((c) => c.demandeId === cahier.demandeId);
+      if (idx >= 0) return prev.map((c, i) => (i === idx ? cahier : c));
+      return [...prev, cahier];
+    });
+  }, []);
 
   return (
     <DemoDataContext.Provider value={{
@@ -338,6 +389,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
+      cahiersDesCharges, getCahierByDemande, saveCahierDesCharges,
     }}>
       {children}
     </DemoDataContext.Provider>
