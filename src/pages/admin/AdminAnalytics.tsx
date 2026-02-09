@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { exportCsv } from "@/lib/exportCsv";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
+import { useObjectifs } from "@/hooks/use-objectifs";
 import {
   ResponsiveContainer,
   LineChart,
@@ -87,10 +88,8 @@ export default function AdminAnalytics() {
   const [exporting, setExporting] = useState(false);
   const { factures, demandes } = useDemoData();
 
-  // Editable objectives
-  const [objectifs, setObjectifs] = useState<Record<string, number>>(
-    () => Object.fromEntries(donneesMensuelles.map((d) => [d.mois, d.objectif]))
-  );
+  // Editable objectives — persisted in DB
+  const { objectifs, updateObjectif } = useObjectifs();
   const [editingMonth, setEditingMonth] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
 
@@ -108,11 +107,10 @@ export default function AdminAnalytics() {
     if (!editingMonth) return;
     const val = parseInt(editValue.replace(/\s/g, ""), 10);
     if (!isNaN(val) && val >= 0) {
-      setObjectifs((prev) => ({ ...prev, [editingMonth]: val }));
-      toast.success(`Objectif ${editingMonth} mis à jour : ${val.toLocaleString()} €`);
+      updateObjectif(editingMonth, val);
     }
     setEditingMonth(null);
-  }, [editingMonth, editValue]);
+  }, [editingMonth, editValue, updateObjectif]);
 
   const cancelEdit = useCallback(() => setEditingMonth(null), []);
 
