@@ -1,93 +1,52 @@
 
-# Optimisation responsive tablette et mobile -- Espaces admin et client
+# Espace Rendez-vous Calendly -- Client et Admin
 
-## Contexte
-L'application back-office (admin + client) utilise deja certaines bases responsives (sidebar collapsible via SidebarProvider, quelques classes `hidden sm:block` / `sm:hidden`). Cependant, plusieurs pages et composants ne sont pas optimises pour les formats tablette (768-1024px) et mobile (<768px).
+## Ce qui sera mis en place
 
-## Pages et composants a optimiser
+### 1. Pop-up de bienvenue avec Calendly (premiere connexion client)
+Quand un client se connecte pour la premiere fois a son espace, un dialog s'affiche automatiquement pour l'inviter a prendre rendez-vous via l'iframe Calendly deja en place sur le site (`https://calendly.com/yannis-bezriche/impartial-games`). Le client peut fermer le pop-up s'il ne souhaite pas prendre rendez-vous tout de suite. L'etat "premiere visite" sera stocke en localStorage pour ne pas re-afficher le pop-up.
 
-### 1. AdminClients -- Tableau clients (priorite haute)
-- Le tableau avec 8 colonnes (Client, Email, Tel, SIRET, Ville, Dossiers, Statut, Actions) deborde sur tablette
-- **Solution** : Ajouter une vue mobile en cards (comme deja fait dans AdminDossiers et ClientDossiers) avec `sm:hidden` / `hidden sm:block`
-- Ajuster la visibilite des colonnes : Email visible a `md:`, Tel a `lg:`, SIRET et Ville a `xl:` (deja fait)
+### 2. Page "Rendez-vous" dans l'espace client (`/client/rendez-vous`)
+Une nouvelle page accessible depuis la sidebar client avec :
+- Un bouton "Prendre un rendez-vous" qui ouvre l'iframe Calendly dans un dialog
+- Une liste de rendez-vous (donnees mock pour la demo) avec date, heure, statut (a venir / passe / annule)
+- Possibilite de reprogrammer (redirige vers Calendly)
 
-### 2. AdminBilling -- Facturation (priorite haute)
-- Les tableaux factures et devis n'ont pas de vue mobile en cards
-- Les boutons "Facture" et "Devis" + filtres s'empilent mal sur mobile
-- **Solution** : Ajouter des vues mobile en cards pour les deux tableaux, ajuster le layout des boutons d'action
+### 3. Page "Rendez-vous" dans l'espace admin (`/admin/rendez-vous`)
+Une nouvelle page accessible depuis la sidebar admin avec :
+- Un calendrier visuel (vue mensuelle) affichant les rendez-vous des clients
+- Liste des rendez-vous a venir avec nom du client, date, heure et statut
+- Vue d'ensemble des prochains rendez-vous
 
-### 3. AdminReminders -- Relances (priorite moyenne)
-- La grille `lg:grid-cols-3` passe directement en colonne unique, pas de vue mobile pour le tableau de relances
-- **Solution** : Ajouter une vue cards mobile pour le tableau des relances
-
-### 4. AdminDashboard -- Vue d'ensemble (priorite moyenne)
-- Le calendrier des echeances : la legende (Dossiers/Factures/Relances) est trop compacte sur mobile
-- Le tableau dossiers recents est deja responsive
-- **Solution** : Empiler la legende du calendrier sous le titre sur mobile, ajuster le padding
-
-### 5. AdminAnalytics -- Analyse (priorite moyenne)
-- Les boutons d'export (PDF, Factures CSV, Demandes CSV, Clients CSV) s'empilent mal sur petit ecran
-- Le tableau des tendances mensuelles a deja un scroll horizontal
-- **Solution** : Ajuster les boutons d'export en grille flexible, reduire la taille du texte sur mobile
-
-### 6. AdminSupport -- Support (priorite basse)
-- La zone de filtre avec le select client peut deborder
-- **Solution** : Passer les filtres en colonne sur mobile
-
-### 7. DashboardKPI -- Composant KPI (priorite moyenne)
-- Le padding `p-6` est trop genereux sur mobile
-- La taille du texte `text-2xl` est trop grande sur petit ecran pour les KPI en grille 2 colonnes
-- **Solution** : Reduire le padding a `p-4 sm:p-6`, ajuster la taille de la valeur a `text-xl sm:text-2xl`
-
-### 8. ClientDossierDetail et AdminDossierDetail (priorite basse)
-- Verifier que les details s'affichent bien en colonne sur mobile
+---
 
 ## Details techniques
 
-### AdminClients -- Ajout vue mobile cards
-- Ajouter `hidden sm:block` sur la `glass-card` contenant le tableau
-- Ajouter un bloc `sm:hidden` avec des cards iterant sur `filtered`, affichant nom, entreprise, statut, nombre de dossiers, et un bouton "Voir"
+### Fichiers a creer
+- `src/pages/client/ClientRendezVous.tsx` -- Page rendez-vous client avec iframe Calendly et liste mock
+- `src/pages/admin/AdminRendezVous.tsx` -- Page admin avec calendrier et liste des RDV
+- `src/components/admin/CalendlyBookingDialog.tsx` -- Dialog reutilisable avec iframe Calendly
+- `src/components/admin/WelcomeBookingDialog.tsx` -- Pop-up premiere connexion client
 
-### AdminBilling -- Vue mobile
-- Meme pattern : `hidden sm:block` sur les tables, `sm:hidden` avec cards pour factures et devis
-- Ajuster la zone de boutons avec `flex flex-wrap gap-2`
-- Les cards factures montreront : reference, montant, statut, bouton PDF et bouton Payer si applicable
+### Fichiers a modifier
+- `src/components/AnimatedRoutes.tsx` -- Ajouter les routes `/client/rendez-vous` et `/admin/rendez-vous`
+- `src/components/admin/ClientSidebar.tsx` -- Ajouter l'entree "Rendez-vous" avec icone `CalendarDays`
+- `src/components/admin/AdminSidebar.tsx` -- Ajouter l'entree "Rendez-vous" avec icone `CalendarDays`
+- `src/data/mockData.ts` -- Ajouter les donnees mock de rendez-vous (interface `RendezVous` + tableau)
+- `src/pages/client/ClientDashboard.tsx` -- Integrer le `WelcomeBookingDialog` pour la premiere connexion
 
-### AdminReminders -- Vue mobile
-- Ajouter `hidden sm:block` sur le tableau des relances
-- Ajouter des cards mobile avec reference, client, montant, statut, bouton envoyer
+### Donnees mock
+```text
+Interface RendezVous {
+  id, clientId, clientNom, date, heure, sujet, statut (a_venir | passe | annule)
+}
+```
+5-6 rendez-vous mock repartis entre passes et a venir.
 
-### DashboardKPI -- Responsive
-- Changer `p-6` en `p-4 sm:p-6`
-- Changer `text-2xl` en `text-xl sm:text-2xl`
-- Reduire la taille de l'icone container sur mobile
+### Logique premiere connexion
+- Verification de `localStorage.getItem("impartial_first_visit_done")`
+- Si absent : afficher le dialog de bienvenue avec Calendly
+- Au clic "Fermer" ou "Plus tard" : stocker la cle pour ne plus afficher
 
-### AdminDashboard -- Calendrier
-- Rendre la legende du calendrier responsive : flex-wrap + affichage sous le titre sur mobile
-- Ajuster les grilles de KPI deja en `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4` (deja OK)
-
-### AdminAnalytics -- Export buttons
-- Les boutons d'export sont deja en `flex flex-wrap gap-2`, s'assurer que le texte se reduit correctement
-- Sur mobile : masquer le texte des boutons CSV et ne garder que l'icone + label court
-
-### AdminSupport -- Filtres
-- Passer les filtres et le select client en `flex flex-col sm:flex-row` pour un empilement propre
-
-## Fichiers impactes
-1. `src/components/admin/DashboardKPI.tsx` -- padding et taille responsive
-2. `src/pages/admin/AdminClients.tsx` -- vue mobile cards
-3. `src/pages/admin/AdminBilling.tsx` -- vue mobile cards factures et devis
-4. `src/pages/admin/AdminReminders.tsx` -- vue mobile cards relances
-5. `src/pages/admin/AdminDashboard.tsx` -- legende calendrier responsive
-6. `src/pages/admin/AdminAnalytics.tsx` -- boutons export responsive
-7. `src/pages/admin/AdminSupport.tsx` -- filtres responsive
-
-## Ce qui est deja bien fait (pas de changement necessaire)
-- ClientDashboard : grille KPI responsive, cards dossiers/demandes/devis OK
-- ClientDossiers, ClientFactures, ClientDevis : vue mobile en cards deja implementee
-- ClientMessaging, AdminMessaging : layout split-view mobile deja gere avec `showList`
-- ClientProfile, ClientSettings, AdminSettings : formulaires avec `grid-cols-1 sm:grid-cols-2` deja OK
-- ClientPaiement : layout `max-w-xl mx-auto` deja responsive
-- ClientSupport : deja responsive
-- ClientDemandes : deja en cards responsive
-- Sidebar : deja collapsible via SidebarProvider avec SidebarTrigger
+### URL Calendly utilisee
+`https://calendly.com/yannis-bezriche/impartial-games` (deja en place sur le site)
