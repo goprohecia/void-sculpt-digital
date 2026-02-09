@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff } from "lucide-react";
@@ -18,16 +19,31 @@ export default function AdminLogin() {
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    const success = login(email, password);
-    if (success) {
-      // Role-based redirect will happen on re-render via isAuthenticated check
+
+    // Try demo login first
+    const demoSuccess = login(email, password);
+    if (demoSuccess) {
       const account = email.toLowerCase().includes("client") ? "/client" : "/admin";
       navigate(account, { replace: true });
-    } else {
+      return;
+    }
+
+    // Try Supabase auth
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
       setError("Identifiants incorrects");
+      return;
+    }
+
+    if (data.user) {
+      navigate("/client", { replace: true });
     }
   };
 
@@ -121,6 +137,15 @@ export default function AdminLogin() {
                 <p className="text-xs font-semibold text-neon-blue">Client</p>
                 <p className="text-[10px] text-muted-foreground">client@impartial.demo</p>
               </button>
+            </div>
+
+            <div className="text-center pt-2">
+              <p className="text-sm text-muted-foreground">
+                Pas encore de compte ?{" "}
+                <Link to="/signup" className="text-primary hover:underline font-medium">
+                  Créer un compte client
+                </Link>
+              </p>
             </div>
           </div>
         </div>
