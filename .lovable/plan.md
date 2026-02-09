@@ -1,72 +1,76 @@
 
-# Demandes client, gestion avancee des dossiers, edition devis/factures et paiement
 
-Ce plan couvre 3 grandes fonctionnalites interconnectees :
+# Emails automatiques (simulation) et tableau de bord analytique avance
 
-1. **Formulaire de demande client** -- le client soumet un projet, visible ensuite cote admin
-2. **Edition de devis/factures** cote admin avec association client/dossier et validation cote client
-3. **Page de paiement** pour les factures, avec mise a jour du statut dans les deux espaces
+Ce plan ajoute deux fonctionnalites majeures au back-office :
 
----
+1. **Systeme d'emails automatiques simule** -- historique visuel d'emails envoyes automatiquement lors d'evenements cles
+2. **Tableau de bord analytique enrichi** -- graphiques interactifs pour le suivi du CA, des paiements et des demandes
 
-## 1. Demande de projet (espace client)
-
-### Nouvelle page : `/client/demandes`
-- Formulaire "Nouvelle demande" avec champs : titre du projet, type de prestation (select : Site web, App mobile, E-commerce, Back-office, 360, Autre), description detaillee, budget estimatif (optionnel)
-- Liste des demandes deja soumises avec leur statut (nouvelle | en_revue | validee | refusee)
-- Chaque demande affiche : titre, type, date, statut (StatusBadge)
-
-### Donnees mock
-- Nouveau type `Demande` : id, reference, clientId, clientNom, titre, typePrestation, description, budget, statut (nouvelle | en_revue | validee | refusee), dateCreation, dateMiseAJour
-- 2-3 demandes fictives pour le client demo (c3)
-- Helper `getDemandesByClient(clientId)`
-- Nouveaux statuts dans StatusBadge : `nouvelle`, `en_revue`, `validee`, `refusee`
-
-### Visibilite admin
-- Les demandes apparaissent dans la page **Clients** (detail client) et dans la page **Dossiers** via un onglet/section "Demandes"
-- L'admin peut cliquer sur une demande pour voir le detail complet et changer le statut (en_revue, validee, refusee)
-- Quand une demande est validee, l'admin peut la transformer en dossier (ajout dans la liste dossiers)
+Le test du flux complet (admin -> facture -> PDF -> client -> notification -> paiement) sera effectue apres implementation.
 
 ---
 
-## 2. Page detail dossier (`/admin/dossiers/:id` et `/client/dossiers/:id`)
+## 1. Systeme d'emails simules
 
-### Admin : `/admin/dossiers/:id`
-- En-tete avec reference, client, prestation, montant, statut
-- Timeline/progres du dossier avec etapes (Demande recue, Devis envoye, Devis accepte, En cours, Livraison, Termine)
-- Section "Documents associes" : liste des devis et factures lies a ce dossier
-- Possibilite de changer le statut du dossier
-- Bouton pour creer un devis ou une facture directement associe a ce dossier
+### Principe
+Pas d'envoi reel d'emails. A chaque evenement cle, un "email" est genere et stocke dans le `DemoDataContext`. Un panneau "Journal des emails" sera visible cote admin.
 
-### Client : `/client/dossiers/:id`
-- Vue similaire mais en lecture seule
-- Visualisation de l'avancement, des devis et factures lies
-- Acces direct au paiement depuis les factures listees
+### Evenements declencheurs
+- **Relance de facture** : quand une facture passe en retard ou est deja en retard (email au client)
+- **Validation de devis** : quand l'admin envoie un devis (email au client)
+- **Confirmation de paiement** : quand le client paie une facture (email au client + email de notification a l'admin)
+- **Nouvelle demande** : quand le client soumet une demande (email de confirmation au client)
+- **Changement de statut de demande** : quand l'admin valide ou refuse une demande (email au client)
+
+### Nouveau type `EmailLog`
+```text
+id, type (relance | devis | paiement | demande | validation),
+destinataire, sujet, contenu (HTML simplifie),
+dateEnvoi, lu (boolean), clientId, reference
+```
+
+### Modifications
+- **`DemoDataContext.tsx`** : ajouter un state `emailLogs`, un helper `pushEmail()` appele depuis les fonctions existantes (`updateFactureStatut`, `addDevis`, `addDemande`, etc.)
+- **Nouveau fichier `src/components/admin/EmailLogPanel.tsx`** : composant affichant la liste des emails envoyes avec icone, destinataire, sujet, date, et possibilite d'ouvrir le contenu dans un Dialog
+- **`AdminDashboard.tsx`** : ajouter une section "Derniers emails envoyes" avec les 5 derniers
+- **`AdminReminders.tsx`** : ajouter un bouton "Envoyer la relance" qui genere l'email simule et change le statut
+
+### Fichiers concernes
+- `src/contexts/DemoDataContext.tsx` (modifie)
+- `src/components/admin/EmailLogPanel.tsx` (nouveau)
+- `src/pages/admin/AdminDashboard.tsx` (modifie -- section emails)
+- `src/pages/admin/AdminReminders.tsx` (modifie -- bouton envoi)
 
 ---
 
-## 3. Edition devis et factures (espace admin)
+## 2. Tableau de bord analytique enrichi
 
-### Admin Facturation -- Onglets Devis / Factures
-- Refonte de la page `/admin/facturation` avec 2 onglets : **Factures** et **Devis**
-- Bouton "Nouveau devis" : Dialog avec champs client (select), dossier (select filtre par client), description/titre, lignes de prestation (description + montant), date de validite
-- Bouton "Nouvelle facture" : Dialog avec champs client (select), dossier (select), montant, date d'echeance
-- Les devis et factures crees apparaissent dans les listes respectives
+### Enrichissement de la page `/admin/analyse`
+La page existante contient deja des graphiques CA et support. On va ajouter :
 
-### Validation cote client
-- Dans `/client/devis` : bouton "Accepter" / "Refuser" sur les devis en attente, avec confirmation (Dialog)
-- Dans `/client/factures` : bouton "Payer" sur les factures en attente, qui redirige vers la page de paiement
+### Nouveaux graphiques
+1. **Repartition des paiements** (PieChart) : payees vs en attente vs en retard, calcule dynamiquement depuis `DemoDataContext.factures`
+2. **Suivi des demandes** (BarChart empile) : par mois, avec statuts (nouvelle, en_revue, validee, refusee) -- donnees mock enrichies
+3. **Evolution du taux d'encaissement** (AreaChart) : ratio encaissements/CA par mois
+4. **Top clients par CA** (BarChart horizontal) : les 5 clients avec le plus gros CA
 
----
+### Donnees dynamiques
+La page `AdminAnalytics` utilisera `useDemoData()` pour les factures et demandes, permettant de refleter les changements en temps reel (ex: une facture payee par le client met a jour le graphique).
 
-## 4. Page de paiement (`/client/paiement/:factureId`)
+### Section "Demandes" dans l'analytique
+Ajout de KPIs :
+- Nombre total de demandes
+- Demandes validees vs refusees
+- Taux de conversion demande -> dossier
+- Graphique barres empilees par type de prestation
 
-- Page dediee accessible depuis l'espace client (factures)
-- Affiche le recapitulatif : reference facture, client, dossier associe, montant, echeance
-- Formulaire de paiement simule (en mode demo) : choix methode (carte bancaire, virement), champs carte (numero, expiration, CVV -- pre-remplis en demo)
-- Bouton "Confirmer le paiement" avec animation de validation
-- Apres paiement : statut de la facture passe a "payee" dans le state local
-- La facture apparait comme "Payee" dans l'espace client ET dans l'espace admin (via state partage en memoire)
+### Modifications
+- **`AdminAnalytics.tsx`** : ajouter les nouveaux graphiques apres les sections existantes, importer `useDemoData` pour donnees dynamiques
+- **`DemoDataContext.tsx`** : pas de changement structurel, on utilise les getters existants
+
+### Fichiers concernes
+- `src/pages/admin/AdminAnalytics.tsx` (modifie -- ajout sections)
 
 ---
 
@@ -74,36 +78,23 @@ Ce plan couvre 3 grandes fonctionnalites interconnectees :
 
 ### Nouveaux fichiers
 ```text
-src/pages/client/ClientDemandes.tsx           -- Page demandes client
-src/pages/client/ClientPaiement.tsx           -- Page paiement facture
-src/pages/client/ClientDossierDetail.tsx      -- Detail dossier cote client
-src/pages/admin/AdminDossierDetail.tsx        -- Detail dossier cote admin
+src/components/admin/EmailLogPanel.tsx     -- Composant journal des emails
 ```
 
 ### Fichiers modifies
 ```text
-src/data/mockData.ts                          -- Types Demande, donnees mock, helpers
-src/components/admin/StatusBadge.tsx          -- Statuts nouvelle, en_revue, validee, refusee
-src/components/admin/ClientSidebar.tsx        -- Lien "Demandes" avec icone Send/PlusCircle
-src/components/AnimatedRoutes.tsx             -- Routes /client/demandes, /client/paiement/:id, /client/dossiers/:id, /admin/dossiers/:id
-src/pages/admin/AdminBilling.tsx              -- Onglets Devis/Factures + formulaires creation
-src/pages/admin/AdminDossiers.tsx             -- Liens vers detail dossier + section demandes
-src/pages/admin/AdminClients.tsx              -- Affichage demandes dans detail client
-src/pages/client/ClientDossiers.tsx           -- Liens vers detail dossier
-src/pages/client/ClientDevis.tsx              -- Boutons Accepter/Refuser
-src/pages/client/ClientFactures.tsx           -- Bouton Payer (lien vers page paiement)
-src/pages/client/ClientDashboard.tsx          -- KPI demandes + lien rapide
+src/contexts/DemoDataContext.tsx            -- Ajout type EmailLog, state, pushEmail()
+src/pages/admin/AdminAnalytics.tsx         -- Graphiques paiements, demandes, top clients
+src/pages/admin/AdminDashboard.tsx         -- Section derniers emails
+src/pages/admin/AdminReminders.tsx         -- Bouton envoi relance simulee
 ```
 
-### Gestion d'etat
-- Toutes les donnees restent en mock (pas de base de donnees)
-- Pour permettre la synchronisation entre espaces admin et client en mode demo, on utilisera un **state global leger** via un contexte React (`DemoDataContext`) qui wrappera les donnees mutables (factures, devis, demandes, dossiers)
-- Ce contexte exposera des fonctions : `updateFactureStatut()`, `updateDevisStatut()`, `addDemande()`, `updateDemandeStatut()`, `addDevis()`, `addFacture()`, `addDossier()`
-- Les pages existantes seront mises a jour pour lire depuis ce contexte au lieu d'importer directement les tableaux mock
+### Librairies (toutes deja installees)
+- `recharts` : PieChart, BarChart, AreaChart, ComposedChart
+- `framer-motion` : animations
+- `lucide-react` : Mail, Send, CheckCircle, etc.
+- `sonner` : toasts de confirmation
+- Composants Shadcn : Dialog, Tabs, Badge
 
-### Librairies utilisees (toutes deja installees)
-- `framer-motion` pour les animations
-- `lucide-react` pour les icones (Send, CreditCard, CheckCircle, etc.)
-- Composants Shadcn : Dialog, Tabs, Select, Input, Textarea
-- `react-router-dom` pour les routes dynamiques (useParams)
-- `sonner` pour les toasts de confirmation
+### Pas de dependances supplementaires a installer.
+
