@@ -17,21 +17,22 @@ const typeIcons: Record<string, { icon: typeof Bell; className: string }> = {
 
 interface NotificationPanelProps {
   notifications: Notification[];
+  onMarkAllRead?: () => void;
+  onMarkRead?: (id: string) => void;
 }
 
-export function NotificationPanel({ notifications: initialNotifications }: NotificationPanelProps) {
-  const [notifs, setNotifs] = useState(initialNotifications);
+export function NotificationPanel({ notifications, onMarkAllRead, onMarkRead }: NotificationPanelProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const nonLues = notifs.filter((n) => !n.lu).length;
+  const nonLues = notifications.filter((n) => !n.lu).length;
 
-  const markAllRead = () => {
-    setNotifs((prev) => prev.map((n) => ({ ...n, lu: true })));
+  const handleMarkAll = () => {
+    onMarkAllRead?.();
   };
 
   const handleClick = (notif: Notification) => {
-    setNotifs((prev) => prev.map((n) => n.id === notif.id ? { ...n, lu: true } : n));
+    onMarkRead?.(notif.id);
     setOpen(false);
     navigate(notif.lien);
   };
@@ -50,9 +51,14 @@ export function NotificationPanel({ notifications: initialNotifications }: Notif
         <button className="relative p-2 rounded-lg hover:bg-muted/50 transition-colors">
           <Bell className="h-5 w-5 text-muted-foreground" />
           {nonLues > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[9px] font-bold text-destructive-foreground">
+            <motion.span
+              key={nonLues}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[9px] font-bold text-destructive-foreground"
+            >
               {nonLues}
-            </span>
+            </motion.span>
           )}
         </button>
       </PopoverTrigger>
@@ -66,7 +72,7 @@ export function NotificationPanel({ notifications: initialNotifications }: Notif
             <h4 className="text-sm font-semibold">Notifications</h4>
             {nonLues > 0 && (
               <button
-                onClick={markAllRead}
+                onClick={handleMarkAll}
                 className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 <CheckCheck className="h-3.5 w-3.5" />
@@ -76,10 +82,10 @@ export function NotificationPanel({ notifications: initialNotifications }: Notif
           </div>
           <div className="max-h-80 overflow-y-auto">
             <AnimatePresence>
-              {notifs.length === 0 ? (
+              {notifications.length === 0 ? (
                 <p className="p-4 text-sm text-muted-foreground text-center">Aucune notification</p>
               ) : (
-                notifs.map((notif, i) => {
+                notifications.slice(0, 20).map((notif, i) => {
                   const typeConfig = typeIcons[notif.type] || typeIcons.message;
                   const Icon = typeConfig.icon;
                   return (
