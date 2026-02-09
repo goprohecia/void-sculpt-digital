@@ -24,6 +24,7 @@ import PropheciaProject from "@/pages/portfolio/PropheciaProject";
 
 // Admin pages
 import AdminLogin from "@/pages/admin/AdminLogin";
+import ClientSignup from "@/pages/admin/ClientSignup";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
@@ -75,6 +76,7 @@ export function AnimatedRoutes() {
         
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/signup" element={<ClientSignup />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
