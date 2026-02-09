@@ -41,6 +41,40 @@ export interface SendLog {
   dateEnvoi: string;
 }
 
+// ---- PreviewVisit type ----
+export interface PreviewVisit {
+  id: string;
+  dossierId: string;
+  date: string;
+  device: "desktop" | "mobile" | "tablet";
+}
+
+// Generate initial mock visits for dossiers that have previewUrl
+function generateMockVisits(): PreviewVisit[] {
+  const dossierIds = ["d1", "d3", "d4", "d6", "d7", "d10", "d11", "d12", "d14", "d16", "d20", "d22", "d24"];
+  const devices: Array<"desktop" | "mobile" | "tablet"> = ["desktop", "mobile", "tablet"];
+  const visits: PreviewVisit[] = [];
+  let id = 1;
+  for (const did of dossierIds) {
+    const count = Math.floor(Math.random() * 8) + 2;
+    for (let i = 0; i < count; i++) {
+      const daysAgo = Math.floor(Math.random() * 30);
+      const hour = Math.floor(Math.random() * 14) + 8;
+      const min = Math.floor(Math.random() * 60);
+      const d = new Date();
+      d.setDate(d.getDate() - daysAgo);
+      d.setHours(hour, min, 0, 0);
+      visits.push({
+        id: `pv_${id++}`,
+        dossierId: did,
+        date: d.toISOString(),
+        device: devices[Math.floor(Math.random() * devices.length)],
+      });
+    }
+  }
+  return visits.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
+
 export type DemandeStatus = "nouvelle" | "en_revue" | "validee" | "refusee";
 export type DemandePrestation = "Site web" | "App mobile" | "E-commerce" | "Back-office" | "360" | "Autre";
 
@@ -116,6 +150,9 @@ interface DemoDataContextType {
   getClientById: (id: string) => Client | undefined;
   getNotificationsAdmin: () => Notification[];
   getNotificationsByClient: (clientId: string) => Notification[];
+  previewVisits: PreviewVisit[];
+  getPreviewVisitsByDossier: (dossierId: string) => PreviewVisit[];
+  addPreviewVisit: (dossierId: string) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: (role: "admin" | "client", clientId?: string) => void;
 }
@@ -135,7 +172,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const [notifs, setNotifs] = useState<Notification[]>([...initialNotifications]);
   const [emailLogs, setEmailLogs] = useState<EmailLog[]>([]);
   const [sendLogs, setSendLogs] = useState<SendLog[]>([]);
-
+  const [previewVisits, setPreviewVisits] = useState<PreviewVisit[]>(generateMockVisits());
   const pushEmail = useCallback((type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => {
     const email: EmailLog = {
       id: `em_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -280,15 +317,26 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const getClientById = useCallback((id: string) => clientsState.find((c) => c.id === id), [clientsState]);
   const getNotificationsAdmin = useCallback(() => notifs.filter((n) => n.destinataire === "admin" || n.destinataire === "all"), [notifs]);
   const getNotificationsByClient = useCallback((clientId: string) => notifs.filter((n) => (n.destinataire === "client" || n.destinataire === "all") && n.clientId === clientId), [notifs]);
+  const getPreviewVisitsByDossier = useCallback((dossierId: string) => previewVisits.filter((v) => v.dossierId === dossierId), [previewVisits]);
+  const addPreviewVisit = useCallback((dossierId: string) => {
+    const devices: Array<"desktop" | "mobile" | "tablet"> = ["desktop", "mobile", "tablet"];
+    const visit: PreviewVisit = {
+      id: `pv_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      dossierId,
+      date: new Date().toISOString(),
+      device: devices[Math.floor(Math.random() * devices.length)],
+    };
+    setPreviewVisits((prev) => [visit, ...prev]);
+  }, []);
 
   return (
     <DemoDataContext.Provider value={{
-      factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs,
+      factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs, previewVisits,
       updateFactureStatut, updateDevisStatut, updateDevisSignature, updateDossierStatut, updateDossierPreviewUrl, updateClient,
       addDemande, updateDemandeStatut, addDevis, addFacture, addDossier, addNotification, pushEmail, addSendLog,
       getDemandesByClient, getDossiersByClient, getFacturesByClient, getDevisByClient,
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
-      getNotificationsAdmin, getNotificationsByClient,
+      getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
     }}>
       {children}
