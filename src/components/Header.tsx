@@ -155,7 +155,15 @@ export function Header() {
           </div>
 
           {/* CTA Button - Right */}
-          <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            <MagneticButton as="div" strength={0.15}>
+              <Link
+                to="/admin/login"
+                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
+              >
+                Connexion
+              </Link>
+            </MagneticButton>
             <MagneticButton as="div" strength={0.25}>
               <RippleButton
                 onClick={() =>
