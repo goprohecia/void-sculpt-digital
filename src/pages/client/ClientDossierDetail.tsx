@@ -41,10 +41,10 @@ export default function ClientDossierDetail() {
             <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-2">
               <ArrowLeft className="h-4 w-4 mr-1" /> Retour
             </Button>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h1 className="text-2xl font-bold flex items-center gap-2">
-                  <FolderOpen className="h-6 w-6 text-[hsl(200,100%,60%)]" />
+                <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                  <FolderOpen className="h-5 w-5 sm:h-6 sm:w-6 text-[hsl(200,100%,60%)]" />
                   {dossier.reference}
                 </h1>
                 <p className="text-muted-foreground text-sm">{dossier.typePrestation} — {dossier.clientNom}</p>
@@ -54,11 +54,11 @@ export default function ClientDossierDetail() {
           </motion.div>
 
           {/* Info */}
-          <motion.div className="glass-card p-5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm" variants={staggerItem}>
-            <div><p className="text-muted-foreground">Montant</p><p className="font-bold text-lg">{dossier.montant.toLocaleString()} €</p></div>
-            <div><p className="text-muted-foreground">Création</p><p>{new Date(dossier.dateCreation).toLocaleDateString("fr-FR")}</p></div>
-            <div><p className="text-muted-foreground">Échéance</p><p>{new Date(dossier.dateEcheance).toLocaleDateString("fr-FR")}</p></div>
-            <div><p className="text-muted-foreground">Prestation</p><p>{dossier.typePrestation}</p></div>
+          <motion.div className="glass-card p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm" variants={staggerItem}>
+            <div><p className="text-muted-foreground text-xs sm:text-sm">Montant</p><p className="font-bold text-base sm:text-lg">{dossier.montant.toLocaleString()} €</p></div>
+            <div><p className="text-muted-foreground text-xs sm:text-sm">Création</p><p>{new Date(dossier.dateCreation).toLocaleDateString("fr-FR")}</p></div>
+            <div><p className="text-muted-foreground text-xs sm:text-sm">Échéance</p><p>{new Date(dossier.dateEcheance).toLocaleDateString("fr-FR")}</p></div>
+            <div><p className="text-muted-foreground text-xs sm:text-sm">Prestation</p><p>{dossier.typePrestation}</p></div>
           </motion.div>
 
           {/* Timeline */}
@@ -89,7 +89,7 @@ export default function ClientDossierDetail() {
               <h2 className="text-sm font-semibold mb-3">Devis associés</h2>
               <div className="space-y-2">
                 {devisDossier.map((d) => (
-                  <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
+                  <div key={d.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-muted/20 gap-2">
                     <div><p className="text-sm font-mono">{d.reference}</p><p className="text-xs text-muted-foreground">{d.titre}</p></div>
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
@@ -107,9 +107,9 @@ export default function ClientDossierDetail() {
               <h2 className="text-sm font-semibold mb-3">Factures associées</h2>
               <div className="space-y-2">
                 {facturesDossier.map((f) => (
-                  <div key={f.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
+                  <div key={f.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-muted/20 gap-2">
                     <div><p className="text-sm font-mono">{f.reference}</p></div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                       <span className="text-sm font-medium">{f.montant.toLocaleString()} €</span>
                       <StatusBadge status={f.statut} />
                       {(f.statut === "en_attente" || f.statut === "en_retard") && (
