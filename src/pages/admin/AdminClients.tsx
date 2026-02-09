@@ -127,7 +127,31 @@ export default function AdminClients() {
             </div>
           </motion.div>
 
-          <motion.div className="glass-card overflow-hidden" variants={staggerItem}>
+          {/* Mobile cards */}
+          <motion.div className="sm:hidden space-y-3" variants={staggerItem}>
+            {filtered.length === 0 ? (
+              <div className="p-8 text-center text-muted-foreground">Aucun client trouvé</div>
+            ) : filtered.map((c) => (
+              <div key={c.id} className="glass-card p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-sm">{c.prenom} {c.nom}</p>
+                    <p className="text-xs text-muted-foreground">{c.entreprise}</p>
+                  </div>
+                  <StatusBadge status={c.statut} />
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">{c.nombreDossiers} dossier{c.nombreDossiers > 1 ? "s" : ""}</span>
+                  <button onClick={() => setSelectedClient(c)} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                    <Eye className="h-3 w-3" /> Voir
+                  </button>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Desktop table */}
+          <motion.div className="glass-card overflow-hidden hidden sm:block" variants={staggerItem}>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>

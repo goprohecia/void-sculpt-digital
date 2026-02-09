@@ -108,7 +108,35 @@ export default function AdminReminders() {
                 ))}
               </div>
 
-              <div className="glass-card overflow-hidden">
+              {/* Mobile cards */}
+              <div className="sm:hidden space-y-3">
+                {filtered.length === 0 ? (
+                  <div className="p-8 text-center text-muted-foreground">Aucune relance trouvée</div>
+                ) : filtered.map((r) => (
+                  <div key={r.id} className="glass-card p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">{r.clientNom}</p>
+                      <StatusBadge status={r.statut} />
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span className="font-mono">{r.factureRef}</span>
+                      <span className="font-medium text-foreground">{r.montant.toLocaleString()} €</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-muted-foreground">{r.type}</span>
+                      <button
+                        onClick={() => handleSendRelance(r)}
+                        className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        <Send className="h-3 w-3" /> Envoyer
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop table */}
+              <div className="glass-card overflow-hidden hidden sm:block">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
