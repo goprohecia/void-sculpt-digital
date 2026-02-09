@@ -14,13 +14,13 @@ import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
 
-const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
+const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "Cahier des charges", "En cours", "Livraison", "Terminé"];
 
-function getEtapeIndex(statut: string): number {
+function getEtapeIndex(statut: string, cdcComplete: boolean): number {
   switch (statut) {
     case "en_attente": return 1;
-    case "en_cours": return 3;
-    case "termine": return 5;
+    case "en_cours": return cdcComplete ? 4 : 2;
+    case "termine": return 6;
     case "annule": return -1;
     default: return 0;
   }
@@ -104,7 +104,8 @@ export default function AdminDossierDetail() {
     return <AdminLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></AdminLayout>;
   }
 
-  const etapeActive = getEtapeIndex(dossier.statut);
+  const cdcComplete = cahier?.statut === "complet";
+  const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
 
   const handleStatutChange = (val: string) => {
     updateDossierStatut(dossier.id, val as DossierStatus);
@@ -160,8 +161,15 @@ export default function AdminDossierDetail() {
                     <div className={`flex flex-col items-center flex-1 ${i <= etapeActive ? "text-primary" : "text-muted-foreground"}`}>
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                         i <= etapeActive ? "bg-primary text-primary-foreground" : "bg-muted border border-border"
-                      }`}>{i + 1}</div>
+                      }`}>
+                        {i === 3 ? <FileText className="h-3 w-3" /> : i + 1}
+                      </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
+                      {i === 3 && (
+                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : "text-muted-foreground"}`}>
+                          {cdcComplete ? "Validé" : "En attente"}
+                        </span>
+                      )}
                     </div>
                     {i < etapes.length - 1 && (
                       <div className={`h-0.5 flex-1 min-w-4 ${i < etapeActive ? "bg-primary" : "bg-border"}`} />
