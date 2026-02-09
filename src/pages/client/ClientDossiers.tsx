@@ -5,10 +5,11 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
-import { FolderOpen, Eye } from "lucide-react";
+import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function ClientDossiers() {
-  const { getDossiersByClient } = useDemoData();
+  const { getDossiersByClient, getCahierByDossier } = useDemoData();
   const mesDossiers = getDossiersByClient(DEMO_CLIENT_ID);
 
   return (
@@ -38,12 +39,24 @@ export default function ClientDossiers() {
                   </tr>
                 </thead>
                 <tbody>
-                  {mesDossiers.map((d) => (
+                  {mesDossiers.map((d) => {
+                    const cdc = getCahierByDossier(d.id);
+                    const cdcRequired = (d.statut === "en_cours") && d.demandeId && cdc?.statut !== "complet";
+                    return (
                     <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
                       <td className="py-3 px-4 font-mono text-xs">{d.reference}</td>
                       <td className="py-3 px-4">{d.typePrestation}</td>
                       <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
-                      <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
+                      <td className="py-3 px-4 text-center">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <StatusBadge status={d.statut} />
+                          {cdcRequired && (
+                            <Badge variant="outline" className="text-[hsl(45,100%,50%)] border-[hsl(45,100%,50%)]/40 gap-1 text-[10px] px-1.5">
+                              <AlertTriangle className="h-2.5 w-2.5" /> CDC requis
+                            </Badge>
+                          )}
+                        </div>
+                      </td>
                       <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(d.dateEcheance).toLocaleDateString("fr-FR")}</td>
                       <td className="py-3 px-4 text-center">
                         <Link to={`/client/dossiers/${d.id}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
@@ -51,7 +64,8 @@ export default function ClientDossiers() {
                         </Link>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -59,12 +73,22 @@ export default function ClientDossiers() {
 
           {/* Mobile Card Stack */}
           <motion.div className="space-y-3 sm:hidden" variants={staggerContainer} initial="initial" animate="animate">
-            {mesDossiers.map((d) => (
+            {mesDossiers.map((d) => {
+              const cdc = getCahierByDossier(d.id);
+              const cdcRequired = (d.statut === "en_cours") && d.demandeId && cdc?.statut !== "complet";
+              return (
               <Link key={d.id} to={`/client/dossiers/${d.id}`}>
                 <motion.div variants={staggerItem} className="glass-card p-4 space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
                     <span className="font-mono text-xs text-muted-foreground">{d.reference}</span>
-                    <StatusBadge status={d.statut} />
+                    <div className="flex items-center gap-1.5">
+                      <StatusBadge status={d.statut} />
+                      {cdcRequired && (
+                        <Badge variant="outline" className="text-[hsl(45,100%,50%)] border-[hsl(45,100%,50%)]/40 gap-1 text-[10px] px-1.5">
+                          <AlertTriangle className="h-2.5 w-2.5" /> CDC
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                   <p className="font-medium text-sm">{d.typePrestation}</p>
                   <div className="flex items-center justify-between pt-1 border-t border-border/20">
@@ -73,7 +97,8 @@ export default function ClientDossiers() {
                   </div>
                 </motion.div>
               </Link>
-            ))}
+              );
+            })}
           </motion.div>
         </motion.div>
       </AdminPageTransition>

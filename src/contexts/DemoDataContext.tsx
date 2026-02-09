@@ -198,6 +198,7 @@ interface DemoDataContextType {
   markAllNotificationsRead: (role: "admin" | "client", clientId?: string) => void;
   cahiersDesCharges: CahierDesCharges[];
   getCahierByDemande: (demandeId: string) => CahierDesCharges | undefined;
+  getCahierByDossier: (dossierId: string) => CahierDesCharges | undefined;
   saveCahierDesCharges: (cahier: CahierDesCharges) => void;
   updateCahierComment: (demandeId: string, comment: string) => void;
 }
@@ -375,6 +376,11 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     setPreviewVisits((prev) => [visit, ...prev]);
   }, []);
   const getCahierByDemande = useCallback((demandeId: string) => cahiersDesCharges.find((c) => c.demandeId === demandeId), [cahiersDesCharges]);
+  const getCahierByDossier = useCallback((dossierId: string) => {
+    const dossier = dossiersState.find((d) => d.id === dossierId);
+    if (!dossier?.demandeId) return undefined;
+    return cahiersDesCharges.find((c) => c.demandeId === dossier.demandeId);
+  }, [dossiersState, cahiersDesCharges]);
   const saveCahierDesCharges = useCallback((cahier: CahierDesCharges) => {
     setCahiersDesCharges((prev) => {
       const idx = prev.findIndex((c) => c.demandeId === cahier.demandeId);
@@ -395,7 +401,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
-      cahiersDesCharges, getCahierByDemande, saveCahierDesCharges, updateCahierComment,
+      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment,
     }}>
       {children}
     </DemoDataContext.Provider>

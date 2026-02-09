@@ -37,6 +37,7 @@ export interface Dossier {
   dateCreation: string;
   dateEcheance: string;
   previewUrl?: string;
+  demandeId?: string;
 }
 
 export interface Facture {
@@ -141,7 +142,7 @@ export const dossiers: Dossier[] = [
   { id: "d3", reference: "DOS-2026-003", clientId: "c1", clientNom: "TechSolutions", typePrestation: "Back-office", montant: 8000, statut: "termine", dateCreation: "2025-11-15", dateEcheance: "2026-01-30", previewUrl: "https://techsolutions-backoffice.lovable.app" },
   { id: "d4", reference: "DOS-2026-004", clientId: "c2", clientNom: "GreenLeaf Bio", typePrestation: "E-commerce", montant: 15000, statut: "en_cours", dateCreation: "2026-01-12", dateEcheance: "2026-04-20", previewUrl: "https://greenleaf-ecommerce.lovable.app" },
   { id: "d5", reference: "DOS-2026-005", clientId: "c2", clientNom: "GreenLeaf Bio", typePrestation: "SEO / Référencement", montant: 3000, statut: "en_cours", dateCreation: "2026-02-01", dateEcheance: "2026-05-01" },
-  { id: "d6", reference: "DOS-2026-006", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Application 360°", montant: 25000, statut: "en_cours", dateCreation: "2025-12-10", dateEcheance: "2026-05-30", previewUrl: "https://luxemode-360.lovable.app" },
+  { id: "d6", reference: "DOS-2026-006", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Application 360°", montant: 25000, statut: "en_cours", dateCreation: "2025-12-10", dateEcheance: "2026-05-30", previewUrl: "https://luxemode-360.lovable.app", demandeId: "dem1" },
   { id: "d7", reference: "DOS-2026-007", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Site web vitrine", montant: 6000, statut: "termine", dateCreation: "2025-10-01", dateEcheance: "2025-12-15", previewUrl: "https://luxemode-vitrine.lovable.app" },
   { id: "d8", reference: "DOS-2026-008", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Maintenance", montant: 2400, statut: "en_cours", dateCreation: "2026-01-01", dateEcheance: "2026-12-31" },
   { id: "d9", reference: "DOS-2026-009", clientId: "c3", clientNom: "Luxe & Mode", typePrestation: "Application mobile", montant: 18000, statut: "en_attente", dateCreation: "2026-02-05", dateEcheance: "2026-07-30" },

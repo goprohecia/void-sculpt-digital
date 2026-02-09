@@ -1,18 +1,20 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2 } from "lucide-react";
+import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 
 const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
 
-function getEtapeIndex(statut: string): number {
+function getEtapeIndex(statut: string, cdcComplete: boolean): number {
   switch (statut) {
     case "en_attente": return 1;
-    case "en_cours": return 3;
+    case "en_cours": return cdcComplete ? 3 : 2; // Block at "Devis accepté" if CDC not complete
     case "termine": return 5;
     case "annule": return -1;
     default: return 0;
@@ -22,16 +24,20 @@ function getEtapeIndex(statut: string): number {
 export default function ClientDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier } = useDemoData();
+  const { getDossierById, getFacturesByDossier, getDevisByDossier, getCahierByDossier, saveCahierDesCharges, dossiers } = useDemoData();
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
+  const cahier = id ? getCahierByDossier(id) : undefined;
+  const [cdcFormOpen, setCdcFormOpen] = useState(false);
 
   if (!dossier) {
     return <ClientLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></ClientLayout>;
   }
 
-  const etapeActive = getEtapeIndex(dossier.statut);
+  const cdcComplete = cahier?.statut === "complet";
+  const isCdcRequired = (dossier.statut === "en_cours" || dossier.statut === "termine") && dossier.demandeId && !cdcComplete;
+  const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
 
   return (
     <ClientLayout>
@@ -52,6 +58,25 @@ export default function ClientDossierDetail() {
               <StatusBadge status={dossier.statut} />
             </div>
           </motion.div>
+
+          {/* CDC Required Banner */}
+          {isCdcRequired && (
+            <motion.div
+              className="rounded-lg border border-[hsl(45,100%,50%)]/30 bg-[hsl(45,100%,50%)]/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3"
+              variants={staggerItem}
+            >
+              <div className="flex items-start gap-3 flex-1">
+                <AlertTriangle className="h-5 w-5 text-[hsl(45,100%,50%)] shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Cahier des charges requis</p>
+                  <p className="text-xs text-muted-foreground">Vous devez compléter le cahier des charges pour que le développement puisse commencer.</p>
+                </div>
+              </div>
+              <Button size="sm" onClick={() => setCdcFormOpen(true)} className="gap-1.5 shrink-0">
+                <FileText className="h-3.5 w-3.5" /> Remplir le cahier des charges
+              </Button>
+            </motion.div>
+          )}
 
           {/* Info */}
           <motion.div className="glass-card p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm" variants={staggerItem}>
@@ -144,6 +169,17 @@ export default function ClientDossierDetail() {
             </motion.div>
           )}
         </motion.div>
+
+        {/* CDC Form Dialog */}
+        {dossier.demandeId && (
+          <CahierDesChargesForm
+            open={cdcFormOpen}
+            onOpenChange={setCdcFormOpen}
+            demandeId={dossier.demandeId}
+            existing={cahier}
+            onSave={saveCahierDesCharges}
+          />
+        )}
       </AdminPageTransition>
     </ClientLayout>
   );
