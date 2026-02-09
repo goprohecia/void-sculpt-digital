@@ -5,13 +5,15 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import type { DossierStatus } from "@/data/mockData";
-import { Search, FolderOpen, Eye, Send } from "lucide-react";
+import { Search, FolderOpen, Eye, Send, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
 
 const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
   { key: "tous", label: "Tous" },
@@ -24,7 +26,9 @@ const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
 export default function AdminDossiers() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus>("tous");
-  const { dossiers, demandes, updateDemandeStatut, addDossier } = useDemoData();
+  const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
+  const { dossiers, demandes, updateDemandeStatut, addDossier, getCahierByDemande } = useDemoData();
+  const cdcDemande = cdcDemandeId ? demandes.find((d) => d.id === cdcDemandeId) : null;
 
   const filtered = dossiers.filter((d) => {
     const matchSearch =
@@ -148,7 +152,15 @@ export default function AdminDossiers() {
                 {demandes.map((dem) => (
                   <motion.div key={dem.id} variants={staggerItem} className="glass-card p-4 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs text-muted-foreground">{dem.reference}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs text-muted-foreground">{dem.reference}</span>
+                        {(() => {
+                          const cahier = getCahierByDemande(dem.id);
+                          if (!cahier) return <Badge variant="outline" className="text-[10px] px-1.5 py-0">CDC vide</Badge>;
+                          if (cahier.statut === "complet") return <Badge variant="default" className="text-[10px] px-1.5 py-0 bg-green-600">CDC complet</Badge>;
+                          return <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CDC brouillon</Badge>;
+                        })()}
+                      </div>
                       <StatusBadge status={dem.statut} />
                     </div>
                     <div>
@@ -158,7 +170,14 @@ export default function AdminDossiers() {
                     <p className="text-xs text-muted-foreground line-clamp-2">{dem.description}</p>
                     {dem.budget && <p className="text-xs text-muted-foreground">Budget : {dem.budget}</p>}
                     <div className="flex items-center justify-between pt-2 border-t border-border/20">
-                      <span className="text-xs text-muted-foreground">{new Date(dem.dateCreation).toLocaleDateString("fr-FR")}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">{new Date(dem.dateCreation).toLocaleDateString("fr-FR")}</span>
+                        {getCahierByDemande(dem.id) && (
+                          <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={() => setCdcDemandeId(dem.id)}>
+                            <FileText className="h-3 w-3" /> Voir CDC
+                          </Button>
+                        )}
+                      </div>
                       <div className="flex gap-2">
                         {dem.statut !== "validee" && dem.statut !== "refusee" && (
                           <>
@@ -186,6 +205,13 @@ export default function AdminDossiers() {
             </TabsContent>
           </Tabs>
         </motion.div>
+
+        <CahierDesChargesView
+          open={!!cdcDemandeId}
+          onOpenChange={(o) => { if (!o) setCdcDemandeId(null); }}
+          cahier={cdcDemandeId ? getCahierByDemande(cdcDemandeId) || null : null}
+          demandeTitre={cdcDemande?.titre}
+        />
       </AdminPageTransition>
     </AdminLayout>
   );

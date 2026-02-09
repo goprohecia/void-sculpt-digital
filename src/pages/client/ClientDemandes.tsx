@@ -5,20 +5,23 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData, type DemandePrestation, type Demande } from "@/contexts/DemoDataContext";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
-import { Send, Plus } from "lucide-react";
+import { Send, Plus, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 
 const prestationTypes: DemandePrestation[] = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autre"];
 
 export default function ClientDemandes() {
-  const { demandes, addDemande, getDemandesByClient } = useDemoData();
+  const { demandes, addDemande, getDemandesByClient, getCahierByDemande, saveCahierDesCharges } = useDemoData();
   const mesDemandes = getDemandesByClient(DEMO_CLIENT_ID);
   const [open, setOpen] = useState(false);
+  const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
   const [titre, setTitre] = useState("");
   const [typePrestation, setTypePrestation] = useState<DemandePrestation>("Site web");
   const [description, setDescription] = useState("");
@@ -46,6 +49,13 @@ export default function ClientDemandes() {
     toast.success("Demande envoyée avec succès");
     setTitre(""); setDescription(""); setBudget(""); setTypePrestation("Site web");
     setOpen(false);
+  };
+
+  const getCdcBadge = (demandeId: string) => {
+    const cahier = getCahierByDemande(demandeId);
+    if (!cahier) return <Badge variant="outline" className="text-[10px] px-1.5 py-0">CDC vide</Badge>;
+    if (cahier.statut === "complet") return <Badge variant="default" className="text-[10px] px-1.5 py-0 bg-green-600">CDC complet</Badge>;
+    return <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CDC brouillon</Badge>;
   };
 
   return (
@@ -100,17 +110,27 @@ export default function ClientDemandes() {
             {mesDemandes.map((d) => (
               <motion.div key={d.id} variants={staggerItem} className="glass-card p-4 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-muted-foreground">{d.reference}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs text-muted-foreground">{d.reference}</span>
+                    {getCdcBadge(d.id)}
+                  </div>
                   <StatusBadge status={d.statut} />
                 </div>
                 <p className="font-medium text-sm">{d.titre}</p>
                 <p className="text-xs text-muted-foreground">{d.typePrestation}</p>
                 <p className="text-xs text-muted-foreground line-clamp-2">{d.description}</p>
                 <div className="flex items-center justify-between pt-1 border-t border-border/20">
-                  {d.budget && <span className="text-xs text-muted-foreground">Budget : {d.budget}</span>}
-                  <span className="text-xs text-muted-foreground ml-auto">
-                    {new Date(d.dateCreation).toLocaleDateString("fr-FR")}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {d.budget && <span className="text-xs text-muted-foreground">Budget : {d.budget}</span>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={() => setCdcDemandeId(d.id)}>
+                      <FileText className="h-3 w-3" /> Cahier des charges
+                    </Button>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(d.dateCreation).toLocaleDateString("fr-FR")}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -119,6 +139,16 @@ export default function ClientDemandes() {
             )}
           </motion.div>
         </motion.div>
+
+        {cdcDemandeId && (
+          <CahierDesChargesForm
+            open={!!cdcDemandeId}
+            onOpenChange={(o) => { if (!o) setCdcDemandeId(null); }}
+            demandeId={cdcDemandeId}
+            existing={getCahierByDemande(cdcDemandeId)}
+            onSave={saveCahierDesCharges}
+          />
+        )}
       </AdminPageTransition>
     </ClientLayout>
   );
