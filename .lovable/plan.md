@@ -1,77 +1,66 @@
 
-# Cahier des charges dans chaque dossier admin + obligation pour le client
+# Commentaires admin visibles client + Notifications CDC + Etape CDC dans la timeline
 
-## Objectif
+## 1. Commentaires admin visibles cote client (lecture seule)
 
-1. Afficher le cahier des charges (CDC) directement dans la page de detail de chaque dossier admin (`/admin/dossiers/:id`)
-2. Cote client, bloquer la progression du dossier tant que le CDC n'est pas rempli (statut "complet") apres l'acceptation du devis
+### Fichier : `src/pages/client/ClientDossierDetail.tsx`
+- Apres la section CDC (banniere ou section cahier des charges), afficher une carte "Retours de l'equipe" si `cahier?.commentairesAdmin` existe
+- Affichage en lecture seule avec icone MessageSquare et texte du commentaire
+- Style discret : carte glass avec bordure subtile
 
----
+### Fichier : `src/pages/client/ClientDemandes.tsx`
+- Sur chaque carte de demande, si le CDC a un commentaire admin, afficher un petit indicateur "Retour equipe" cliquable
+- Au clic, ouvrir un petit dialog ou toast affichant le commentaire
 
-## Modifications prevues
+## 2. Notifications quand l'admin commente le CDC
 
-### 1. Lier Dossier et Demande
+### Fichier : `src/contexts/DemoDataContext.tsx`
+- Modifier la fonction `updateCahierComment` pour :
+  - Retrouver la demande associee au `demandeId`
+  - Appeler `pushNotif` avec type `"dossier"`, titre "Nouveau commentaire CDC", description incluant le titre de la demande
+  - Destinataire : `"client"` avec le `clientId` de la demande
+  - Lien vers `/client/dossiers` ou `/client/demandes`
+  - Envoyer aussi un email log via `pushEmail`
 
-Actuellement, `Dossier` et `Demande` ne sont pas lies. Il faut ajouter un champ optionnel `demandeId` a l'interface `Dossier` pour pouvoir retrouver le CDC associe.
+## 3. Etape "Cahier des charges" dans la barre de progression
 
-**Fichier : `src/data/mockData.ts`**
-- Ajouter `demandeId?: string` a l'interface `Dossier`
-- Lier le dossier `d3` (E-commerce Luxe & Mode, client c3) a la demande `dem1` qui possede deja un CDC complet
+### Fichiers : `src/pages/client/ClientDossierDetail.tsx` et `src/pages/admin/AdminDossierDetail.tsx`
 
-### 2. Fonction utilitaire dans le contexte
-
-**Fichier : `src/contexts/DemoDataContext.tsx`**
-- Ajouter `getCahierByDossier(dossierId: string)` qui :
-  1. Recupere le dossier par id
-  2. Si le dossier a un `demandeId`, retourne le CDC de cette demande
-  3. Sinon retourne `undefined`
-
-### 3. Section CDC dans le detail dossier admin
-
-**Fichier : `src/pages/admin/AdminDossierDetail.tsx`**
-- Ajouter une section "Cahier des charges" entre la timeline et le preview link
-- Si un CDC est lie au dossier :
-  - Afficher un resume (contexte, fonctionnalites, contraintes) en lecture seule
-  - Bouton "Voir le cahier des charges complet" qui ouvre le `CahierDesChargesView` existant
-  - Badge de statut (complet / brouillon)
-- Si aucun CDC n'est lie :
-  - Message "Aucun cahier des charges associe a ce dossier"
-
-### 4. Blocage cote client si CDC non rempli
-
-**Fichier : `src/pages/client/ClientDossierDetail.tsx`**
-- Apres l'etape "Devis accepte" (etape 3+), si le CDC n'est pas en statut "complet" :
-  - Afficher une banniere d'alerte bien visible : "Vous devez completer le cahier des charges pour que le developpement puisse commencer"
-  - Bouton "Remplir le cahier des charges" qui ouvre le formulaire `CahierDesChargesForm`
-  - La timeline reste bloquee visuellement a l'etape "Devis accepte" tant que le CDC n'est pas complet
-- Une fois le CDC complet, la progression reprend normalement
-
-### 5. Blocage visuel dans la liste des dossiers client
-
-**Fichier : `src/pages/client/ClientDossiers.tsx`** (si existant)
-- Ajouter un badge "CDC requis" sur les dossiers en cours qui n'ont pas de CDC complet
-
----
-
-## Flux utilisateur
+Modifier la liste des etapes de 6 a 7 :
 
 ```text
-Devis accepte --> Dossier passe en "En cours"
-  --> Client voit une banniere "CDC obligatoire"
-  --> Client remplit le CDC via le formulaire
-  --> CDC passe en "complet"
-  --> La progression du dossier reprend normalement
-
-Admin --> Ouvre un dossier
-  --> Voit la section CDC avec le contenu ou "Aucun CDC"
-  --> Peut ouvrir le detail complet du CDC
+Actuel :  Demande recue > Devis envoye > Devis accepte > En cours > Livraison > Termine
+Nouveau : Demande recue > Devis envoye > Devis accepte > Cahier des charges > En cours > Livraison > Termine
 ```
 
-## Fichiers concernes
+- L'etape "Cahier des charges" (index 3) est validee uniquement quand le CDC a le statut "complet"
+- Si le dossier est "en_cours" mais le CDC n'est pas complet, la progression s'arrete a l'etape 3 (Devis accepte) et l'etape 4 (CDC) est en attente
+- Si le CDC est complet, l'etape 4 est validee et la progression continue normalement
 
-| Fichier | Action |
-|---------|--------|
-| `src/data/mockData.ts` | Ajouter `demandeId?` a `Dossier`, lier d3 a dem1 |
-| `src/contexts/DemoDataContext.tsx` | Ajouter `getCahierByDossier` |
-| `src/pages/admin/AdminDossierDetail.tsx` | Ajouter section CDC avec vue et badge |
-| `src/pages/client/ClientDossierDetail.tsx` | Ajouter banniere obligatoire + bouton formulaire CDC |
+Mise a jour de la fonction `getEtapeIndex` dans les deux fichiers :
+
+```text
+Client :
+  en_attente -> 1
+  en_cours + CDC non complet -> 2 (bloque a Devis accepte)
+  en_cours + CDC complet -> 4 (En cours)
+  termine -> 6
+
+Admin :
+  en_attente -> 1
+  en_cours + CDC non complet -> 2
+  en_cours + CDC complet -> 4
+  termine -> 6
+```
+
+- L'etape "Cahier des charges" dans la timeline aura une icone FileText distincte au lieu du numero
+- Cote client, l'etape affichera "A remplir" ou "Valide" en sous-texte
+
+## Resume des fichiers concernes
+
+| Fichier | Modifications |
+|---------|--------------|
+| `src/contexts/DemoDataContext.tsx` | Notification + email dans `updateCahierComment` |
+| `src/pages/client/ClientDossierDetail.tsx` | Commentaire admin en lecture seule, timeline 7 etapes, logique CDC |
+| `src/pages/admin/AdminDossierDetail.tsx` | Timeline 7 etapes avec etape CDC, logique adaptee |
+| `src/pages/client/ClientDemandes.tsx` | Indicateur retour equipe sur les cartes |
