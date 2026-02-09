@@ -4,7 +4,7 @@ import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, Eye, EyeOff } from "lucide-react";
+import { LogIn, Eye, EyeOff, Home } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 
 export default function AdminLogin() {
@@ -59,7 +59,9 @@ export default function AdminLogin() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)]" />
+          <Link to="/">
+            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
+          </Link>
           <h1 className="text-2xl font-bold">Back-office Impartial</h1>
         </div>
 
@@ -137,13 +139,17 @@ export default function AdminLogin() {
               </button>
             </div>
 
-            <div className="text-center pt-2">
+            <div className="text-center pt-2 space-y-3">
               <p className="text-sm text-muted-foreground">
                 Pas encore de compte ?{" "}
                 <Link to="/signup" className="text-primary hover:underline font-medium">
                   Créer un compte client
                 </Link>
               </p>
+              <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Home className="h-3.5 w-3.5" />
+                Retour à l'accueil
+              </Link>
             </div>
           </div>
         </div>
