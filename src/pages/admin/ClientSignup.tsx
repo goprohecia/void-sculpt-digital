@@ -119,22 +119,21 @@ export default function ClientSignup() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-6">
+      <div className="w-full max-w-lg space-y-4">
         {/* Logo */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-1">
           <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
+            <img src={logoHero} alt="Impartial" className="h-12 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
           </Link>
-          <h1 className="text-2xl font-bold">Créer un compte client</h1>
-          <p className="text-muted-foreground text-sm">Inscrivez-vous pour accéder à votre espace</p>
+          <h1 className="text-xl font-bold">Créer un compte client</h1>
         </div>
 
         {/* Form */}
-        <div className="glass-card p-8 space-y-5">
+        <div className="glass-card p-6 space-y-4">
           {/* Google Sign Up */}
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 h-11 rounded-lg border border-border bg-background hover:bg-muted/50 transition-colors text-sm font-medium"
+            className="w-full flex items-center justify-center gap-3 h-10 rounded-lg border border-border bg-background hover:bg-muted/50 transition-colors text-sm font-medium"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -154,47 +153,51 @@ export default function ClientSignup() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Nom complet *</label>
-              <Input type="text" placeholder="Jean Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="glass-input border-0 h-11" required />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Téléphone</label>
-              <Input type="tel" placeholder="+33 6 12 34 56 78" value={telephone} onChange={(e) => setTelephone(e.target.value)} className="glass-input border-0 h-11" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Email *</label>
-              <Input type="email" placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className="glass-input border-0 h-11" required />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Mot de passe *</label>
-              <div className="relative">
-                <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="glass-input border-0 h-11 pr-10" required minLength={6} />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Nom complet *</label>
+                <Input type="text" placeholder="Jean Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="glass-input border-0 h-10" required />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Téléphone</label>
+                <Input type="tel" placeholder="+33 6 12 34 56 78" value={telephone} onChange={(e) => setTelephone(e.target.value)} className="glass-input border-0 h-10" />
               </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Confirmer le mot de passe *</label>
-              <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="glass-input border-0 h-11" required minLength={6} />
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium">Email *</label>
+              <Input type="email" placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className="glass-input border-0 h-10" required />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Mot de passe *</label>
+                <div className="relative">
+                  <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="glass-input border-0 h-10 pr-10" required minLength={6} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Confirmer *</label>
+                <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="glass-input border-0 h-10" required minLength={6} />
+              </div>
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full h-11 gap-2" disabled={loading}>
+            <Button type="submit" className="w-full h-10 gap-2" disabled={loading}>
               <UserPlus className="h-4 w-4" />
               {loading ? "Création en cours..." : "Créer mon compte"}
             </Button>
           </form>
 
-          <div className="text-center space-y-2">
-            <p className="text-sm text-muted-foreground">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <p>
               Déjà un compte ?{" "}
               <Link to="/admin/login" className="text-primary hover:underline font-medium">Se connecter</Link>
             </p>
-            <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
               <Home className="h-3.5 w-3.5" />
-              Retour à l'accueil
+              Accueil
             </Link>
           </div>
         </div>
