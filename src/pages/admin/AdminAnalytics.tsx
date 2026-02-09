@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
@@ -160,40 +160,51 @@ export default function AdminAnalytics() {
   ], [demandesStats]);
 
   // Ventes par type de projet par mois (from dossiers mock data)
+  const CATS = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autres"] as const;
+  const categorize = useCallback((type: string): string => {
+    const t = type.toLowerCase();
+    if (t.includes("site web") || t.includes("vitrine") || t.includes("application web") || t.includes("landing")) return "Site web";
+    if (t.includes("mobile")) return "App mobile";
+    if (t.includes("commerce")) return "E-commerce";
+    if (t.includes("back-office") || t.includes("backoffice")) return "Back-office";
+    if (t.includes("360")) return "360";
+    return "Autres";
+  }, []);
+
+  const moisMap: Record<string, string> = useMemo(() => ({
+    "Jan": "01", "Fév": "02", "Mar": "03", "Avr": "04",
+    "Mai": "05", "Juin": "06", "Juil": "07", "Août": "08",
+    "Sep": "09", "Oct": "10", "Nov": "11", "Déc": "12",
+  }), []);
+
   const ventesParType = useMemo(() => {
     const moisList = donneesMensuelles.map((d) => d.mois);
-    const moisMap: Record<string, string> = {
-      "Jan": "01", "Fév": "02", "Mar": "03", "Avr": "04",
-      "Mai": "05", "Juin": "06", "Juil": "07", "Août": "08",
-      "Sep": "09", "Oct": "10", "Nov": "11", "Déc": "12",
-    };
-
-    const categorize = (type: string): string => {
-      const t = type.toLowerCase();
-      if (t.includes("site web") || t.includes("vitrine") || t.includes("application web") || t.includes("landing")) return "Site web";
-      if (t.includes("mobile")) return "App mobile";
-      if (t.includes("commerce")) return "E-commerce";
-      if (t.includes("back-office") || t.includes("backoffice")) return "Back-office";
-      if (t.includes("360")) return "360";
-      return "Autres";
-    };
-
     return moisList.map((mois) => {
       const mm = moisMap[mois];
-      const monthDossiers = allDossiers.filter((d) => {
-        const created = d.dateCreation;
-        return created.startsWith("2026-" + mm);
-      });
+      const monthDossiers = allDossiers.filter((d) => d.dateCreation.startsWith("2026-" + mm));
       const result: Record<string, number | string> = { mois };
-      const cats = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autres"];
-      cats.forEach((c) => { result[c] = 0; });
+      CATS.forEach((c) => { result[c] = 0; result[c + "_n"] = 0; });
       monthDossiers.forEach((d) => {
         const cat = categorize(d.typePrestation);
         result[cat] = (result[cat] as number) + d.montant;
+        result[cat + "_n"] = (result[cat + "_n"] as number) + 1;
       });
       return result;
     });
-  }, []);
+  }, [categorize, moisMap]);
+
+  // Totals per category across all months
+  const ventesTotaux = useMemo(() => {
+    const totals: Record<string, { ca: number; count: number }> = {};
+    CATS.forEach((c) => { totals[c] = { ca: 0, count: 0 }; });
+    ventesParType.forEach((row) => {
+      CATS.forEach((c) => {
+        totals[c].ca += (row[c] as number) || 0;
+        totals[c].count += (row[c + "_n"] as number) || 0;
+      });
+    });
+    return totals;
+  }, [ventesParType]);
 
   const tickFontSize = isMobile ? 10 : 12;
 
@@ -480,6 +491,99 @@ export default function AdminAnalytics() {
                   <Bar dataKey="Autres" name="Autres" stackId="a" fill="hsl(250, 10%, 45%)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Tableau récapitulatif ventes par type */}
+          <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+            <h3 className="text-sm font-semibold mb-4">Récapitulatif par type de projet</h3>
+            <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
+              <table className="w-full text-sm min-w-[800px]">
+                <thead>
+                  <tr className="border-b border-border/50">
+                    <th className="text-left py-2 px-2 text-muted-foreground font-medium">Mois</th>
+                    {CATS.map((cat) => (
+                      <th key={cat} className="text-center py-2 px-1 text-muted-foreground font-medium" colSpan={2}>
+                        <span className="text-xs">{cat}</span>
+                      </th>
+                    ))}
+                    <th className="text-right py-2 px-2 text-muted-foreground font-medium">Total</th>
+                  </tr>
+                  <tr className="border-b border-border/30">
+                    <th className="py-1 px-2" />
+                    {CATS.map((cat) => (
+                      <React.Fragment key={cat}>
+                        <th className="text-center py-1 px-1 text-muted-foreground font-normal text-[10px]">CA</th>
+                        <th className="text-center py-1 px-1 text-muted-foreground font-normal text-[10px]">Nb</th>
+                      </React.Fragment>
+                    ))}
+                    <th className="py-1 px-2" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {ventesParType.map((row) => {
+                    const totalMois = CATS.reduce((s, c) => s + ((row[c] as number) || 0), 0);
+                    const totalNb = CATS.reduce((s, c) => s + ((row[c + "_n"] as number) || 0), 0);
+                    return (
+                      <tr key={row.mois as string} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                        <td className="py-2 px-2 font-medium">{row.mois as string}</td>
+                        {CATS.map((cat) => (
+                          <React.Fragment key={cat}>
+                            <td className="py-2 px-1 text-center text-xs">
+                              {(row[cat] as number) > 0 ? `${((row[cat] as number) / 1000).toFixed(1)}k` : "–"}
+                            </td>
+                            <td className="py-2 px-1 text-center text-xs text-muted-foreground">
+                              {(row[cat + "_n"] as number) > 0 ? (row[cat + "_n"] as number) : "–"}
+                            </td>
+                          </React.Fragment>
+                        ))}
+                        <td className="py-2 px-2 text-right font-medium text-xs">
+                          {totalMois > 0 ? `${(totalMois / 1000).toFixed(1)}k €` : "–"}
+                          {totalNb > 0 && <span className="text-muted-foreground ml-1">({totalNb})</span>}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="border-t border-border/50 font-semibold">
+                    <td className="py-2 px-2">Total</td>
+                    {CATS.map((cat) => (
+                      <React.Fragment key={cat}>
+                        <td className="py-2 px-1 text-center text-xs">
+                          {ventesTotaux[cat].ca > 0 ? `${(ventesTotaux[cat].ca / 1000).toFixed(1)}k` : "–"}
+                        </td>
+                        <td className="py-2 px-1 text-center text-xs text-muted-foreground">
+                          {ventesTotaux[cat].count > 0 ? ventesTotaux[cat].count : "–"}
+                        </td>
+                      </React.Fragment>
+                    ))}
+                    <td className="py-2 px-2 text-right text-xs">
+                      {(Object.values(ventesTotaux).reduce((s, v) => s + v.ca, 0) / 1000).toFixed(1)}k €
+                      <span className="text-muted-foreground ml-1">({Object.values(ventesTotaux).reduce((s, v) => s + v.count, 0)})</span>
+                    </td>
+                  </tr>
+                  <tr className="font-medium text-muted-foreground">
+                    <td className="py-2 px-2 text-xs">Panier moyen</td>
+                    {CATS.map((cat) => (
+                      <React.Fragment key={cat}>
+                        <td className="py-2 px-1 text-center text-xs" colSpan={2}>
+                          {ventesTotaux[cat].count > 0
+                            ? `${Math.round(ventesTotaux[cat].ca / ventesTotaux[cat].count).toLocaleString()} €`
+                            : "–"}
+                        </td>
+                      </React.Fragment>
+                    ))}
+                    <td className="py-2 px-2 text-right text-xs">
+                      {(() => {
+                        const totalCa = Object.values(ventesTotaux).reduce((s, v) => s + v.ca, 0);
+                        const totalCount = Object.values(ventesTotaux).reduce((s, v) => s + v.count, 0);
+                        return totalCount > 0 ? `${Math.round(totalCa / totalCount).toLocaleString()} €` : "–";
+                      })()}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
           </motion.div>
 
