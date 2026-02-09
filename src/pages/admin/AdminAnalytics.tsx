@@ -387,6 +387,27 @@ export default function AdminAnalytics() {
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Clients</span><span className="sm:hidden">Cli.</span>
               </button>
+              <button
+                onClick={() => {
+                  const headers = ["Mois", ...CATS.flatMap((c) => [`${c} (CA)`, `${c} (Nb)`]), "Total CA", "Total Nb", "Panier moyen"];
+                  const rows = ventesParType.map((row) => {
+                    const totalCa = CATS.reduce((s, c) => s + ((row[c] as number) || 0), 0);
+                    const totalNb = CATS.reduce((s, c) => s + ((row[c + "_n"] as number) || 0), 0);
+                    return [
+                      row.mois as string,
+                      ...CATS.flatMap((c) => [`${(row[c] as number) || 0}`, `${(row[c + "_n"] as number) || 0}`]),
+                      `${totalCa}`,
+                      `${totalNb}`,
+                      totalNb > 0 ? `${Math.round(totalCa / totalNb)}` : "0",
+                    ];
+                  });
+                  exportCsv("ventes-par-type.csv", headers, rows);
+                  toast.success("Export ventes par type CSV téléchargé");
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
+              >
+                <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Ventes/Type</span><span className="sm:hidden">V/T</span>
+              </button>
             </div>
           </motion.div>
 
