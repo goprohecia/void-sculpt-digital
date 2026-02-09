@@ -1,13 +1,13 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import type { Facture, Devis } from "@/data/mockData";
+import logoImpartial from "@/assets/logo-impartial.png";
 
 const COMPANY = {
   name: "Impartial",
-  address: "12 Rue de la Tech, 75001 Paris",
-  siret: "123 456 789 00012",
-  email: "contact@impartial.fr",
-  tel: "01 23 45 67 89",
+  address: "Delaware, États-Unis",
+  email: "contact@impartialgames.com",
+  website: "impartialgames.com",
 };
 
 /** Format number with space as thousands separator */
@@ -15,19 +15,48 @@ function fmt(n: number): string {
   return n.toLocaleString("fr-FR", { useGrouping: true }).replace(/\u202F/g, " ");
 }
 
-function addHeader(doc: jsPDF, title: string, reference: string) {
+/** Preload logo as base64 for jsPDF */
+let logoBase64: string | null = null;
+function getLogoBase64(): Promise<string> {
+  if (logoBase64) return Promise.resolve(logoBase64);
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx?.drawImage(img, 0, 0);
+      logoBase64 = canvas.toDataURL("image/png");
+      resolve(logoBase64);
+    };
+    img.onerror = reject;
+    img.src = logoImpartial;
+  });
+}
+
+async function addHeader(doc: jsPDF, title: string, reference: string) {
+  // Logo
+  try {
+    const logo = await getLogoBase64();
+    doc.addImage(logo, "PNG", 20, 12, 18, 18);
+  } catch {
+    // fallback without logo
+  }
+
   // Company info
   doc.setFontSize(20);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(30, 30, 60);
-  doc.text(COMPANY.name, 20, 25);
+  doc.text(COMPANY.name, 42, 25);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(100, 100, 120);
-  doc.text(COMPANY.address, 20, 32);
-  doc.text(`SIRET : ${COMPANY.siret}`, 20, 37);
-  doc.text(`${COMPANY.email} | ${COMPANY.tel}`, 20, 42);
+  doc.text(COMPANY.address, 42, 32);
+  doc.text(`${COMPANY.email}`, 42, 37);
+  doc.text(COMPANY.website, 42, 42);
 
   // Document title
   doc.setFontSize(16);
@@ -61,17 +90,17 @@ function addFooter(doc: jsPDF) {
   doc.setFontSize(8);
   doc.setTextColor(140, 140, 160);
   doc.text(
-    `${COMPANY.name} — ${COMPANY.address} — SIRET ${COMPANY.siret}`,
+    `${COMPANY.name} — ${COMPANY.address} — ${COMPANY.email}`,
     105,
     pageHeight - 10,
     { align: "center" }
   );
 }
 
-export function generateFacturePdf(facture: Facture) {
+export async function generateFacturePdf(facture: Facture) {
   const doc = new jsPDF();
 
-  addHeader(doc, "FACTURE", facture.reference);
+  await addHeader(doc, "FACTURE", facture.reference);
   addClientInfo(doc, facture.clientNom, 55);
 
   // Dates
@@ -131,10 +160,10 @@ export function generateFacturePdf(facture: Facture) {
   doc.save(`${facture.reference}.pdf`);
 }
 
-export function generateDevisPdf(devisItem: Devis) {
+export async function generateDevisPdf(devisItem: Devis) {
   const doc = new jsPDF();
 
-  addHeader(doc, "DEVIS", devisItem.reference);
+  await addHeader(doc, "DEVIS", devisItem.reference);
   addClientInfo(doc, devisItem.clientNom, 55);
 
   // Dates
