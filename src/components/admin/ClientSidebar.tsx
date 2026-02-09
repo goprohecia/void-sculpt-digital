@@ -12,7 +12,7 @@ import {
   Send,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID } from "@/data/mockData";
+import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID, clients } from "@/data/mockData";
 import {
   Sidebar,
   SidebarContent,
@@ -44,7 +44,7 @@ const navItems = [
 export function ClientSidebar() {
   const location = useLocation();
   const { user, logout } = useDemoAuth();
-
+  const client = clients.find((c) => c.id === DEMO_CLIENT_ID);
   const isActive = (url: string) => {
     if (url === "/client") return location.pathname === "/client";
     return location.pathname.startsWith(url);
@@ -55,10 +55,12 @@ export function ClientSidebar() {
       <SidebarHeader className="p-4">
         <Link to="/client" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-[hsl(200,100%,50%)]/20 flex items-center justify-center">
-            <span className="text-[hsl(200,100%,60%)] font-bold text-sm">IM</span>
+            <span className="text-[hsl(200,100%,60%)] font-bold text-sm">
+              {client ? `${client.prenom.charAt(0)}${client.nom.charAt(0)}` : "CL"}
+            </span>
           </div>
           <div>
-            <p className="text-sm font-semibold">Impartial</p>
+            <p className="text-sm font-semibold">{client ? `${client.prenom} ${client.nom}` : "Client"}</p>
             <p className="text-xs text-muted-foreground">Espace client</p>
           </div>
         </Link>
