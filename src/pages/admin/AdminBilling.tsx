@@ -22,7 +22,7 @@ const factureFilters: { key: "tous" | FactureStatus; label: string }[] = [
 ];
 
 export default function AdminBilling() {
-  const { factures, devis, addFacture, addDevis, getDossiersByClient } = useDemoData();
+  const { factures, devis, addFacture, addDevis, getDossiersByClient, getClientById } = useDemoData();
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
   const [openDevis, setOpenDevis] = useState(false);
@@ -192,7 +192,7 @@ export default function AdminBilling() {
                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
                           <td className="py-3 px-4 text-center">
                             <button
-                              onClick={() => { generateFacturePdf(f); toast.success(`PDF ${f.reference} téléchargé`); }}
+                              onClick={() => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); }}
                               className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
                               title="Télécharger PDF"
                             >
@@ -232,7 +232,7 @@ export default function AdminBilling() {
                           <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
                           <td className="py-3 px-4 text-center">
                             <button
-                              onClick={() => { generateDevisPdf(d); toast.success(`PDF ${d.reference} téléchargé`); }}
+                              onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
                               className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
                               title="Télécharger PDF"
                             >

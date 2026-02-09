@@ -12,7 +12,8 @@ import {
   Send,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID, clients } from "@/data/mockData";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID } from "@/data/mockData";
 import {
   Sidebar,
   SidebarContent,
@@ -44,7 +45,8 @@ const navItems = [
 export function ClientSidebar() {
   const location = useLocation();
   const { user, logout } = useDemoAuth();
-  const client = clients.find((c) => c.id === DEMO_CLIENT_ID);
+  const { getClientById } = useDemoData();
+  const client = getClientById(DEMO_CLIENT_ID);
   const isActive = (url: string) => {
     if (url === "/client") return location.pathname === "/client";
     return location.pathname.startsWith(url);

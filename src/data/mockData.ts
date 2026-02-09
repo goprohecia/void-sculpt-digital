@@ -16,6 +16,11 @@ export interface Client {
   email: string;
   telephone: string;
   entreprise: string;
+  siret?: string;
+  adresse?: string;
+  codePostal?: string;
+  ville?: string;
+  pays?: string;
   statut: ClientStatus;
   dateCreation: string;
   nombreDossiers: number;
