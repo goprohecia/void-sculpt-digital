@@ -89,6 +89,7 @@ export interface CahierDesCharges {
   planningSouhaite: string;
   budgetComplementaire: string;
   remarques: string;
+  commentairesAdmin?: string;
   statut: "brouillon" | "complet";
   dateMiseAJour: string;
 }
@@ -126,6 +127,7 @@ const initialCahiers: CahierDesCharges[] = [
     planningSouhaite: "Livraison souhaitée mi-juin 2026. Jalons : maquettes validées fin février, développement mars-mai, recette début juin.",
     budgetComplementaire: "Budget dédié à l'UX/UI design déjà alloué séparément (5 000 €). Le budget mentionné dans la demande couvre uniquement le développement.",
     remarques: "Nous disposons déjà d'un stock photo professionnel. Un accès au back-office actuel sera fourni pour la migration des données produits.",
+    commentairesAdmin: "Projet très intéressant, le scope est bien défini. Prévoir une phase de migration des données produits existantes. Attention au budget serré pour le programme de fidélité — proposer un MVP d'abord.",
     statut: "complet",
     dateMiseAJour: "2026-02-04",
   },
@@ -197,6 +199,7 @@ interface DemoDataContextType {
   cahiersDesCharges: CahierDesCharges[];
   getCahierByDemande: (demandeId: string) => CahierDesCharges | undefined;
   saveCahierDesCharges: (cahier: CahierDesCharges) => void;
+  updateCahierComment: (demandeId: string, comment: string) => void;
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
@@ -379,6 +382,9 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       return [...prev, cahier];
     });
   }, []);
+  const updateCahierComment = useCallback((demandeId: string, comment: string) => {
+    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, commentairesAdmin: comment } : c));
+  }, []);
 
   return (
     <DemoDataContext.Provider value={{
@@ -389,7 +395,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
-      cahiersDesCharges, getCahierByDemande, saveCahierDesCharges,
+      cahiersDesCharges, getCahierByDemande, saveCahierDesCharges, updateCahierComment,
     }}>
       {children}
     </DemoDataContext.Provider>
