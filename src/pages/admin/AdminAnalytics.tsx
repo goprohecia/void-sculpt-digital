@@ -4,7 +4,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { donneesMensuelles, tickets, clients } from "@/data/mockData";
+import { donneesMensuelles, tickets, clients, dossiers as allDossiers } from "@/data/mockData";
 import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet, Pencil, Check, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { exportCsv } from "@/lib/exportCsv";
@@ -158,6 +158,42 @@ export default function AdminAnalytics() {
     { name: "Validées", value: demandesStats.validees, color: "hsl(155, 100%, 45%)" },
     { name: "Refusées", value: demandesStats.refusees, color: "hsl(0, 84%, 60%)" },
   ], [demandesStats]);
+
+  // Ventes par type de projet par mois (from dossiers mock data)
+  const ventesParType = useMemo(() => {
+    const moisList = donneesMensuelles.map((d) => d.mois);
+    const moisMap: Record<string, string> = {
+      "Jan": "01", "Fév": "02", "Mar": "03", "Avr": "04",
+      "Mai": "05", "Juin": "06", "Juil": "07", "Août": "08",
+      "Sep": "09", "Oct": "10", "Nov": "11", "Déc": "12",
+    };
+
+    const categorize = (type: string): string => {
+      const t = type.toLowerCase();
+      if (t.includes("site web") || t.includes("vitrine") || t.includes("application web") || t.includes("landing")) return "Site web";
+      if (t.includes("mobile")) return "App mobile";
+      if (t.includes("commerce")) return "E-commerce";
+      if (t.includes("back-office") || t.includes("backoffice")) return "Back-office";
+      if (t.includes("360")) return "360";
+      return "Autres";
+    };
+
+    return moisList.map((mois) => {
+      const mm = moisMap[mois];
+      const monthDossiers = allDossiers.filter((d) => {
+        const created = d.dateCreation;
+        return created.startsWith("2026-" + mm);
+      });
+      const result: Record<string, number | string> = { mois };
+      const cats = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autres"];
+      cats.forEach((c) => { result[c] = 0; });
+      monthDossiers.forEach((d) => {
+        const cat = categorize(d.typePrestation);
+        result[cat] = (result[cat] as number) + d.montant;
+      });
+      return result;
+    });
+  }, []);
 
   const tickFontSize = isMobile ? 10 : 12;
 
@@ -420,6 +456,28 @@ export default function AdminAnalytics() {
                   <Bar yAxisId="left" dataKey="dossiers" name="Dossiers" fill="hsl(200, 100%, 50%)" radius={[4, 4, 0, 0]} opacity={0.8} />
                   <Bar yAxisId="left" dataKey="panierMoyen" name="Panier moyen" fill="hsl(265, 85%, 60%)" radius={[4, 4, 0, 0]} opacity={0.8} />
                   <Bar yAxisId="right" dataKey="conversion" name="Conversion %" fill="hsl(155, 100%, 45%)" radius={[4, 4, 0, 0]} opacity={0.6} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Ventes par type de projet */}
+          <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+            <h3 className="text-sm font-semibold mb-4">Ventes par type de projet (mensuel)</h3>
+            <div className="h-56 sm:h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={ventesParType}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
+                  <XAxis dataKey="mois" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
+                  <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 35 : 60} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ fontSize: tickFontSize }} />
+                  <Bar dataKey="Site web" name="Site web" stackId="a" fill="hsl(265, 85%, 60%)" />
+                  <Bar dataKey="App mobile" name="App mobile" stackId="a" fill="hsl(200, 100%, 50%)" />
+                  <Bar dataKey="E-commerce" name="E-commerce" stackId="a" fill="hsl(155, 100%, 45%)" />
+                  <Bar dataKey="Back-office" name="Back-office" stackId="a" fill="hsl(45, 93%, 55%)" />
+                  <Bar dataKey="360" name="360" stackId="a" fill="hsl(330, 80%, 55%)" />
+                  <Bar dataKey="Autres" name="Autres" stackId="a" fill="hsl(250, 10%, 45%)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
