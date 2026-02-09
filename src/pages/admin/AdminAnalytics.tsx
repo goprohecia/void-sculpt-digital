@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
-import { donneesMensuelles } from "@/data/mockData";
-import { Euro, TrendingUp, FolderOpen, Users, BarChart3 } from "lucide-react";
+import { donneesMensuelles, tickets } from "@/data/mockData";
+import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   ResponsiveContainer,
@@ -18,7 +18,41 @@ import {
   Legend,
   ComposedChart,
   Area,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
+
+// Support analytics data
+const ticketsByWeek = [
+  { semaine: "S4 Jan", ouverts: 1, fermes: 1 },
+  { semaine: "S5 Fév", ouverts: 2, fermes: 0 },
+  { semaine: "S6 Fév", ouverts: 1, fermes: 1 },
+  { semaine: "S7 Fév", ouverts: 1, fermes: 1 },
+  { semaine: "S8 Fév", ouverts: 0, fermes: 1 },
+];
+
+const tempsReponseMoyen = [
+  { semaine: "S4 Jan", heures: 4.5 },
+  { semaine: "S5 Fév", heures: 6.2 },
+  { semaine: "S6 Fév", heures: 3.8 },
+  { semaine: "S7 Fév", heures: 2.5 },
+  { semaine: "S8 Fév", heures: 5.0 },
+];
+
+const ticketStatuts = [
+  { name: "Ouverts", value: tickets.filter((t) => t.statut === "ouvert").length, color: "hsl(45, 93%, 55%)" },
+  { name: "En cours", value: tickets.filter((t) => t.statut === "en_cours").length, color: "hsl(200, 100%, 50%)" },
+  { name: "Résolus", value: tickets.filter((t) => t.statut === "resolu").length, color: "hsl(155, 100%, 45%)" },
+  { name: "Fermés", value: tickets.filter((t) => t.statut === "ferme").length, color: "hsl(250, 10%, 45%)" },
+];
+
+const ticketPriorites = [
+  { name: "Urgente", value: tickets.filter((t) => t.priorite === "urgente").length, color: "hsl(0, 84%, 60%)" },
+  { name: "Haute", value: tickets.filter((t) => t.priorite === "haute").length, color: "hsl(45, 93%, 55%)" },
+  { name: "Normale", value: tickets.filter((t) => t.priorite === "normale").length, color: "hsl(200, 100%, 50%)" },
+  { name: "Basse", value: tickets.filter((t) => t.priorite === "basse").length, color: "hsl(250, 10%, 45%)" },
+];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
@@ -153,22 +187,88 @@ export default function AdminAnalytics() {
             </div>
           </motion.div>
 
-          {/* Évolution panier moyen et conversion */}
+          {/* ======= SECTION SUPPORT ======= */}
+          <motion.div variants={staggerItem} className="pt-4">
+            <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
+              <LifeBuoy className="h-5 w-5 text-primary" />
+              Activité Support
+            </h2>
+          </motion.div>
+
+          {/* KPI Support */}
+          <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4" variants={staggerContainer} initial="initial" animate="animate">
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Tickets ouverts" value={tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length} icon={LifeBuoy} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Temps réponse moyen" value="4.4h" icon={Clock} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Taux résolution" value={`${Math.round((tickets.filter((t) => t.statut === "resolu" || t.statut === "ferme").length / tickets.length) * 100)}%`} icon={CheckCircle} />
+            </motion.div>
+          </motion.div>
+
+          {/* Tickets ouverts/fermés par semaine */}
           <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
-            <h3 className="text-sm font-semibold mb-4">Évolution du panier moyen et taux de conversion</h3>
-            <div className="h-48 sm:h-72">
+            <h3 className="text-sm font-semibold mb-4">Tickets ouverts vs fermés par semaine</h3>
+            <div className="h-48 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={donneesMensuelles}>
+                <BarChart data={ticketsByWeek}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
-                  <XAxis dataKey="mois" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
-                  <YAxis yAxisId="left" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 40 : 60} />
-                  <YAxis yAxisId="right" orientation="right" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 30 : 60} domain={[50, 100]} />
+                  <XAxis dataKey="semaine" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
+                  <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} allowDecimals={false} width={isMobile ? 30 : 40} />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend wrapperStyle={{ fontSize: tickFontSize }} />
-                  <Area yAxisId="left" type="monotone" dataKey="panierMoyen" name="Panier moyen" fill="hsl(265, 85%, 60%)" fillOpacity={0.15} stroke="hsl(265, 85%, 60%)" strokeWidth={2} />
-                  <Line yAxisId="right" type="monotone" dataKey="conversion" name="Conversion %" stroke="hsl(45, 93%, 55%)" strokeWidth={2.5} dot={isMobile ? false : { r: 3, fill: "hsl(45, 93%, 55%)" }} />
+                  <Bar dataKey="ouverts" name="Ouverts" fill="hsl(45, 93%, 55%)" radius={[4, 4, 0, 0]} opacity={0.85} />
+                  <Bar dataKey="fermes" name="Fermés" fill="hsl(155, 100%, 45%)" radius={[4, 4, 0, 0]} opacity={0.85} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Temps de réponse moyen */}
+          <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+            <h3 className="text-sm font-semibold mb-4">Temps de réponse moyen (heures)</h3>
+            <div className="h-48 sm:h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <ComposedChart data={tempsReponseMoyen}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
+                  <XAxis dataKey="semaine" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
+                  <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 30 : 40} unit="h" />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area type="monotone" dataKey="heures" name="Temps de réponse" fill="hsl(200, 100%, 50%)" fillOpacity={0.15} stroke="hsl(200, 100%, 50%)" strokeWidth={2.5} dot={isMobile ? false : { r: 4, fill: "hsl(200, 100%, 50%)" }} />
                 </ComposedChart>
               </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          {/* Répartition par statut et priorité */}
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4" variants={staggerItem}>
+            <div className="glass-card p-4 sm:p-6">
+              <h3 className="text-sm font-semibold mb-4">Répartition par statut</h3>
+              <div className="h-48 sm:h-56">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={ticketStatuts} cx="50%" cy="50%" innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 65 : 80} dataKey="value" nameKey="name" label={({ name, value }) => `${name}: ${value}`} labelLine={false} style={{ fontSize: tickFontSize }}>
+                      {ticketStatuts.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div className="glass-card p-4 sm:p-6">
+              <h3 className="text-sm font-semibold mb-4">Répartition par priorité</h3>
+              <div className="h-48 sm:h-56">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={ticketPriorites} cx="50%" cy="50%" innerRadius={isMobile ? 40 : 55} outerRadius={isMobile ? 65 : 80} dataKey="value" nameKey="name" label={({ name, value }) => `${name}: ${value}`} labelLine={false} style={{ fontSize: tickFontSize }}>
+                      {ticketPriorites.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </motion.div>
         </motion.div>
