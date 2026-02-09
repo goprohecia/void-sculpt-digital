@@ -223,6 +223,7 @@ interface DemoDataContextType {
   updateCahierComment: (demandeId: string, comment: string) => void;
   validateCahier: (demandeId: string) => void;
   rejectCahier: (demandeId: string, motif: string) => void;
+  marquerRdvEffectue: (dossierId: string) => void;
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
@@ -450,6 +451,14 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     }
   }, [demandes, pushNotif, pushEmail]);
 
+  const marquerRdvEffectue = useCallback((dossierId: string) => {
+    setDossiers((prev) => prev.map((d) => (d.id === dossierId ? { ...d, rdvEffectue: true } : d)));
+    const dossier = dossiersState.find((d) => d.id === dossierId);
+    if (dossier) {
+      pushNotif("dossier", "Rendez-vous effectué", `Le rendez-vous pour le dossier ${dossier.reference} a été marqué comme effectué`, "/client/dossiers", "client", dossier.clientId);
+    }
+  }, [dossiersState, pushNotif]);
+
   return (
     <DemoDataContext.Provider value={{
       factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs, previewVisits,
@@ -459,7 +468,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
-      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier,
+      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier, marquerRdvEffectue,
     }}>
       {children}
     </DemoDataContext.Provider>

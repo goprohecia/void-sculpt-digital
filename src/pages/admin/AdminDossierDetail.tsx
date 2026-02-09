@@ -5,7 +5,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -14,13 +14,16 @@ import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
 
-const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "Cahier des charges", "En cours", "Livraison", "Terminé"];
+const etapes = ["Demande reçue", "Rendez-vous", "Cahier des charges", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
 
-function getEtapeIndex(statut: string, cdcComplete: boolean): number {
+function getEtapeIndex(statut: string, rdvEffectue: boolean, cdcComplete: boolean): number {
   switch (statut) {
-    case "en_attente": return 1;
-    case "en_cours": return cdcComplete ? 4 : 2;
-    case "termine": return 6;
+    case "en_attente":
+      if (!rdvEffectue) return 0;
+      if (!cdcComplete) return 1;
+      return 2;
+    case "en_cours": return 5;
+    case "termine": return 7;
     case "annule": return -1;
     default: return 0;
   }
@@ -91,7 +94,7 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
 export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit, getCahierByDossier, demandes, validateCahier } = useDemoData();
+  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit, getCahierByDossier, demandes, validateCahier, marquerRdvEffectue } = useDemoData();
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
@@ -107,7 +110,8 @@ export default function AdminDossierDetail() {
   const cdcComplete = cahier?.statut === "validé";
   const cdcSubmitted = cahier?.statut === "complet" || cahier?.statut === "validé";
   const cdcRejected = cahier?.statut === "rejeté";
-  const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
+  const rdvEffectue = dossier.rdvEffectue === true;
+  const etapeActive = getEtapeIndex(dossier.statut, rdvEffectue, cdcComplete);
 
   const handleStatutChange = (val: string) => {
     updateDossierStatut(dossier.id, val as DossierStatus);
@@ -156,7 +160,14 @@ export default function AdminDossierDetail() {
           {/* Timeline */}
           {dossier.statut !== "annule" && (
             <motion.div className="glass-card p-5" variants={staggerItem}>
-              <h2 className="text-sm font-semibold mb-4">Progression</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold">Progression</h2>
+                {!rdvEffectue && dossier.statut === "en_attente" && (
+                  <Button size="sm" className="gap-1.5" onClick={() => { marquerRdvEffectue(dossier.id); toast.success("Rendez-vous marqué comme effectué"); }}>
+                    <CalendarDays className="h-3.5 w-3.5" /> Marquer RDV effectué
+                  </Button>
+                )}
+              </div>
               <div className="flex items-center gap-1 overflow-x-auto pb-2">
                 {etapes.map((e, i) => (
                   <div key={e} className="flex items-center flex-1 min-w-0">
@@ -164,12 +175,17 @@ export default function AdminDossierDetail() {
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                         i <= etapeActive ? "bg-primary text-primary-foreground" : "bg-muted border border-border"
                       }`}>
-                        {i === 3 ? <FileText className="h-3 w-3" /> : i + 1}
+                        {i === 1 ? <CalendarDays className="h-3 w-3" /> : i === 2 ? <FileText className="h-3 w-3" /> : i + 1}
                       </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
-                      {i === 3 && (
+                      {i === 1 && (
+                        <span className={`text-[8px] ${rdvEffectue ? "text-green-400" : "text-muted-foreground"}`}>
+                          {rdvEffectue ? "Effectué" : "À planifier"}
+                        </span>
+                      )}
+                      {i === 2 && (
                         <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcRejected ? "text-destructive" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-muted-foreground"}`}>
-                          {cdcComplete ? "Validé" : cdcRejected ? "Rejeté" : cdcSubmitted ? "En validation" : "En attente"}
+                          {cdcComplete ? "Validé" : cdcRejected ? "Rejeté" : cdcSubmitted ? "En validation" : "À remplir"}
                         </span>
                       )}
                     </div>
