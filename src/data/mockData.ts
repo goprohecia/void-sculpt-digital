@@ -5,6 +5,7 @@
 export type ClientStatus = "actif" | "inactif";
 export type DossierStatus = "en_cours" | "termine" | "en_attente" | "annule";
 export type FactureStatus = "payee" | "en_attente" | "en_retard";
+export type DevisStatus = "accepte" | "en_attente" | "refuse" | "expire";
 export type RelanceStatus = "a_envoyer" | "envoyee" | "reponse_recue";
 export type MessageRole = "admin" | "client";
 
@@ -91,6 +92,22 @@ export interface DonneesMensuelles {
   conversion: number;
   nouveauxClients: number;
 }
+
+export interface Devis {
+  id: string;
+  reference: string;
+  clientId: string;
+  clientNom: string;
+  dossierId?: string;
+  titre: string;
+  montant: number;
+  statut: DevisStatus;
+  dateEmission: string;
+  dateValidite: string;
+}
+
+// ID du client démo (Luxe & Mode / Sophie Bernard)
+export const DEMO_CLIENT_ID = "c3";
 
 // ---- CLIENTS ----
 export const clients: Client[] = [
@@ -273,10 +290,26 @@ export const donneesMensuelles: DonneesMensuelles[] = [
   { mois: "Déc", objectif: 35000, caTotal: 31800, encaissements: 28600, dossiers: 7, panierMoyen: 4543, conversion: 74, nouveauxClients: 2 },
 ];
 
+// ---- DEVIS ----
+export const devis: Devis[] = [
+  { id: "dv1", reference: "DEV-2025-012", clientId: "c3", clientNom: "Luxe & Mode", dossierId: "d7", titre: "Site web vitrine — Luxe & Mode", montant: 6000, statut: "accepte", dateEmission: "2025-09-20", dateValidite: "2025-10-20" },
+  { id: "dv2", reference: "DEV-2025-018", clientId: "c3", clientNom: "Luxe & Mode", dossierId: "d6", titre: "Application 360° — Luxe & Mode", montant: 25000, statut: "accepte", dateEmission: "2025-11-25", dateValidite: "2025-12-25" },
+  { id: "dv3", reference: "DEV-2026-003", clientId: "c3", clientNom: "Luxe & Mode", dossierId: "d8", titre: "Maintenance annuelle 2026", montant: 2400, statut: "accepte", dateEmission: "2025-12-15", dateValidite: "2026-01-15" },
+  { id: "dv4", reference: "DEV-2026-008", clientId: "c3", clientNom: "Luxe & Mode", dossierId: "d9", titre: "Application mobile iOS/Android", montant: 18000, statut: "en_attente", dateEmission: "2026-02-01", dateValidite: "2026-03-01" },
+  { id: "dv5", reference: "DEV-2026-011", clientId: "c3", clientNom: "Luxe & Mode", titre: "Refonte identité visuelle digitale", montant: 4500, statut: "en_attente", dateEmission: "2026-02-08", dateValidite: "2026-03-08" },
+  { id: "dv6", reference: "DEV-2025-005", clientId: "c1", clientNom: "TechSolutions", dossierId: "d1", titre: "Site web vitrine — TechSolutions", montant: 4500, statut: "accepte", dateEmission: "2025-12-20", dateValidite: "2026-01-20" },
+  { id: "dv7", reference: "DEV-2026-001", clientId: "c2", clientNom: "GreenLeaf Bio", dossierId: "d4", titre: "E-commerce GreenLeaf", montant: 15000, statut: "accepte", dateEmission: "2025-12-28", dateValidite: "2026-01-28" },
+  { id: "dv8", reference: "DEV-2026-006", clientId: "c5", clientNom: "FoodLab", titre: "Programme fidélité FoodLab", montant: 7800, statut: "refuse", dateEmission: "2026-01-20", dateValidite: "2026-02-20" },
+  { id: "dv9", reference: "DEV-2026-009", clientId: "c10", clientNom: "SportNow", dossierId: "d20", titre: "Application mobile SportNow", montant: 16000, statut: "accepte", dateEmission: "2025-12-18", dateValidite: "2026-01-18" },
+  { id: "dv10", reference: "DEV-2025-015", clientId: "c8", clientNom: "AutoElec", titre: "Refonte e-commerce AutoElec", montant: 13000, statut: "accepte", dateEmission: "2025-11-10", dateValidite: "2025-12-10" },
+  { id: "dv11", reference: "DEV-2026-012", clientId: "c4", clientNom: "ArchiBat", titre: "Visite virtuelle 3D immobilier", montant: 9200, statut: "expire", dateEmission: "2025-11-01", dateValidite: "2025-12-01" },
+];
+
 // ---- HELPERS ----
 export const getClientById = (id: string) => clients.find((c) => c.id === id);
 export const getDossiersByClient = (clientId: string) => dossiers.filter((d) => d.clientId === clientId);
 export const getFacturesByClient = (clientId: string) => factures.filter((f) => f.clientId === clientId);
+export const getDevisByClient = (clientId: string) => devis.filter((d) => d.clientId === clientId);
 export const getRelancesByFacture = (factureId: string) => relances.filter((r) => r.factureId === factureId);
 export const getConversationsByClient = (clientId: string) => conversations.filter((c) => c.clientId === clientId);
 

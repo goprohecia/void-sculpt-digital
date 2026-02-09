@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 type StatusType =
   | "en_cours" | "termine" | "en_attente" | "annule"
   | "payee" | "en_retard"
+  | "accepte" | "refuse" | "expire"
   | "a_envoyer" | "envoyee" | "reponse_recue"
   | "actif" | "inactif";
 
@@ -18,6 +19,9 @@ const statusConfig: Record<StatusType, { label: string; className: string }> = {
   reponse_recue: { label: "Réponse reçue", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
   actif: { label: "Actif", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
   inactif: { label: "Inactif", className: "bg-muted text-muted-foreground border-border" },
+  accepte: { label: "Accepté", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
+  refuse: { label: "Refusé", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
+  expire: { label: "Expiré", className: "bg-muted text-muted-foreground border-border" },
 };
 
 export function StatusBadge({ status }: { status: StatusType }) {

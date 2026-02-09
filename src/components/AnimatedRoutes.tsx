@@ -32,6 +32,12 @@ import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminReminders from "@/pages/admin/AdminReminders";
 import AdminAnalytics from "@/pages/admin/AdminAnalytics";
 
+// Client pages
+import ClientDashboard from "@/pages/client/ClientDashboard";
+import ClientDossiers from "@/pages/client/ClientDossiers";
+import ClientDevis from "@/pages/client/ClientDevis";
+import ClientFactures from "@/pages/client/ClientFactures";
+import ClientMessaging from "@/pages/client/ClientMessaging";
 export function AnimatedRoutes() {
   const location = useLocation();
   useScrollToTop();
@@ -65,6 +71,13 @@ export function AnimatedRoutes() {
         <Route path="/admin/facturation" element={<AdminBilling />} />
         <Route path="/admin/relances" element={<AdminReminders />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
+        
+        {/* Client routes */}
+        <Route path="/client" element={<ClientDashboard />} />
+        <Route path="/client/dossiers" element={<ClientDossiers />} />
+        <Route path="/client/devis" element={<ClientDevis />} />
+        <Route path="/client/factures" element={<ClientFactures />} />
+        <Route path="/client/messagerie" element={<ClientMessaging />} />
         
         <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
       </Routes>
