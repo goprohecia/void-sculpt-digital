@@ -4,10 +4,10 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { FolderOpen, FileText, Receipt, MessageSquare, ArrowRight, Send } from "lucide-react";
+import { FolderOpen, FileText, Receipt, MessageSquare, ArrowRight, Send, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { getConversationsByClient, DEMO_CLIENT_ID } from "@/data/mockData";
+import { getConversationsByClient, getRendezVousByClient, DEMO_CLIENT_ID } from "@/data/mockData";
 import { WelcomeBookingDialog } from "@/components/admin/WelcomeBookingDialog";
 
 export default function ClientDashboard() {
@@ -25,12 +25,14 @@ export default function ClientDashboard() {
   const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
   const mesDemandes = getDemandesByClient(DEMO_CLIENT_ID);
   const mesConversations = getConversationsByClient(DEMO_CLIENT_ID);
+  const mesRdv = getRendezVousByClient(DEMO_CLIENT_ID);
 
   const dossiersEnCours = mesDossiers.filter((d) => d.statut === "en_cours").length;
   const facturesEnAttente = mesFactures.filter((f) => f.statut === "en_attente" || f.statut === "en_retard").length;
   const devisEnAttente = mesDevis.filter((d) => d.statut === "en_attente").length;
   const messagesNonLus = mesConversations.reduce((acc, c) => acc + c.nonLus, 0);
   const demandesEnCours = mesDemandes.filter((d) => d.statut === "nouvelle" || d.statut === "en_revue").length;
+  const rdvAVenir = mesRdv.filter((r) => r.statut === "a_venir").length;
 
   return (
     <ClientLayout>
@@ -42,12 +44,13 @@ export default function ClientDashboard() {
           </motion.div>
 
           {/* KPIs */}
-          <motion.div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4" variants={staggerContainer} initial="initial" animate="animate">
+          <motion.div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" variants={staggerContainer} initial="initial" animate="animate">
             <motion.div variants={staggerItem}><DashboardKPI title="Dossiers en cours" value={dossiersEnCours} icon={FolderOpen} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Demandes" value={demandesEnCours} icon={Send} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Devis en attente" value={devisEnAttente} icon={FileText} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Factures à régler" value={facturesEnAttente} icon={Receipt} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Messages non lus" value={messagesNonLus} icon={MessageSquare} /></motion.div>
+            <motion.div variants={staggerItem}><DashboardKPI title="RDV à venir" value={rdvAVenir} icon={CalendarDays} /></motion.div>
           </motion.div>
 
           {/* Dossiers récents */}
