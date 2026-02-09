@@ -79,6 +79,7 @@ interface DemoDataContextType {
   emailLogs: EmailLog[];
   updateFactureStatut: (id: string, statut: FactureStatus) => void;
   updateDevisStatut: (id: string, statut: DevisStatus) => void;
+  updateDevisSignature: (id: string, signatureDataUrl: string, signataireNom: string, dateSignature: string) => void;
   updateDossierStatut: (id: string, statut: DossierStatus) => void;
   addDemande: (demande: Demande) => void;
   updateDemandeStatut: (id: string, statut: DemandeStatus) => void;
@@ -180,6 +181,10 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     });
   }, [pushNotif]);
 
+  const updateDevisSignature = useCallback((id: string, signatureDataUrl: string, signataireNom: string, dateSignature: string) => {
+    setDevis((prev) => prev.map((d) => (d.id === id ? { ...d, signatureDataUrl, signataireNom, dateSignature } : d)));
+  }, []);
+
   const updateDossierStatut = useCallback((id: string, statut: DossierStatus) => {
     setDossiers((prev) => prev.map((d) => (d.id === id ? { ...d, statut } : d)));
   }, []);
@@ -241,7 +246,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   return (
     <DemoDataContext.Provider value={{
       factures, devis: devisState, dossiers: dossiersState, demandes, notifications: notifs, emailLogs,
-      updateFactureStatut, updateDevisStatut, updateDossierStatut,
+      updateFactureStatut, updateDevisStatut, updateDevisSignature, updateDossierStatut,
       addDemande, updateDemandeStatut, addDevis, addFacture, addDossier, addNotification, pushEmail,
       getDemandesByClient, getDossiersByClient, getFacturesByClient, getDevisByClient,
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById,

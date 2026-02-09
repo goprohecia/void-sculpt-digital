@@ -104,6 +104,9 @@ export interface Devis {
   statut: DevisStatus;
   dateEmission: string;
   dateValidite: string;
+  signatureDataUrl?: string;
+  signataireNom?: string;
+  dateSignature?: string;
 }
 
 // ID du client démo (Luxe & Mode / Sophie Bernard)
