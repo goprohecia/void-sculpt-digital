@@ -7,10 +7,11 @@ import {
   Receipt,
   Bell,
   BarChart3,
+  LifeBuoy,
   LogOut,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { totalNonLus } from "@/data/mockData";
+import { totalNonLus, getOpenTicketsCount } from "@/data/mockData";
 import {
   Sidebar,
   SidebarContent,
@@ -32,6 +33,7 @@ const navItems = [
   { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus },
   { title: "Facturation", url: "/admin/facturation", icon: Receipt },
   { title: "Relances", url: "/admin/relances", icon: Bell },
+  { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: getOpenTicketsCount() },
   { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
 ];
 

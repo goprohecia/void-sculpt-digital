@@ -5,11 +5,12 @@ import {
   FileText,
   Receipt,
   MessageSquare,
+  LifeBuoy,
   UserCircle,
   LogOut,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { getConversationsByClient, DEMO_CLIENT_ID } from "@/data/mockData";
+import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID } from "@/data/mockData";
 import {
   Sidebar,
   SidebarContent,
@@ -32,6 +33,7 @@ const navItems = [
   { title: "Devis", url: "/client/devis", icon: FileText },
   { title: "Factures", url: "/client/factures", icon: Receipt },
   { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
+  { title: "Support", url: "/client/support", icon: LifeBuoy, badge: getOpenTicketsCount(DEMO_CLIENT_ID) },
   { title: "Mon profil", url: "/client/profil", icon: UserCircle },
 ];
 

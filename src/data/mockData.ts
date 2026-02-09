@@ -305,6 +305,129 @@ export const devis: Devis[] = [
   { id: "dv11", reference: "DEV-2026-012", clientId: "c4", clientNom: "ArchiBat", titre: "Visite virtuelle 3D immobilier", montant: 9200, statut: "expire", dateEmission: "2025-11-01", dateValidite: "2025-12-01" },
 ];
 
+// ---- NOTIFICATIONS ----
+export type NotificationType = "dossier" | "facture" | "message" | "devis" | "ticket";
+export type NotificationDestinataire = "admin" | "client" | "all";
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  titre: string;
+  description: string;
+  date: string;
+  lu: boolean;
+  lien: string;
+  destinataire: NotificationDestinataire;
+  clientId?: string;
+}
+
+export const notifications: Notification[] = [
+  { id: "n1", type: "message", titre: "Nouveau message", description: "Luxe & Mode a envoyé un message concernant le projet 360°", date: "2026-02-09 08:47", lu: false, lien: "/admin/messagerie", destinataire: "admin" },
+  { id: "n2", type: "dossier", titre: "Dossier mis à jour", description: "Le dossier DOS-2026-025 (ImmoPlus) a été créé", date: "2026-02-08 16:30", lu: false, lien: "/admin/dossiers", destinataire: "admin" },
+  { id: "n3", type: "facture", titre: "Facture émise", description: "Facture FAC-2026-015 émise pour ArchiBat (2 750 €)", date: "2026-02-06 14:00", lu: true, lien: "/admin/facturation", destinataire: "admin" },
+  { id: "n4", type: "message", titre: "Nouveau message", description: "GreenLeaf Bio a répondu sur le click & collect", date: "2026-02-09 10:15", lu: false, lien: "/admin/messagerie", destinataire: "admin" },
+  { id: "n5", type: "devis", titre: "Devis en attente", description: "Le devis DEV-2026-008 (Luxe & Mode) expire le 01/03", date: "2026-02-08 09:00", lu: true, lien: "/admin/dossiers", destinataire: "admin" },
+  { id: "n6", type: "facture", titre: "Facture en retard", description: "Facture FAC-2026-012 (ImmoPlus) — retard de paiement", date: "2026-02-07 08:00", lu: false, lien: "/admin/relances", destinataire: "admin" },
+  { id: "n7", type: "message", titre: "Nouveau message", description: "SportNow demande une accélération du développement", date: "2026-02-09 07:30", lu: false, lien: "/admin/messagerie", destinataire: "admin" },
+  { id: "n8", type: "dossier", titre: "Dossier terminé", description: "Le dossier DOS-2026-003 (TechSolutions) est terminé", date: "2026-01-30 17:00", lu: true, lien: "/admin/dossiers", destinataire: "admin" },
+  { id: "n9", type: "dossier", titre: "Avancement projet", description: "Votre projet Application 360° avance — phase maquettage en cours", date: "2026-02-08 10:30", lu: false, lien: "/client/dossiers", destinataire: "client", clientId: "c3" },
+  { id: "n10", type: "facture", titre: "Nouvelle facture", description: "La facture FAC-2026-005 (12 500 €) est disponible", date: "2026-01-15 14:00", lu: true, lien: "/client/factures", destinataire: "client", clientId: "c3" },
+  { id: "n11", type: "devis", titre: "Nouveau devis", description: "Un devis pour l'Application mobile iOS/Android est disponible", date: "2026-02-01 10:00", lu: false, lien: "/client/devis", destinataire: "client", clientId: "c3" },
+  { id: "n12", type: "message", titre: "Réponse reçue", description: "Impartial a répondu à votre message sur le projet 360°", date: "2026-02-08 10:30", lu: false, lien: "/client/messagerie", destinataire: "client", clientId: "c3" },
+  { id: "n13", type: "devis", titre: "Nouveau devis", description: "Devis pour la refonte identité visuelle digitale disponible", date: "2026-02-08 09:00", lu: false, lien: "/client/devis", destinataire: "client", clientId: "c3" },
+  { id: "n14", type: "facture", titre: "Facture payée", description: "Le paiement de FAC-2026-013 (600 €) a été confirmé", date: "2026-01-31 16:00", lu: true, lien: "/client/factures", destinataire: "client", clientId: "c3" },
+  { id: "n15", type: "ticket", titre: "Ticket résolu", description: "Votre ticket TK-003 a été résolu", date: "2026-02-07 14:00", lu: true, lien: "/client/support", destinataire: "client", clientId: "c3" },
+];
+
+export const getNotificationsAdmin = () => notifications.filter((n) => n.destinataire === "admin" || n.destinataire === "all");
+export const getNotificationsByClient = (clientId: string) => notifications.filter((n) => (n.destinataire === "client" || n.destinataire === "all") && n.clientId === clientId);
+
+// ---- TICKETS SUPPORT ----
+export type TicketPriority = "basse" | "normale" | "haute" | "urgente";
+export type TicketStatus = "ouvert" | "en_cours" | "resolu" | "ferme";
+
+export interface TicketMessage {
+  id: string;
+  contenu: string;
+  role: MessageRole;
+  date: string;
+}
+
+export interface Ticket {
+  id: string;
+  reference: string;
+  clientId: string;
+  clientNom: string;
+  sujet: string;
+  description: string;
+  priorite: TicketPriority;
+  statut: TicketStatus;
+  dateCreation: string;
+  dateMiseAJour: string;
+  messages: TicketMessage[];
+}
+
+export const tickets: Ticket[] = [
+  {
+    id: "tk1", reference: "TK-001", clientId: "c3", clientNom: "Luxe & Mode",
+    sujet: "Bug affichage mobile sur la page produit",
+    description: "Sur iPhone 14, les images produit ne s'affichent pas correctement en mode paysage. Le texte chevauche la galerie photo.",
+    priorite: "haute", statut: "en_cours", dateCreation: "2026-02-05 10:30", dateMiseAJour: "2026-02-08 14:00",
+    messages: [
+      { id: "tm1", contenu: "Bonjour, nous constatons un bug d'affichage sur mobile. Les images de la page produit sont mal cadrées en mode paysage sur iPhone.", role: "client", date: "2026-02-05 10:30" },
+      { id: "tm2", contenu: "Merci pour le signalement. Nous avons identifié le problème, c'est lié au ratio d'aspect des images. Correction en cours.", role: "admin", date: "2026-02-06 09:15" },
+      { id: "tm3", contenu: "Un correctif a été déployé en staging. Pouvez-vous vérifier ?", role: "admin", date: "2026-02-08 14:00" },
+    ],
+  },
+  {
+    id: "tk2", reference: "TK-002", clientId: "c3", clientNom: "Luxe & Mode",
+    sujet: "Question sur l'intégration du paiement Stripe",
+    description: "Nous aimerions comprendre comment fonctionne le module de paiement Stripe et les frais associés.",
+    priorite: "normale", statut: "ouvert", dateCreation: "2026-02-07 14:20", dateMiseAJour: "2026-02-07 14:20",
+    messages: [
+      { id: "tm4", contenu: "Bonjour, pouvez-vous nous expliquer le fonctionnement de l'intégration Stripe et les commissions appliquées ?", role: "client", date: "2026-02-07 14:20" },
+    ],
+  },
+  {
+    id: "tk3", reference: "TK-003", clientId: "c3", clientNom: "Luxe & Mode",
+    sujet: "Impossible de télécharger les rapports PDF",
+    description: "Le bouton de téléchargement des rapports PDF ne fonctionne pas. Aucun fichier n'est généré.",
+    priorite: "haute", statut: "resolu", dateCreation: "2026-02-01 09:00", dateMiseAJour: "2026-02-07 14:00",
+    messages: [
+      { id: "tm5", contenu: "Le bouton 'Télécharger en PDF' ne produit aucun fichier. Testé sur Chrome et Firefox.", role: "client", date: "2026-02-01 09:00" },
+      { id: "tm6", contenu: "Nous avons reproduit le bug. C'est un problème côté serveur dans la génération PDF. Nous travaillons dessus.", role: "admin", date: "2026-02-02 11:00" },
+      { id: "tm7", contenu: "Le correctif est en production. Le téléchargement fonctionne à nouveau. Pouvez-vous confirmer ?", role: "admin", date: "2026-02-07 10:30" },
+      { id: "tm8", contenu: "Confirmé, tout fonctionne parfaitement. Merci !", role: "client", date: "2026-02-07 14:00" },
+    ],
+  },
+  {
+    id: "tk4", reference: "TK-004", clientId: "c3", clientNom: "Luxe & Mode",
+    sujet: "Demande d'ajout d'un filtre par taille",
+    description: "Sur la boutique en ligne, nous aimerions ajouter un filtre par taille pour les vêtements.",
+    priorite: "basse", statut: "ouvert", dateCreation: "2026-02-08 16:00", dateMiseAJour: "2026-02-08 16:00",
+    messages: [
+      { id: "tm9", contenu: "Serait-il possible d'ajouter un filtre par taille (XS à XXL) sur la page catalogue ? Nos clients le demandent régulièrement.", role: "client", date: "2026-02-08 16:00" },
+    ],
+  },
+  {
+    id: "tk5", reference: "TK-005", clientId: "c3", clientNom: "Luxe & Mode",
+    sujet: "Erreur 500 lors de la soumission du formulaire contact",
+    description: "Le formulaire de contact renvoie une erreur 500 depuis ce matin.",
+    priorite: "urgente", statut: "ferme", dateCreation: "2026-01-28 08:00", dateMiseAJour: "2026-01-28 15:00",
+    messages: [
+      { id: "tm10", contenu: "Urgence : le formulaire de contact renvoie une erreur 500. Aucun message client ne nous parvient.", role: "client", date: "2026-01-28 08:00" },
+      { id: "tm11", contenu: "Nous avons identifié le problème (service email down). Corrigé et en production.", role: "admin", date: "2026-01-28 12:30" },
+      { id: "tm12", contenu: "Tout refonctionne, merci pour la rapidité !", role: "client", date: "2026-01-28 15:00" },
+    ],
+  },
+];
+
+export const getTicketsByClient = (clientId: string) => tickets.filter((t) => t.clientId === clientId);
+export const getOpenTicketsCount = (clientId?: string) => {
+  const filtered = clientId ? tickets.filter((t) => t.clientId === clientId) : tickets;
+  return filtered.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
+};
+
 // ---- HELPERS ----
 export const getClientById = (id: string) => clients.find((c) => c.id === id);
 export const getDossiersByClient = (clientId: string) => dossiers.filter((d) => d.clientId === clientId);
