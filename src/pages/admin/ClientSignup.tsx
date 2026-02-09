@@ -190,12 +190,12 @@ export default function ClientSignup() {
             </Button>
           </form>
 
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="text-center space-y-1.5 text-sm text-muted-foreground">
             <p>
               Déjà un compte ?{" "}
               <Link to="/admin/login" className="text-primary hover:underline font-medium">Se connecter</Link>
             </p>
-            <Link to="/" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors">
+            <Link to="/" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors mx-auto">
               <Home className="h-3.5 w-3.5" />
               Accueil
             </Link>
