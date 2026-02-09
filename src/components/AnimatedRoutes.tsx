@@ -22,6 +22,16 @@ import WeCloseProject from "@/pages/portfolio/WeCloseProject";
 import AltarysProject from "@/pages/portfolio/AltarysProject";
 import PropheciaProject from "@/pages/portfolio/PropheciaProject";
 
+// Admin pages
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminClients from "@/pages/admin/AdminClients";
+import AdminDossiers from "@/pages/admin/AdminDossiers";
+import AdminMessaging from "@/pages/admin/AdminMessaging";
+import AdminBilling from "@/pages/admin/AdminBilling";
+import AdminReminders from "@/pages/admin/AdminReminders";
+import AdminAnalytics from "@/pages/admin/AdminAnalytics";
+
 export function AnimatedRoutes() {
   const location = useLocation();
   useScrollToTop();
@@ -45,6 +55,17 @@ export function AnimatedRoutes() {
         <Route path="/cookies" element={<PageTransition3D><Cookies /></PageTransition3D>} />
         <Route path="/mentions-legales" element={<PageTransition3D><MentionsLegales /></PageTransition3D>} />
         <Route path="/politique-confidentialite" element={<PageTransition3D><PolitiqueConfidentialite /></PageTransition3D>} />
+        
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/clients" element={<AdminClients />} />
+        <Route path="/admin/dossiers" element={<AdminDossiers />} />
+        <Route path="/admin/messagerie" element={<AdminMessaging />} />
+        <Route path="/admin/facturation" element={<AdminBilling />} />
+        <Route path="/admin/relances" element={<AdminReminders />} />
+        <Route path="/admin/analyse" element={<AdminAnalytics />} />
+        
         <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
       </Routes>
     </AnimatePresence>

@@ -8,6 +8,7 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AnimatedRoutes } from "@/components/AnimatedRoutes";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { DemoAuthProvider } from "@/contexts/DemoAuthContext";
 
 const queryClient = new QueryClient();
 
@@ -17,16 +18,18 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <LoadingScreen onComplete={() => setIsLoaded(true)} />
-        <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AnimatedRoutes />
-            <CookieBanner />
-            <ScrollToTop />
-          </BrowserRouter>
-        </div>
+        <DemoAuthProvider>
+          <LoadingScreen onComplete={() => setIsLoaded(true)} />
+          <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AnimatedRoutes />
+              <CookieBanner />
+              <ScrollToTop />
+            </BrowserRouter>
+          </div>
+        </DemoAuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
