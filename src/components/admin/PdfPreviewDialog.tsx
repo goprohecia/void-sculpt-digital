@@ -11,18 +11,19 @@ interface PdfPreviewDialogProps {
   title: string;
   clientName?: string;
   onDownload?: () => void;
+  onSend?: () => void;
 }
 
-export function PdfPreviewDialog({ open, onOpenChange, pdfUrl, title, clientName, onDownload }: PdfPreviewDialogProps) {
+export function PdfPreviewDialog({ open, onOpenChange, pdfUrl, title, clientName, onDownload, onSend }: PdfPreviewDialogProps) {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
   const handleSend = async () => {
     setSending(true);
-    // Simulate email sending delay
     await new Promise((r) => setTimeout(r, 1500));
     setSending(false);
     setSent(true);
+    onSend?.();
     toast.success(`${title} envoyé${clientName ? ` à ${clientName}` : ""} par email`);
     setTimeout(() => setSent(false), 3000);
   };
