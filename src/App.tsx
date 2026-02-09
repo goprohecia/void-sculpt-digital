@@ -9,6 +9,7 @@ import { CookieBanner } from "@/components/CookieBanner";
 import { AnimatedRoutes } from "@/components/AnimatedRoutes";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { DemoAuthProvider } from "@/contexts/DemoAuthContext";
+import { DemoDataProvider } from "@/contexts/DemoDataContext";
 
 const queryClient = new QueryClient();
 
@@ -19,16 +20,18 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <DemoAuthProvider>
-          <LoadingScreen onComplete={() => setIsLoaded(true)} />
-          <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <AnimatedRoutes />
-              <CookieBanner />
-              <ScrollToTop />
-            </BrowserRouter>
-          </div>
+          <DemoDataProvider>
+            <LoadingScreen onComplete={() => setIsLoaded(true)} />
+            <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AnimatedRoutes />
+                <CookieBanner />
+                <ScrollToTop />
+              </BrowserRouter>
+            </div>
+          </DemoDataProvider>
         </DemoAuthProvider>
       </TooltipProvider>
     </QueryClientProvider>

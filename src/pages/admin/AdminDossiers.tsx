@@ -1,11 +1,17 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Input } from "@/components/ui/input";
-import { dossiers, type DossierStatus } from "@/data/mockData";
-import { Search, FolderOpen } from "lucide-react";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import type { DossierStatus } from "@/data/mockData";
+import { Search, FolderOpen, Eye, Send } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
   { key: "tous", label: "Tous" },
@@ -18,6 +24,7 @@ const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
 export default function AdminDossiers() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus>("tous");
+  const { dossiers, demandes, updateDemandeStatut, addDossier } = useDemoData();
 
   const filtered = dossiers.filter((d) => {
     const matchSearch =
@@ -28,6 +35,23 @@ export default function AdminDossiers() {
     return matchSearch && matchStatut;
   });
 
+  const handleTransformDemande = (dem: typeof demandes[0]) => {
+    const newDossier = {
+      id: `d${Date.now()}`,
+      reference: `DOS-2026-${String(dossiers.length + 26).padStart(3, "0")}`,
+      clientId: dem.clientId,
+      clientNom: dem.clientNom,
+      typePrestation: dem.typePrestation,
+      montant: 0,
+      statut: "en_attente" as DossierStatus,
+      dateCreation: new Date().toISOString().split("T")[0],
+      dateEcheance: "",
+    };
+    addDossier(newDossier);
+    updateDemandeStatut(dem.id, "validee");
+    toast.success(`Dossier ${newDossier.reference} créé depuis la demande`);
+  };
+
   return (
     <AdminLayout>
       <AdminPageTransition>
@@ -35,100 +59,132 @@ export default function AdminDossiers() {
           <motion.div variants={staggerItem}>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <FolderOpen className="h-6 w-6 text-primary" />
-              Dossiers
+              Dossiers & Demandes
             </h1>
-            <p className="text-muted-foreground text-sm">{dossiers.length} dossiers au total</p>
+            <p className="text-muted-foreground text-sm">{dossiers.length} dossiers · {demandes.length} demandes</p>
           </motion.div>
 
-          {/* Filters */}
-          <motion.div className="flex flex-col sm:flex-row gap-3" variants={staggerItem}>
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher par référence, client, prestation..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="glass-input border-0 pl-9 h-10"
-              />
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {statusFilters.map((s) => (
-                <button
-                  key={s.key}
-                  onClick={() => setFilterStatut(s.key)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    filterStatut === s.key
-                      ? "bg-primary text-primary-foreground"
-                      : "glass-button"
-                  }`}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
-          </motion.div>
+          <Tabs defaultValue="dossiers">
+            <TabsList>
+              <TabsTrigger value="dossiers">Dossiers ({dossiers.length})</TabsTrigger>
+              <TabsTrigger value="demandes">Demandes ({demandes.length})</TabsTrigger>
+            </TabsList>
 
-          {/* Desktop Table */}
-          <motion.div className="glass-card overflow-hidden hidden sm:block" variants={staggerItem}>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50 bg-muted/20">
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Prestation</th>
-                    <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
-                    <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Échéance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((d) => (
-                    <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                      <td className="py-3 px-4 font-mono text-xs">{d.reference}</td>
-                      <td className="py-3 px-4">{d.clientNom}</td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.typePrestation}</td>
-                      <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
-                      <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
-                      <td className="py-3 px-4 hidden lg:table-cell text-muted-foreground">
-                        {new Date(d.dateEcheance).toLocaleDateString("fr-FR")}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {filtered.length === 0 && (
-              <div className="p-8 text-center text-muted-foreground">
-                Aucun dossier trouvé
-              </div>
-            )}
-          </motion.div>
-
-          {/* Mobile Card Stack */}
-          <motion.div className="space-y-3 sm:hidden" variants={staggerContainer} initial="initial" animate="animate">
-            {filtered.map((d) => (
-              <motion.div key={d.id} variants={staggerItem} className="glass-card p-4 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-muted-foreground">{d.reference}</span>
-                  <StatusBadge status={d.statut} />
+            <TabsContent value="dossiers" className="space-y-4 mt-4">
+              {/* Filters */}
+              <motion.div className="flex flex-col sm:flex-row gap-3" variants={staggerItem}>
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Rechercher..." value={search} onChange={(e) => setSearch(e.target.value)} className="glass-input border-0 pl-9 h-10" />
                 </div>
-                <p className="font-medium text-sm">{d.clientNom}</p>
-                <p className="text-xs text-muted-foreground">{d.typePrestation}</p>
-                <div className="flex items-center justify-between pt-1 border-t border-border/20">
-                  <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
-                  <span className="text-xs text-muted-foreground">
-                    {new Date(d.dateEcheance).toLocaleDateString("fr-FR")}
-                  </span>
+                <div className="flex gap-2 flex-wrap">
+                  {statusFilters.map((s) => (
+                    <button key={s.key} onClick={() => setFilterStatut(s.key)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${filterStatut === s.key ? "bg-primary text-primary-foreground" : "glass-button"}`}>
+                      {s.label}
+                    </button>
+                  ))}
                 </div>
               </motion.div>
-            ))}
-            {filtered.length === 0 && (
-              <div className="p-8 text-center text-muted-foreground">
-                Aucun dossier trouvé
-              </div>
-            )}
-          </motion.div>
+
+              {/* Table */}
+              <motion.div className="glass-card overflow-hidden hidden sm:block" variants={staggerItem}>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border/50 bg-muted/20">
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Prestation</th>
+                        <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map((d) => (
+                        <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                          <td className="py-3 px-4 font-mono text-xs">{d.reference}</td>
+                          <td className="py-3 px-4">{d.clientNom}</td>
+                          <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.typePrestation}</td>
+                          <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
+                          <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
+                          <td className="py-3 px-4 text-center">
+                            <Link to={`/admin/dossiers/${d.id}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                              <Eye className="h-3 w-3" /> Voir
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {filtered.length === 0 && <div className="p-8 text-center text-muted-foreground">Aucun dossier trouvé</div>}
+              </motion.div>
+
+              {/* Mobile */}
+              <motion.div className="space-y-3 sm:hidden" variants={staggerContainer} initial="initial" animate="animate">
+                {filtered.map((d) => (
+                  <Link key={d.id} to={`/admin/dossiers/${d.id}`}>
+                    <motion.div variants={staggerItem} className="glass-card p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-xs text-muted-foreground">{d.reference}</span>
+                        <StatusBadge status={d.statut} />
+                      </div>
+                      <p className="font-medium text-sm">{d.clientNom}</p>
+                      <p className="text-xs text-muted-foreground">{d.typePrestation}</p>
+                      <div className="flex items-center justify-between pt-1 border-t border-border/20">
+                        <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
+                        <span className="text-xs text-muted-foreground">{new Date(d.dateEcheance).toLocaleDateString("fr-FR")}</span>
+                      </div>
+                    </motion.div>
+                  </Link>
+                ))}
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="demandes" className="space-y-4 mt-4">
+              <motion.div className="space-y-3" variants={staggerContainer} initial="initial" animate="animate">
+                {demandes.map((dem) => (
+                  <motion.div key={dem.id} variants={staggerItem} className="glass-card p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs text-muted-foreground">{dem.reference}</span>
+                      <StatusBadge status={dem.statut} />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">{dem.titre}</p>
+                      <p className="text-xs text-muted-foreground">{dem.clientNom} · {dem.typePrestation}</p>
+                    </div>
+                    <p className="text-xs text-muted-foreground line-clamp-2">{dem.description}</p>
+                    {dem.budget && <p className="text-xs text-muted-foreground">Budget : {dem.budget}</p>}
+                    <div className="flex items-center justify-between pt-2 border-t border-border/20">
+                      <span className="text-xs text-muted-foreground">{new Date(dem.dateCreation).toLocaleDateString("fr-FR")}</span>
+                      <div className="flex gap-2">
+                        {dem.statut !== "validee" && dem.statut !== "refusee" && (
+                          <>
+                            <Select onValueChange={(val) => { updateDemandeStatut(dem.id, val as any); toast.success("Statut mis à jour"); }}>
+                              <SelectTrigger className="w-32 h-8 text-xs"><SelectValue placeholder="Changer statut" /></SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="en_revue">En revue</SelectItem>
+                                <SelectItem value="validee">Valider</SelectItem>
+                                <SelectItem value="refusee">Refuser</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            {dem.statut === "en_revue" && (
+                              <Button size="sm" variant="outline" className="h-8 text-xs gap-1" onClick={() => handleTransformDemande(dem)}>
+                                <FolderOpen className="h-3 w-3" /> Créer dossier
+                              </Button>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+                {demandes.length === 0 && <div className="p-8 text-center text-muted-foreground">Aucune demande</div>}
+              </motion.div>
+            </TabsContent>
+          </Tabs>
         </motion.div>
       </AdminPageTransition>
     </AdminLayout>

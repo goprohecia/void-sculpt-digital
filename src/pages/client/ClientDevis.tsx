@@ -2,11 +2,26 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { getDevisByClient, DEMO_CLIENT_ID } from "@/data/mockData";
-import { FileText } from "lucide-react";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { DEMO_CLIENT_ID } from "@/data/mockData";
+import { FileText, Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 export default function ClientDevis() {
+  const { getDevisByClient, updateDevisStatut } = useDemoData();
   const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
+
+  const handleAccept = (id: string) => {
+    updateDevisStatut(id, "accepte");
+    toast.success("Devis accepté");
+  };
+
+  const handleRefuse = (id: string) => {
+    updateDevisStatut(id, "refuse");
+    toast.success("Devis refusé");
+  };
 
   return (
     <ClientLayout>
@@ -30,8 +45,8 @@ export default function ClientDevis() {
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium">Description</th>
                     <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Validité</th>
+                    <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -41,11 +56,42 @@ export default function ClientDevis() {
                       <td className="py-3 px-4">{d.titre}</td>
                       <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
                       <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">
-                        {new Date(d.dateEmission).toLocaleDateString("fr-FR")}
-                      </td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">
-                        {new Date(d.dateValidite).toLocaleDateString("fr-FR")}
+                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(d.dateValidite).toLocaleDateString("fr-FR")}</td>
+                      <td className="py-3 px-4 text-center">
+                        {d.statut === "en_attente" && (
+                          <div className="flex gap-1 justify-center">
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button size="sm" variant="outline" className="h-7 text-xs gap-1 text-[hsl(155,100%,55%)] border-[hsl(155,100%,45%)]/30">
+                                  <Check className="h-3 w-3" /> Accepter
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader><DialogTitle>Accepter ce devis ?</DialogTitle></DialogHeader>
+                                <p className="text-sm text-muted-foreground">{d.titre} — {d.montant.toLocaleString()} €</p>
+                                <div className="flex gap-2 justify-end pt-2">
+                                  <DialogClose asChild><Button variant="outline" size="sm">Annuler</Button></DialogClose>
+                                  <DialogClose asChild><Button size="sm" onClick={() => handleAccept(d.id)}>Confirmer</Button></DialogClose>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button size="sm" variant="outline" className="h-7 text-xs gap-1 text-destructive border-destructive/30">
+                                  <X className="h-3 w-3" /> Refuser
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader><DialogTitle>Refuser ce devis ?</DialogTitle></DialogHeader>
+                                <p className="text-sm text-muted-foreground">{d.titre} — {d.montant.toLocaleString()} €</p>
+                                <div className="flex gap-2 justify-end pt-2">
+                                  <DialogClose asChild><Button variant="outline" size="sm">Annuler</Button></DialogClose>
+                                  <DialogClose asChild><Button size="sm" variant="destructive" onClick={() => handleRefuse(d.id)}>Confirmer le refus</Button></DialogClose>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -65,10 +111,18 @@ export default function ClientDevis() {
                 <p className="font-medium text-sm">{d.titre}</p>
                 <div className="flex items-center justify-between pt-1 border-t border-border/20">
                   <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
-                  <span className="text-xs text-muted-foreground">
-                    Valide jusqu'au {new Date(d.dateValidite).toLocaleDateString("fr-FR")}
-                  </span>
+                  <span className="text-xs text-muted-foreground">Valide jusqu'au {new Date(d.dateValidite).toLocaleDateString("fr-FR")}</span>
                 </div>
+                {d.statut === "en_attente" && (
+                  <div className="flex gap-2 pt-2">
+                    <Button size="sm" variant="outline" className="flex-1 h-8 text-xs" onClick={() => handleAccept(d.id)}>
+                      <Check className="h-3 w-3 mr-1" /> Accepter
+                    </Button>
+                    <Button size="sm" variant="outline" className="flex-1 h-8 text-xs text-destructive" onClick={() => handleRefuse(d.id)}>
+                      <X className="h-3 w-3 mr-1" /> Refuser
+                    </Button>
+                  </div>
+                )}
               </motion.div>
             ))}
           </motion.div>
