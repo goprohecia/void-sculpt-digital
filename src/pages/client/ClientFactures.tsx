@@ -5,8 +5,9 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
-import { Receipt, CreditCard } from "lucide-react";
+import { Receipt, CreditCard, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { generateFacturePdf } from "@/lib/generatePdf";
 
 export default function ClientFactures() {
   const { getFacturesByClient } = useDemoData();
@@ -56,13 +57,18 @@ export default function ClientFactures() {
                       <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
                       <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</td>
                       <td className="py-3 px-4 text-center">
-                        {(f.statut === "en_attente" || f.statut === "en_retard") && (
-                          <Link to={`/client/paiement/${f.id}`}>
-                            <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
-                              <CreditCard className="h-3 w-3" /> Payer
-                            </Button>
-                          </Link>
-                        )}
+                        <div className="flex items-center justify-center gap-1.5">
+                          <Button size="sm" variant="ghost" className="h-7 text-xs gap-1" onClick={() => generateFacturePdf(f)}>
+                            <Download className="h-3 w-3" /> PDF
+                          </Button>
+                          {(f.statut === "en_attente" || f.statut === "en_retard") && (
+                            <Link to={`/client/paiement/${f.id}`}>
+                              <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
+                                <CreditCard className="h-3 w-3" /> Payer
+                              </Button>
+                            </Link>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -83,6 +89,9 @@ export default function ClientFactures() {
                   <span className="text-sm font-medium">{f.montant.toLocaleString()} €</span>
                   <span className="text-xs text-muted-foreground">Échéance : {new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</span>
                 </div>
+                <Button size="sm" variant="ghost" className="w-full h-8 text-xs gap-1" onClick={() => generateFacturePdf(f)}>
+                  <Download className="h-3 w-3" /> Télécharger PDF
+                </Button>
                 {(f.statut === "en_attente" || f.statut === "en_retard") && (
                   <Link to={`/client/paiement/${f.id}`} className="block pt-1">
                     <Button size="sm" variant="outline" className="w-full h-8 text-xs gap-1">
