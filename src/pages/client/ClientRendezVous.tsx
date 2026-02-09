@@ -1,20 +1,39 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { CalendlyBookingDialog } from "@/components/admin/CalendlyBookingDialog";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Plus, Clock, Video } from "lucide-react";
-import { getRendezVousByClient, DEMO_CLIENT_ID } from "@/data/mockData";
-import { format, parseISO, isPast } from "date-fns";
+import { CalendarDays, Plus, Clock, Video, Loader2, AlertCircle } from "lucide-react";
+import { useCalendlyEvents } from "@/hooks/use-calendly-events";
+import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
 export default function ClientRendezVous() {
   const [showCalendly, setShowCalendly] = useState(false);
-  const mesRdv = getRendezVousByClient(DEMO_CLIENT_ID);
-  const rdvAVenir = mesRdv.filter((r) => r.statut === "a_venir");
-  const rdvPasses = mesRdv.filter((r) => r.statut === "passe" || r.statut === "annule");
+
+  const minDate = useMemo(() => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - 3);
+    return d.toISOString();
+  }, []);
+
+  const maxDate = useMemo(() => {
+    const d = new Date();
+    d.setMonth(d.getMonth() + 6);
+    return d.toISOString();
+  }, []);
+
+  const { data: events = [], isLoading, error } = useCalendlyEvents(minDate, maxDate);
+
+  const rdvAVenir = events
+    .filter((r) => r.statut === "a_venir")
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  const rdvPasses = events
+    .filter((r) => r.statut === "passe" || r.statut === "annule")
+    .sort((a, b) => b.date.localeCompare(a.date));
 
   return (
     <ClientLayout>
@@ -31,6 +50,20 @@ export default function ClientRendezVous() {
             </Button>
           </motion.div>
 
+          {error && (
+            <motion.div variants={staggerItem} className="glass-card p-4 border-destructive/30 flex items-center gap-3 text-destructive">
+              <AlertCircle className="h-5 w-5 shrink-0" />
+              <p className="text-sm">Impossible de charger les rendez-vous.</p>
+            </motion.div>
+          )}
+
+          {isLoading && (
+            <motion.div variants={staggerItem} className="flex items-center justify-center py-12 gap-2 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span className="text-sm">Chargement des rendez-vous…</span>
+            </motion.div>
+          )}
+
           {/* À venir */}
           <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
             <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
@@ -38,7 +71,7 @@ export default function ClientRendezVous() {
               À venir ({rdvAVenir.length})
             </h3>
             <div className="space-y-3">
-              {rdvAVenir.length === 0 ? (
+              {rdvAVenir.length === 0 && !isLoading ? (
                 <p className="text-sm text-muted-foreground text-center py-6">Aucun rendez-vous à venir</p>
               ) : (
                 rdvAVenir.map((rdv) => (
@@ -71,7 +104,7 @@ export default function ClientRendezVous() {
               Historique ({rdvPasses.length})
             </h3>
             <div className="space-y-3">
-              {rdvPasses.length === 0 ? (
+              {rdvPasses.length === 0 && !isLoading ? (
                 <p className="text-sm text-muted-foreground text-center py-6">Aucun rendez-vous passé</p>
               ) : (
                 rdvPasses.map((rdv) => (
