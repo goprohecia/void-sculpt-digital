@@ -165,17 +165,14 @@ export function Header() {
               </Link>
             </MagneticButton>
             <MagneticButton as="div" strength={0.25}>
-              <RippleButton
-                onClick={() =>
-                  window.open(
-                    "https://calendly.com/yannis-bezriche/impartial-games",
-                    "_blank"
-                  )
-                }
-                className="btn-gradient px-6 py-2.5 text-white font-semibold rounded-xl"
+              <a
+                href="https://calendly.com/yannis-bezriche/impartial-games"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
               >
                 Planifier un appel
-              </RippleButton>
+              </a>
             </MagneticButton>
           </div>
 
