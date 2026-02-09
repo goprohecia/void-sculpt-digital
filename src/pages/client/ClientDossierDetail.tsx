@@ -5,8 +5,9 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare } from "lucide-react";
+import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare, Clock, PenLine, Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 
 const etapes = ["Demande reçue", "Devis envoyé", "Devis accepté", "Cahier des charges", "En cours", "Livraison", "Terminé"];
@@ -110,7 +111,39 @@ export default function ClientDossierDetail() {
             </motion.div>
           )}
 
-          {/* Info */}
+          {/* CDC Historique */}
+          {cahier?.historique && cahier.historique.length > 0 && (
+            <motion.div className="glass-card p-4 border border-border/30" variants={staggerItem}>
+              <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+                <Clock className="h-4 w-4 text-[hsl(200,100%,60%)]" />
+                Historique du cahier des charges
+              </h2>
+              <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                {[...cahier.historique].reverse().map((entry) => {
+                  const iconMap = {
+                    creation: <FileText className="h-3 w-3 text-muted-foreground" />,
+                    mise_a_jour: <PenLine className="h-3 w-3 text-muted-foreground" />,
+                    soumission: <Send className="h-3 w-3 text-[hsl(200,100%,60%)]" />,
+                    commentaire_admin: <MessageSquare className="h-3 w-3 text-primary" />,
+                    validation: <CheckCircle2 className="h-3 w-3 text-green-400" />,
+                  };
+                  return (
+                    <div key={entry.id} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 text-xs">
+                      {iconMap[entry.action]}
+                      <span className="flex-1">{entry.description}</span>
+                      <Badge variant="outline" className="text-[9px] px-1 py-0">
+                        {entry.auteur === "admin" ? "Équipe" : "Vous"}
+                      </Badge>
+                      <span className="text-muted-foreground whitespace-nowrap">
+                        {new Date(entry.date).toLocaleDateString("fr-FR")} à {new Date(entry.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
           <motion.div className="glass-card p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm" variants={staggerItem}>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Montant</p><p className="font-bold text-base sm:text-lg">{dossier.montant.toLocaleString()} €</p></div>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Création</p><p>{new Date(dossier.dateCreation).toLocaleDateString("fr-FR")}</p></div>

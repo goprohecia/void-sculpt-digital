@@ -78,6 +78,16 @@ function generateMockVisits(): PreviewVisit[] {
 export type DemandeStatus = "nouvelle" | "en_revue" | "validee" | "refusee";
 export type DemandePrestation = "Site web" | "App mobile" | "E-commerce" | "Back-office" | "360" | "Autre";
 
+export type CdcHistoriqueAction = "creation" | "mise_a_jour" | "soumission" | "commentaire_admin" | "validation";
+
+export interface CdcHistoriqueEntry {
+  id: string;
+  action: CdcHistoriqueAction;
+  auteur: "client" | "admin";
+  description: string;
+  date: string;
+}
+
 export interface CahierDesCharges {
   id: string;
   demandeId: string;
@@ -92,6 +102,7 @@ export interface CahierDesCharges {
   commentairesAdmin?: string;
   statut: "brouillon" | "complet" | "validé";
   dateMiseAJour: string;
+  historique: CdcHistoriqueEntry[];
 }
 
 export interface Demande {
@@ -130,6 +141,13 @@ const initialCahiers: CahierDesCharges[] = [
     commentairesAdmin: "Projet très intéressant, le scope est bien défini. Prévoir une phase de migration des données produits existantes. Attention au budget serré pour le programme de fidélité — proposer un MVP d'abord.",
     statut: "validé",
     dateMiseAJour: "2026-02-04",
+    historique: [
+      { id: "h1", action: "creation", auteur: "client", description: "Cahier des charges créé", date: "2026-02-01T10:30:00" },
+      { id: "h2", action: "mise_a_jour", auteur: "client", description: "Sections design et fonctionnalités complétées", date: "2026-02-02T14:15:00" },
+      { id: "h3", action: "soumission", auteur: "client", description: "Cahier des charges soumis pour validation", date: "2026-02-03T09:00:00" },
+      { id: "h4", action: "commentaire_admin", auteur: "admin", description: "Commentaire ajouté par l'équipe", date: "2026-02-03T16:45:00" },
+      { id: "h5", action: "validation", auteur: "admin", description: "Cahier des charges validé", date: "2026-02-04T11:20:00" },
+    ],
   },
 ];
 
@@ -390,7 +408,9 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     });
   }, []);
   const updateCahierComment = useCallback((demandeId: string, comment: string) => {
-    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, commentairesAdmin: comment } : c));
+    const now = new Date().toISOString();
+    const entry: CdcHistoriqueEntry = { id: `h_${Date.now()}`, action: "commentaire_admin", auteur: "admin", description: "Commentaire ajouté par l'équipe", date: now };
+    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, commentairesAdmin: comment, historique: [...c.historique, entry] } : c));
     // Notification + email to client
     const dem = demandes.find((d) => d.id === demandeId);
     if (dem) {
@@ -402,7 +422,9 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   }, [demandes, pushNotif, pushEmail]);
 
   const validateCahier = useCallback((demandeId: string) => {
-    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, statut: "validé" as const, dateMiseAJour: new Date().toISOString().split("T")[0] } : c));
+    const now = new Date().toISOString();
+    const entry: CdcHistoriqueEntry = { id: `h_${Date.now()}`, action: "validation", auteur: "admin", description: "Cahier des charges validé", date: now };
+    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, statut: "validé" as const, dateMiseAJour: now.split("T")[0], historique: [...c.historique, entry] } : c));
     const dem = demandes.find((d) => d.id === demandeId);
     if (dem) {
       pushNotif("dossier", "Cahier des charges validé", `Votre cahier des charges pour "${dem.titre}" a été validé. Le développement peut commencer !`, "/client/dossiers", "client", dem.clientId);
