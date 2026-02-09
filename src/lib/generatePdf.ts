@@ -127,6 +127,17 @@ export function generateDevisPdf(devisItem: Devis) {
   const doc = new jsPDF();
 
   addHeader(doc, "DEVIS", devisItem.reference);
+
+  // "ACCEPTÉ" badge if signed
+  if (devisItem.statut === "accepte" && devisItem.signatureDataUrl) {
+    doc.setFillColor(34, 170, 85);
+    doc.roundedRect(148, 10, 50, 12, 2, 2, "F");
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(255, 255, 255);
+    doc.text("ACCEPTÉ", 173, 18, { align: "center" });
+  }
+
   addClientInfo(doc, devisItem.clientNom, 55);
 
   // Dates
@@ -172,15 +183,42 @@ export function generateDevisPdf(devisItem: Devis) {
   });
 
   const finalY = (doc as any).lastAutoTable?.finalY || 130;
-  doc.setFontSize(8);
-  doc.setTextColor(100, 100, 120);
-  doc.text(`Ce devis est valable jusqu'au ${new Date(devisItem.dateValidite).toLocaleDateString("fr-FR")}.`, 20, finalY + 12);
-  doc.text("Signature et mention « Bon pour accord » :", 20, finalY + 22);
 
-  // Signature box
-  doc.setDrawColor(180, 180, 200);
-  doc.setLineWidth(0.3);
-  doc.rect(20, finalY + 26, 80, 30);
+  if (devisItem.statut === "accepte" && devisItem.signatureDataUrl) {
+    // "Bon pour accord" text
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(34, 170, 85);
+    doc.text("Bon pour accord", 20, finalY + 14);
+
+    // Signature image
+    try {
+      doc.addImage(devisItem.signatureDataUrl, "PNG", 20, finalY + 18, 70, 28);
+    } catch {
+      // fallback if image fails
+    }
+
+    // Signatory info
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(80, 80, 100);
+    if (devisItem.signataireNom) {
+      doc.text(`Signataire : ${devisItem.signataireNom}`, 20, finalY + 50);
+    }
+    if (devisItem.dateSignature) {
+      doc.text(`Date de signature : ${new Date(devisItem.dateSignature).toLocaleDateString("fr-FR")}`, 20, finalY + 55);
+    }
+  } else {
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 120);
+    doc.text(`Ce devis est valable jusqu'au ${new Date(devisItem.dateValidite).toLocaleDateString("fr-FR")}.`, 20, finalY + 12);
+    doc.text("Signature et mention « Bon pour accord » :", 20, finalY + 22);
+
+    // Empty signature box
+    doc.setDrawColor(180, 180, 200);
+    doc.setLineWidth(0.3);
+    doc.rect(20, finalY + 26, 80, 30);
+  }
 
   addFooter(doc);
   doc.save(`${devisItem.reference}.pdf`);
