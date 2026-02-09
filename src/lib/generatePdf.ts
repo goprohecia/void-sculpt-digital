@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import type { Facture, Devis } from "@/data/mockData";
+import type { Facture, Devis, Client } from "@/data/mockData";
 
 const COMPANY = {
   name: "Impartial",
@@ -45,14 +45,51 @@ function addHeader(doc: jsPDF, title: string, reference: string) {
   doc.line(20, 48, 190, 48);
 }
 
-function addClientInfo(doc: jsPDF, clientNom: string, y: number) {
+function addClientInfo(doc: jsPDF, clientNom: string, y: number, client?: Client) {
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(30, 30, 60);
   doc.text("Client", 140, y);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(60, 60, 80);
-  doc.text(clientNom, 140, y + 6);
+
+  let lineY = y + 6;
+  // If client has entreprise, show it first, then name
+  if (client?.entreprise) {
+    doc.setFont("helvetica", "bold");
+    doc.text(client.entreprise, 140, lineY);
+    lineY += 5;
+    doc.setFont("helvetica", "normal");
+    doc.text(`${client.prenom} ${client.nom}`, 140, lineY);
+  } else {
+    doc.text(clientNom, 140, lineY);
+  }
+  lineY += 5;
+
+  if (client?.siret) {
+    doc.setFontSize(8);
+    doc.text(`SIRET : ${client.siret}`, 140, lineY);
+    lineY += 4;
+  }
+  if (client?.adresse) {
+    doc.setFontSize(8);
+    doc.text(client.adresse, 140, lineY);
+    lineY += 4;
+  }
+  if (client?.codePostal || client?.ville) {
+    doc.setFontSize(8);
+    doc.text(`${client.codePostal || ""} ${client.ville || ""}`.trim(), 140, lineY);
+    lineY += 4;
+  }
+  if (client?.pays) {
+    doc.setFontSize(8);
+    doc.text(client.pays, 140, lineY);
+    lineY += 4;
+  }
+  if (client?.email) {
+    doc.setFontSize(8);
+    doc.text(client.email, 140, lineY);
+  }
 }
 
 function addFooter(doc: jsPDF) {
@@ -67,11 +104,11 @@ function addFooter(doc: jsPDF) {
   );
 }
 
-export function generateFacturePdf(facture: Facture) {
+export function generateFacturePdf(facture: Facture, client?: Client) {
   const doc = new jsPDF();
 
   addHeader(doc, "FACTURE", facture.reference);
-  addClientInfo(doc, facture.clientNom, 55);
+  addClientInfo(doc, facture.clientNom, 55, client);
 
   // Dates
   doc.setFontSize(9);
@@ -130,11 +167,11 @@ export function generateFacturePdf(facture: Facture) {
   doc.save(`${facture.reference}.pdf`);
 }
 
-export function generateDevisPdf(devisItem: Devis) {
+export function generateDevisPdf(devisItem: Devis, client?: Client) {
   const doc = new jsPDF();
 
   addHeader(doc, "DEVIS", devisItem.reference);
-  addClientInfo(doc, devisItem.clientNom, 55);
+  addClientInfo(doc, devisItem.clientNom, 55, client);
 
   // Dates
   doc.setFontSize(9);

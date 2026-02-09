@@ -4,7 +4,7 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { DEMO_CLIENT_ID, getClientById } from "@/data/mockData";
+import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { FileText, Check, X, Eraser, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
@@ -14,7 +14,7 @@ import SignaturePad, { type SignaturePadRef } from "@/components/SignaturePad";
 import { generateDevisPdf } from "@/lib/generatePdf";
 
 export default function ClientDevis() {
-  const { getDevisByClient, updateDevisStatut, updateDevisSignature } = useDemoData();
+  const { getDevisByClient, updateDevisStatut, updateDevisSignature, getClientById } = useDemoData();
   const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
   const client = getClientById(DEMO_CLIENT_ID);
 
@@ -134,7 +134,7 @@ export default function ClientDevis() {
                               </Dialog>
                             </>
                           )}
-                          <Button size="sm" variant="ghost" className="h-7 text-xs gap-1" onClick={() => generateDevisPdf(d)}>
+                          <Button size="sm" variant="ghost" className="h-7 text-xs gap-1" onClick={() => generateDevisPdf(d, client)}>
                             <Download className="h-3 w-3" /> PDF
                           </Button>
                         </div>
@@ -194,7 +194,7 @@ export default function ClientDevis() {
                     </Button>
                   </div>
                 )}
-                <Button size="sm" variant="ghost" className="w-full h-8 text-xs gap-1" onClick={() => generateDevisPdf(d)}>
+                <Button size="sm" variant="ghost" className="w-full h-8 text-xs gap-1" onClick={() => generateDevisPdf(d, client)}>
                   <Download className="h-3 w-3" /> Télécharger PDF
                 </Button>
               </motion.div>

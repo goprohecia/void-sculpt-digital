@@ -10,8 +10,9 @@ import { Button } from "@/components/ui/button";
 import { generateFacturePdf } from "@/lib/generatePdf";
 
 export default function ClientFactures() {
-  const { getFacturesByClient } = useDemoData();
+  const { getFacturesByClient, getClientById } = useDemoData();
   const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
+  const client = getClientById(DEMO_CLIENT_ID);
 
   const totalDu = mesFactures
     .filter((f) => f.statut === "en_attente" || f.statut === "en_retard")
@@ -58,7 +59,7 @@ export default function ClientFactures() {
                       <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</td>
                       <td className="py-3 px-4 text-center">
                         <div className="flex items-center justify-center gap-1.5">
-                          <Button size="sm" variant="ghost" className="h-7 text-xs gap-1" onClick={() => generateFacturePdf(f)}>
+                          <Button size="sm" variant="ghost" className="h-7 text-xs gap-1" onClick={() => generateFacturePdf(f, client)}>
                             <Download className="h-3 w-3" /> PDF
                           </Button>
                           {(f.statut === "en_attente" || f.statut === "en_retard") && (
@@ -89,7 +90,7 @@ export default function ClientFactures() {
                   <span className="text-sm font-medium">{f.montant.toLocaleString()} €</span>
                   <span className="text-xs text-muted-foreground">Échéance : {new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</span>
                 </div>
-                <Button size="sm" variant="ghost" className="w-full h-8 text-xs gap-1" onClick={() => generateFacturePdf(f)}>
+                <Button size="sm" variant="ghost" className="w-full h-8 text-xs gap-1" onClick={() => generateFacturePdf(f, client)}>
                   <Download className="h-3 w-3" /> Télécharger PDF
                 </Button>
                 {(f.statut === "en_attente" || f.statut === "en_retard") && (
