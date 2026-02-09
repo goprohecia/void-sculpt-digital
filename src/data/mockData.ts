@@ -437,6 +437,30 @@ export const getOpenTicketsCount = (clientId?: string) => {
   return filtered.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
 };
 
+// ---- RENDEZ-VOUS ----
+export type RendezVousStatus = "a_venir" | "passe" | "annule";
+
+export interface RendezVous {
+  id: string;
+  clientId: string;
+  clientNom: string;
+  date: string;
+  heure: string;
+  sujet: string;
+  statut: RendezVousStatus;
+}
+
+export const rendezVous: RendezVous[] = [
+  { id: "rdv1", clientId: "c3", clientNom: "Luxe & Mode", date: "2026-01-20", heure: "10:00", sujet: "Kick-off Application 360°", statut: "passe" },
+  { id: "rdv2", clientId: "c1", clientNom: "TechSolutions", date: "2026-01-25", heure: "14:30", sujet: "Revue site vitrine", statut: "passe" },
+  { id: "rdv3", clientId: "c3", clientNom: "Luxe & Mode", date: "2026-02-12", heure: "11:00", sujet: "Point avancement 360°", statut: "a_venir" },
+  { id: "rdv4", clientId: "c2", clientNom: "GreenLeaf Bio", date: "2026-02-15", heure: "09:30", sujet: "Démo e-commerce", statut: "a_venir" },
+  { id: "rdv5", clientId: "c7", clientNom: "HealthPlus", date: "2026-02-18", heure: "16:00", sujet: "Cahier des charges app", statut: "a_venir" },
+  { id: "rdv6", clientId: "c3", clientNom: "Luxe & Mode", date: "2026-02-25", heure: "14:00", sujet: "Validation maquettes mobile", statut: "a_venir" },
+];
+
+export const getRendezVousByClient = (clientId: string) => rendezVous.filter((r) => r.clientId === clientId);
+
 // ---- HELPERS ----
 export const getClientById = (id: string) => clients.find((c) => c.id === id);
 export const getDossiersByClient = (clientId: string) => dossiers.filter((d) => d.clientId === clientId);

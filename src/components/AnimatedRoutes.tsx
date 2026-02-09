@@ -49,6 +49,8 @@ import ClientProfile from "@/pages/client/ClientProfile";
 import ClientSupport from "@/pages/client/ClientSupport";
 import ClientPaiement from "@/pages/client/ClientPaiement";
 import ClientSettings from "@/pages/client/ClientSettings";
+import ClientRendezVous from "@/pages/client/ClientRendezVous";
+import AdminRendezVous from "@/pages/admin/AdminRendezVous";
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -86,6 +88,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/relances" element={<AdminReminders />} />
         <Route path="/admin/emails" element={<AdminEmails />} />
         <Route path="/admin/support" element={<AdminSupport />} />
+        <Route path="/admin/rendez-vous" element={<AdminRendezVous />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
         
@@ -99,6 +102,7 @@ export function AnimatedRoutes() {
         <Route path="/client/paiement/:factureId" element={<ClientPaiement />} />
         <Route path="/client/messagerie" element={<ClientMessaging />} />
         <Route path="/client/support" element={<ClientSupport />} />
+        <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
         <Route path="/client/profil" element={<ClientProfile />} />
         <Route path="/client/parametres" element={<ClientSettings />} />
         
