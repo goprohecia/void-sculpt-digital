@@ -9,6 +9,7 @@ import {
   Mail,
   BarChart3,
   LifeBuoy,
+  Settings,
   LogOut,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
@@ -37,6 +38,7 @@ const navItems = [
   { title: "Emails", url: "/admin/emails", icon: Mail },
   { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: getOpenTicketsCount() },
   { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
+  { title: "Paramètres", url: "/admin/parametres", icon: Settings },
 ];
 
 export function AdminSidebar() {
