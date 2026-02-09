@@ -8,6 +8,7 @@ import {
   LifeBuoy,
   UserCircle,
   LogOut,
+  Send,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID } from "@/data/mockData";
@@ -30,6 +31,7 @@ const clientConvNonLus = getConversationsByClient(DEMO_CLIENT_ID).reduce((acc, c
 const navItems = [
   { title: "Tableau de bord", url: "/client", icon: LayoutDashboard },
   { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen },
+  { title: "Demandes", url: "/client/demandes", icon: Send },
   { title: "Devis", url: "/client/devis", icon: FileText },
   { title: "Factures", url: "/client/factures", icon: Receipt },
   { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },

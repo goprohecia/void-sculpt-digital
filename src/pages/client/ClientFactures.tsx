@@ -1,11 +1,15 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { getFacturesByClient, DEMO_CLIENT_ID } from "@/data/mockData";
-import { Receipt } from "lucide-react";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { DEMO_CLIENT_ID } from "@/data/mockData";
+import { Receipt, CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ClientFactures() {
+  const { getFacturesByClient } = useDemoData();
   const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
 
   const totalDu = mesFactures
@@ -24,7 +28,6 @@ export default function ClientFactures() {
             <p className="text-muted-foreground text-sm">{mesFactures.length} factures</p>
           </motion.div>
 
-          {/* Summary */}
           {totalDu > 0 && (
             <motion.div className="glass-card p-4 border-l-4 border-l-[hsl(45,93%,55%)]" variants={staggerItem}>
               <p className="text-sm font-medium">Montant restant dû</p>
@@ -41,8 +44,8 @@ export default function ClientFactures() {
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
                     <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Échéance</th>
+                    <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -51,11 +54,15 @@ export default function ClientFactures() {
                       <td className="py-3 px-4 font-mono text-xs">{f.reference}</td>
                       <td className="py-3 px-4 text-right font-medium">{f.montant.toLocaleString()} €</td>
                       <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">
-                        {new Date(f.dateEmission).toLocaleDateString("fr-FR")}
-                      </td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">
-                        {new Date(f.dateEcheance).toLocaleDateString("fr-FR")}
+                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</td>
+                      <td className="py-3 px-4 text-center">
+                        {(f.statut === "en_attente" || f.statut === "en_retard") && (
+                          <Link to={`/client/paiement/${f.id}`}>
+                            <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
+                              <CreditCard className="h-3 w-3" /> Payer
+                            </Button>
+                          </Link>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -74,10 +81,15 @@ export default function ClientFactures() {
                 </div>
                 <div className="flex items-center justify-between pt-1 border-t border-border/20">
                   <span className="text-sm font-medium">{f.montant.toLocaleString()} €</span>
-                  <span className="text-xs text-muted-foreground">
-                    Échéance : {new Date(f.dateEcheance).toLocaleDateString("fr-FR")}
-                  </span>
+                  <span className="text-xs text-muted-foreground">Échéance : {new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</span>
                 </div>
+                {(f.statut === "en_attente" || f.statut === "en_retard") && (
+                  <Link to={`/client/paiement/${f.id}`} className="block pt-1">
+                    <Button size="sm" variant="outline" className="w-full h-8 text-xs gap-1">
+                      <CreditCard className="h-3 w-3" /> Payer cette facture
+                    </Button>
+                  </Link>
+                )}
               </motion.div>
             ))}
           </motion.div>

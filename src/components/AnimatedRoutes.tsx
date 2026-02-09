@@ -27,20 +27,25 @@ import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
+import AdminDossierDetail from "@/pages/admin/AdminDossierDetail";
 import AdminMessaging from "@/pages/admin/AdminMessaging";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminReminders from "@/pages/admin/AdminReminders";
 import AdminAnalytics from "@/pages/admin/AdminAnalytics";
+import AdminSupport from "@/pages/admin/AdminSupport";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
 import ClientDossiers from "@/pages/client/ClientDossiers";
+import ClientDossierDetail from "@/pages/client/ClientDossierDetail";
+import ClientDemandes from "@/pages/client/ClientDemandes";
 import ClientDevis from "@/pages/client/ClientDevis";
 import ClientFactures from "@/pages/client/ClientFactures";
 import ClientMessaging from "@/pages/client/ClientMessaging";
 import ClientProfile from "@/pages/client/ClientProfile";
 import ClientSupport from "@/pages/client/ClientSupport";
-import AdminSupport from "@/pages/admin/AdminSupport";
+import ClientPaiement from "@/pages/client/ClientPaiement";
+
 export function AnimatedRoutes() {
   const location = useLocation();
   useScrollToTop();
@@ -70,6 +75,7 @@ export function AnimatedRoutes() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
+        <Route path="/admin/dossiers/:id" element={<AdminDossierDetail />} />
         <Route path="/admin/messagerie" element={<AdminMessaging />} />
         <Route path="/admin/facturation" element={<AdminBilling />} />
         <Route path="/admin/relances" element={<AdminReminders />} />
@@ -79,8 +85,11 @@ export function AnimatedRoutes() {
         {/* Client routes */}
         <Route path="/client" element={<ClientDashboard />} />
         <Route path="/client/dossiers" element={<ClientDossiers />} />
+        <Route path="/client/dossiers/:id" element={<ClientDossierDetail />} />
+        <Route path="/client/demandes" element={<ClientDemandes />} />
         <Route path="/client/devis" element={<ClientDevis />} />
         <Route path="/client/factures" element={<ClientFactures />} />
+        <Route path="/client/paiement/:factureId" element={<ClientPaiement />} />
         <Route path="/client/messagerie" element={<ClientMessaging />} />
         <Route path="/client/support" element={<ClientSupport />} />
         <Route path="/client/profil" element={<ClientProfile />} />
