@@ -90,7 +90,7 @@ export interface CahierDesCharges {
   budgetComplementaire: string;
   remarques: string;
   commentairesAdmin?: string;
-  statut: "brouillon" | "complet";
+  statut: "brouillon" | "complet" | "validé";
   dateMiseAJour: string;
 }
 
@@ -128,7 +128,7 @@ const initialCahiers: CahierDesCharges[] = [
     budgetComplementaire: "Budget dédié à l'UX/UI design déjà alloué séparément (5 000 €). Le budget mentionné dans la demande couvre uniquement le développement.",
     remarques: "Nous disposons déjà d'un stock photo professionnel. Un accès au back-office actuel sera fourni pour la migration des données produits.",
     commentairesAdmin: "Projet très intéressant, le scope est bien défini. Prévoir une phase de migration des données produits existantes. Attention au budget serré pour le programme de fidélité — proposer un MVP d'abord.",
-    statut: "complet",
+    statut: "validé",
     dateMiseAJour: "2026-02-04",
   },
 ];
@@ -201,6 +201,7 @@ interface DemoDataContextType {
   getCahierByDossier: (dossierId: string) => CahierDesCharges | undefined;
   saveCahierDesCharges: (cahier: CahierDesCharges) => void;
   updateCahierComment: (demandeId: string, comment: string) => void;
+  validateCahier: (demandeId: string) => void;
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
@@ -400,6 +401,17 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     }
   }, [demandes, pushNotif, pushEmail]);
 
+  const validateCahier = useCallback((demandeId: string) => {
+    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, statut: "validé" as const, dateMiseAJour: new Date().toISOString().split("T")[0] } : c));
+    const dem = demandes.find((d) => d.id === demandeId);
+    if (dem) {
+      pushNotif("dossier", "Cahier des charges validé", `Votre cahier des charges pour "${dem.titre}" a été validé. Le développement peut commencer !`, "/client/dossiers", "client", dem.clientId);
+      pushEmail("validation", dem.clientNom, `Cahier des charges validé — ${dem.reference}`,
+        `<p>Bonjour,</p><p>Votre cahier des charges pour <strong>"${dem.titre}"</strong> a été validé par notre équipe.</p><p>Le développement de votre projet peut maintenant commencer.</p><p>L'équipe Impartial</p>`,
+        dem.clientId, dem.reference);
+    }
+  }, [demandes, pushNotif, pushEmail]);
+
   return (
     <DemoDataContext.Provider value={{
       factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs, previewVisits,
@@ -409,7 +421,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
-      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment,
+      cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier,
     }}>
       {children}
     </DemoDataContext.Provider>

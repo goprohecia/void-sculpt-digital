@@ -41,7 +41,8 @@ export default function ClientDossiers() {
                 <tbody>
                   {mesDossiers.map((d) => {
                     const cdc = getCahierByDossier(d.id);
-                    const cdcRequired = (d.statut === "en_cours") && d.demandeId && cdc?.statut !== "complet";
+                    const cdcRequired = (d.statut === "en_cours") && d.demandeId && (!cdc || cdc.statut === "brouillon");
+                    const cdcPending = (d.statut === "en_cours") && d.demandeId && cdc?.statut === "complet";
                     return (
                     <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
                       <td className="py-3 px-4 font-mono text-xs">{d.reference}</td>
@@ -53,6 +54,11 @@ export default function ClientDossiers() {
                           {cdcRequired && (
                             <Badge variant="outline" className="text-[hsl(45,100%,50%)] border-[hsl(45,100%,50%)]/40 gap-1 text-[10px] px-1.5">
                               <AlertTriangle className="h-2.5 w-2.5" /> CDC requis
+                            </Badge>
+                          )}
+                          {cdcPending && (
+                            <Badge variant="outline" className="text-[hsl(200,100%,60%)] border-[hsl(200,100%,60%)]/40 gap-1 text-[10px] px-1.5">
+                              CDC en validation
                             </Badge>
                           )}
                         </div>

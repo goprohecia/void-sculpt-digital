@@ -5,7 +5,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -91,7 +91,7 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
 export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit, getCahierByDossier, demandes } = useDemoData();
+  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit, getCahierByDossier, demandes, validateCahier } = useDemoData();
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
@@ -104,7 +104,8 @@ export default function AdminDossierDetail() {
     return <AdminLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></AdminLayout>;
   }
 
-  const cdcComplete = cahier?.statut === "complet";
+  const cdcComplete = cahier?.statut === "validé";
+  const cdcSubmitted = cahier?.statut === "complet" || cahier?.statut === "validé";
   const etapeActive = getEtapeIndex(dossier.statut, cdcComplete);
 
   const handleStatutChange = (val: string) => {
@@ -166,8 +167,8 @@ export default function AdminDossierDetail() {
                       </div>
                       <span className="text-[10px] mt-1 text-center leading-tight">{e}</span>
                       {i === 3 && (
-                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : "text-muted-foreground"}`}>
-                          {cdcComplete ? "Validé" : "En attente"}
+                        <span className={`text-[8px] ${cdcComplete ? "text-green-400" : cdcSubmitted ? "text-[hsl(200,100%,60%)]" : "text-muted-foreground"}`}>
+                          {cdcComplete ? "Validé" : cdcSubmitted ? "En validation" : "En attente"}
                         </span>
                       )}
                     </div>
@@ -186,8 +187,8 @@ export default function AdminDossierDetail() {
               <FileText className="h-4 w-4 text-primary" />
               Cahier des charges
               {cahier && (
-                <Badge variant={cahier.statut === "complet" ? "default" : "secondary"} className="ml-1">
-                  {cahier.statut === "complet" ? "Complet" : "Brouillon"}
+                <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "complet" ? "secondary" : "outline"} className="ml-1">
+                  {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
                 </Badge>
               )}
             </h2>
@@ -203,9 +204,16 @@ export default function AdminDossierDetail() {
                     </ul>
                   </div>
                 )}
-                <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setCdcViewOpen(true)}>
-                  <Eye className="h-3.5 w-3.5" /> Voir le cahier des charges complet
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setCdcViewOpen(true)}>
+                    <Eye className="h-3.5 w-3.5" /> Voir le cahier des charges complet
+                  </Button>
+                  {cahier.statut === "complet" && (
+                    <Button size="sm" className="gap-1.5" onClick={() => { validateCahier(cahier.demandeId); toast.success("Cahier des charges validé"); }}>
+                      <ShieldCheck className="h-3.5 w-3.5" /> Valider le CDC
+                    </Button>
+                  )}
+                </div>
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">Aucun cahier des charges associé à ce dossier</p>
