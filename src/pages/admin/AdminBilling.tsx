@@ -29,6 +29,7 @@ export default function AdminBilling() {
   const [openDevis, setOpenDevis] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewTitle, setPreviewTitle] = useState("");
+  const [previewClientName, setPreviewClientName] = useState("");
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewDownload, setPreviewDownload] = useState<(() => void) | null>(null);
 
@@ -36,6 +37,7 @@ export default function AdminBilling() {
     const url = previewFacturePdf(f, getClientById(f.clientId));
     setPreviewUrl(url);
     setPreviewTitle(`Facture ${f.reference}`);
+    setPreviewClientName(f.clientNom);
     setPreviewDownload(() => () => { generateFacturePdf(f, getClientById(f.clientId)); toast.success(`PDF ${f.reference} téléchargé`); });
     setPreviewOpen(true);
   }, [getClientById]);
@@ -44,6 +46,7 @@ export default function AdminBilling() {
     const url = previewDevisPdf(d, getClientById(d.clientId));
     setPreviewUrl(url);
     setPreviewTitle(`Devis ${d.reference}`);
+    setPreviewClientName(d.clientNom);
     setPreviewDownload(() => () => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); });
     setPreviewOpen(true);
   }, [getClientById]);
@@ -364,6 +367,7 @@ export default function AdminBilling() {
           onOpenChange={setPreviewOpen}
           pdfUrl={previewUrl}
           title={previewTitle}
+          clientName={previewClientName}
           onDownload={previewDownload || undefined}
         />
       </AdminPageTransition>
