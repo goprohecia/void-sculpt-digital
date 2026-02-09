@@ -1,67 +1,55 @@
 
-# Signature electronique pour validation de devis
+# Page /admin/emails et exports CSV analytiques
 
-Quand un client accepte un devis, il devra dessiner sa signature manuscrite sur un pad interactif avant de confirmer. La signature et la mention "Bon pour accord" seront ensuite integrees dans le PDF du devis.
+## 1. Page /admin/emails -- Historique complet des emails simules
 
----
+### Nouvelle page `src/pages/admin/AdminEmails.tsx`
+Page dediee affichant l'historique complet des emails simules depuis `useDemoData().emailLogs`, avec :
 
-## Fonctionnement cote client
+- **En-tete** : titre "Journal des emails", compteur total, bouton "Exporter CSV"
+- **Filtres** : barre de boutons filtrant par type d'email (Tous, Relance, Devis, Paiement, Demande, Validation) -- utilise les types de `EmailLogType`
+- **Barre de recherche** : filtre texte sur destinataire, sujet ou reference
+- **Liste** : reutilise le composant `EmailLogPanel` existant sans `maxItems` (affichage complet), avec le Dialog de detail deja integre
+- **Export CSV emails** : bouton generant un CSV (id, type, destinataire, sujet, date, reference)
 
-### Nouveau flux d'acceptation (page `/client/devis`)
-1. Le client clique sur "Accepter"
-2. Un Dialog s'ouvre avec :
-   - Recapitulatif du devis (titre, montant)
-   - Un **canvas de signature** (zone de dessin tactile/souris) avec fond blanc
-   - Un bouton "Effacer" pour recommencer
-   - Une checkbox "J'appose la mention Bon pour accord"
-   - Le bouton "Confirmer" n'est actif que si la signature est dessinee ET la checkbox cochee
-3. A la confirmation, la signature (image base64 PNG) est stockee dans l'objet `Devis` en memoire, avec la date de signature et le nom du signataire
+### Navigation sidebar
+- Ajouter l'entree "Emails" dans `AdminSidebar.tsx` avec l'icone `Mail` de lucide-react, positionnee entre "Relances" et "Support"
 
-### Composant `SignaturePad.tsx`
-- Nouveau composant reutilisable utilisant l'API Canvas HTML5
-- Supporte souris et tactile (touch events)
-- Trait noir lisse de 2px sur fond blanc
-- Methodes exposees : `clear()`, `isEmpty()`, `toDataURL()`
-- Responsive : s'adapte a la largeur du Dialog
+### Route
+- Ajouter la route `/admin/emails` dans `AnimatedRoutes.tsx`
 
----
+## 2. Exports CSV analytiques
 
-## Fonctionnement cote PDF
+### Utilitaire `src/lib/exportCsv.ts` (nouveau fichier)
+Fonction generique reutilisable :
+```text
+exportCsv(filename: string, headers: string[], rows: string[][])
+```
+- Genere un fichier CSV avec encodage UTF-8 BOM (pour Excel)
+- Declenche le telechargement via un lien temporaire
 
-### Modification de `generateDevisPdf()`
-- Si le devis a le statut "accepte" et contient une signature (`signatureDataUrl`), le PDF affiche :
-  - Un bandeau vert "ACCEPTE" en haut a droite
-  - La mention "Bon pour accord" en texte sous le tableau
-  - L'image de la signature dans la zone prevue
-  - Le nom du signataire et la date de signature
-- Si le devis n'est pas signe, le PDF reste identique (zone vide)
+### Boutons d'export dans `AdminAnalytics.tsx`
+Ajouter 3 boutons d'export a cote du bouton PDF existant :
+- **Export Factures CSV** : reference, client, montant, statut, date emission, echeance
+- **Export Demandes CSV** : reference, client, titre, type prestation, statut, date creation
+- **Export Clients CSV** : nom, prenom, email, entreprise, statut, date creation, nombre dossiers
 
----
+Les donnees sont prises depuis `useDemoData()` (factures, demandes) et `clients` (import mockData).
 
 ## Details techniques
 
-### Type `Devis` enrichi (dans `mockData.ts`)
-Ajout de 3 champs optionnels :
-- `signatureDataUrl?: string` -- image base64 de la signature
-- `signataireNom?: string` -- nom du signataire
-- `dateSignature?: string` -- date de signature
-
-### Nouveau fichier
+### Fichiers crees
 ```
-src/components/SignaturePad.tsx
+src/pages/admin/AdminEmails.tsx    -- Page historique emails avec filtres
+src/lib/exportCsv.ts               -- Utilitaire CSV generique
 ```
-Composant Canvas avec :
-- `useRef` pour le canvas
-- Gestion des events `mousedown/mousemove/mouseup` et `touchstart/touchmove/touchend`
-- Props : `onSignatureChange(isEmpty: boolean)`, `ref` pour appeler `toDataURL()` et `clear()`
 
 ### Fichiers modifies
 ```
-src/data/mockData.ts          -- Ajout champs signature au type Devis
-src/contexts/DemoDataContext.tsx  -- Nouvelle fonction updateDevisSignature(id, signatureData, nom, date)
-src/pages/client/ClientDevis.tsx  -- Dialog de signature avec SignaturePad + checkbox
-src/lib/generatePdf.ts         -- Affichage signature + "Bon pour accord" dans le PDF
+src/components/admin/AdminSidebar.tsx  -- Ajout entree "Emails" (icone Mail)
+src/components/AnimatedRoutes.tsx      -- Ajout route /admin/emails
+src/pages/admin/AdminAnalytics.tsx     -- Ajout boutons export CSV
 ```
 
-### Aucune nouvelle dependance
-Le composant utilise uniquement l'API Canvas native du navigateur, pas de librairie externe.
+### Aucune dependance supplementaire
+Tout utilise les APIs natives (Blob, URL.createObjectURL) et les composants/librairies deja installes.
