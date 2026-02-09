@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff } from "lucide-react";
+import logoHero from "@/assets/logo-hero.png";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -58,11 +59,8 @@ export default function AdminLogin() {
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/20 neon-glow-violet">
-            <span className="text-xl font-bold text-primary">IM</span>
-          </div>
+          <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)]" />
           <h1 className="text-2xl font-bold">Back-office Impartial</h1>
-          <p className="text-muted-foreground text-sm">Connexion à l'espace d'administration</p>
         </div>
 
         {/* Form */}
