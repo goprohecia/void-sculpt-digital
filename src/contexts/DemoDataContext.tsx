@@ -101,6 +101,7 @@ export interface CahierDesCharges {
   remarques: string;
   commentairesAdmin?: string;
   motifRejet?: string;
+  nbRejets?: number;
   statut: "brouillon" | "complet" | "validé" | "rejeté";
   dateMiseAJour: string;
   historique: CdcHistoriqueEntry[];
@@ -439,7 +440,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const rejectCahier = useCallback((demandeId: string, motif: string) => {
     const now = new Date().toISOString();
     const entry: CdcHistoriqueEntry = { id: `h_${Date.now()}`, action: "rejet", auteur: "admin", description: `Cahier des charges rejeté : ${motif}`, date: now };
-    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, statut: "rejeté" as const, motifRejet: motif, dateMiseAJour: now.split("T")[0], historique: [...c.historique, entry] } : c));
+    setCahiersDesCharges((prev) => prev.map((c) => c.demandeId === demandeId ? { ...c, statut: "rejeté" as const, motifRejet: motif, nbRejets: (c.nbRejets || 0) + 1, dateMiseAJour: now.split("T")[0], historique: [...c.historique, entry] } : c));
     const dem = demandes.find((d) => d.id === demandeId);
     if (dem) {
       pushNotif("dossier", "Cahier des charges rejeté", `Votre cahier des charges pour "${dem.titre}" nécessite des modifications. Motif : ${motif}`, "/client/dossiers", "client", dem.clientId);

@@ -49,12 +49,13 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
   const buildCahier = (statut: "brouillon" | "complet"): CahierDesCharges => {
     const now = new Date().toISOString();
     const isNew = !existing;
+    const wasRejected = existing?.statut === "rejeté";
     const prevHistorique = existing?.historique || [];
     const newEntry = {
       id: `h_${Date.now()}`,
       action: isNew && statut === "brouillon" ? "creation" as const : statut === "complet" ? "soumission" as const : "mise_a_jour" as const,
       auteur: "client" as const,
-      description: isNew && statut === "brouillon" ? "Cahier des charges créé" : statut === "complet" ? "Cahier des charges soumis pour validation" : "Cahier des charges mis à jour",
+      description: isNew && statut === "brouillon" ? "Cahier des charges créé" : wasRejected && statut === "complet" ? "Cahier des charges re-soumis après correction" : statut === "complet" ? "Cahier des charges soumis pour validation" : "Cahier des charges mis à jour",
       date: now,
     };
     return {
@@ -71,6 +72,8 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       statut,
       dateMiseAJour: now.split("T")[0],
       historique: [...prevHistorique, newEntry],
+      // Preserve rejection count, clear motifRejet on re-submit
+      ...(existing?.nbRejets ? { nbRejets: existing.nbRejets } : {}),
     };
   };
 

@@ -110,6 +110,9 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
             <FileText className="h-5 w-5 text-primary" />
             <DialogTitle>Cahier des charges</DialogTitle>
             {statutBadge()}
+            {(cahier.nbRejets || 0) >= 2 && (
+              <Badge variant="destructive" className="text-[10px]">{cahier.nbRejets} rejets</Badge>
+            )}
           </div>
           {demandeTitre && <p className="text-sm text-muted-foreground mt-1">{demandeTitre}</p>}
         </DialogHeader>

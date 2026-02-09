@@ -188,9 +188,16 @@ export default function AdminDossierDetail() {
               <FileText className="h-4 w-4 text-primary" />
               Cahier des charges
               {cahier && (
-                <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "rejeté" ? "destructive" : cahier.statut === "complet" ? "secondary" : "outline"} className="ml-1">
-                  {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "rejeté" ? "✗ Rejeté" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
-                </Badge>
+                <>
+                  <Badge variant={cahier.statut === "validé" ? "default" : cahier.statut === "rejeté" ? "destructive" : cahier.statut === "complet" ? "secondary" : "outline"} className="ml-1">
+                    {cahier.statut === "validé" ? "✓ Validé" : cahier.statut === "rejeté" ? "✗ Rejeté" : cahier.statut === "complet" ? "En attente de validation" : "Brouillon"}
+                  </Badge>
+                  {(cahier.nbRejets || 0) >= 2 && (
+                    <Badge variant="destructive" className="ml-1 text-[10px]">
+                      {cahier.nbRejets} rejets
+                    </Badge>
+                  )}
+                </>
               )}
             </h2>
             {cahier ? (
