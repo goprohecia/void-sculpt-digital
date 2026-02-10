@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const LOGO_URL = "https://aikmzznnmyfbjbomwakq.supabase.co/storage/v1/object/public/email-assets/logo-impartial.png";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -36,6 +37,10 @@ serve(async (req) => {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#09090b;">
     <tr><td align="center" style="padding:40px 16px;">
       <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;">
+        <!-- Logo -->
+        <tr><td style="text-align:center;padding-bottom:12px;">
+          <img src="${LOGO_URL}" alt="Impartial" width="56" height="56" style="display:inline-block;border-radius:14px;" />
+        </td></tr>
         <!-- Header -->
         <tr><td style="text-align:center;padding-bottom:32px;">
           <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
