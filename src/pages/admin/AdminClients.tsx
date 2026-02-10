@@ -4,22 +4,28 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import type { Client } from "@/data/mockData";
-import { Search, Users, Eye, X, Building2, MapPin } from "lucide-react";
+import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "sonner";
 
 export default function AdminClients() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | "actif" | "inactif">("tous");
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [deletingClient, setDeletingClient] = useState<Client | null>(null);
   const isMobile = useIsMobile();
-  const { clients } = useClients();
+  const { clients, updateClient, updateClientAsync, deleteClient } = useClients();
   const { getDossiersByClient } = useDossiers();
   const { getDemandesByClient } = useDemandes();
 
@@ -36,6 +42,68 @@ export default function AdminClients() {
   const clientDossiers = selectedClient ? getDossiersByClient(selectedClient.id) : [];
   const clientDemandes = selectedClient ? getDemandesByClient(selectedClient.id) : [];
 
+  const handleToggleStatus = (client: Client) => {
+    const newStatus = client.statut === "actif" ? "inactif" : "actif";
+    updateClient({ id: client.id, updates: { statut: newStatus } });
+    toast.success(`Client ${client.prenom} ${client.nom} ${newStatus === "actif" ? "activé" : "désactivé"}`);
+    if (selectedClient?.id === client.id) {
+      setSelectedClient({ ...client, statut: newStatus as Client["statut"] });
+    }
+  };
+
+  const handleDelete = () => {
+    if (!deletingClient) return;
+    deleteClient(deletingClient.id);
+    toast.success(`Client ${deletingClient.prenom} ${deletingClient.nom} supprimé`);
+    if (selectedClient?.id === deletingClient.id) setSelectedClient(null);
+    setDeletingClient(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingClient) return;
+    try {
+      await updateClientAsync({
+        id: editingClient.id,
+        updates: {
+          nom: editingClient.nom,
+          prenom: editingClient.prenom,
+          email: editingClient.email,
+          telephone: editingClient.telephone,
+          entreprise: editingClient.entreprise,
+          siret: editingClient.siret,
+          adresse: editingClient.adresse,
+          codePostal: editingClient.codePostal,
+          ville: editingClient.ville,
+          pays: editingClient.pays,
+        },
+      });
+      toast.success("Client mis à jour");
+      if (selectedClient?.id === editingClient.id) setSelectedClient(editingClient);
+      setEditingClient(null);
+    } catch {
+      toast.error("Erreur lors de la mise à jour");
+    }
+  };
+
+  const ActionButtons = ({ client, compact = false }: { client: Client; compact?: boolean }) => (
+    <div className={`flex items-center ${compact ? "gap-1" : "gap-1.5"}`}>
+      <button onClick={(e) => { e.stopPropagation(); setSelectedClient(client); }} className="inline-flex items-center gap-1 text-xs text-primary hover:underline" title="Voir">
+        <Eye className="h-3 w-3" />{!compact && " Voir"}
+      </button>
+      <button onClick={(e) => { e.stopPropagation(); setEditingClient({ ...client }); }} className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground" title="Modifier">
+        <Pencil className="h-3 w-3" />
+      </button>
+      <button onClick={(e) => { e.stopPropagation(); handleToggleStatus(client); }}
+        className={`inline-flex items-center gap-1 text-xs ${client.statut === "actif" ? "text-orange-400 hover:text-orange-300" : "text-emerald-400 hover:text-emerald-300"}`}
+        title={client.statut === "actif" ? "Désactiver" : "Activer"}>
+        {client.statut === "actif" ? <UserX className="h-3 w-3" /> : <UserCheck className="h-3 w-3" />}
+      </button>
+      <button onClick={(e) => { e.stopPropagation(); setDeletingClient(client); }} className="inline-flex items-center gap-1 text-xs text-destructive hover:text-destructive/80" title="Supprimer">
+        <Trash2 className="h-3 w-3" />
+      </button>
+    </div>
+  );
+
   const ClientDetail = () => (
     <Tabs defaultValue="general" className="space-y-4">
       <TabsList className="grid w-full grid-cols-2">
@@ -44,6 +112,19 @@ export default function AdminClients() {
       </TabsList>
 
       <TabsContent value="general" className="space-y-6">
+        <div className="flex items-center gap-2 justify-end">
+          <Button size="sm" variant="outline" className="gap-1.5 text-xs" onClick={() => setEditingClient({ ...selectedClient! })}>
+            <Pencil className="h-3 w-3" /> Modifier
+          </Button>
+          <Button size="sm" variant="outline"
+            className={`gap-1.5 text-xs ${selectedClient?.statut === "actif" ? "text-orange-400 border-orange-400/30 hover:bg-orange-400/10" : "text-emerald-400 border-emerald-400/30 hover:bg-emerald-400/10"}`}
+            onClick={() => selectedClient && handleToggleStatus(selectedClient)}>
+            {selectedClient?.statut === "actif" ? <><UserX className="h-3 w-3" /> Désactiver</> : <><UserCheck className="h-3 w-3" /> Activer</>}
+          </Button>
+          <Button size="sm" variant="destructive" className="gap-1.5 text-xs" onClick={() => setDeletingClient(selectedClient!)}>
+            <Trash2 className="h-3 w-3" /> Supprimer
+          </Button>
+        </div>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div><p className="text-muted-foreground">Email</p><p className="break-all">{selectedClient?.email}</p></div>
           <div><p className="text-muted-foreground">Téléphone</p><p>{selectedClient?.telephone}</p></div>
@@ -147,9 +228,7 @@ export default function AdminClients() {
                 </div>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">{c.nombreDossiers} dossier{c.nombreDossiers > 1 ? "s" : ""}</span>
-                  <button onClick={() => setSelectedClient(c)} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
-                    <Eye className="h-3 w-3" /> Voir
-                  </button>
+                  <ActionButtons client={c} compact />
                 </div>
               </div>
             ))}
@@ -182,9 +261,7 @@ export default function AdminClients() {
                       <td className="py-3 px-4 text-center">{c.nombreDossiers}</td>
                       <td className="py-3 px-4 text-center"><StatusBadge status={c.statut} /></td>
                       <td className="py-3 px-4 text-center">
-                        <button onClick={() => setSelectedClient(c)} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
-                          <Eye className="h-3 w-3" /> Voir
-                        </button>
+                        <ActionButtons client={c} />
                       </td>
                     </tr>
                   ))}
@@ -195,6 +272,7 @@ export default function AdminClients() {
         </motion.div>
       </AdminPageTransition>
 
+      {/* View detail drawer/modal */}
       {isMobile ? (
         <Drawer open={!!selectedClient} onOpenChange={(open) => !open && setSelectedClient(null)}>
           <DrawerContent className="max-h-[85dvh]">
@@ -223,6 +301,90 @@ export default function AdminClients() {
           )}
         </AnimatePresence>
       )}
+
+      {/* Edit dialog */}
+      <Dialog open={!!editingClient} onOpenChange={(open) => !open && setEditingClient(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Modifier le client</DialogTitle>
+            <DialogDescription>Modifiez les informations du client ci-dessous.</DialogDescription>
+          </DialogHeader>
+          {editingClient && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Prénom</label>
+                  <Input value={editingClient.prenom} onChange={(e) => setEditingClient({ ...editingClient, prenom: e.target.value })} className="h-9" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Nom</label>
+                  <Input value={editingClient.nom} onChange={(e) => setEditingClient({ ...editingClient, nom: e.target.value })} className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Email</label>
+                  <Input type="email" value={editingClient.email} onChange={(e) => setEditingClient({ ...editingClient, email: e.target.value })} className="h-9" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Téléphone</label>
+                  <Input value={editingClient.telephone} onChange={(e) => setEditingClient({ ...editingClient, telephone: e.target.value })} className="h-9" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Entreprise</label>
+                  <Input value={editingClient.entreprise} onChange={(e) => setEditingClient({ ...editingClient, entreprise: e.target.value })} className="h-9" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">SIRET</label>
+                  <Input value={editingClient.siret || ""} onChange={(e) => setEditingClient({ ...editingClient, siret: e.target.value })} className="h-9" />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Adresse</label>
+                <Input value={editingClient.adresse || ""} onChange={(e) => setEditingClient({ ...editingClient, adresse: e.target.value })} className="h-9" />
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Code postal</label>
+                  <Input value={editingClient.codePostal || ""} onChange={(e) => setEditingClient({ ...editingClient, codePostal: e.target.value })} className="h-9" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Ville</label>
+                  <Input value={editingClient.ville || ""} onChange={(e) => setEditingClient({ ...editingClient, ville: e.target.value })} className="h-9" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Pays</label>
+                  <Input value={editingClient.pays || ""} onChange={(e) => setEditingClient({ ...editingClient, pays: e.target.value })} className="h-9" />
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingClient(null)}>Annuler</Button>
+            <Button onClick={handleSaveEdit} className="gap-1.5"><Save className="h-3.5 w-3.5" /> Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirmation */}
+      <AlertDialog open={!!deletingClient} onOpenChange={(open) => !open && setDeletingClient(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer ce client ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Le client <strong>{deletingClient?.prenom} {deletingClient?.nom}</strong> et ses données associées seront supprimés définitivement.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 }
