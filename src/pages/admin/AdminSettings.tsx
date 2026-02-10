@@ -11,7 +11,6 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export default function AdminSettings() {
@@ -49,7 +48,6 @@ export default function AdminSettings() {
   });
 
   const [saving, setSaving] = useState(false);
-  const [changingPassword, setChangingPassword] = useState(false);
 
   const handleSave = (section: string) => {
     setSaving(true);
@@ -57,32 +55,6 @@ export default function AdminSettings() {
       setSaving(false);
       toast.success(`${section} mis à jour avec succès`);
     }, 500);
-  };
-
-  const handleChangePassword = async () => {
-    if (!profile.newPassword || !profile.confirmPassword) {
-      toast.error("Veuillez remplir tous les champs");
-      return;
-    }
-    if (profile.newPassword.length < 6) {
-      toast.error("Le mot de passe doit contenir au moins 6 caractères");
-      return;
-    }
-    if (profile.newPassword !== profile.confirmPassword) {
-      toast.error("Les mots de passe ne correspondent pas");
-      return;
-    }
-    setChangingPassword(true);
-    try {
-      const { error } = await supabase.auth.updateUser({ password: profile.newPassword });
-      if (error) throw error;
-      toast.success("Mot de passe mis à jour avec succès");
-      setProfile((p) => ({ ...p, currentPassword: "", newPassword: "", confirmPassword: "" }));
-    } catch (e: any) {
-      toast.error(e.message || "Erreur lors du changement de mot de passe");
-    } finally {
-      setChangingPassword(false);
-    }
   };
 
   return (
@@ -151,11 +123,7 @@ export default function AdminSettings() {
                       </div>
                     </div>
 
-                    <div className="flex justify-end gap-2 pt-2">
-                      <Button onClick={handleChangePassword} disabled={changingPassword || !profile.newPassword} variant="outline" className="gap-2">
-                        <Lock className="h-4 w-4" />
-                        {changingPassword ? "Modification..." : "Changer le mot de passe"}
-                      </Button>
+                    <div className="flex justify-end pt-2">
                       <Button onClick={() => handleSave("Profil")} disabled={saving} className="gap-2">
                         {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
                         Enregistrer
