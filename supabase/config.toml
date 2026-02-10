@@ -2,3 +2,6 @@ project_id = "aikmzznnmyfbjbomwakq"
 
 [functions.calendly-events]
 verify_jwt = false
+
+[functions.create-client-account]
+verify_jwt = false
