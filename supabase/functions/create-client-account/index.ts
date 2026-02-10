@@ -100,30 +100,88 @@ serve(async (req) => {
     await resend.emails.send({
       from: "Impartial <noreply@impartialgames.com>",
       to: [email],
-      subject: "Votre compte Impartial a été créé",
+      subject: "Bienvenue chez Impartial — Votre espace client est prêt",
       html: `
-        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 520px; margin: 0 auto; background: #0f0f14; color: #e4e4e7; padding: 40px 32px; border-radius: 16px;">
-          <h1 style="color: #a78bfa; margin: 0 0 8px 0; font-size: 22px;">Bienvenue chez Impartial</h1>
-          <p style="color: #a1a1aa; margin: 0 0 24px 0; font-size: 14px;">Bonjour ${prenom},</p>
-          <p style="font-size: 14px; line-height: 1.6;">
-            Votre espace client a été créé. Voici vos identifiants de connexion :
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#09090b;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#09090b;">
+    <tr><td align="center" style="padding:40px 16px;">
+      <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;">
+        <!-- Header -->
+        <tr><td style="text-align:center;padding-bottom:32px;">
+          <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
+            <span style="color:#a78bfa;">Im</span><span style="color:#e4e4e7;">partial</span>
+          </h1>
+          <p style="margin:4px 0 0;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#71717a;">Studio digital</p>
+        </td></tr>
+
+        <!-- Card -->
+        <tr><td style="background:#111116;border:1px solid #27272a;border-radius:16px;padding:36px 32px;">
+          <!-- Welcome -->
+          <p style="margin:0 0 4px;font-size:13px;color:#a78bfa;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;">Bienvenue</p>
+          <h2 style="margin:0 0 20px;font-size:20px;color:#fafafa;font-weight:600;">Bonjour ${prenom},</h2>
+          <p style="margin:0 0 24px;font-size:14px;line-height:1.7;color:#a1a1aa;">
+            Votre espace client Impartial a été créé avec succès. Vous pouvez dès à présent vous connecter pour suivre vos projets, consulter vos devis et échanger avec notre équipe.
           </p>
-          <div style="background: #1a1a24; border: 1px solid #27272a; border-radius: 10px; padding: 20px; margin: 20px 0;">
-            <p style="margin: 0 0 8px; font-size: 13px; color: #a1a1aa;">Email</p>
-            <p style="margin: 0 0 16px; font-size: 15px; font-weight: 600;">${email}</p>
-            <p style="margin: 0 0 8px; font-size: 13px; color: #a1a1aa;">Mot de passe provisoire</p>
-            <p style="margin: 0; font-size: 15px; font-weight: 600; font-family: monospace; letter-spacing: 1px; color: #a78bfa;">${tempPassword}</p>
-          </div>
-          <p style="font-size: 13px; color: #f59e0b; margin: 16px 0;">
-            ⚠️ Nous vous recommandons de changer votre mot de passe dès votre première connexion.
+
+          <!-- Credentials -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0f;border:1px solid #1e1e2a;border-radius:12px;margin-bottom:24px;">
+            <tr><td style="padding:20px 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding-bottom:16px;">
+                    <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#71717a;">Email</p>
+                    <p style="margin:0;font-size:15px;color:#fafafa;font-weight:500;">${email}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border-top:1px solid #1e1e2a;padding-top:16px;">
+                    <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#71717a;">Mot de passe provisoire</p>
+                    <p style="margin:0;font-size:16px;color:#a78bfa;font-weight:700;font-family:'SF Mono','Fira Code',monospace;letter-spacing:1.5px;">${tempPassword}</p>
+                  </td>
+                </tr>
+              </table>
+            </td></tr>
+          </table>
+
+          <!-- Warning -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;margin-bottom:28px;">
+            <tr><td style="padding:14px 18px;">
+              <p style="margin:0;font-size:13px;color:#fbbf24;line-height:1.5;">
+                ⚠️ Pour votre sécurité, nous vous recommandons de modifier votre mot de passe dès votre première connexion.
+              </p>
+            </td></tr>
+          </table>
+
+          <!-- CTA Button -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr><td align="center">
+              <a href="${loginUrl}/client/login" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:10px;font-size:14px;font-weight:600;letter-spacing:0.3px;">
+                Accéder à mon espace client →
+              </a>
+            </td></tr>
+          </table>
+        </td></tr>
+
+        <!-- Footer -->
+        <tr><td style="padding-top:28px;text-align:center;">
+          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">
+            Cet email a été envoyé automatiquement par Impartial.
           </p>
-          <a href="${loginUrl}/client/login" style="display: inline-block; background: #7c3aed; color: white; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; margin-top: 8px;">
-            Se connecter
-          </a>
-          <p style="font-size: 12px; color: #52525b; margin-top: 32px; border-top: 1px solid #27272a; padding-top: 16px;">
-            Cet email a été envoyé automatiquement par Impartial. Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet email.
+          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">
+            Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
           </p>
-        </div>
+          <p style="margin:0;font-size:11px;color:#3f3f46;">
+            © ${new Date().getFullYear()} Impartial — Studio digital
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
       `,
     });
 
