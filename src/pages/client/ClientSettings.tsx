@@ -10,30 +10,31 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff } from "lucide-react";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useClients } from "@/hooks/use-clients";
+import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export default function ClientSettings() {
-  const { getClientById, updateClient } = useDemoData();
-  const client = getClientById(DEMO_CLIENT_ID)!;
+  const { clientId, isLoading: clientLoading } = useClientId();
+  const { getClientById, updateClient } = useClients();
+  const client = clientId ? getClientById(clientId) : undefined;
 
   const [profile, setProfile] = useState({
-    prenom: client.prenom,
-    nom: client.nom,
-    email: client.email,
-    telephone: client.telephone,
+    prenom: client?.prenom ?? "",
+    nom: client?.nom ?? "",
+    email: client?.email ?? "",
+    telephone: client?.telephone ?? "",
     newPassword: "",
     confirmPassword: "",
   });
 
   const [company, setCompany] = useState({
-    entreprise: client.entreprise,
-    siret: client.siret || "",
-    adresse: client.adresse || "",
-    codePostal: client.codePostal || "",
-    ville: client.ville || "",
+    entreprise: client?.entreprise ?? "",
+    siret: client?.siret || "",
+    adresse: client?.adresse || "",
+    codePostal: client?.codePostal || "",
+    ville: client?.ville || "",
   });
 
   const [notifs, setNotifs] = useState({
@@ -49,11 +50,12 @@ export default function ClientSettings() {
   const [showPasswords, setShowPasswords] = useState({ new: false, confirm: false });
 
   const handleSave = (section: string) => {
+    if (!clientId) return;
     setSaving(true);
     if (section === "Profil") {
-      updateClient(DEMO_CLIENT_ID, { prenom: profile.prenom, nom: profile.nom, email: profile.email, telephone: profile.telephone });
+      updateClient({ id: clientId, updates: { prenom: profile.prenom, nom: profile.nom, email: profile.email, telephone: profile.telephone } });
     } else if (section === "Entreprise") {
-      updateClient(DEMO_CLIENT_ID, { entreprise: company.entreprise, siret: company.siret, adresse: company.adresse, codePostal: company.codePostal, ville: company.ville });
+      updateClient({ id: clientId, updates: { entreprise: company.entreprise, siret: company.siret, adresse: company.adresse, codePostal: company.codePostal, ville: company.ville } });
     }
     setTimeout(() => {
       setSaving(false);
@@ -87,6 +89,10 @@ export default function ClientSettings() {
     toast.success("Mot de passe modifié avec succès");
     setProfile((p) => ({ ...p, newPassword: "", confirmPassword: "" }));
   };
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
+
+  if (!client) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Aucune fiche client trouvée.</div></ClientLayout>;
 
   return (
     <ClientLayout>

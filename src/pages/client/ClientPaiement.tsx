@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useFactures } from "@/hooks/use-factures";
+import { useDossiers } from "@/hooks/use-dossiers";
 import { CreditCard, CheckCircle, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +13,8 @@ import { toast } from "sonner";
 export default function ClientPaiement() {
   const { factureId } = useParams<{ factureId: string }>();
   const navigate = useNavigate();
-  const { getFactureById, updateFactureStatut, dossiers } = useDemoData();
+  const { getFactureById, updateFactureStatut } = useFactures();
+  const { dossiers } = useDossiers();
   const facture = factureId ? getFactureById(factureId) : undefined;
   const dossier = facture ? dossiers.find((d) => d.id === facture.dossierId) : undefined;
 
@@ -31,7 +33,7 @@ export default function ClientPaiement() {
   const handlePay = () => {
     setLoading(true);
     setTimeout(() => {
-      updateFactureStatut(facture.id, "payee");
+      updateFactureStatut({ id: facture.id, statut: "payee" });
       setPaid(true);
       setLoading(false);
       toast.success("Paiement confirmé !");

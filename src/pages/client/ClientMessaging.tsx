@@ -3,14 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { useConversations } from "@/hooks/use-conversations";
-import { DEMO_CLIENT_ID, type Conversation } from "@/data/mockData";
+import { useClientId } from "@/hooks/use-client-id";
+import { type Conversation } from "@/data/mockData";
 import { MessageSquare, Send } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { cn } from "@/lib/utils";
 
 export default function ClientMessaging() {
+  const { clientId, isLoading: clientLoading } = useClientId();
   const { getConversationsByClient } = useConversations();
-  const mesConversations = getConversationsByClient(DEMO_CLIENT_ID);
+  const mesConversations = clientId ? getConversationsByClient(clientId) : [];
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
   const [showList, setShowList] = useState(true);
@@ -21,6 +23,8 @@ export default function ClientMessaging() {
     setSelectedConv(conv);
     setShowList(false);
   };
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>

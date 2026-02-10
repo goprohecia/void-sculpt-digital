@@ -8,13 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { User, Building2, Mail, Phone, MapPin, Save, CheckCircle } from "lucide-react";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { useClients } from "@/hooks/use-clients";
+import { useClientId } from "@/hooks/use-client-id";
 import { toast } from "sonner";
 
 export default function ClientProfile() {
+  const { clientId, isLoading: clientLoading } = useClientId();
   const { getClientById, updateClient } = useClients();
-  const client = getClientById(DEMO_CLIENT_ID)!;
+  const client = clientId ? getClientById(clientId) : undefined;
 
   const [form, setForm] = useState({
     prenom: client?.prenom ?? "",
@@ -37,9 +38,10 @@ export default function ClientProfile() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!clientId) return;
     setSaving(true);
     updateClient({
-      id: DEMO_CLIENT_ID,
+      id: clientId,
       updates: {
         prenom: form.prenom,
         nom: form.nom,
@@ -59,7 +61,9 @@ export default function ClientProfile() {
     }, 400);
   };
 
-  if (!client) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
+
+  if (!client) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Aucune fiche client trouvée. Contactez l'équipe pour créer votre profil.</div></ClientLayout>;
 
   return (
     <ClientLayout>

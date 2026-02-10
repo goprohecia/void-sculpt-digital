@@ -4,7 +4,10 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useFactures } from "@/hooks/use-factures";
+import { useDevis } from "@/hooks/use-devis";
+import { useCahiers } from "@/hooks/use-cahiers";
 import { ArrowLeft, FolderOpen, CreditCard, ExternalLink, Link2, AlertTriangle, FileText, MessageSquare, Clock, PenLine, Send, CheckCircle2, XCircle, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,11 +32,15 @@ function getEtapeIndex(statut: string, rdvEffectue: boolean, cdcComplete: boolea
 export default function ClientDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, getCahierByDossier, saveCahierDesCharges, dossiers } = useDemoData();
+  const { getDossierById } = useDossiers();
+  const { getFacturesByDossier } = useFactures();
+  const { getDevisByDossier } = useDevis();
+  const { getCahierByDemande, saveCahierDesCharges } = useCahiers();
+
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
-  const cahier = id ? getCahierByDossier(id) : undefined;
+  const cahier = dossier?.demandeId ? getCahierByDemande(dossier.demandeId) : undefined;
   const [cdcFormOpen, setCdcFormOpen] = useState(false);
   const [calendlyOpen, setCalendlyOpen] = useState(false);
 
@@ -196,7 +203,7 @@ export default function ClientDossierDetail() {
           <motion.div className="glass-card p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm" variants={staggerItem}>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Montant</p><p className="font-bold text-base sm:text-lg">{dossier.montant.toLocaleString()} €</p></div>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Création</p><p>{new Date(dossier.dateCreation).toLocaleDateString("fr-FR")}</p></div>
-            <div><p className="text-muted-foreground text-xs sm:text-sm">Échéance</p><p>{new Date(dossier.dateEcheance).toLocaleDateString("fr-FR")}</p></div>
+            <div><p className="text-muted-foreground text-xs sm:text-sm">Échéance</p><p>{dossier.dateEcheance ? new Date(dossier.dateEcheance).toLocaleDateString("fr-FR") : "—"}</p></div>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Prestation</p><p>{dossier.typePrestation}</p></div>
           </motion.div>
 

@@ -5,21 +5,24 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useCahiers } from "@/hooks/use-cahiers";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
+import { useClientId } from "@/hooks/use-client-id";
 import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Badge } from "@/components/ui/badge";
 
 export default function ClientDossiers() {
+  const { clientId, isLoading: clientLoading } = useClientId();
   const { getDossiersByClient, dossiers } = useDossiers();
-  const { getCahierByDemande, cahiersDesCharges } = useCahiers();
-  const mesDossiers = getDossiersByClient(DEMO_CLIENT_ID);
+  const { getCahierByDemande } = useCahiers();
+  const mesDossiers = clientId ? getDossiersByClient(clientId) : [];
 
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;
     return getCahierByDemande(dossier.demandeId);
   };
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>
