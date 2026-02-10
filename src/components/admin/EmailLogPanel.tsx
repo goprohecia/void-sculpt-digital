@@ -1,4 +1,5 @@
 import { useState } from "react";
+import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
 import { Mail, Eye, Send, CheckCircle, FileText, AlertTriangle, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -84,7 +85,7 @@ export function EmailLogPanel({ emails, maxItems, compact = false }: EmailLogPan
                 {selectedEmail.reference && <span>Réf : <strong className="text-foreground">{selectedEmail.reference}</strong></span>}
               </div>
               <div className="border-t border-border/50 pt-3">
-                <div className="prose prose-sm prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: selectedEmail.contenu }} />
+                <div className="prose prose-sm prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedEmail.contenu, { ALLOWED_TAGS: ['p','strong','em','br','a','table','tr','td','th','tbody','thead','div','span','h1','h2','h3','img','ul','ol','li'], ALLOWED_ATTR: ['href','style','class','src','alt','width','height','align','cellpadding','cellspacing','role'] }) }} />
               </div>
             </div>
           )}
