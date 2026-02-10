@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "./useIsDemo";
 import { conversations as mockConversations, getConversationsByClient as mockGetByClient, type Conversation, type Message } from "@/data/mockData";
@@ -26,6 +27,7 @@ function mapMessage(row: any): Message {
 
 export function useConversations() {
   const { isDemo, isLoading: authLoading } = useIsDemo();
+  const queryClient = useQueryClient();
 
   const query = useQuery({
     queryKey: ["conversations"],
@@ -45,6 +47,23 @@ export function useConversations() {
     },
     enabled: !isDemo && !authLoading,
   });
+
+  // Realtime subscriptions
+  useEffect(() => {
+    if (isDemo) return;
+
+    const channel = supabase
+      .channel("conversations-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "messages" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "conversations" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [isDemo, queryClient]);
 
   const data: Conversation[] = isDemo ? mockConversations : (query.data ?? []);
   const loading = authLoading || (!isDemo && query.isLoading);
