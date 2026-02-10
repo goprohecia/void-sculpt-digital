@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { LifeBuoy, Plus, Send, ArrowLeft } from "lucide-react";
 import { useTickets } from "@/hooks/use-tickets";
 import { DEMO_CLIENT_ID, type Ticket, type TicketPriority, type TicketStatus } from "@/data/mockData";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -116,7 +117,16 @@ export default function ClientSupport() {
           </motion.div>
 
           {/* Ticket list or detail */}
-          {selectedTicket ? (
+          {filteredTickets.length === 0 && !selectedTicket ? (
+            <motion.div variants={staggerItem}>
+              <AdminEmptyState
+                icon={LifeBuoy}
+                title="Aucun ticket"
+                description="Vos demandes de support apparaîtront ici."
+                hint="Cliquez sur « Nouveau ticket » pour contacter l'équipe."
+              />
+            </motion.div>
+          ) : selectedTicket ? (
             <motion.div variants={staggerItem} className="rounded-xl border border-border/50 bg-card overflow-hidden">
               <div className="flex items-center gap-3 p-4 border-b border-border/50">
                 <button onClick={() => setSelectedTicket(null)} className="p-1 rounded hover:bg-muted/50">
