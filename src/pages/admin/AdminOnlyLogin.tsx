@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff, Home, Shield, ShieldX } from "lucide-react";
@@ -26,12 +27,13 @@ export default function AdminOnlyLogin() {
     }
   }, [isAuthenticated, navigate, user]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    const success = login(email, password);
-    if (success) {
+    // 1. Try demo auth first
+    const demoSuccess = login(email, password);
+    if (demoSuccess) {
       if (email.toLowerCase().includes("admin")) {
         navigate("/admin", { replace: true });
       } else {
@@ -39,7 +41,33 @@ export default function AdminOnlyLogin() {
       }
       return;
     }
-    setError("Identifiants incorrects");
+
+    // 2. Try real Supabase auth
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError || !data.user) {
+      setError("Identifiants incorrects");
+      return;
+    }
+
+    // 3. Verify admin role
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (!roleData) {
+      await supabase.auth.signOut();
+      setError("Ce portail est réservé aux administrateurs");
+      return;
+    }
+
+    navigate("/admin", { replace: true });
   };
 
   if (!isAuthorized) {
