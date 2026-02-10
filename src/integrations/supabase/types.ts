@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      clients: {
+        Row: {
+          adresse: string | null
+          code_postal: string | null
+          created_at: string
+          date_creation: string
+          email: string
+          entreprise: string
+          id: string
+          nom: string
+          nombre_dossiers: number
+          pays: string | null
+          prenom: string
+          siret: string | null
+          statut: string
+          telephone: string
+          updated_at: string
+          user_id: string | null
+          ville: string | null
+        }
+        Insert: {
+          adresse?: string | null
+          code_postal?: string | null
+          created_at?: string
+          date_creation?: string
+          email: string
+          entreprise?: string
+          id?: string
+          nom: string
+          nombre_dossiers?: number
+          pays?: string | null
+          prenom: string
+          siret?: string | null
+          statut?: string
+          telephone?: string
+          updated_at?: string
+          user_id?: string | null
+          ville?: string | null
+        }
+        Update: {
+          adresse?: string | null
+          code_postal?: string | null
+          created_at?: string
+          date_creation?: string
+          email?: string
+          entreprise?: string
+          id?: string
+          nom?: string
+          nombre_dossiers?: number
+          pays?: string | null
+          prenom?: string
+          siret?: string | null
+          statut?: string
+          telephone?: string
+          updated_at?: string
+          user_id?: string | null
+          ville?: string | null
+        }
+        Relationships: []
+      }
       objectifs_mensuels: {
         Row: {
           id: string
