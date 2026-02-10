@@ -47,6 +47,16 @@ export function useDemandes() {
         budget: d.budget || null, statut: d.statut,
       });
       if (error) throw error;
+
+      // Send reception email
+      const { data: clientRow } = await supabase.from("clients").select("email, prenom").eq("id", d.clientId).maybeSingle();
+      if (clientRow?.email) {
+        try {
+          await supabase.functions.invoke("send-demande-reception", {
+            body: { email: clientRow.email, prenom: clientRow.prenom, demandeRef: d.reference, titre: d.titre },
+          });
+        } catch (e) { console.error("Erreur envoi email demande:", e); }
+      }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["demandes"] }),
   });
@@ -56,6 +66,21 @@ export function useDemandes() {
       if (isDemo) { demoData.updateDemandeStatut(id, statut); return; }
       const { error } = await supabase.from("demandes").update({ statut, date_mise_a_jour: new Date().toISOString() }).eq("id", id);
       if (error) throw error;
+
+      // Send validation/refus email
+      if (statut === "validee" || statut === "refusee") {
+        const dem = data.find((d) => d.id === id);
+        if (dem) {
+          const { data: clientRow } = await supabase.from("clients").select("email, prenom").eq("id", dem.clientId).maybeSingle();
+          if (clientRow?.email) {
+            try {
+              await supabase.functions.invoke("send-demande-statut", {
+                body: { email: clientRow.email, prenom: clientRow.prenom, demandeRef: dem.reference, titre: dem.titre, statut },
+              });
+            } catch (e) { console.error("Erreur envoi email statut demande:", e); }
+          }
+        }
+      }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["demandes"] }),
   });
