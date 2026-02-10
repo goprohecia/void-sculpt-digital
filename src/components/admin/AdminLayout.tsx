@@ -14,7 +14,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useDemoData();
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/client/login" replace />;
   }
 
   return (

@@ -74,7 +74,7 @@ export default function AdminLogin() {
   const handleGoogleSignIn = async () => {
     setError("");
     const { error } = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/admin/login",
+      redirect_uri: window.location.origin + "/client/login",
     });
     if (error) {
       setError("Erreur lors de la connexion avec Google");

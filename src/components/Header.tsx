@@ -168,7 +168,7 @@ export function Header() {
             </MagneticButton>
             <MagneticButton as="div" strength={0.15}>
               <Link
-                to="/admin/login"
+                to="/client/login"
                 className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
               >
                 Connexion
@@ -351,7 +351,7 @@ export function Header() {
                   }}
                 >
                   <Link
-                    to="/admin/login"
+                    to="/client/login"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="mt-3 glass-button px-6 py-3 font-medium rounded-xl text-center block relative z-10"
                   >

@@ -78,7 +78,7 @@ export function AnimatedRoutes() {
         <Route path="/politique-confidentialite" element={<PageTransition3D><PolitiqueConfidentialite /></PageTransition3D>} />
         
         {/* Admin routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/client/login" element={<AdminLogin />} />
         <Route path="/admin/access" element={<AdminOnlyLogin />} />
         <Route path="/signup" element={<ClientSignup />} />
         <Route path="/admin" element={<AdminDashboard />} />
