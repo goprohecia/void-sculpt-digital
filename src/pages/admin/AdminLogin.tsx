@@ -58,7 +58,7 @@ export default function AdminLogin() {
 
     // Block admin email from client login
     if (email.toLowerCase() === "studio@impartialgames.com") {
-      setError("Ce compte est réservé à l'espace administrateur. Connectez-vous via /admin/access");
+      setError("Ce compte est réservé à l'espace administrateur");
       return;
     }
 
