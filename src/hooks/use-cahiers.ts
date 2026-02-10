@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "./useIsDemo";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import type { CahierDesCharges, CdcHistoriqueEntry } from "@/contexts/DemoDataContext";
+import type { CahierDesCharges, CdcHistoriqueEntry, CdcPieceJointe } from "@/contexts/DemoDataContext";
 
 function mapRow(row: any, historique: CdcHistoriqueEntry[] = []): CahierDesCharges {
   return {
@@ -19,6 +19,7 @@ function mapRow(row: any, historique: CdcHistoriqueEntry[] = []): CahierDesCharg
     commentairesAdmin: row.commentaires_admin ?? undefined,
     motifRejet: row.motif_rejet ?? undefined,
     nbRejets: row.nb_rejets ?? 0,
+    piecesJointes: (row.pieces_jointes as CdcPieceJointe[] | null) ?? [],
     statut: row.statut as CahierDesCharges["statut"],
     dateMiseAJour: row.date_mise_a_jour?.split("T")[0] ?? "",
     historique,
@@ -74,13 +75,14 @@ export function useCahiers() {
         budget_complementaire: cahier.budgetComplementaire, remarques: cahier.remarques,
         commentaires_admin: cahier.commentairesAdmin || null, motif_rejet: cahier.motifRejet || null,
         nb_rejets: cahier.nbRejets || 0, statut: cahier.statut,
+        pieces_jointes: JSON.parse(JSON.stringify(cahier.piecesJointes || [])),
       };
       const existing = data.find((c) => c.demandeId === cahier.demandeId);
       if (existing) {
-        const { error } = await supabase.from("cahiers_des_charges").update(dbData).eq("id", existing.id);
+        const { error } = await supabase.from("cahiers_des_charges").update(dbData as any).eq("id", existing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("cahiers_des_charges").insert({ id: cahier.id, ...dbData });
+        const { error } = await supabase.from("cahiers_des_charges").insert({ id: cahier.id, ...dbData } as any);
         if (error) throw error;
       }
     },

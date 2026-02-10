@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Copy, FileText, Download, MessageSquare, Save, Clock, CheckCircle2, PenLine, Send, UserCheck, XCircle } from "lucide-react";
+import { Copy, FileText, Download, MessageSquare, Save, Clock, CheckCircle2, PenLine, Send, UserCheck, XCircle, Paperclip, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import type { CahierDesCharges } from "@/contexts/DemoDataContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
@@ -133,6 +133,35 @@ export function CahierDesChargesView({ open, onOpenChange, cahier, demandeTitre 
           <Section title="Planning souhaité" content={cahier.planningSouhaite} />
           <Section title="Budget complémentaire" content={cahier.budgetComplementaire} />
           <Section title="Documents / Remarques" content={cahier.remarques} />
+
+          {/* Pièces jointes */}
+          {cahier.piecesJointes && cahier.piecesJointes.length > 0 && (
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Paperclip className="h-4 w-4 text-primary" />
+                <h4 className="text-sm font-semibold text-foreground">Pièces jointes ({cahier.piecesJointes.length})</h4>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {cahier.piecesJointes.map((pj, i) => (
+                  <a
+                    key={i}
+                    href={pj.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-md border border-border/50 bg-muted/20 px-3 py-2 text-sm hover:bg-muted/40 transition-colors"
+                  >
+                    {pj.type.startsWith("image/") ? (
+                      <img src={pj.url} alt={pj.name} className="h-8 w-8 rounded object-cover shrink-0" />
+                    ) : (
+                      <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+                    )}
+                    <span className="flex-1 truncate text-xs">{pj.name}</span>
+                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Admin comments section */}
           <div className="border-t border-border/40 pt-4 space-y-2">

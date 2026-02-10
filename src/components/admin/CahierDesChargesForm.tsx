@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Save, CheckCircle } from "lucide-react";
+import { Plus, Trash2, Save, CheckCircle, Paperclip, FileIcon, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import type { CahierDesCharges } from "@/contexts/DemoDataContext";
+import { supabase } from "@/integrations/supabase/client";
+import type { CahierDesCharges, CdcPieceJointe } from "@/contexts/DemoDataContext";
 
 // ─── Suggestions pré-définies ────────────────────────────────────
 const SUGGESTIONS_FONCTIONNALITES = [
@@ -148,6 +149,9 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
   const [maintenance, setMaintenance] = useState("");
   const [objectifsKpi, setObjectifsKpi] = useState("");
   const [inspirations, setInspirations] = useState("");
+  const [piecesJointes, setPiecesJointes] = useState<CdcPieceJointe[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (existing) {
@@ -158,7 +162,7 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       setContraintesTechniques(existing.contraintesTechniques);
       setPlanningSouhaite(existing.planningSouhaite);
       setBudgetComplementaire(existing.budgetComplementaire);
-      // Parse extended sections from remarques
+      setPiecesJointes(existing.piecesJointes || []);
       const parsed = parseRemarques(existing.remarques);
       setRemarques(parsed.remarques);
       setSecurite(parsed.securite);
@@ -170,8 +174,66 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       setContexte(""); setPublicCible(""); setFonctionnalites([""]); setDesignNotes("");
       setContraintesTechniques(""); setPlanningSouhaite(""); setBudgetComplementaire("");
       setRemarques(""); setSecurite(""); setSeo(""); setMaintenance(""); setObjectifsKpi(""); setInspirations("");
+      setPiecesJointes([]);
     }
   }, [existing, open]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+
+    setUploading(true);
+    const newAttachments: CdcPieceJointe[] = [];
+
+    for (const file of Array.from(files)) {
+      if (!allowed.includes(file.type)) {
+        toast.error(`Type non supporté : ${file.name}. Formats acceptés : images, PDF`);
+        continue;
+      }
+      if (file.size > maxSize) {
+        toast.error(`Fichier trop volumineux : ${file.name} (max 10 Mo)`);
+        continue;
+      }
+
+      const ext = file.name.split(".").pop();
+      const path = `${demandeId}/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+      const { error } = await supabase.storage.from("cdc-attachments").upload(path, file);
+      if (error) {
+        toast.error(`Erreur upload : ${file.name}`);
+        continue;
+      }
+
+      const { data: urlData } = supabase.storage.from("cdc-attachments").getPublicUrl(path);
+
+      newAttachments.push({
+        name: file.name,
+        url: urlData.publicUrl,
+        type: file.type,
+        size: file.size,
+      });
+    }
+
+    if (newAttachments.length > 0) {
+      setPiecesJointes((prev) => [...prev, ...newAttachments]);
+      toast.success(`${newAttachments.length} fichier(s) ajouté(s)`);
+    }
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeAttachment = (idx: number) => {
+    setPiecesJointes((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} o`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} Ko`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+  };
 
   const addFonctionnalite = () => setFonctionnalites((prev) => [...prev, ""]);
   const removeFonctionnalite = (idx: number) => setFonctionnalites((prev) => prev.filter((_, i) => i !== idx));
@@ -248,6 +310,7 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       statut,
       dateMiseAJour: now.split("T")[0],
       historique: [...prevHistorique, newEntry],
+      piecesJointes,
       ...(existing?.nbRejets ? { nbRejets: existing.nbRejets } : {}),
     };
   };
@@ -390,6 +453,52 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
           <div className={sectionClass}>
             <Label className={sectionTitle}>Budget complémentaire</Label>
             <Input value={budgetComplementaire} onChange={(e) => setBudgetComplementaire(e.target.value)} placeholder="Informations budgétaires additionnelles..." />
+          </div>
+
+          {/* Pièces jointes */}
+          <div className={sectionClass}>
+            <Label className={sectionTitle}>Pièces jointes</Label>
+            <p className="text-xs text-muted-foreground">Images (JPG, PNG, WebP) et documents PDF — max 10 Mo par fichier</p>
+            
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+              multiple
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+
+            {piecesJointes.length > 0 && (
+              <div className="space-y-1.5">
+                {piecesJointes.map((pj, idx) => (
+                  <div key={idx} className="flex items-center gap-2 rounded-md border border-border/50 bg-muted/20 px-3 py-2 text-sm">
+                    {pj.type.startsWith("image/") ? (
+                      <img src={pj.url} alt={pj.name} className="h-8 w-8 rounded object-cover shrink-0" />
+                    ) : (
+                      <FileIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                    )}
+                    <span className="flex-1 truncate">{pj.name}</span>
+                    <span className="text-xs text-muted-foreground shrink-0">{formatFileSize(pj.size)}</span>
+                    <Button type="button" variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={() => removeAttachment(idx)}>
+                      <X className="h-3 w-3 text-destructive" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="gap-1"
+            >
+              {uploading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Paperclip className="h-3 w-3" />}
+              {uploading ? "Upload en cours..." : "Ajouter des fichiers"}
+            </Button>
           </div>
 
           {/* Remarques */}

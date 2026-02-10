@@ -28,6 +28,7 @@ export type Database = {
           id: string
           motif_rejet: string | null
           nb_rejets: number
+          pieces_jointes: Json | null
           planning_souhaite: string
           public_cible: string
           remarques: string
@@ -47,6 +48,7 @@ export type Database = {
           id?: string
           motif_rejet?: string | null
           nb_rejets?: number
+          pieces_jointes?: Json | null
           planning_souhaite?: string
           public_cible?: string
           remarques?: string
@@ -66,6 +68,7 @@ export type Database = {
           id?: string
           motif_rejet?: string | null
           nb_rejets?: number
+          pieces_jointes?: Json | null
           planning_souhaite?: string
           public_cible?: string
           remarques?: string
