@@ -4,10 +4,127 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Plus, Trash2, Save, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import type { CahierDesCharges } from "@/contexts/DemoDataContext";
 
+// ─── Suggestions pré-définies ────────────────────────────────────
+const SUGGESTIONS_FONCTIONNALITES = [
+  "Authentification (inscription / connexion)",
+  "Tableau de bord utilisateur",
+  "Gestion de profil",
+  "Notifications par e-mail",
+  "Notifications push",
+  "Système de messagerie interne",
+  "Recherche et filtres avancés",
+  "Paiement en ligne (Stripe / PayPal)",
+  "Gestion des rôles et permissions",
+  "Export CSV / PDF",
+  "Tableau de bord administrateur",
+  "Système de réservation / booking",
+  "Blog / CMS intégré",
+  "Système d'avis / notation",
+  "Intégration calendrier",
+  "Multi-langue",
+  "Mode sombre / clair",
+  "Chat en temps réel",
+  "Système de fichiers / upload",
+  "Statistiques et analytics",
+];
+
+const SUGGESTIONS_DESIGN = [
+  "Design minimaliste et épuré",
+  "Style corporate / professionnel",
+  "Look moderne et coloré",
+  "Dark mode par défaut",
+  "Animations fluides (transitions, micro-interactions)",
+  "Respect de la charte graphique existante",
+  "Composants arrondis (border-radius)",
+  "Typographie premium (serif / sans-serif)",
+  "Palette de couleurs neutres",
+  "Illustrations personnalisées",
+  "Iconographie cohérente (Lucide / Heroicons)",
+  "Glassmorphism / effets de profondeur",
+];
+
+const SUGGESTIONS_CONTRAINTES = [
+  "Responsive (mobile, tablette, desktop)",
+  "Compatible Chrome, Firefox, Safari, Edge",
+  "Hébergement sur serveur européen (RGPD)",
+  "API RESTful",
+  "Base de données PostgreSQL",
+  "Temps de chargement < 3 secondes",
+  "Certificat SSL obligatoire",
+  "Intégration avec un ERP existant",
+  "CI/CD et déploiement automatisé",
+  "Tests unitaires et d'intégration",
+  "Accessibilité WCAG 2.1 AA",
+  "PWA (Progressive Web App)",
+];
+
+const SUGGESTIONS_SECURITE = [
+  "Authentification à deux facteurs (2FA)",
+  "Chiffrement des données sensibles",
+  "Protection contre les attaques XSS / CSRF",
+  "Conformité RGPD",
+  "Politique de mots de passe robuste",
+  "Journalisation des actions utilisateurs",
+  "Sauvegarde automatique quotidienne",
+  "Gestion des sessions et timeout",
+];
+
+const SUGGESTIONS_SEO = [
+  "Balises méta optimisées",
+  "URLs propres et lisibles",
+  "Sitemap XML automatique",
+  "Schema.org / données structurées",
+  "Performance Lighthouse > 90",
+  "Open Graph pour réseaux sociaux",
+  "Redirection 301 automatique",
+  "Lazy loading des images",
+];
+
+const SUGGESTIONS_MAINTENANCE = [
+  "Maintenance corrective incluse 3 mois",
+  "Support technique par e-mail",
+  "Mise à jour de sécurité mensuelle",
+  "Monitoring de disponibilité 24/7",
+  "Documentation technique complète",
+  "Formation utilisateur incluse",
+  "SLA avec temps de réponse garanti",
+];
+
+// ─── Composant de suggestions cliquables ─────────────────────────
+function SuggestionChips({
+  suggestions,
+  selected,
+  onToggle,
+}: {
+  suggestions: string[];
+  selected: string[];
+  onToggle: (s: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5 pt-1">
+      {suggestions.map((s) => {
+        const isActive = selected.some((sel) => sel.toLowerCase() === s.toLowerCase());
+        return (
+          <Badge
+            key={s}
+            variant={isActive ? "default" : "outline"}
+            className={`cursor-pointer text-xs transition-all select-none ${isActive ? "opacity-60" : "hover:bg-accent"}`}
+            onClick={() => onToggle(s)}
+          >
+            {isActive ? "✓ " : "+ "}{s}
+          </Badge>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Form Props ──────────────────────────────────────────────────
 interface CahierDesChargesFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -25,6 +142,12 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
   const [planningSouhaite, setPlanningSouhaite] = useState("");
   const [budgetComplementaire, setBudgetComplementaire] = useState("");
   const [remarques, setRemarques] = useState("");
+  // Nouvelles rubriques stockées dans remarques structurées
+  const [securite, setSecurite] = useState("");
+  const [seo, setSeo] = useState("");
+  const [maintenance, setMaintenance] = useState("");
+  const [objectifsKpi, setObjectifsKpi] = useState("");
+  const [inspirations, setInspirations] = useState("");
 
   useEffect(() => {
     if (existing) {
@@ -35,16 +158,69 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       setContraintesTechniques(existing.contraintesTechniques);
       setPlanningSouhaite(existing.planningSouhaite);
       setBudgetComplementaire(existing.budgetComplementaire);
-      setRemarques(existing.remarques);
+      // Parse extended sections from remarques
+      const parsed = parseRemarques(existing.remarques);
+      setRemarques(parsed.remarques);
+      setSecurite(parsed.securite);
+      setSeo(parsed.seo);
+      setMaintenance(parsed.maintenance);
+      setObjectifsKpi(parsed.objectifsKpi);
+      setInspirations(parsed.inspirations);
     } else {
       setContexte(""); setPublicCible(""); setFonctionnalites([""]); setDesignNotes("");
-      setContraintesTechniques(""); setPlanningSouhaite(""); setBudgetComplementaire(""); setRemarques("");
+      setContraintesTechniques(""); setPlanningSouhaite(""); setBudgetComplementaire("");
+      setRemarques(""); setSecurite(""); setSeo(""); setMaintenance(""); setObjectifsKpi(""); setInspirations("");
     }
   }, [existing, open]);
 
   const addFonctionnalite = () => setFonctionnalites((prev) => [...prev, ""]);
   const removeFonctionnalite = (idx: number) => setFonctionnalites((prev) => prev.filter((_, i) => i !== idx));
   const updateFonctionnalite = (idx: number, val: string) => setFonctionnalites((prev) => prev.map((f, i) => (i === idx ? val : f)));
+
+  // Toggle a suggestion into fonctionnalites list
+  const toggleFonctionnaliteSuggestion = (s: string) => {
+    setFonctionnalites((prev) => {
+      const exists = prev.some((f) => f.toLowerCase() === s.toLowerCase());
+      if (exists) return prev.filter((f) => f.toLowerCase() !== s.toLowerCase());
+      // Replace empty slot or add
+      const emptyIdx = prev.findIndex((f) => f.trim() === "");
+      if (emptyIdx >= 0) {
+        const next = [...prev];
+        next[emptyIdx] = s;
+        return next;
+      }
+      return [...prev, s];
+    });
+  };
+
+  // Toggle a suggestion into a text field (append/remove line)
+  const toggleTextSuggestion = (
+    value: string,
+    setter: React.Dispatch<React.SetStateAction<string>>,
+    suggestion: string
+  ) => {
+    const lines = value.split("\n").filter(Boolean);
+    const exists = lines.some((l) => l.toLowerCase() === suggestion.toLowerCase());
+    if (exists) {
+      setter(lines.filter((l) => l.toLowerCase() !== suggestion.toLowerCase()).join("\n"));
+    } else {
+      setter(value ? value + "\n" + suggestion : suggestion);
+    }
+  };
+
+  const getTextSuggestionSelected = (value: string) =>
+    value.split("\n").map((l) => l.trim()).filter(Boolean);
+
+  const buildRemarques = () => {
+    const sections: string[] = [];
+    if (securite.trim()) sections.push(`[SÉCURITÉ]\n${securite.trim()}`);
+    if (seo.trim()) sections.push(`[SEO / RÉFÉRENCEMENT]\n${seo.trim()}`);
+    if (maintenance.trim()) sections.push(`[MAINTENANCE / SUPPORT]\n${maintenance.trim()}`);
+    if (objectifsKpi.trim()) sections.push(`[OBJECTIFS / KPI]\n${objectifsKpi.trim()}`);
+    if (inspirations.trim()) sections.push(`[INSPIRATIONS / RÉFÉRENCES]\n${inspirations.trim()}`);
+    if (remarques.trim()) sections.push(`[REMARQUES GÉNÉRALES]\n${remarques.trim()}`);
+    return sections.join("\n\n");
+  };
 
   const buildCahier = (statut: "brouillon" | "complet"): CahierDesCharges => {
     const now = new Date().toISOString();
@@ -68,11 +244,10 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       contraintesTechniques: contraintesTechniques.trim(),
       planningSouhaite: planningSouhaite.trim(),
       budgetComplementaire: budgetComplementaire.trim(),
-      remarques: remarques.trim(),
+      remarques: buildRemarques(),
       statut,
       dateMiseAJour: now.split("T")[0],
       historique: [...prevHistorique, newEntry],
-      // Preserve rejection count, clear motifRejet on re-submit
       ...(existing?.nbRejets ? { nbRejets: existing.nbRejets } : {}),
     };
   };
@@ -115,6 +290,12 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
           {/* Fonctionnalités */}
           <div className={sectionClass}>
             <Label className={sectionTitle}>Fonctionnalités attendues</Label>
+            <p className="text-xs text-muted-foreground">Cliquez sur une suggestion pour l'ajouter ou la retirer</p>
+            <SuggestionChips
+              suggestions={SUGGESTIONS_FONCTIONNALITES}
+              selected={fonctionnalites}
+              onToggle={toggleFonctionnaliteSuggestion}
+            />
             {fonctionnalites.map((f, idx) => (
               <div key={idx} className="flex gap-2">
                 <Input value={f} onChange={(e) => updateFonctionnalite(idx, e.target.value)} placeholder={`Fonctionnalité ${idx + 1}`} />
@@ -133,13 +314,70 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
           {/* Design */}
           <div className={sectionClass}>
             <Label className={sectionTitle}>Design et charte graphique</Label>
-            <Textarea value={designNotes} onChange={(e) => setDesignNotes(e.target.value)} placeholder="Préférences visuelles, couleurs, inspirations (URLs)..." rows={2} />
+            <p className="text-xs text-muted-foreground">Sélectionnez des options et/ou décrivez vos préférences</p>
+            <SuggestionChips
+              suggestions={SUGGESTIONS_DESIGN}
+              selected={getTextSuggestionSelected(designNotes)}
+              onToggle={(s) => toggleTextSuggestion(designNotes, setDesignNotes, s)}
+            />
+            <Textarea value={designNotes} onChange={(e) => setDesignNotes(e.target.value)} placeholder="Détails complémentaires : couleurs, inspirations, URLs..." rows={2} />
           </div>
 
           {/* Contraintes techniques */}
           <div className={sectionClass}>
             <Label className={sectionTitle}>Contraintes techniques</Label>
+            <p className="text-xs text-muted-foreground">Sélectionnez les contraintes applicables</p>
+            <SuggestionChips
+              suggestions={SUGGESTIONS_CONTRAINTES}
+              selected={getTextSuggestionSelected(contraintesTechniques)}
+              onToggle={(s) => toggleTextSuggestion(contraintesTechniques, setContraintesTechniques, s)}
+            />
             <Textarea value={contraintesTechniques} onChange={(e) => setContraintesTechniques(e.target.value)} placeholder="Technologies imposées, hébergement, intégrations tierces..." rows={2} />
+          </div>
+
+          {/* Sécurité */}
+          <div className={sectionClass}>
+            <Label className={sectionTitle}>Sécurité et conformité</Label>
+            <SuggestionChips
+              suggestions={SUGGESTIONS_SECURITE}
+              selected={getTextSuggestionSelected(securite)}
+              onToggle={(s) => toggleTextSuggestion(securite, setSecurite, s)}
+            />
+            <Textarea value={securite} onChange={(e) => setSecurite(e.target.value)} placeholder="Exigences de sécurité spécifiques..." rows={2} />
+          </div>
+
+          {/* SEO */}
+          <div className={sectionClass}>
+            <Label className={sectionTitle}>SEO et référencement</Label>
+            <SuggestionChips
+              suggestions={SUGGESTIONS_SEO}
+              selected={getTextSuggestionSelected(seo)}
+              onToggle={(s) => toggleTextSuggestion(seo, setSeo, s)}
+            />
+            <Textarea value={seo} onChange={(e) => setSeo(e.target.value)} placeholder="Objectifs SEO spécifiques..." rows={2} />
+          </div>
+
+          {/* Maintenance */}
+          <div className={sectionClass}>
+            <Label className={sectionTitle}>Maintenance et support</Label>
+            <SuggestionChips
+              suggestions={SUGGESTIONS_MAINTENANCE}
+              selected={getTextSuggestionSelected(maintenance)}
+              onToggle={(s) => toggleTextSuggestion(maintenance, setMaintenance, s)}
+            />
+            <Textarea value={maintenance} onChange={(e) => setMaintenance(e.target.value)} placeholder="Attentes en matière de support post-livraison..." rows={2} />
+          </div>
+
+          {/* Objectifs / KPI */}
+          <div className={sectionClass}>
+            <Label className={sectionTitle}>Objectifs et KPI</Label>
+            <Textarea value={objectifsKpi} onChange={(e) => setObjectifsKpi(e.target.value)} placeholder="Nombre d'utilisateurs visés, taux de conversion, temps de chargement cible..." rows={2} />
+          </div>
+
+          {/* Inspirations */}
+          <div className={sectionClass}>
+            <Label className={sectionTitle}>Sites d'inspiration / Références</Label>
+            <Textarea value={inspirations} onChange={(e) => setInspirations(e.target.value)} placeholder="URLs de sites qui vous inspirent, captures d'écran..." rows={2} />
           </div>
 
           {/* Planning */}
@@ -156,7 +394,7 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
 
           {/* Remarques */}
           <div className={sectionClass}>
-            <Label className={sectionTitle}>Documents / Remarques</Label>
+            <Label className={sectionTitle}>Remarques générales</Label>
             <Textarea value={remarques} onChange={(e) => setRemarques(e.target.value)} placeholder="Notes supplémentaires..." rows={3} />
           </div>
 
@@ -173,4 +411,54 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
       </DialogContent>
     </Dialog>
   );
+}
+
+// ─── Parse extended sections from remarques field ────────────────
+function parseRemarques(raw: string) {
+  const result = { remarques: "", securite: "", seo: "", maintenance: "", objectifsKpi: "", inspirations: "" };
+  if (!raw) return result;
+
+  const sectionMap: Record<string, keyof typeof result> = {
+    "[SÉCURITÉ]": "securite",
+    "[SEO / RÉFÉRENCEMENT]": "seo",
+    "[MAINTENANCE / SUPPORT]": "maintenance",
+    "[OBJECTIFS / KPI]": "objectifsKpi",
+    "[INSPIRATIONS / RÉFÉRENCES]": "inspirations",
+    "[REMARQUES GÉNÉRALES]": "remarques",
+  };
+
+  // Try to parse structured sections
+  let hasStructured = false;
+  for (const key of Object.keys(sectionMap)) {
+    if (raw.includes(key)) { hasStructured = true; break; }
+  }
+
+  if (!hasStructured) {
+    result.remarques = raw;
+    return result;
+  }
+
+  const lines = raw.split("\n");
+  let currentKey: keyof typeof result = "remarques";
+  for (const line of lines) {
+    const trimmed = line.trim();
+    let matched = false;
+    for (const [tag, key] of Object.entries(sectionMap)) {
+      if (trimmed === tag) {
+        currentKey = key;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      result[currentKey] = result[currentKey] ? result[currentKey] + "\n" + line : line;
+    }
+  }
+
+  // Trim all values
+  for (const key of Object.keys(result) as (keyof typeof result)[]) {
+    result[key] = result[key].trim();
+  }
+
+  return result;
 }
