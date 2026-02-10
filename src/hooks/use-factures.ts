@@ -41,6 +41,29 @@ export function useFactures() {
       if (isDemo) { demoData.updateFactureStatut(id, statut); return; }
       const { error } = await supabase.from("factures").update({ statut }).eq("id", id);
       if (error) throw error;
+
+      // Send payment confirmation email when marking as paid
+      if (statut === "payee") {
+        const facture = data.find((f) => f.id === id);
+        if (facture) {
+          // Look up client email from clients table
+          const { data: clientRow } = await supabase.from("clients").select("email, prenom").eq("id", facture.clientId).maybeSingle();
+          if (clientRow?.email) {
+            try {
+              await supabase.functions.invoke("send-paiement", {
+                body: {
+                  email: clientRow.email,
+                  prenom: clientRow.prenom || "Client",
+                  factureRef: facture.reference,
+                  montant: facture.montant,
+                },
+              });
+            } catch (e) {
+              console.error("Erreur envoi email paiement:", e);
+            }
+          }
+        }
+      }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["factures"] }),
   });
