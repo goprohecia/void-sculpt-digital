@@ -207,11 +207,12 @@ export function CahierDesChargesForm({ open, onOpenChange, demandeId, existing, 
         continue;
       }
 
-      const { data: urlData } = supabase.storage.from("cdc-attachments").getPublicUrl(path);
+      const { data: signedData } = await supabase.storage.from("cdc-attachments").createSignedUrl(path, 60 * 60 * 24 * 365);
+      const fileUrl = signedData?.signedUrl || path;
 
       newAttachments.push({
         name: file.name,
-        url: urlData.publicUrl,
+        url: fileUrl,
         type: file.type,
         size: file.size,
       });

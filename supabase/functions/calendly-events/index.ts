@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,6 +10,49 @@ const corsHeaders = {
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  // --- Auth check ---
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response(JSON.stringify({ error: "Non autorisé" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const supabaseClient = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: authHeader } } }
+  );
+
+  const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+  if (userError || !user) {
+    return new Response(JSON.stringify({ error: "Non autorisé" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  // Check role
+  const { data: roleData } = await supabaseClient
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  const isAdmin = roleData?.role === "admin";
+
+  // Get client email for filtering (if client role)
+  let clientEmail = "";
+  if (!isAdmin) {
+    const { data: clientData } = await supabaseClient
+      .from("clients")
+      .select("email")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    clientEmail = clientData?.email || user.email || "";
   }
 
   const CALENDLY_API_TOKEN = Deno.env.get("CALENDLY_API_TOKEN");
@@ -60,7 +104,7 @@ serve(async (req) => {
     const eventsData = await eventsRes.json();
 
     // Step 4: For each event, fetch invitees to get client names
-    const events = await Promise.all(
+    const allEvents = await Promise.all(
       eventsData.collection.map(async (event: any) => {
         let inviteeName = "Inconnu";
         let inviteeEmail = "";
@@ -75,7 +119,7 @@ serve(async (req) => {
               inviteeEmail = invData.collection[0].email || "";
             }
           } else {
-            await invRes.text(); // consume body
+            await invRes.text();
           }
         } catch {
           // ignore invitee fetch errors
@@ -102,6 +146,11 @@ serve(async (req) => {
         };
       })
     );
+
+    // Step 5: Filter for clients - they only see their own appointments
+    const events = isAdmin
+      ? allEvents
+      : allEvents.filter((e: any) => e.clientEmail.toLowerCase() === clientEmail.toLowerCase());
 
     return new Response(JSON.stringify({ events }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
