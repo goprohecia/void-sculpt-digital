@@ -5,21 +5,24 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useFactures } from "@/hooks/use-factures";
 import { useClients } from "@/hooks/use-clients";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
+import { useClientId } from "@/hooks/use-client-id";
 import { Receipt, CreditCard, Download } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Button } from "@/components/ui/button";
 import { generateFacturePdf } from "@/lib/generatePdf";
 
 export default function ClientFactures() {
+  const { clientId, isLoading: clientLoading } = useClientId();
   const { getFacturesByClient } = useFactures();
   const { getClientById } = useClients();
-  const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
-  const client = getClientById(DEMO_CLIENT_ID);
+  const mesFactures = clientId ? getFacturesByClient(clientId) : [];
+  const client = clientId ? getClientById(clientId) : undefined;
 
   const totalDu = mesFactures
     .filter((f) => f.statut === "en_attente" || f.statut === "en_retard")
     .reduce((acc, f) => acc + f.montant, 0);
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>

@@ -5,7 +5,8 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { motion } from "framer-motion";
 import { LifeBuoy, Plus, Send, ArrowLeft } from "lucide-react";
 import { useTickets } from "@/hooks/use-tickets";
-import { DEMO_CLIENT_ID, type Ticket, type TicketPriority, type TicketStatus } from "@/data/mockData";
+import { useClientId } from "@/hooks/use-client-id";
+import { type Ticket, type TicketPriority, type TicketStatus } from "@/data/mockData";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,8 +19,9 @@ import { toast } from "sonner";
 type FilterStatus = "tous" | TicketStatus;
 
 export default function ClientSupport() {
+  const { clientId, clientName, isLoading: clientLoading } = useClientId();
   const { getTicketsByClient } = useTickets();
-  const initialTickets = getTicketsByClient(DEMO_CLIENT_ID);
+  const initialTickets = clientId ? getTicketsByClient(clientId) : [];
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [initialized, setInitialized] = useState(false);
   const [filter, setFilter] = useState<FilterStatus>("tous");
@@ -59,12 +61,12 @@ export default function ClientSupport() {
   };
 
   const handleCreateTicket = () => {
-    if (!newTicket.sujet.trim() || !newTicket.description.trim()) return;
+    if (!newTicket.sujet.trim() || !newTicket.description.trim() || !clientId) return;
     const ticket: Ticket = {
       id: `tk-new-${Date.now()}`,
       reference: `TK-${String(tickets.length + 1).padStart(3, "0")}`,
-      clientId: DEMO_CLIENT_ID,
-      clientNom: "Luxe & Mode",
+      clientId,
+      clientNom: clientName,
       sujet: newTicket.sujet,
       description: newTicket.description,
       priorite: newTicket.priorite,
@@ -82,6 +84,8 @@ export default function ClientSupport() {
   const formatDate = (d: string) => {
     try { return formatDistanceToNow(new Date(d), { addSuffix: true, locale: fr }); } catch { return d; }
   };
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>

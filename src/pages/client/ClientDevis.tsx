@@ -5,7 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDevis } from "@/hooks/use-devis";
 import { useClients } from "@/hooks/use-clients";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
+import { useClientId } from "@/hooks/use-client-id";
 import { FileText, Check, X, Eraser, Download } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,11 @@ import SignaturePad, { type SignaturePadRef } from "@/components/SignaturePad";
 import { generateDevisPdf } from "@/lib/generatePdf";
 
 export default function ClientDevis() {
+  const { clientId, clientName, isLoading: clientLoading } = useClientId();
   const { getDevisByClient, updateDevisStatut, updateDevisSignature } = useDevis();
   const { getClientById } = useClients();
-  const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
-  const client = getClientById(DEMO_CLIENT_ID);
+  const mesDevis = clientId ? getDevisByClient(clientId) : [];
+  const client = clientId ? getClientById(clientId) : undefined;
 
   const [bonPourAccord, setBonPourAccord] = useState(false);
   const [signatureEmpty, setSignatureEmpty] = useState(true);
@@ -29,7 +30,7 @@ export default function ClientDevis() {
   const handleAccept = (id: string) => {
     if (!signaturePadRef.current || signaturePadRef.current.isEmpty()) return;
     const signatureDataUrl = signaturePadRef.current.toDataURL();
-    const signataireNom = client ? `${client.prenom} ${client.nom}` : "Client";
+    const signataireNom = client ? `${client.prenom} ${client.nom}` : clientName;
     const dateSignature = new Date().toISOString();
 
     updateDevisStatut({ id, statut: "accepte" });
@@ -50,6 +51,8 @@ export default function ClientDevis() {
   };
 
   const canConfirm = !signatureEmpty && bonPourAccord;
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>

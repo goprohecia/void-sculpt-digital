@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useNotificationsData } from "@/hooks/use-notifications-data";
+import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSidebar } from "./ClientSidebar";
 import { NotificationPanel } from "./NotificationPanel";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,8 @@ interface ClientLayoutProps {
 
 export function ClientLayout({ children }: ClientLayoutProps) {
   const { isAuthenticated: isDemoAuth, user: demoUser } = useDemoAuth();
-  const { getNotificationsByClient, markNotificationRead, markAllNotificationsRead } = useDemoData();
+  const { clientId, isDemo } = useClientId();
+  const { getNotificationsByClient, markNotificationRead, markAllNotificationsRead } = useNotificationsData();
   const [supabaseUser, setSupabaseUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,12 +33,12 @@ export function ClientLayout({ children }: ClientLayoutProps) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const isDemo = isDemoAuth && demoUser?.role === "client";
+  const isDemoClient = isDemoAuth && demoUser?.role === "client";
   const isRealAuth = !!supabaseUser;
 
   if (loading) return null;
 
-  if (!isDemo && !isRealAuth) {
+  if (!isDemoClient && !isRealAuth) {
     return <Navigate to="/client/login" replace />;
   }
 
@@ -53,12 +54,12 @@ export function ClientLayout({ children }: ClientLayoutProps) {
           <header className="h-14 border-b border-border/50 flex items-center px-4 gap-4 glass-nav">
             <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
             <div className="flex-1" />
-            {isDemo && (
+            {isDemo && clientId && (
               <>
                 <NotificationPanel
-                  notifications={getNotificationsByClient(DEMO_CLIENT_ID)}
+                  notifications={getNotificationsByClient(clientId)}
                   onMarkRead={markNotificationRead}
-                  onMarkAllRead={() => markAllNotificationsRead("client", DEMO_CLIENT_ID)}
+                  onMarkAllRead={() => markAllNotificationsRead("client", clientId)}
                 />
                 <span className="text-xs text-muted-foreground px-3 py-1 rounded-full bg-[hsl(200,100%,50%)]/10 text-[hsl(200,100%,60%)] font-medium">
                   Mode démo

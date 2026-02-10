@@ -13,10 +13,9 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { useDemoData } from "@/contexts/DemoDataContext";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
+import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Sidebar,
@@ -36,18 +35,17 @@ export function ClientSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useDemoAuth();
-  const { getClientById } = useDemoData();
+  const { clientId, clientName, clientInitials } = useClientId();
   const { conversations } = useConversations();
   const { tickets } = useTickets();
-  const client = getClientById(DEMO_CLIENT_ID);
 
-  const clientConvNonLus = conversations
-    .filter((c) => c.clientId === DEMO_CLIENT_ID)
-    .reduce((acc, c) => acc + (c.nonLus || 0), 0);
+  const clientConvNonLus = clientId
+    ? conversations.filter((c) => c.clientId === clientId).reduce((acc, c) => acc + (c.nonLus || 0), 0)
+    : 0;
 
-  const openClientTickets = tickets
-    .filter((t) => t.clientId === DEMO_CLIENT_ID && (t.statut === "ouvert" || t.statut === "en_cours"))
-    .length;
+  const openClientTickets = clientId
+    ? tickets.filter((t) => t.clientId === clientId && (t.statut === "ouvert" || t.statut === "en_cours")).length
+    : 0;
 
   const navItems = [
     { title: "Tableau de bord", url: "/client", icon: LayoutDashboard },
@@ -73,11 +71,11 @@ export function ClientSidebar() {
         <Link to="/client" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-[hsl(200,100%,50%)]/20 flex items-center justify-center">
             <span className="text-[hsl(200,100%,60%)] font-bold text-sm">
-              {client ? `${client.prenom.charAt(0)}${client.nom.charAt(0)}` : "CL"}
+              {clientInitials}
             </span>
           </div>
           <div>
-            <p className="text-sm font-semibold">{client ? `${client.prenom} ${client.nom}` : "Client"}</p>
+            <p className="text-sm font-semibold">{clientName}</p>
             <p className="text-xs text-muted-foreground">Espace client</p>
           </div>
         </Link>
@@ -115,12 +113,12 @@ export function ClientSidebar() {
         <div className="flex items-center gap-3 mb-3">
           <div className="h-8 w-8 rounded-full bg-[hsl(200,100%,50%)]/20 flex items-center justify-center">
             <span className="text-xs font-semibold text-[hsl(200,100%,60%)]">
-              {user?.nom?.charAt(0) || "C"}
+              {clientInitials.charAt(0)}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user?.nom}</p>
-            <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>
+            <p className="text-sm font-medium truncate">{user?.nom || clientName}</p>
+            <p className="text-xs text-muted-foreground capitalize">{user?.role || "client"}</p>
           </div>
         </div>
         <button

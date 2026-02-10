@@ -10,15 +10,18 @@ import { useDossiers } from "@/hooks/use-dossiers";
 import { useFactures } from "@/hooks/use-factures";
 import { useDevis } from "@/hooks/use-devis";
 import { useDemandes } from "@/hooks/use-demandes";
-import { getConversationsByClient, getRendezVousByClient, DEMO_CLIENT_ID } from "@/data/mockData";
+import { useConversations } from "@/hooks/use-conversations";
+import { useClientId } from "@/hooks/use-client-id";
 import { WelcomeBookingDialog } from "@/components/admin/WelcomeBookingDialog";
 
 export default function ClientDashboard() {
   const [showWelcome, setShowWelcome] = useState(false);
+  const { clientId, clientPrenom, clientEntreprise, isLoading: clientLoading } = useClientId();
   const { getDossiersByClient } = useDossiers();
   const { getFacturesByClient } = useFactures();
   const { getDevisByClient } = useDevis();
   const { getDemandesByClient } = useDemandes();
+  const { getConversationsByClient } = useConversations();
 
   useEffect(() => {
     const hasVisited = localStorage.getItem("impartial_first_visit_done");
@@ -27,37 +30,36 @@ export default function ClientDashboard() {
     }
   }, []);
 
-  const mesDossiers = getDossiersByClient(DEMO_CLIENT_ID);
-  const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
-  const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
-  const mesDemandes = getDemandesByClient(DEMO_CLIENT_ID);
-  const mesConversations = getConversationsByClient(DEMO_CLIENT_ID);
-  const mesRdv = getRendezVousByClient(DEMO_CLIENT_ID);
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
+
+  const mesDossiers = clientId ? getDossiersByClient(clientId) : [];
+  const mesFactures = clientId ? getFacturesByClient(clientId) : [];
+  const mesDevis = clientId ? getDevisByClient(clientId) : [];
+  const mesDemandes = clientId ? getDemandesByClient(clientId) : [];
+  const mesConversations = clientId ? getConversationsByClient(clientId) : [];
 
   const dossiersEnCours = mesDossiers.filter((d) => d.statut === "en_cours").length;
   const facturesEnAttente = mesFactures.filter((f) => f.statut === "en_attente" || f.statut === "en_retard").length;
   const devisEnAttente = mesDevis.filter((d) => d.statut === "en_attente").length;
-  const messagesNonLus = mesConversations.reduce((acc, c) => acc + c.nonLus, 0);
+  const messagesNonLus = mesConversations.reduce((acc, c) => acc + (c.nonLus || 0), 0);
   const demandesEnCours = mesDemandes.filter((d) => d.statut === "nouvelle" || d.statut === "en_revue").length;
-  const rdvAVenir = mesRdv.filter((r) => r.statut === "a_venir").length;
 
   return (
     <ClientLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
           <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold">Bienvenue, Sophie</h1>
-            <p className="text-muted-foreground text-sm">Votre espace client — Luxe & Mode</p>
+            <h1 className="text-2xl font-bold">Bienvenue, {clientPrenom}</h1>
+            <p className="text-muted-foreground text-sm">Votre espace client{clientEntreprise ? ` — ${clientEntreprise}` : ""}</p>
           </motion.div>
 
           {/* KPIs */}
-          <motion.div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" variants={staggerContainer} initial="initial" animate="animate">
+          <motion.div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4" variants={staggerContainer} initial="initial" animate="animate">
             <motion.div variants={staggerItem}><DashboardKPI title="Dossiers en cours" value={dossiersEnCours} icon={FolderOpen} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Demandes" value={demandesEnCours} icon={Send} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Devis en attente" value={devisEnAttente} icon={FileText} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Factures à régler" value={facturesEnAttente} icon={Receipt} /></motion.div>
             <motion.div variants={staggerItem}><DashboardKPI title="Messages non lus" value={messagesNonLus} icon={MessageSquare} /></motion.div>
-            <motion.div variants={staggerItem}><DashboardKPI title="RDV à venir" value={rdvAVenir} icon={CalendarDays} /></motion.div>
           </motion.div>
 
           {/* Dossiers récents */}
@@ -67,6 +69,9 @@ export default function ClientDashboard() {
               <Link to="/client/dossiers" className="text-xs text-primary hover:underline flex items-center gap-1">Voir tous <ArrowRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-3">
+              {mesDossiers.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-4">Aucun dossier pour le moment</p>
+              )}
               {mesDossiers.slice(0, 4).map((d) => (
                 <Link key={d.id} to={`/client/dossiers/${d.id}`} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
                   <div className="min-w-0 flex-1">
@@ -110,6 +115,9 @@ export default function ClientDashboard() {
               <Link to="/client/devis" className="text-xs text-primary hover:underline flex items-center gap-1">Voir tous <ArrowRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-3">
+              {mesDevis.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-4">Aucun devis pour le moment</p>
+              )}
               {mesDevis.slice(0, 3).map((d) => (
                 <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
                   <div className="min-w-0 flex-1">

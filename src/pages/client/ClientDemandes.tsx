@@ -5,8 +5,8 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useCahiers } from "@/hooks/use-cahiers";
+import { useClientId } from "@/hooks/use-client-id";
 import { type DemandePrestation, type Demande } from "@/contexts/DemoDataContext";
-import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { Send, Plus, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,9 +20,10 @@ import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 const prestationTypes: DemandePrestation[] = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autre"];
 
 export default function ClientDemandes() {
+  const { clientId, clientName, isLoading: clientLoading } = useClientId();
   const { demandes, addDemande, getDemandesByClient } = useDemandes();
   const { getCahierByDemande, saveCahierDesCharges } = useCahiers();
-  const mesDemandes = getDemandesByClient(DEMO_CLIENT_ID);
+  const mesDemandes = clientId ? getDemandesByClient(clientId) : [];
   const [open, setOpen] = useState(false);
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
   const [commentDialogId, setCommentDialogId] = useState<string | null>(null);
@@ -32,15 +33,15 @@ export default function ClientDemandes() {
   const [budget, setBudget] = useState("");
 
   const handleSubmit = () => {
-    if (!titre.trim() || !description.trim()) {
+    if (!titre.trim() || !description.trim() || !clientId) {
       toast.error("Veuillez remplir le titre et la description");
       return;
     }
     const newDemande: Demande = {
       id: `dem${Date.now()}`,
       reference: `DEM-2026-${String(demandes.length + 4).padStart(3, "0")}`,
-      clientId: DEMO_CLIENT_ID,
-      clientNom: "Luxe & Mode",
+      clientId,
+      clientNom: clientName,
       titre: titre.trim(),
       typePrestation,
       description: description.trim(),
@@ -62,6 +63,8 @@ export default function ClientDemandes() {
     if (cahier.statut === "complet") return <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CDC en validation</Badge>;
     return <Badge variant="outline" className="text-[10px] px-1.5 py-0">CDC brouillon</Badge>;
   };
+
+  if (clientLoading) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>
