@@ -1,4 +1,4 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   FolderOpen,
@@ -15,6 +15,7 @@ import {
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID } from "@/data/mockData";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Sidebar,
   SidebarContent,
@@ -46,6 +47,7 @@ const navItems = [
 
 export function ClientSidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, logout } = useDemoAuth();
   const { getClientById } = useDemoData();
   const client = getClientById(DEMO_CLIENT_ID);
@@ -111,7 +113,7 @@ export function ClientSidebar() {
           </div>
         </div>
         <button
-          onClick={logout}
+          onClick={() => { logout(); supabase.auth.signOut(); navigate("/admin/login", { replace: true }); }}
           className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
           <LogOut className="h-4 w-4" />
