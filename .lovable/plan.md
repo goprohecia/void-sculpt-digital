@@ -1,59 +1,93 @@
 
+# Dissocier les comptes clients reels du mode demo
 
-# Supprimer les donnees mock du dashboard admin en mode reel
+## Probleme identifie
 
-## Probleme
+Le probleme fondamental est que **toutes les pages client utilisent `DEMO_CLIENT_ID` ("c3") en dur** pour filtrer les donnees, que l'utilisateur soit en mode demo ou connecte avec un vrai compte. Cela signifie que :
 
-Quand vous etes connecte avec votre vrai compte (`contact@impartialgames.com`), le dashboard et la sidebar affichent encore des donnees fictives (chiffre d'affaires 35.2k, activites recentes, badges "5" messagerie, "3" support). Ces donnees proviennent d'imports directs du fichier `mockData.ts` qui ne tiennent pas compte du mode demo/reel.
+1. En mode reel, les hooks interrogent la base de donnees (pas de mock) mais filtrent par `clientId === "c3"` -- ce qui ne correspond a aucun vrai client
+2. Le dashboard client affiche "Bienvenue, Sophie" et "Luxe & Mode" en dur
+3. Certaines pages (`ClientDossierDetail`, `ClientPaiement`, `ClientSettings`) utilisent directement `useDemoData()` au lieu des hooks dynamiques, ce qui retourne toujours les donnees mock
 
-## Ce qui fonctionne deja
+## Pages concernees et problemes specifiques
 
-Les hooks `useDossiers`, `useClients`, `useFactures` detectent correctement le mode reel et interrogent la base de donnees (qui est vide, d'ou les "0" pour dossiers actifs, nouveaux clients, factures en attente).
-
-## Ce qui ne fonctionne pas
-
-Plusieurs donnees sont importees directement depuis `mockData.ts` sans passer par la logique demo/reel :
-
-### 1. Dashboard (`AdminDashboard.tsx`)
-- **`donneesMensuelles`** : utilise pour le CA (35.2k) et le graphique Tendance CA
-- **`activites`** : affiche 8 activites fictives
-- **`relances`** : utilise dans le calendrier des echeances
-- **`totalNonLus`** : affiche le lien "X messages non lus"
-
-### 2. Sidebar (`AdminSidebar.tsx`)
-- **`totalNonLus`** : badge "5" sur Messagerie
-- **`getOpenTicketsCount()`** : badge "3" sur Support
+| Page | Probleme |
+|------|----------|
+| `ClientDashboard` | `DEMO_CLIENT_ID` partout + import direct de `getConversationsByClient` et `getRendezVousByClient` depuis mockData + "Bienvenue, Sophie" en dur |
+| `ClientDossiers` | `DEMO_CLIENT_ID` en dur |
+| `ClientDemandes` | `DEMO_CLIENT_ID` en dur + `clientNom: "Luxe & Mode"` en dur dans la creation |
+| `ClientDevis` | `DEMO_CLIENT_ID` en dur |
+| `ClientFactures` | `DEMO_CLIENT_ID` en dur |
+| `ClientMessaging` | `DEMO_CLIENT_ID` en dur |
+| `ClientSupport` | `DEMO_CLIENT_ID` en dur + `clientNom: "Luxe & Mode"` en dur |
+| `ClientProfile` | `DEMO_CLIENT_ID` en dur |
+| `ClientSettings` | Utilise `useDemoData()` directement (pas de hook dynamique) + `DEMO_CLIENT_ID` |
+| `ClientDossierDetail` | Utilise `useDemoData()` directement |
+| `ClientPaiement` | Utilise `useDemoData()` directement |
+| `ClientSidebar` | `DEMO_CLIENT_ID` en dur |
+| `ClientLayout` | `DEMO_CLIENT_ID` pour les notifications |
 
 ## Solution
 
-### Fichier `AdminDashboard.tsx`
-- Remplacer les imports directs par les hooks existants (`useRelances`, `useConversations`)
-- Pour le CA (`donneesMensuelles`) : utiliser le hook existant ou les donnees de la base `donnees_mensuelles`
-- Pour les activites : ne rien afficher en mode reel (pas de table activites en base), ou masquer la section
-- Calculer `totalNonLus` a partir du hook `useConversations` au lieu de l'import mock
-- Conditionner l'affichage des tendances ("+23.5% vs jan.") : ne pas les afficher quand il n'y a pas de donnees historiques
+### 1. Creer un hook `useClientId`
 
-### Fichier `AdminSidebar.tsx`
-- Remplacer l'import statique `totalNonLus` par un hook `useConversations` pour calculer dynamiquement le nombre de messages non lus
-- Remplacer `getOpenTicketsCount()` par un hook `useTickets` pour calculer dynamiquement les tickets ouverts
-- En mode reel sans donnees, ces badges afficheront 0 (et ne seront pas visibles)
+Un nouveau hook centralise qui sera utilise partout. Il retourne :
+- `DEMO_CLIENT_ID` si l'utilisateur est en mode demo
+- L'ID du client reel (depuis la table `clients.user_id`) si l'utilisateur est connecte avec un vrai compte
+- Les infos du client (nom, prenom, entreprise) pour personnaliser l'interface
+
+### 2. Remplacer `DEMO_CLIENT_ID` par `useClientId()` dans toutes les pages
+
+Chaque page client utilisera le hook au lieu de l'import statique.
+
+### 3. Corriger les pages qui utilisent `useDemoData()` directement
+
+- `ClientDossierDetail` : utiliser les hooks `useDossiers`, `useFactures`, `useDevis`, `useCahiers`
+- `ClientPaiement` : utiliser les hooks `useFactures`, `useDossiers`
+- `ClientSettings` : utiliser le hook `useClients` au lieu de `useDemoData()`
+
+### 4. Dynamiser les textes en dur
+
+- "Bienvenue, Sophie" --> "Bienvenue, {prenom}"
+- "Luxe & Mode" --> "{entreprise}" ou nom du client reel
+- Sidebar : afficher le nom reel du client connecte
 
 ## Details techniques
 
-### Modifications dans `AdminDashboard.tsx`
-- Ajouter les imports : `useConversations`, `useRelances`, `useIsDemo`
-- Utiliser `useRelances()` au lieu de l'import direct `relances`
-- Calculer `totalNonLus` depuis `useConversations().conversations`
-- Pour `donneesMensuelles` : creer un hook ou requeter directement `donnees_mensuelles` ; en attendant, afficher `0k` quand pas de donnees
-- Conditionner l'affichage du graphique Tendance CA et des activites recentes : masquer ou afficher "Aucune donnee" si les tableaux sont vides
-- Retirer les `trend` des KPIs quand il n'y a pas d'historique
+### Nouveau fichier : `src/hooks/use-client-id.ts`
 
-### Modifications dans `AdminSidebar.tsx`
-- Remplacer `totalNonLus` (import statique) par un calcul dynamique via `useConversations`
-- Remplacer `getOpenTicketsCount()` par un calcul dynamique via `useTickets`
-- Les badges ne s'afficheront que si la valeur est > 0
+```typescript
+// Retourne le clientId courant (demo ou reel)
+// En mode reel, interroge la table "clients" 
+// avec WHERE user_id = supabaseUserId
+// En mode demo, retourne DEMO_CLIENT_ID
+```
 
-### Fichiers concernes
-- `src/pages/admin/AdminDashboard.tsx`
-- `src/components/admin/AdminSidebar.tsx`
+Le hook effectuera une requete `clients` filtree par `user_id` pour trouver le record client associe au compte Supabase. Si aucun client n'existe en base, les pages afficheront les empty states.
 
+### Fichiers modifies (13 fichiers)
+
+1. **`src/hooks/use-client-id.ts`** (nouveau) -- hook centralise
+2. **`src/pages/client/ClientDashboard.tsx`** -- remplacer `DEMO_CLIENT_ID`, dynamiser "Bienvenue, Sophie", utiliser `useConversations` au lieu de l'import mock
+3. **`src/pages/client/ClientDossiers.tsx`** -- remplacer `DEMO_CLIENT_ID`
+4. **`src/pages/client/ClientDemandes.tsx`** -- remplacer `DEMO_CLIENT_ID` + dynamiser `clientNom`
+5. **`src/pages/client/ClientDevis.tsx`** -- remplacer `DEMO_CLIENT_ID`
+6. **`src/pages/client/ClientFactures.tsx`** -- remplacer `DEMO_CLIENT_ID`
+7. **`src/pages/client/ClientMessaging.tsx`** -- remplacer `DEMO_CLIENT_ID`
+8. **`src/pages/client/ClientSupport.tsx`** -- remplacer `DEMO_CLIENT_ID` + dynamiser `clientNom`
+9. **`src/pages/client/ClientProfile.tsx`** -- remplacer `DEMO_CLIENT_ID`
+10. **`src/pages/client/ClientSettings.tsx`** -- migrer de `useDemoData` vers `useClients` + remplacer `DEMO_CLIENT_ID`
+11. **`src/pages/client/ClientDossierDetail.tsx`** -- migrer de `useDemoData` vers les hooks dynamiques
+12. **`src/pages/client/ClientPaiement.tsx`** -- migrer de `useDemoData` vers les hooks dynamiques
+13. **`src/components/admin/ClientSidebar.tsx`** -- remplacer `DEMO_CLIENT_ID` + dynamiser le nom affiche
+14. **`src/components/admin/ClientLayout.tsx`** -- remplacer `DEMO_CLIENT_ID` pour les notifications
+
+### Logique du hook `useClientId`
+
+```
+Si isDemo --> retourne DEMO_CLIENT_ID
+Si supabaseUserId existe --> requete SELECT id FROM clients WHERE user_id = supabaseUserId
+  --> retourne l'id du client trouve (ou null si pas encore de fiche client)
+```
+
+Cela garantit que le client `dylan110598@icloud.com` ne verra que ses propres donnees (actuellement vides, avec des empty states) et jamais les donnees mock de Sophie/Luxe & Mode.
