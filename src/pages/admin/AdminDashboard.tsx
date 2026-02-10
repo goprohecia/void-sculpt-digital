@@ -9,13 +9,14 @@ import { useEmailLogs } from "@/hooks/use-email-logs";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useClients } from "@/hooks/use-clients";
 import { useFactures } from "@/hooks/use-factures";
+import { useRelances } from "@/hooks/use-relances";
+import { useConversations } from "@/hooks/use-conversations";
+import { useIsDemo } from "@/hooks/useIsDemo";
 import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
-  relances,
-  activites,
-  donneesMensuelles,
-  totalNonLus,
+  activites as mockActivites,
+  donneesMensuelles as mockDonneesMensuelles,
 } from "@/data/mockData";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, getDay } from "date-fns";
@@ -26,10 +27,17 @@ type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" 
 export default function AdminDashboard() {
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const { isDemo } = useIsDemo();
   const { emailLogs } = useEmailLogs();
   const { dossiers } = useDossiers();
   const { clients } = useClients();
   const { factures } = useFactures();
+  const { relances } = useRelances();
+  const { conversations } = useConversations();
+
+  const donneesMensuelles = isDemo ? mockDonneesMensuelles : [];
+  const activites = isDemo ? mockActivites : [];
+  const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
 
   const dossiersActifs = dossiers.filter((d) => d.statut === "en_cours").length;
   const nouveauxClients = clients.filter((c) => c.dateCreation >= "2026-02-01").length;
@@ -51,7 +59,7 @@ export default function AdminDashboard() {
       if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(0,84%,60%)" });
     });
     return events;
-  }, [dossiers, factures]);
+  }, [dossiers, factures, relances]);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -62,6 +70,8 @@ export default function AdminDashboard() {
     calendarEvents.filter((e) => isSameDay(new Date(e.date), day));
 
   const selectedEvents = selectedDay ? getEventsForDay(selectedDay) : [];
+
+  const hasTrendData = donneesMensuelles.length >= 2;
 
   return (
     <AdminLayout>
@@ -75,13 +85,13 @@ export default function AdminDashboard() {
           {/* KPIs */}
           <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={staggerContainer} initial="initial" animate="animate">
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Chiffre d'affaires" value={`${(caFevrier / 1000).toFixed(1)}k €`} icon={Euro} trend={{ value: 23.5, label: "vs jan." }} />
+              <DashboardKPI title="Chiffre d'affaires" value={`${(caFevrier / 1000).toFixed(1)}k €`} icon={Euro} trend={hasTrendData ? { value: 23.5, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Dossiers actifs" value={dossiersActifs} icon={FolderOpen} trend={{ value: 12, label: "vs jan." }} />
+              <DashboardKPI title="Dossiers actifs" value={dossiersActifs} icon={FolderOpen} trend={hasTrendData ? { value: 12, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux clients" value={nouveauxClients} icon={Users} trend={{ value: 50, label: "vs jan." }} />
+              <DashboardKPI title="Nouveaux clients" value={nouveauxClients} icon={Users} trend={hasTrendData ? { value: 50, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
               <DashboardKPI title="Factures en attente" value={facturesEnAttente} icon={Receipt} />
@@ -94,17 +104,21 @@ export default function AdminDashboard() {
               <h3 className="text-sm font-semibold mb-2">Tendance CA</h3>
               <p className="text-xs text-muted-foreground mb-4">Janvier – Juin 2026</p>
               <div className="h-24">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={sparklineData}>
-                    <defs>
-                      <linearGradient id="caGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="hsl(265, 85%, 60%)" stopOpacity={0.4} />
-                        <stop offset="100%" stopColor="hsl(265, 85%, 60%)" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <Area type="monotone" dataKey="ca" stroke="hsl(265, 85%, 60%)" fill="url(#caGradient)" strokeWidth={2} />
-                  </AreaChart>
-                </ResponsiveContainer>
+                {sparklineData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={sparklineData}>
+                      <defs>
+                        <linearGradient id="caGradient" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="hsl(265, 85%, 60%)" stopOpacity={0.4} />
+                          <stop offset="100%" stopColor="hsl(265, 85%, 60%)" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <Area type="monotone" dataKey="ca" stroke="hsl(265, 85%, 60%)" fill="url(#caGradient)" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="flex items-center justify-center h-full text-xs text-muted-foreground">Aucune donnée</div>
+                )}
               </div>
             </div>
 
@@ -114,59 +128,65 @@ export default function AdminDashboard() {
                 <h3 className="text-sm font-semibold">Activités récentes</h3>
                 <span className="text-xs text-muted-foreground">{activites.length} activités</span>
               </div>
-              <div className="space-y-3">
-                {activites.slice(0, 6).map((a) => (
-                  <div key={a.id} className="flex items-start gap-3 text-sm">
-                    <div className="mt-1 h-2 w-2 rounded-full shrink-0" style={{
-                      backgroundColor: a.type === "dossier" ? "hsl(200,100%,50%)" :
-                        a.type === "client" ? "hsl(155,100%,45%)" :
-                        a.type === "facture" ? "hsl(45,93%,55%)" :
-                        a.type === "message" ? "hsl(265,85%,60%)" :
-                        "hsl(0,84%,60%)"
-                    }} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-foreground truncate">{a.description}</p>
-                      <p className="text-xs text-muted-foreground">{a.date}</p>
+              {activites.length > 0 ? (
+                <div className="space-y-3">
+                  {activites.slice(0, 6).map((a) => (
+                    <div key={a.id} className="flex items-start gap-3 text-sm">
+                      <div className="mt-1 h-2 w-2 rounded-full shrink-0" style={{
+                        backgroundColor: a.type === "dossier" ? "hsl(200,100%,50%)" :
+                          a.type === "client" ? "hsl(155,100%,45%)" :
+                          a.type === "facture" ? "hsl(45,93%,55%)" :
+                          a.type === "message" ? "hsl(265,85%,60%)" :
+                          "hsl(0,84%,60%)"
+                      }} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-foreground truncate">{a.description}</p>
+                        <p className="text-xs text-muted-foreground">{a.date}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-20 text-xs text-muted-foreground">Aucune activité récente</div>
+              )}
             </div>
           </motion.div>
 
           {/* Dossiers récents */}
-          <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold">Dossiers récents</h3>
-              <Link to="/admin/dossiers" className="text-xs text-primary hover:underline flex items-center gap-1">
-                Voir tous <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-            <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50">
-                    <th className="text-left py-2 px-3 text-muted-foreground font-medium">Référence</th>
-                    <th className="text-left py-2 px-3 text-muted-foreground font-medium">Client</th>
-                    <th className="text-left py-2 px-3 text-muted-foreground font-medium hidden md:table-cell">Prestation</th>
-                    <th className="text-right py-2 px-3 text-muted-foreground font-medium">Montant</th>
-                    <th className="text-center py-2 px-3 text-muted-foreground font-medium">Statut</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {dossiersRecents.map((d) => (
-                    <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                      <td className="py-2.5 px-3 font-mono text-xs">{d.reference}</td>
-                      <td className="py-2.5 px-3">{d.clientNom}</td>
-                      <td className="py-2.5 px-3 hidden md:table-cell text-muted-foreground">{d.typePrestation}</td>
-                      <td className="py-2.5 px-3 text-right font-medium">{d.montant.toLocaleString()} €</td>
-                      <td className="py-2.5 px-3 text-center"><StatusBadge status={d.statut} /></td>
+          {dossiersRecents.length > 0 && (
+            <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold">Dossiers récents</h3>
+                <Link to="/admin/dossiers" className="text-xs text-primary hover:underline flex items-center gap-1">
+                  Voir tous <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+              <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/50">
+                      <th className="text-left py-2 px-3 text-muted-foreground font-medium">Référence</th>
+                      <th className="text-left py-2 px-3 text-muted-foreground font-medium">Client</th>
+                      <th className="text-left py-2 px-3 text-muted-foreground font-medium hidden md:table-cell">Prestation</th>
+                      <th className="text-right py-2 px-3 text-muted-foreground font-medium">Montant</th>
+                      <th className="text-center py-2 px-3 text-muted-foreground font-medium">Statut</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
+                  </thead>
+                  <tbody>
+                    {dossiersRecents.map((d) => (
+                      <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                        <td className="py-2.5 px-3 font-mono text-xs">{d.reference}</td>
+                        <td className="py-2.5 px-3">{d.clientNom}</td>
+                        <td className="py-2.5 px-3 hidden md:table-cell text-muted-foreground">{d.typePrestation}</td>
+                        <td className="py-2.5 px-3 text-right font-medium">{d.montant.toLocaleString()} €</td>
+                        <td className="py-2.5 px-3 text-center"><StatusBadge status={d.statut} /></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+          )}
 
           {/* Calendrier des échéances */}
           <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
