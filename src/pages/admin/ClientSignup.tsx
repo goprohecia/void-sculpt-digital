@@ -65,24 +65,23 @@ export default function ClientSignup() {
 
     setLoading(true);
 
-    const { error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: {
-          nom: nom.trim(),
-          telephone: telephone.trim(),
-        },
-      },
-    });
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("send-signup-confirmation", {
+        body: { email, password, nom: nom.trim(), telephone: telephone.trim() },
+      });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (signUpError) {
-      setError(signUpError.message);
-    } else {
-      setSuccess(true);
+      if (fnError) {
+        setError("Erreur lors de la création du compte");
+      } else if (data?.error) {
+        setError(data.error);
+      } else {
+        setSuccess(true);
+      }
+    } catch {
+      setLoading(false);
+      setError("Erreur lors de la création du compte");
     }
   };
 
