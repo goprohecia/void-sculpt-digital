@@ -8,6 +8,7 @@ import { useRelances } from "@/hooks/use-relances";
 import { useEmailLogs } from "@/hooks/use-email-logs";
 import { type RelanceStatus } from "@/data/mockData";
 import { Bell, Calendar, Mail, Send } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { toast } from "sonner";
 
 const statusFilters: { key: "tous" | RelanceStatus; label: string }[] = [
@@ -113,7 +114,7 @@ export default function AdminReminders() {
               {/* Mobile cards */}
               <div className="sm:hidden space-y-3">
                 {filtered.length === 0 ? (
-                  <div className="p-8 text-center text-muted-foreground">Aucune relance trouvée</div>
+                  <AdminEmptyState icon={Bell} title="Aucune relance" description="Les relances de paiement apparaîtront ici." hint="Les relances sont créées à partir des factures en retard." />
                 ) : filtered.map((r) => (
                   <div key={r.id} className="glass-card p-4 space-y-2">
                     <div className="flex items-center justify-between">
@@ -173,11 +174,7 @@ export default function AdminReminders() {
                     </tbody>
                   </table>
                 </div>
-                {filtered.length === 0 && (
-                  <div className="p-8 text-center text-muted-foreground">
-                    Aucune relance trouvée
-                  </div>
-                )}
+                {filtered.length === 0 && <AdminEmptyState icon={Bell} title="Aucune relance" description="Les relances de paiement apparaîtront ici." />}
               </div>
             </motion.div>
           </div>

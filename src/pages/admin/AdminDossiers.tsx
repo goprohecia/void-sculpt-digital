@@ -11,6 +11,7 @@ import { useDemandes } from "@/hooks/use-demandes";
 import { useCahiers } from "@/hooks/use-cahiers";
 import type { DossierStatus } from "@/data/mockData";
 import { Search, FolderOpen, Eye, FileText } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -129,7 +130,7 @@ export default function AdminDossiers() {
                     </tbody>
                   </table>
                 </div>
-                {filtered.length === 0 && <div className="p-8 text-center text-muted-foreground">Aucun dossier trouvé</div>}
+                {filtered.length === 0 && <AdminEmptyState icon={FolderOpen} title="Aucun dossier" description="Les dossiers de vos projets clients apparaîtront ici." hint="Créez un dossier à partir d'une demande validée." />}
               </motion.div>
 
               {/* Mobile */}
