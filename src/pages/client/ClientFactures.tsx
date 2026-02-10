@@ -3,14 +3,16 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useFactures } from "@/hooks/use-factures";
+import { useClients } from "@/hooks/use-clients";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { Receipt, CreditCard, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { generateFacturePdf } from "@/lib/generatePdf";
 
 export default function ClientFactures() {
-  const { getFacturesByClient, getClientById } = useDemoData();
+  const { getFacturesByClient } = useFactures();
+  const { getClientById } = useClients();
   const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
   const client = getClientById(DEMO_CLIENT_ID);
 

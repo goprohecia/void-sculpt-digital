@@ -3,14 +3,22 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useCahiers } from "@/hooks/use-cahiers";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function ClientDossiers() {
-  const { getDossiersByClient, getCahierByDossier } = useDemoData();
+  const { getDossiersByClient, dossiers } = useDossiers();
+  const { getCahierByDemande, cahiersDesCharges } = useCahiers();
   const mesDossiers = getDossiersByClient(DEMO_CLIENT_ID);
+
+  const getCahierByDossier = (dossierId: string) => {
+    const dossier = dossiers.find((d) => d.id === dossierId);
+    if (!dossier?.demandeId) return undefined;
+    return getCahierByDemande(dossier.demandeId);
+  };
 
   return (
     <ClientLayout>
@@ -63,7 +71,7 @@ export default function ClientDossiers() {
                           )}
                         </div>
                       </td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(d.dateEcheance).toLocaleDateString("fr-FR")}</td>
+                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.dateEcheance ? new Date(d.dateEcheance).toLocaleDateString("fr-FR") : "—"}</td>
                       <td className="py-3 px-4 text-center">
                         <Link to={`/client/dossiers/${d.id}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
                           <Eye className="h-3 w-3" /> Voir
@@ -99,7 +107,7 @@ export default function ClientDossiers() {
                   <p className="font-medium text-sm">{d.typePrestation}</p>
                   <div className="flex items-center justify-between pt-1 border-t border-border/20">
                     <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
-                    <span className="text-xs text-muted-foreground">{new Date(d.dateEcheance).toLocaleDateString("fr-FR")}</span>
+                    <span className="text-xs text-muted-foreground">{d.dateEcheance ? new Date(d.dateEcheance).toLocaleDateString("fr-FR") : "—"}</span>
                   </div>
                 </motion.div>
               </Link>

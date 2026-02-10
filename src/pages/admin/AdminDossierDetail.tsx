@@ -4,7 +4,12 @@ import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useFactures } from "@/hooks/use-factures";
+import { useDevis } from "@/hooks/use-devis";
+import { usePreviewVisits } from "@/hooks/use-preview-visits";
+import { useCahiers } from "@/hooks/use-cahiers";
+import { useDemandes } from "@/hooks/use-demandes";
 import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +34,7 @@ function getEtapeIndex(statut: string, rdvEffectue: boolean, cdcComplete: boolea
   }
 }
 
-function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; previewUrl?: string }; onUpdateUrl: (id: string, url: string) => void }) {
+function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; previewUrl?: string }; onUpdateUrl: (args: { id: string; previewUrl: string }) => void }) {
   const [copied, setCopied] = useState(false);
   const [editing, setEditing] = useState(false);
   const [urlInput, setUrlInput] = useState(dossier.previewUrl || "");
@@ -43,7 +48,7 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
   };
 
   const saveUrl = () => {
-    onUpdateUrl(dossier.id, urlInput);
+    onUpdateUrl({ id: dossier.id, previewUrl: urlInput });
     setEditing(false);
     toast.success("Lien de preview mis à jour");
   };
@@ -56,12 +61,7 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
       </h2>
       {editing ? (
         <div className="flex gap-2">
-          <Input
-            value={urlInput}
-            onChange={(e) => setUrlInput(e.target.value)}
-            placeholder="https://projet-preview.lovable.app"
-            className="flex-1"
-          />
+          <Input value={urlInput} onChange={(e) => setUrlInput(e.target.value)} placeholder="https://projet-preview.lovable.app" className="flex-1" />
           <Button size="sm" onClick={saveUrl}>Enregistrer</Button>
           <Button size="sm" variant="ghost" onClick={() => { setEditing(false); setUrlInput(dossier.previewUrl || ""); }}>Annuler</Button>
         </div>
@@ -73,9 +73,7 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
             {copied ? "Copié" : "Copier"}
           </Button>
           <a href={dossier.previewUrl} target="_blank" rel="noopener noreferrer">
-            <Button size="sm" variant="outline" className="gap-1.5">
-              <ExternalLink className="h-3.5 w-3.5" /> Ouvrir
-            </Button>
+            <Button size="sm" variant="outline" className="gap-1.5"><ExternalLink className="h-3.5 w-3.5" /> Ouvrir</Button>
           </a>
           <Button size="sm" variant="ghost" className="gap-1.5" onClick={() => setEditing(true)}>
             <Pencil className="h-3.5 w-3.5" /> Modifier
@@ -94,12 +92,20 @@ function PreviewLinkSection({ dossier, onUpdateUrl }: { dossier: { id: string; p
 export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getDossierById, getFacturesByDossier, getDevisByDossier, updateDossierStatut, updateDossierPreviewUrl, getPreviewVisitsByDossier, addPreviewVisit, getCahierByDossier, demandes, validateCahier, marquerRdvEffectue } = useDemoData();
+  const { getDossierById, updateDossierStatut, updateDossierPreviewUrl, marquerRdvEffectue } = useDossiers();
+  const { getFacturesByDossier } = useFactures();
+  const { getDevisByDossier } = useDevis();
+  const { getPreviewVisitsByDossier, addPreviewVisit } = usePreviewVisits();
+  const { getCahierByDemande, validateCahier, cahiersDesCharges } = useCahiers();
+  const { demandes } = useDemandes();
+
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
   const previewVisits = id ? getPreviewVisitsByDossier(id) : [];
-  const cahier = id ? getCahierByDossier(id) : undefined;
+
+  // Find cahier by dossier's demandeId
+  const cahier = dossier?.demandeId ? getCahierByDemande(dossier.demandeId) : undefined;
   const demandeTitre = cahier ? demandes.find((d) => d.id === cahier.demandeId)?.titre : undefined;
   const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
@@ -114,7 +120,7 @@ export default function AdminDossierDetail() {
   const etapeActive = getEtapeIndex(dossier.statut, rdvEffectue, cdcComplete);
 
   const handleStatutChange = (val: string) => {
-    updateDossierStatut(dossier.id, val as DossierStatus);
+    updateDossierStatut({ id: dossier.id, statut: val as DossierStatus });
     toast.success(`Statut mis à jour : ${val}`);
   };
 
@@ -153,7 +159,7 @@ export default function AdminDossierDetail() {
           <motion.div className="glass-card p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-sm" variants={staggerItem}>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Montant</p><p className="font-bold text-base sm:text-lg">{dossier.montant.toLocaleString()} €</p></div>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Création</p><p>{new Date(dossier.dateCreation).toLocaleDateString("fr-FR")}</p></div>
-            <div><p className="text-muted-foreground text-xs sm:text-sm">Échéance</p><p>{new Date(dossier.dateEcheance).toLocaleDateString("fr-FR")}</p></div>
+            <div><p className="text-muted-foreground text-xs sm:text-sm">Échéance</p><p>{dossier.dateEcheance ? new Date(dossier.dateEcheance).toLocaleDateString("fr-FR") : "—"}</p></div>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Client</p><p>{dossier.clientNom}</p></div>
           </motion.div>
 
