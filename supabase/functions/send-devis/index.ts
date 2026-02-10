@@ -29,7 +29,7 @@ serve(async (req) => {
     const devisTitre = titre || "Votre projet";
 
     await resend.emails.send({
-      from: "Impartial <noreply@impartialgames.com>",
+      from: "Impartial <studio@impartialgames.com>",
       to: [email],
       subject: `Nouveau devis — ${devisRef}`,
       html: `

@@ -28,7 +28,7 @@ serve(async (req) => {
     const loginUrl = Deno.env.get("SITE_URL") || "https://impartialgames.com";
 
     await resend.emails.send({
-      from: "Impartial <noreply@impartialgames.com>",
+      from: "Impartial <studio@impartialgames.com>",
       to: [email],
       subject: `Rappel — Facture ${factureRef} en attente de règlement`,
       html: `

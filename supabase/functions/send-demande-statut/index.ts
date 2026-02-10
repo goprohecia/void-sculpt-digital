@@ -31,7 +31,7 @@ serve(async (req) => {
     const borderAccent = isValidee ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)";
 
     await resend.emails.send({
-      from: "Impartial <noreply@impartialgames.com>",
+      from: "Impartial <studio@impartialgames.com>",
       to: [email],
       subject: `Demande ${label} — ${demandeRef}`,
       html: `
