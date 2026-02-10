@@ -101,6 +101,29 @@ function addSection(doc: jsPDF, title: string, content: string | string[] | unde
   return y + 4;
 }
 
+function parseCdcRemarques(raw: string) {
+  const result = { remarques: "", securite: "", seo: "", maintenance: "", objectifsKpi: "", inspirations: "" };
+  if (!raw) return result;
+  const sectionMap: Record<string, keyof typeof result> = {
+    "[SÉCURITÉ]": "securite", "[SEO / RÉFÉRENCEMENT]": "seo",
+    "[MAINTENANCE / SUPPORT]": "maintenance", "[OBJECTIFS / KPI]": "objectifsKpi",
+    "[INSPIRATIONS / RÉFÉRENCES]": "inspirations", "[REMARQUES GÉNÉRALES]": "remarques",
+  };
+  let hasStructured = false;
+  for (const key of Object.keys(sectionMap)) { if (raw.includes(key)) { hasStructured = true; break; } }
+  if (!hasStructured) { result.remarques = raw; return result; }
+  const lines = raw.split("\n");
+  let currentKey: keyof typeof result = "remarques";
+  for (const line of lines) {
+    const trimmed = line.trim();
+    let matched = false;
+    for (const [tag, key] of Object.entries(sectionMap)) { if (trimmed === tag) { currentKey = key; matched = true; break; } }
+    if (!matched) result[currentKey] = result[currentKey] ? result[currentKey] + "\n" + line : line;
+  }
+  for (const key of Object.keys(result) as (keyof typeof result)[]) result[key] = result[key].trim();
+  return result;
+}
+
 export function generateCdcPdf(cahier: CahierDesCharges, demandeTitre?: string) {
   const doc = new jsPDF();
 
@@ -120,7 +143,14 @@ export function generateCdcPdf(cahier: CahierDesCharges, demandeTitre?: string) 
   y = addSection(doc, "Contraintes techniques", cahier.contraintesTechniques, y);
   y = addSection(doc, "Planning souhaité", cahier.planningSouhaite, y);
   y = addSection(doc, "Budget complémentaire", cahier.budgetComplementaire, y);
-  y = addSection(doc, "Documents / Remarques", cahier.remarques, y);
+  // Parse extended sections from remarques
+  const parsed = parseCdcRemarques(cahier.remarques);
+  y = addSection(doc, "Sécurité et conformité", parsed.securite, y);
+  y = addSection(doc, "SEO et référencement", parsed.seo, y);
+  y = addSection(doc, "Maintenance et support", parsed.maintenance, y);
+  y = addSection(doc, "Objectifs et KPI", parsed.objectifsKpi, y);
+  y = addSection(doc, "Sites d'inspiration / Références", parsed.inspirations, y);
+  y = addSection(doc, "Remarques générales", parsed.remarques, y);
 
   if (cahier.commentairesAdmin) {
     y = addSection(doc, "Commentaires de l'équipe", cahier.commentairesAdmin, y);
