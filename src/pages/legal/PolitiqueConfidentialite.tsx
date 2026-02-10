@@ -71,7 +71,7 @@ const PolitiqueConfidentialite = () => {
               <div className="space-y-4 text-muted-foreground">
                 <p><span className="font-semibold text-foreground">Raison sociale :</span> Impartial Games </p>
                 <p><span className="font-semibold text-foreground">Adresse :</span> Delaware, États-Unis   </p>
-                <p><span className="font-semibold text-foreground">Email :</span> contact@impartialgames.com</p>
+                <p><span className="font-semibold text-foreground">Email :</span> studio@impartialgames.com</p>
                 
               </div>
             </div>
@@ -218,7 +218,7 @@ const PolitiqueConfidentialite = () => {
                   Pour exercer vos droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter :
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li><span className="font-semibold text-foreground">Par email :</span>Par email : contact@impartialgames.com</li>
+                  <li><span className="font-semibold text-foreground">Par email :</span> studio@impartialgames.com</li>
                   <li><span className="font-semibold text-foreground">Par courrier :</span> Impartial Games, Delaware    </li>
                 </ul>
                 <p>

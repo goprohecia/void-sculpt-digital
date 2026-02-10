@@ -5,7 +5,7 @@ import type { Facture, Devis, Client } from "@/data/mockData";
 const COMPANY = {
   name: "Impartial",
   address: "Delaware, États-Unis",
-  email: "contact@impartialgames.com",
+  email: "studio@impartialgames.com",
   website: "impartialgames.com",
 };
 

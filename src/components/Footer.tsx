@@ -72,10 +72,10 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
                 <a 
-                  href="mailto:contact@impartialgames.com" 
+                  href="mailto:studio@impartialgames.com" 
                   className="hover:text-foreground transition-colors"
                 >
-                  contact@impartialgames.com
+                  studio@impartialgames.com
                 </a>
               </li>
               <li>Delaware, États-Unis</li>

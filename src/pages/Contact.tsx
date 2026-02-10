@@ -146,8 +146,8 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">Email</p>
-                        <a href="mailto:contact@impartialgames.com" className="text-foreground hover:text-violet-400 transition-colors">
-                          contact@impartialgames.com
+                      <a href="mailto:studio@impartialgames.com" className="text-foreground hover:text-violet-400 transition-colors">
+                          studio@impartialgames.com
                         </a>
                       </div>
                     </div>
