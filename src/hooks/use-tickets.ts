@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "./useIsDemo";
 import { tickets as mockTickets, getTicketsByClient as mockGetByClient, type Ticket, type TicketMessage } from "@/data/mockData";
@@ -30,6 +31,7 @@ function mapRow(row: any, messages: TicketMessage[]): Ticket {
 
 export function useTickets() {
   const { isDemo, isLoading: authLoading } = useIsDemo();
+  const queryClient = useQueryClient();
 
   const query = useQuery({
     queryKey: ["tickets"],
@@ -49,6 +51,23 @@ export function useTickets() {
     },
     enabled: !isDemo && !authLoading,
   });
+
+  // Realtime subscriptions
+  useEffect(() => {
+    if (isDemo) return;
+
+    const channel = supabase
+      .channel("tickets-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "ticket_messages" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["tickets"] });
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "tickets" }, () => {
+        queryClient.invalidateQueries({ queryKey: ["tickets"] });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [isDemo, queryClient]);
 
   const data: Ticket[] = isDemo ? mockTickets : (query.data ?? []);
   const loading = authLoading || (!isDemo && query.isLoading);
