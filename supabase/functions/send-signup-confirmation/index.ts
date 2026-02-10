@@ -60,7 +60,7 @@ serve(async (req) => {
       email,
       password,
       options: {
-        redirectTo: `${siteUrl}/client/login`,
+        redirectTo: `${siteUrl}/client/login?verified=1`,
       },
     });
 
