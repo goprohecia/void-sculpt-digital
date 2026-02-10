@@ -4,7 +4,7 @@ import type { CahierDesCharges } from "@/contexts/DemoDataContext";
 const COMPANY = {
   name: "Impartial",
   address: "Delaware, États-Unis",
-  email: "contact@impartialgames.com",
+  email: "studio@impartialgames.com",
   website: "impartialgames.com",
 };
 

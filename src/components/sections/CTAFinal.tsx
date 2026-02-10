@@ -65,10 +65,10 @@ export function CTAFinal() {
                 <ScrollReveal variant="fadeIn" delay={0.5}>
                   <div className="mt-10 pt-8 border-t border-white/10">
                     <a
-                      href="mailto:contact@impartialgames.com"
+                      href="mailto:studio@impartialgames.com"
                       className="text-muted-foreground hover:text-neon-violet transition-colors text-sm"
                     >
-                      contact@impartialgames.com
+                      studio@impartialgames.com
                     </a>
                   </div>
                 </ScrollReveal>
