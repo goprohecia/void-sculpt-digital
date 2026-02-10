@@ -14,7 +14,8 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { totalNonLus, getOpenTicketsCount } from "@/data/mockData";
+import { useConversations } from "@/hooks/use-conversations";
+import { useTickets } from "@/hooks/use-tickets";
 import {
   Sidebar,
   SidebarContent,
@@ -29,24 +30,29 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-const navItems = [
-  { title: "Vue d'ensemble", url: "/admin", icon: LayoutDashboard },
-  { title: "Clients", url: "/admin/clients", icon: Users },
-  { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen },
-  { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus },
-  { title: "Facturation", url: "/admin/facturation", icon: Receipt },
-  { title: "Relances", url: "/admin/relances", icon: Bell },
-  { title: "Emails", url: "/admin/emails", icon: Mail },
-  { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays },
-  { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: getOpenTicketsCount() },
-  { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
-  { title: "Paramètres", url: "/admin/parametres", icon: Settings },
-];
-
 export function AdminSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useDemoAuth();
+  const { conversations } = useConversations();
+  const { tickets } = useTickets();
+
+  const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
+  const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
+
+  const navItems = [
+    { title: "Vue d'ensemble", url: "/admin", icon: LayoutDashboard },
+    { title: "Clients", url: "/admin/clients", icon: Users },
+    { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen },
+    { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus },
+    { title: "Facturation", url: "/admin/facturation", icon: Receipt },
+    { title: "Relances", url: "/admin/relances", icon: Bell },
+    { title: "Emails", url: "/admin/emails", icon: Mail },
+    { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays },
+    { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: openTickets },
+    { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
+    { title: "Paramètres", url: "/admin/parametres", icon: Settings },
+  ];
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
