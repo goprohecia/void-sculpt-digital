@@ -56,6 +56,12 @@ export default function AdminLogin() {
       return;
     }
 
+    // Block admin email from client login
+    if (email.toLowerCase() === "studio@impartialgames.com") {
+      setError("Ce compte est réservé à l'espace administrateur. Connectez-vous via /admin/access");
+      return;
+    }
+
     const { data, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
