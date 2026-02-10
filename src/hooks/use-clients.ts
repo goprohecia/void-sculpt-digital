@@ -71,19 +71,12 @@ export function useClients() {
   const createClient = useMutation({
     mutationFn: async (newClient: { prenom: string; nom: string; email: string; telephone?: string; entreprise?: string; siret?: string; adresse?: string; codePostal?: string; ville?: string; pays?: string }) => {
       if (isDemo) return;
-      const { error } = await supabase.from("clients").insert({
-        prenom: newClient.prenom,
-        nom: newClient.nom,
-        email: newClient.email,
-        telephone: newClient.telephone || "",
-        entreprise: newClient.entreprise || "",
-        siret: newClient.siret || null,
-        adresse: newClient.adresse || null,
-        code_postal: newClient.codePostal || null,
-        ville: newClient.ville || null,
-        pays: newClient.pays || null,
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await supabase.functions.invoke("create-client-account", {
+        body: newClient,
       });
-      if (error) throw error;
+      if (res.error) throw new Error(res.error.message || "Erreur lors de la création");
+      if (res.data?.error) throw new Error(res.data.error);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["clients"] }),
   });
