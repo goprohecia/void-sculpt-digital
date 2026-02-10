@@ -5,13 +5,15 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { CalendlyBookingDialog } from "@/components/admin/CalendlyBookingDialog";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Plus, Clock, Video, Loader2, AlertCircle } from "lucide-react";
-import { useCalendlyEvents } from "@/hooks/use-calendly-events";
+import { CalendarDays, Plus, Clock, Video, Loader2, AlertCircle, ExternalLink, User } from "lucide-react";
+import { useCalendlyEvents, CalendlyEvent } from "@/hooks/use-calendly-events";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
 export default function ClientRendezVous() {
   const [showCalendly, setShowCalendly] = useState(false);
+  const [selectedRdv, setSelectedRdv] = useState<CalendlyEvent | null>(null);
 
   const minDate = useMemo(() => {
     const d = new Date();
@@ -75,7 +77,7 @@ export default function ClientRendezVous() {
                 <p className="text-sm text-muted-foreground text-center py-6">Aucun rendez-vous à venir</p>
               ) : (
                 rdvAVenir.map((rdv) => (
-                  <div key={rdv.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors">
+                  <div key={rdv.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors cursor-pointer" onClick={() => setSelectedRdv(rdv)}>
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                       <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                         <Video className="h-4 w-4 text-primary" />
@@ -108,7 +110,7 @@ export default function ClientRendezVous() {
                 <p className="text-sm text-muted-foreground text-center py-6">Aucun rendez-vous passé</p>
               ) : (
                 rdvPasses.map((rdv) => (
-                  <div key={rdv.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 opacity-70">
+                  <div key={rdv.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 opacity-70 cursor-pointer hover:opacity-90 transition-opacity" onClick={() => setSelectedRdv(rdv)}>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium truncate">{rdv.sujet}</p>
                       <p className="text-xs text-muted-foreground">
@@ -125,6 +127,38 @@ export default function ClientRendezVous() {
       </AdminPageTransition>
 
       <CalendlyBookingDialog open={showCalendly} onOpenChange={setShowCalendly} />
+
+      <Dialog open={!!selectedRdv} onOpenChange={(open) => !open && setSelectedRdv(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{selectedRdv?.sujet}</DialogTitle>
+          </DialogHeader>
+          {selectedRdv && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <CalendarDays className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm">{format(parseISO(selectedRdv.date), "EEEE d MMMM yyyy", { locale: fr })} à {selectedRdv.heure}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Statut :</span>
+                <StatusBadge status={selectedRdv.statut} />
+              </div>
+              {selectedRdv.location && (
+                <a
+                  href={selectedRdv.location}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors text-primary text-sm font-medium"
+                >
+                  <Video className="h-4 w-4" />
+                  Rejoindre la réunion
+                  <ExternalLink className="h-3 w-3 ml-auto" />
+                </a>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </ClientLayout>
   );
 }
