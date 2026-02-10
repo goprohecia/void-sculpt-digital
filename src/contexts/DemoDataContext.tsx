@@ -88,6 +88,13 @@ export interface CdcHistoriqueEntry {
   date: string;
 }
 
+export interface CdcPieceJointe {
+  name: string;
+  url: string;
+  type: string;
+  size: number;
+}
+
 export interface CahierDesCharges {
   id: string;
   demandeId: string;
@@ -102,6 +109,7 @@ export interface CahierDesCharges {
   commentairesAdmin?: string;
   motifRejet?: string;
   nbRejets?: number;
+  piecesJointes?: CdcPieceJointe[];
   statut: "brouillon" | "complet" | "validé" | "rejeté";
   dateMiseAJour: string;
   historique: CdcHistoriqueEntry[];

@@ -152,6 +152,12 @@ export function generateCdcPdf(cahier: CahierDesCharges, demandeTitre?: string) 
   y = addSection(doc, "Sites d'inspiration / Références", parsed.inspirations, y);
   y = addSection(doc, "Remarques générales", parsed.remarques, y);
 
+  // Pièces jointes
+  if (cahier.piecesJointes && cahier.piecesJointes.length > 0) {
+    const pjList = cahier.piecesJointes.map((pj) => `${pj.name} — ${pj.url}`);
+    y = addSection(doc, "Pièces jointes", pjList, y);
+  }
+
   if (cahier.commentairesAdmin) {
     y = addSection(doc, "Commentaires de l'équipe", cahier.commentairesAdmin, y);
   }
