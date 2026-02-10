@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
+import { useIsDemo } from "@/hooks/useIsDemo";
 import { AdminSidebar } from "./AdminSidebar";
 import { NotificationPanel } from "./NotificationPanel";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -11,9 +12,12 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const { isAuthenticated } = useDemoAuth();
+  const { supabaseUserId, isLoading } = useIsDemo();
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useDemoData();
 
-  if (!isAuthenticated) {
+  if (isLoading) return null;
+
+  if (!isAuthenticated && !supabaseUserId) {
     return <Navigate to="/client/login" replace />;
   }
 
