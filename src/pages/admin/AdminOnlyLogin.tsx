@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, Eye, EyeOff, Home, Shield, ShieldX } from "lucide-react";
+import { LogIn, Eye, EyeOff, Home, Shield } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 
-const ADMIN_ACCESS_TOKEN = "impartial-admin-2026";
+const ADMIN_EMAIL = "studio@impartialgames.com";
 
 export default function AdminOnlyLogin() {
   const [email, setEmail] = useState("");
@@ -16,10 +16,6 @@ export default function AdminOnlyLogin() {
   const [error, setError] = useState("");
   const { login, isAuthenticated, user } = useDemoAuth();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  const token = searchParams.get("token");
-  const isAuthorized = token === ADMIN_ACCESS_TOKEN;
 
   useEffect(() => {
     if (isAuthenticated && user?.role === "admin") {
@@ -42,7 +38,13 @@ export default function AdminOnlyLogin() {
       return;
     }
 
-    // 2. Try real Supabase auth
+    // 2. Check email matches admin email
+    if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      setError("Ce portail est réservé aux administrateurs");
+      return;
+    }
+
+    // 3. Try real Supabase auth
     const { data, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -53,7 +55,7 @@ export default function AdminOnlyLogin() {
       return;
     }
 
-    // 3. Verify admin role
+    // 4. Verify admin role
     const { data: roleData } = await supabase
       .from("user_roles")
       .select("role")
@@ -69,29 +71,6 @@ export default function AdminOnlyLogin() {
 
     navigate("/admin", { replace: true });
   };
-
-  if (!isAuthorized) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="w-full max-w-md text-center space-y-6">
-          <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
-          </Link>
-          <div className="glass-card p-8 space-y-4">
-            <ShieldX className="h-12 w-12 text-destructive mx-auto" />
-            <h1 className="text-xl font-bold">Accès refusé</h1>
-            <p className="text-sm text-muted-foreground">
-              Un jeton d'accès valide est requis pour accéder à cette page.
-            </p>
-            <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <Home className="h-3.5 w-3.5" />
-              Retour à l'accueil
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
