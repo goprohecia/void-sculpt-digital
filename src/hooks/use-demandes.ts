@@ -57,6 +57,28 @@ export function useDemandes() {
           });
         } catch (e) { console.error("Erreur envoi email demande:", e); }
       }
+
+      // Notifications + email log (fire & forget)
+      try {
+        await Promise.all([
+          supabase.from("notifications").insert({
+            type: "dossier", titre: "Nouvelle demande",
+            description: `${d.clientNom} a soumis une demande : "${d.titre}"`,
+            lien: "/admin/dossiers", destinataire: "admin",
+          }),
+          supabase.from("notifications").insert({
+            type: "dossier", titre: "Demande envoyée",
+            description: `Votre demande "${d.titre}" a bien été envoyée`,
+            lien: "/client/demandes", destinataire: "client", client_id: d.clientId,
+          }),
+          supabase.from("email_logs").insert({
+            type: "demande", destinataire: clientRow?.email || d.clientNom,
+            sujet: `Demande reçue — ${d.reference}`,
+            contenu: `<p>Bonjour,</p><p>Nous avons bien reçu votre demande <strong>"${d.titre}"</strong> (réf. ${d.reference}).</p><p>Notre équipe l'examine et reviendra vers vous rapidement.</p><p>L'équipe Impartial</p>`,
+            client_id: d.clientId, reference: d.reference,
+          }),
+        ]);
+      } catch (e) { console.error("Erreur notifications/email_logs demande:", e); }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["demandes"] }),
   });
@@ -67,11 +89,13 @@ export function useDemandes() {
       const { error } = await supabase.from("demandes").update({ statut, date_mise_a_jour: new Date().toISOString() }).eq("id", id);
       if (error) throw error;
 
-      // Send validation/refus email
+      // Send validation/refus email + notifications
       if (statut === "validee" || statut === "refusee") {
         const dem = data.find((d) => d.id === id);
         if (dem) {
           const { data: clientRow } = await supabase.from("clients").select("email, prenom").eq("id", dem.clientId).maybeSingle();
+          const label = statut === "validee" ? "validée" : "refusée";
+
           if (clientRow?.email) {
             try {
               await supabase.functions.invoke("send-demande-statut", {
@@ -79,6 +103,22 @@ export function useDemandes() {
               });
             } catch (e) { console.error("Erreur envoi email statut demande:", e); }
           }
+
+          try {
+            await Promise.all([
+              supabase.from("notifications").insert({
+                type: "dossier", titre: `Demande ${label}`,
+                description: `Votre demande "${dem.titre}" a été ${label}`,
+                lien: "/client/demandes", destinataire: "client", client_id: dem.clientId,
+              }),
+              supabase.from("email_logs").insert({
+                type: "validation", destinataire: clientRow?.email || dem.clientNom,
+                sujet: `Demande ${label} — ${dem.reference}`,
+                contenu: `<p>Bonjour,</p><p>Votre demande <strong>"${dem.titre}"</strong> (réf. ${dem.reference}) a été <strong>${label}</strong>.</p>${statut === "validee" ? "<p>Nous vous contacterons prochainement pour les prochaines étapes.</p>" : "<p>N'hésitez pas à nous contacter pour plus d'informations.</p>"}<p>L'équipe Impartial</p>`,
+                client_id: dem.clientId, reference: dem.reference,
+              }),
+            ]);
+          } catch (e) { console.error("Erreur notifications/email_logs statut demande:", e); }
         }
       }
     },
