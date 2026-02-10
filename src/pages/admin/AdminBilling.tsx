@@ -11,6 +11,7 @@ import { useDossiers } from "@/hooks/use-dossiers";
 import { useSendLogs } from "@/hooks/use-send-logs";
 import type { FactureStatus, Facture, Devis } from "@/data/mockData";
 import { Receipt, Euro, AlertTriangle, Plus, Download, Eye, Send, Clock } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -212,7 +213,7 @@ export default function AdminBilling() {
               {/* Mobile cards factures */}
               <div className="sm:hidden space-y-3">
                 {filteredFactures.length === 0 ? (
-                  <div className="p-8 text-center text-muted-foreground">Aucune facture trouvée</div>
+                  <AdminEmptyState icon={Receipt} title="Aucune facture" description="Vos factures apparaîtront ici." hint="Créez votre première facture avec le bouton ci-dessus." />
                 ) : filteredFactures.map((f) => (
                   <div key={f.id} className="glass-card p-4 space-y-2">
                     <div className="flex items-center justify-between">
@@ -277,7 +278,7 @@ export default function AdminBilling() {
                     </tbody>
                   </table>
                 </div>
-                {filteredFactures.length === 0 && <div className="p-8 text-center text-muted-foreground">Aucune facture trouvée</div>}
+                {filteredFactures.length === 0 && <AdminEmptyState icon={Receipt} title="Aucune facture" description="Vos factures apparaîtront ici." hint="Créez votre première facture avec le bouton ci-dessus." />}
               </motion.div>
             </TabsContent>
 
@@ -285,7 +286,7 @@ export default function AdminBilling() {
               {/* Mobile cards devis */}
               <div className="sm:hidden space-y-3">
                 {devis.length === 0 ? (
-                  <div className="p-8 text-center text-muted-foreground">Aucun devis</div>
+                  <AdminEmptyState icon={Receipt} title="Aucun devis" description="Vos devis apparaîtront ici." hint="Créez votre premier devis avec le bouton ci-dessus." />
                 ) : devis.map((d) => (
                   <div key={d.id} className="glass-card p-4 space-y-2">
                     <div className="flex items-center justify-between">

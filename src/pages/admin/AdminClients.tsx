@@ -10,6 +10,7 @@ import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import type { Client } from "@/data/mockData";
 import { Search, Users, Eye, X, Building2, MapPin } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -134,7 +135,7 @@ export default function AdminClients() {
           {/* Mobile cards */}
           <motion.div className="sm:hidden space-y-3" variants={staggerItem}>
             {filtered.length === 0 ? (
-              <div className="p-8 text-center text-muted-foreground">Aucun client trouvé</div>
+              <AdminEmptyState icon={Users} title="Aucun client" description="Vos clients apparaîtront ici dès qu'ils seront enregistrés." hint="Invitez votre premier client pour commencer." />
             ) : filtered.map((c) => (
               <div key={c.id} className="glass-card p-4 space-y-2">
                 <div className="flex items-center justify-between">

@@ -24,7 +24,12 @@ export function EmailLogPanel({ emails, maxItems, compact = false }: EmailLogPan
 
   if (displayed.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground py-4 text-center">Aucun email envoyé</p>
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <div className="h-10 w-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-3">
+          <Mail className="h-5 w-5 text-primary/60" />
+        </div>
+        <p className="text-xs text-muted-foreground">Aucun email envoyé</p>
+      </div>
     );
   }
 

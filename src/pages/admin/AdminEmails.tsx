@@ -7,6 +7,7 @@ import { useEmailLogs } from "@/hooks/use-email-logs";
 import type { EmailLogType } from "@/contexts/DemoDataContext";
 import { exportCsv } from "@/lib/exportCsv";
 import { Mail, Download, Search } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";

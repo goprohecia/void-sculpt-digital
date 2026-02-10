@@ -5,6 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { useConversations } from "@/hooks/use-conversations";
 import { type Conversation } from "@/data/mockData";
 import { MessageSquare, Send } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { cn } from "@/lib/utils";
 
 export default function AdminMessaging() {
@@ -135,6 +136,10 @@ export default function AdminMessaging() {
                       </button>
                     </div>
                   </>
+                ) : conversations.length === 0 ? (
+                  <div className="flex-1 flex items-center justify-center">
+                    <AdminEmptyState icon={MessageSquare} title="Aucune conversation" description="Les échanges avec vos clients apparaîtront ici." hint="Les conversations se créent automatiquement." />
+                  </div>
                 ) : (
                   <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
                     Sélectionnez une conversation

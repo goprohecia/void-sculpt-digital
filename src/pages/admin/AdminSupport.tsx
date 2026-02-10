@@ -4,6 +4,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { motion } from "framer-motion";
 import { LifeBuoy, Send, ArrowLeft } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { useTickets } from "@/hooks/use-tickets";
 import { useClients } from "@/hooks/use-clients";
 import { type Ticket, type TicketStatus } from "@/data/mockData";
@@ -142,7 +143,7 @@ export default function AdminSupport() {
           ) : (
             <motion.div variants={staggerItem} className="space-y-3">
               {filtered.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground text-sm">Aucun ticket trouvé</div>
+                <AdminEmptyState icon={LifeBuoy} title="Aucun ticket" description="Les demandes de support de vos clients apparaîtront ici." hint="Vos clients peuvent créer des tickets depuis leur espace." />
               ) : (
                 filtered.map((ticket) => (
                   <button key={ticket.id} onClick={() => setSelectedTicket(ticket)}
