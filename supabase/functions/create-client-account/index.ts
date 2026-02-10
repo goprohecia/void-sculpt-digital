@@ -3,6 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "npm:resend@2.0.0";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const LOGO_URL = "https://aikmzznnmyfbjbomwakq.supabase.co/storage/v1/object/public/email-assets/logo-impartial.png";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,7 +28,6 @@ serve(async (req) => {
   }
 
   try {
-    // Verify caller is admin
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) throw new Error("Non autorisé");
 
@@ -45,7 +45,6 @@ serve(async (req) => {
     const { data: { user: caller } } = await callerClient.auth.getUser();
     if (!caller) throw new Error("Non autorisé");
 
-    // Check admin role
     const { data: roleData } = await supabaseAdmin
       .from("user_roles")
       .select("role")
@@ -63,7 +62,6 @@ serve(async (req) => {
 
     const tempPassword = generatePassword();
 
-    // Create auth user
     const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: tempPassword,
@@ -75,8 +73,6 @@ serve(async (req) => {
 
     const userId = userData.user.id;
 
-    // Update client record to link user_id (the trigger already created client/profile/role)
-    // But we need to update with additional fields the trigger didn't have
     const { data: clientRows } = await supabaseAdmin
       .from("clients")
       .select("id")
@@ -94,7 +90,6 @@ serve(async (req) => {
       }).eq("id", clientRows.id);
     }
 
-    // Send welcome email with temp password
     const loginUrl = Deno.env.get("SITE_URL") || "https://impartialgames.com";
 
     await resend.emails.send({
@@ -108,7 +103,11 @@ serve(async (req) => {
 <body style="margin:0;padding:0;background:#09090b;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#09090b;">
     <tr><td align="center" style="padding:40px 16px;">
-      <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;">
+      <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+        <!-- Logo -->
+        <tr><td style="text-align:center;padding-bottom:12px;">
+          <img src="${LOGO_URL}" alt="Impartial" width="64" height="64" style="display:inline-block;border-radius:16px;" />
+        </td></tr>
         <!-- Header -->
         <tr><td style="text-align:center;padding-bottom:32px;">
           <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.5px;">
@@ -118,12 +117,18 @@ serve(async (req) => {
         </td></tr>
 
         <!-- Card -->
-        <tr><td style="background:#111116;border:1px solid #27272a;border-radius:16px;padding:36px 32px;">
-          <!-- Welcome -->
-          <p style="margin:0 0 4px;font-size:13px;color:#a78bfa;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;">Bienvenue</p>
-          <h2 style="margin:0 0 20px;font-size:20px;color:#fafafa;font-weight:600;">Bonjour ${prenom},</h2>
-          <p style="margin:0 0 24px;font-size:14px;line-height:1.7;color:#a1a1aa;">
-            Votre espace client Impartial a été créé avec succès. Vous pouvez dès à présent vous connecter pour suivre vos projets, consulter vos devis et échanger avec notre équipe.
+        <tr><td style="background:#111116;border:1px solid #27272a;border-radius:16px;padding:40px 36px;">
+          <!-- Welcome badge -->
+          <div style="text-align:center;margin-bottom:28px;">
+            <div style="display:inline-block;background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(167,139,250,0.15));border:1px solid rgba(167,139,250,0.3);border-radius:50%;width:72px;height:72px;line-height:72px;">
+              <span style="font-size:36px;">🎉</span>
+            </div>
+          </div>
+
+          <p style="margin:0 0 4px;font-size:13px;color:#a78bfa;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;text-align:center;">Bienvenue</p>
+          <h2 style="margin:0 0 8px;font-size:22px;color:#fafafa;font-weight:600;text-align:center;">Bonjour ${prenom} !</h2>
+          <p style="margin:0 0 28px;font-size:14px;line-height:1.7;color:#a1a1aa;text-align:center;">
+            Votre espace client Impartial a été créé avec succès. Tout est prêt pour collaborer ensemble.
           </p>
 
           <!-- Credentials -->
@@ -146,6 +151,63 @@ serve(async (req) => {
             </td></tr>
           </table>
 
+          <!-- Features summary -->
+          <p style="margin:0 0 14px;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#71717a;text-align:center;">Votre espace client vous permet de</p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #1e1e2a;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="36" style="vertical-align:top;"><span style="font-size:18px;">📊</span></td>
+                    <td style="padding-left:8px;">
+                      <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Suivre vos projets</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Avancement, jalons et préviews en temps réel</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #1e1e2a;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="36" style="vertical-align:top;"><span style="font-size:18px;">📄</span></td>
+                    <td style="padding-left:8px;">
+                      <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Gérer devis & factures</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Consulter, signer et payer en ligne</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;border-bottom:1px solid #1e1e2a;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="36" style="vertical-align:top;"><span style="font-size:18px;">💬</span></td>
+                    <td style="padding-left:8px;">
+                      <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Échanger avec notre équipe</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Messagerie intégrée et support dédié</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="36" style="vertical-align:top;"><span style="font-size:18px;">📅</span></td>
+                    <td style="padding-left:8px;">
+                      <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Planifier vos rendez-vous</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Réservation directe via Calendly</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
           <!-- Warning -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;margin-bottom:28px;">
             <tr><td style="padding:14px 18px;">
@@ -155,10 +217,10 @@ serve(async (req) => {
             </td></tr>
           </table>
 
-          <!-- CTA Button -->
+          <!-- CTA -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr><td align="center">
-              <a href="${loginUrl}/client/login" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:10px;font-size:14px;font-weight:600;letter-spacing:0.3px;">
+              <a href="${loginUrl}/client/login" style="display:inline-block;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#ffffff;text-decoration:none;padding:16px 40px;border-radius:12px;font-size:15px;font-weight:600;letter-spacing:0.3px;">
                 Accéder à mon espace client →
               </a>
             </td></tr>
@@ -167,15 +229,9 @@ serve(async (req) => {
 
         <!-- Footer -->
         <tr><td style="padding-top:28px;text-align:center;">
-          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">
-            Cet email a été envoyé automatiquement par Impartial.
-          </p>
-          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">
-            Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.
-          </p>
-          <p style="margin:0;font-size:11px;color:#3f3f46;">
-            © ${new Date().getFullYear()} Impartial — Studio digital
-          </p>
+          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">Cet email a été envoyé automatiquement par Impartial.</p>
+          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
+          <p style="margin:0;font-size:11px;color:#3f3f46;">© ${new Date().getFullYear()} Impartial — Studio digital</p>
         </td></tr>
       </table>
     </td></tr>
