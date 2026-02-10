@@ -123,21 +123,16 @@ function buildFactureDoc(facture: Facture, client?: Client): jsPDF {
     doc.text(`Dossier associé : ${facture.dossierId}`, 20, 73);
   }
 
-  const ht = facture.montant / 1.2;
-  const tva = facture.montant - ht;
-
   autoTable(doc, {
     startY: 82,
-    head: [["Description", "Montant HT", "TVA (20%)", "Montant TTC"]],
+    head: [["Description", "Montant"]],
     body: [
       [
         `Prestation — ${facture.reference}`,
-        `${fmt(Math.round(ht * 100) / 100)} €`,
-        `${fmt(Math.round(tva * 100) / 100)} €`,
         `${fmt(facture.montant)} €`,
       ],
     ],
-    foot: [["", "", "Total TTC", `${fmt(facture.montant)} €`]],
+    foot: [["Total", `${fmt(facture.montant)} €`]],
     headStyles: { fillColor: [30, 30, 60], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
     bodyStyles: { fontSize: 9, textColor: [50, 50, 70] },
     footStyles: { fillColor: [240, 240, 250], textColor: [30, 30, 60], fontSize: 10, fontStyle: "bold" },
@@ -182,21 +177,16 @@ function buildDevisDoc(devisItem: Devis, client?: Client): jsPDF {
     devisItem.statut === "expire" ? "Expiré" : "En attente";
   doc.text(`Statut : ${statutLabel}`, 20, 67);
 
-  const ht = devisItem.montant / 1.2;
-  const tva = devisItem.montant - ht;
-
   autoTable(doc, {
     startY: 78,
-    head: [["Description", "Montant HT", "TVA (20%)", "Montant TTC"]],
+    head: [["Description", "Montant"]],
     body: [
       [
         devisItem.titre,
-        `${fmt(Math.round(ht * 100) / 100)} €`,
-        `${fmt(Math.round(tva * 100) / 100)} €`,
         `${fmt(devisItem.montant)} €`,
       ],
     ],
-    foot: [["", "", "Total TTC", `${fmt(devisItem.montant)} €`]],
+    foot: [["Total", `${fmt(devisItem.montant)} €`]],
     headStyles: { fillColor: [30, 30, 60], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
     bodyStyles: { fontSize: 9, textColor: [50, 50, 70] },
     footStyles: { fillColor: [240, 240, 250], textColor: [30, 30, 60], fontSize: 10, fontStyle: "bold" },
