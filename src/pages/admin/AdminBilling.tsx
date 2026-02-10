@@ -9,6 +9,8 @@ import { useDevis } from "@/hooks/use-devis";
 import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useSendLogs } from "@/hooks/use-send-logs";
+import { useIsDemo } from "@/hooks/useIsDemo";
+import { supabase } from "@/integrations/supabase/client";
 import type { FactureStatus, Facture, Devis } from "@/data/mockData";
 import { Receipt, Euro, AlertTriangle, Plus, Download, Eye, Send, Clock } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
@@ -33,6 +35,7 @@ export default function AdminBilling() {
   const { clients, getClientById } = useClients();
   const { getDossiersByClient } = useDossiers();
   const { sendLogs, addSendLog } = useSendLogs();
+  const { isDemo } = useIsDemo();
 
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
@@ -100,15 +103,36 @@ export default function AdminBilling() {
     setOpenFacture(false); setFClientId(""); setFDossierId(""); setFMontant(""); setFEcheance("");
   };
 
-  const handleAddDevis = () => {
+  const handleAddDevis = async () => {
     if (!dClientId || !dMontant || !dTitre) { toast.error("Client, titre et montant requis"); return; }
     const client = clients.find((c) => c.id === dClientId);
+    const ref = `DEV-2026-${String(devis.length + 13).padStart(3, "0")}`;
+    const validite = dValidite || new Date().toISOString().split("T")[0];
     addDevis({
-      id: `dv${Date.now()}`, reference: `DEV-2026-${String(devis.length + 13).padStart(3, "0")}`,
+      id: `dv${Date.now()}`, reference: ref,
       clientId: dClientId, clientNom: client?.entreprise || "", dossierId: dDossierId || undefined,
       titre: dTitre, montant: parseFloat(dMontant), statut: "en_attente",
-      dateEmission: new Date().toISOString().split("T")[0], dateValidite: dValidite || new Date().toISOString().split("T")[0],
+      dateEmission: new Date().toISOString().split("T")[0], dateValidite: validite,
     });
+
+    // Send real email via edge function when not in demo
+    if (!isDemo && client?.email) {
+      try {
+        await supabase.functions.invoke("send-devis", {
+          body: {
+            email: client.email,
+            prenom: client.prenom,
+            devisRef: ref,
+            titre: dTitre,
+            montant: parseFloat(dMontant),
+            dateValidite: validite,
+          },
+        });
+      } catch (e: any) {
+        console.error("Erreur envoi email devis:", e);
+      }
+    }
+
     toast.success("Devis créé");
     setOpenDevis(false); setDClientId(""); setDDossierId(""); setDTitre(""); setDMontant(""); setDValidite("");
   };

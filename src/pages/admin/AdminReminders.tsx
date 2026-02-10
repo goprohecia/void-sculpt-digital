@@ -6,6 +6,9 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useRelances } from "@/hooks/use-relances";
 import { useEmailLogs } from "@/hooks/use-email-logs";
+import { useClients } from "@/hooks/use-clients";
+import { useIsDemo } from "@/hooks/useIsDemo";
+import { supabase } from "@/integrations/supabase/client";
 import { type RelanceStatus } from "@/data/mockData";
 import { Bell, Calendar, Mail, Send } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
@@ -22,6 +25,8 @@ export default function AdminReminders() {
   const [filterStatut, setFilterStatut] = useState<"tous" | RelanceStatus>("tous");
   const { relances } = useRelances();
   const { emailLogs, pushEmail } = useEmailLogs();
+  const { getClientById } = useClients();
+  const { isDemo } = useIsDemo();
 
   const filtered = relances.filter(
     (r) => filterStatut === "tous" || r.statut === filterStatut
@@ -33,10 +38,34 @@ export default function AdminReminders() {
 
   const relanceEmails = emailLogs.filter((e) => e.type === "relance");
 
-  const handleSendRelance = (r: typeof relances[0]) => {
+  const handleSendRelance = async (r: typeof relances[0]) => {
+    // Always log in email_logs (demo or real)
     pushEmail("relance", r.clientNom, `Relance facture ${r.factureRef}`,
       `<p>Bonjour,</p><p>Nous nous permettons de vous rappeler que la facture <strong>${r.factureRef}</strong> d'un montant de <strong>${r.montant.toLocaleString()} €</strong> est en attente de règlement.</p><p>Merci de procéder au paiement dans les meilleurs délais.</p><p>L'équipe Impartial</p>`,
       undefined, r.factureRef);
+
+    // Send real email via edge function when not in demo
+    if (!isDemo) {
+      const client = getClientById(r.clientId);
+      if (client?.email) {
+        try {
+          const { error } = await supabase.functions.invoke("send-relance", {
+            body: {
+              email: client.email,
+              prenom: client.prenom,
+              factureRef: r.factureRef,
+              montant: r.montant,
+              dateEcheance: r.dateProchaine,
+            },
+          });
+          if (error) throw error;
+        } catch (e: any) {
+          console.error("Erreur envoi relance:", e);
+          toast.error("Erreur lors de l'envoi de l'email de relance");
+          return;
+        }
+      }
+    }
     toast.success(`Relance envoyée pour ${r.factureRef}`);
   };
 
