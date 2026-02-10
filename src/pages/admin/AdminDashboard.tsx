@@ -5,20 +5,20 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useEmailLogs } from "@/hooks/use-email-logs";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useClients } from "@/hooks/use-clients";
+import { useFactures } from "@/hooks/use-factures";
 import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
-  dossiers,
-  clients,
-  factures,
   relances,
   activites,
   donneesMensuelles,
   totalNonLus,
 } from "@/data/mockData";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, getDay } from "date-fns";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 
 type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" | "relance"; color: string };
@@ -26,7 +26,10 @@ type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" 
 export default function AdminDashboard() {
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
-  const { emailLogs } = useDemoData();
+  const { emailLogs } = useEmailLogs();
+  const { dossiers } = useDossiers();
+  const { clients } = useClients();
+  const { factures } = useFactures();
 
   const dossiersActifs = dossiers.filter((d) => d.statut === "en_cours").length;
   const nouveauxClients = clients.filter((c) => c.dateCreation >= "2026-02-01").length;
@@ -48,7 +51,7 @@ export default function AdminDashboard() {
       if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(0,84%,60%)" });
     });
     return events;
-  }, []);
+  }, [dossiers, factures]);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -197,7 +200,7 @@ export default function AdminDashboard() {
               {days.map((day) => {
                 const dayEvents = getEventsForDay(day);
                 const isSelected = selectedDay && isSameDay(day, selectedDay);
-                const isToday = isSameDay(day, new Date(2026, 1, 9)); // simulated today
+                const isToday = isSameDay(day, new Date(2026, 1, 9));
                 return (
                   <button
                     key={day.toISOString()}
@@ -217,7 +220,6 @@ export default function AdminDashboard() {
               })}
             </div>
 
-            {/* Selected day events */}
             {selectedDay && (
               <div className="mt-4 border-t border-border/50 pt-3 space-y-2">
                 <p className="text-xs font-medium text-muted-foreground">{format(selectedDay, "EEEE d MMMM yyyy", { locale: fr })}</p>

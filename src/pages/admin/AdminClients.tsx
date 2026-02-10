@@ -5,8 +5,10 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { clients, type Client } from "@/data/mockData";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useClients } from "@/hooks/use-clients";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useDemandes } from "@/hooks/use-demandes";
+import type { Client } from "@/data/mockData";
 import { Search, Users, Eye, X, Building2, MapPin } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -16,7 +18,9 @@ export default function AdminClients() {
   const [filterStatut, setFilterStatut] = useState<"tous" | "actif" | "inactif">("tous");
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const isMobile = useIsMobile();
-  const { getDossiersByClient, getDemandesByClient } = useDemoData();
+  const { clients } = useClients();
+  const { getDossiersByClient } = useDossiers();
+  const { getDemandesByClient } = useDemandes();
 
   const filtered = clients.filter((c) => {
     const matchSearch =

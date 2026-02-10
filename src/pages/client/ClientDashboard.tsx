@@ -6,13 +6,19 @@ import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { FolderOpen, FileText, Receipt, MessageSquare, ArrowRight, Send, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useFactures } from "@/hooks/use-factures";
+import { useDevis } from "@/hooks/use-devis";
+import { useDemandes } from "@/hooks/use-demandes";
 import { getConversationsByClient, getRendezVousByClient, DEMO_CLIENT_ID } from "@/data/mockData";
 import { WelcomeBookingDialog } from "@/components/admin/WelcomeBookingDialog";
 
 export default function ClientDashboard() {
   const [showWelcome, setShowWelcome] = useState(false);
-  const { getDossiersByClient, getFacturesByClient, getDevisByClient, getDemandesByClient } = useDemoData();
+  const { getDossiersByClient } = useDossiers();
+  const { getFacturesByClient } = useFactures();
+  const { getDevisByClient } = useDevis();
+  const { getDemandesByClient } = useDemandes();
 
   useEffect(() => {
     const hasVisited = localStorage.getItem("impartial_first_visit_done");
@@ -20,6 +26,7 @@ export default function ClientDashboard() {
       setShowWelcome(true);
     }
   }, []);
+
   const mesDossiers = getDossiersByClient(DEMO_CLIENT_ID);
   const mesFactures = getFacturesByClient(DEMO_CLIENT_ID);
   const mesDevis = getDevisByClient(DEMO_CLIENT_ID);

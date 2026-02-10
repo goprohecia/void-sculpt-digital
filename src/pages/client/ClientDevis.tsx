@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDevis } from "@/hooks/use-devis";
+import { useClients } from "@/hooks/use-clients";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { FileText, Check, X, Eraser, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,8 @@ import SignaturePad, { type SignaturePadRef } from "@/components/SignaturePad";
 import { generateDevisPdf } from "@/lib/generatePdf";
 
 export default function ClientDevis() {
-  const { getDevisByClient, updateDevisStatut, updateDevisSignature, getClientById } = useDemoData();
+  const { getDevisByClient, updateDevisStatut, updateDevisSignature } = useDevis();
+  const { getClientById } = useClients();
   const mesDevis = getDevisByClient(DEMO_CLIENT_ID);
   const client = getClientById(DEMO_CLIENT_ID);
 
@@ -29,14 +31,14 @@ export default function ClientDevis() {
     const signataireNom = client ? `${client.prenom} ${client.nom}` : "Client";
     const dateSignature = new Date().toISOString();
 
-    updateDevisStatut(id, "accepte");
-    updateDevisSignature(id, signatureDataUrl, signataireNom, dateSignature);
+    updateDevisStatut({ id, statut: "accepte" });
+    updateDevisSignature({ id, signatureDataUrl, signataireNom, dateSignature });
     toast.success("Devis accepté et signé");
     resetSignatureState();
   };
 
   const handleRefuse = (id: string) => {
-    updateDevisStatut(id, "refuse");
+    updateDevisStatut({ id, statut: "refuse" });
     toast.success("Devis refusé");
   };
 
