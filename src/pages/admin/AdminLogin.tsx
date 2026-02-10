@@ -138,6 +138,11 @@ export default function AdminLogin() {
               </div>
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
+            <div className="flex justify-end">
+              <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                Mot de passe oublié ?
+              </Link>
+            </div>
             <Button type="submit" className="w-full h-11 gap-2">
               <LogIn className="h-4 w-4" />
               Se connecter

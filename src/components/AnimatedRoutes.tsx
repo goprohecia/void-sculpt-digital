@@ -26,6 +26,8 @@ import PropheciaProject from "@/pages/portfolio/PropheciaProject";
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminOnlyLogin from "@/pages/admin/AdminOnlyLogin";
 import ClientSignup from "@/pages/admin/ClientSignup";
+import ForgotPassword from "@/pages/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
@@ -81,6 +83,8 @@ export function AnimatedRoutes() {
         <Route path="/client/login" element={<AdminLogin />} />
         <Route path="/admin/access" element={<AdminOnlyLogin />} />
         <Route path="/signup" element={<ClientSignup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
