@@ -1,46 +1,59 @@
 
 
-# Corriger la connexion admin pour les vrais comptes
+# Supprimer les donnees mock du dashboard admin en mode reel
 
-## Probleme identifie
+## Probleme
 
-La page `/admin/access` utilise uniquement le systeme de demo (`useDemoAuth`) pour authentifier les utilisateurs. Elle ne fait jamais appel a l'authentification reelle via la base de donnees. Le compte `contact@impartialgames.com` existe bien en base, mais la page ne sait pas le verifier.
+Quand vous etes connecte avec votre vrai compte (`contact@impartialgames.com`), le dashboard et la sidebar affichent encore des donnees fictives (chiffre d'affaires 35.2k, activites recentes, badges "5" messagerie, "3" support). Ces donnees proviennent d'imports directs du fichier `mockData.ts` qui ne tiennent pas compte du mode demo/reel.
+
+## Ce qui fonctionne deja
+
+Les hooks `useDossiers`, `useClients`, `useFactures` detectent correctement le mode reel et interrogent la base de donnees (qui est vide, d'ou les "0" pour dossiers actifs, nouveaux clients, factures en attente).
+
+## Ce qui ne fonctionne pas
+
+Plusieurs donnees sont importees directement depuis `mockData.ts` sans passer par la logique demo/reel :
+
+### 1. Dashboard (`AdminDashboard.tsx`)
+- **`donneesMensuelles`** : utilise pour le CA (35.2k) et le graphique Tendance CA
+- **`activites`** : affiche 8 activites fictives
+- **`relances`** : utilise dans le calendrier des echeances
+- **`totalNonLus`** : affiche le lien "X messages non lus"
+
+### 2. Sidebar (`AdminSidebar.tsx`)
+- **`totalNonLus`** : badge "5" sur Messagerie
+- **`getOpenTicketsCount()`** : badge "3" sur Support
 
 ## Solution
 
-Modifier `AdminOnlyLogin.tsx` pour ajouter l'authentification reelle en complement du mode demo, comme c'est deja fait dans `AdminLogin.tsx` (la page `/client/login`).
+### Fichier `AdminDashboard.tsx`
+- Remplacer les imports directs par les hooks existants (`useRelances`, `useConversations`)
+- Pour le CA (`donneesMensuelles`) : utiliser le hook existant ou les donnees de la base `donnees_mensuelles`
+- Pour les activites : ne rien afficher en mode reel (pas de table activites en base), ou masquer la section
+- Calculer `totalNonLus` a partir du hook `useConversations` au lieu de l'import mock
+- Conditionner l'affichage des tendances ("+23.5% vs jan.") : ne pas les afficher quand il n'y a pas de donnees historiques
 
-## Modifications prevues
+### Fichier `AdminSidebar.tsx`
+- Remplacer l'import statique `totalNonLus` par un hook `useConversations` pour calculer dynamiquement le nombre de messages non lus
+- Remplacer `getOpenTicketsCount()` par un hook `useTickets` pour calculer dynamiquement les tickets ouverts
+- En mode reel sans donnees, ces badges afficheront 0 (et ne seront pas visibles)
 
-### Fichier : `src/pages/admin/AdminOnlyLogin.tsx`
+## Details techniques
 
-1. **Importer le client Supabase** pour acceder a l'authentification reelle
-2. **Rendre `handleSubmit` asynchrone** pour pouvoir appeler l'API d'authentification
-3. **Ajouter la logique d'authentification reelle** :
-   - D'abord essayer le login demo (comptes de demonstration)
-   - Si le demo echoue, tenter `supabase.auth.signInWithPassword({ email, password })`
-   - En cas de succes, verifier que l'utilisateur a bien le role `admin` dans la table `user_roles`
-   - Si le role est confirme, rediriger vers `/admin`
-   - Sinon, afficher un message d'erreur "Ce portail est reserve aux administrateurs"
+### Modifications dans `AdminDashboard.tsx`
+- Ajouter les imports : `useConversations`, `useRelances`, `useIsDemo`
+- Utiliser `useRelances()` au lieu de l'import direct `relances`
+- Calculer `totalNonLus` depuis `useConversations().conversations`
+- Pour `donneesMensuelles` : creer un hook ou requeter directement `donnees_mensuelles` ; en attendant, afficher `0k` quand pas de donnees
+- Conditionner l'affichage du graphique Tendance CA et des activites recentes : masquer ou afficher "Aucune donnee" si les tableaux sont vides
+- Retirer les `trend` des KPIs quand il n'y a pas d'historique
 
-### Details techniques
+### Modifications dans `AdminSidebar.tsx`
+- Remplacer `totalNonLus` (import statique) par un calcul dynamique via `useConversations`
+- Remplacer `getOpenTicketsCount()` par un calcul dynamique via `useTickets`
+- Les badges ne s'afficheront que si la valeur est > 0
 
-```text
-Flux d'authentification mis a jour :
-
-[Formulaire] --> [1. Essai demo auth]
-                    |
-              Succes? --> Oui --> [Verifier role admin] --> Redirection /admin
-                    |
-                   Non --> [2. Essai Supabase auth]
-                              |
-                        Succes? --> Oui --> [Verifier role admin en BDD] --> Redirection /admin
-                              |
-                             Non --> "Identifiants incorrects"
-```
-
-- Import de `supabase` depuis `@/integrations/supabase/client`
-- Appel a `supabase.auth.signInWithPassword()` si le login demo echoue
-- Verification du role admin via une requete sur `user_roles` apres authentification reelle
-- Deconnexion automatique si l'utilisateur authentifie n'a pas le role admin
+### Fichiers concernes
+- `src/pages/admin/AdminDashboard.tsx`
+- `src/components/admin/AdminSidebar.tsx`
 
