@@ -1,56 +1,74 @@
 
 
-# Plan : Verification et tests des emails
+# Audit du Back-Office : Flux, Notifications et Emails
 
-## Contexte
+## Resultat de l'audit
 
-Apres analyse du code, voici les constats :
+### 1. Flux Demande -> Dossier -> Devis -> Facture
 
-1. **Welcome email (creation de compte admin)** : Le template `create-client-account` est complet avec mot de passe temporaire, logo, badge de bienvenue et resume des fonctionnalites. Le mot de passe est genere via `generatePassword()` (12 caracteres cryptographiquement aleatoires) et envoye via Resend.
+Le chainage fonctionnel est en place :
+- **Demande -> Dossier** : fonctionne via `handleTransformDemande` dans `AdminDossiers.tsx`
+- **Dossier -> Devis** : les devis peuvent etre associes a un dossier via `dossierId` dans `AdminBilling.tsx`
+- **Dossier -> Facture** : idem, les factures sont liees aux dossiers
+- **Vue dossier** : `AdminDossierDetail.tsx` affiche bien les devis et factures associes
 
-2. **Email "mot de passe oublie"** : Il n'existe aucune fonctionnalite de reinitialisation de mot de passe dans l'application. Aucune page, aucun lien "mot de passe oublie", et aucune edge function dediee. C'est une fonctionnalite manquante.
+Pas de probleme sur le chainage des donnees.
 
-3. **Les 6 templates existants** ont tous le logo et le bon expediteur `studio@impartialgames.com`.
+---
 
-## Actions prevues
+### 2. Probleme majeur : Notifications et Email Logs absents en mode reel
 
-### 1. Tester tous les emails existants (7 envois)
-Envoyer un exemple de chaque email a `studio@impartialgames.com` pour verifier le rendu :
-- **Welcome email** (create-client-account) - avec mot de passe temporaire
-- **Relance** (send-relance)
-- **Devis** (send-devis)
-- **Paiement** (send-paiement)
-- **Reception demande** (send-demande-reception)
-- **Statut demande validee** (send-demande-statut)
-- **Statut demande refusee** (send-demande-statut)
+En **mode demo**, tout est parfaitement integre : chaque action (nouvelle demande, changement de statut, paiement, devis, etc.) cree automatiquement des notifications ET des logs email via le `DemoDataContext`.
 
-### 2. Creer la fonctionnalite "Mot de passe oublie"
-Puisqu'il n'existe pas encore, il faut :
+En **mode reel (base de donnees)**, ces mecanismes sont **absents** :
 
-- **Creer une edge function `send-password-reset`** qui utilise `supabase.auth.admin.generateLink()` pour generer un lien de reinitialisation, puis envoie un email premium via Resend avec le meme design que les autres templates (logo, card dark, CTA violet).
+| Action | Email Edge Function | Notification creee | Email Log cree |
+|--------|--------------------|--------------------|----------------|
+| Nouvelle demande | Oui (send-demande-reception) | NON | NON |
+| Statut demande (validee/refusee) | Oui (send-demande-statut) | NON | NON |
+| Nouveau devis | Oui (send-devis) | NON | NON |
+| Signature devis | Non | NON | NON |
+| Facture payee | Oui (send-paiement) | NON | NON |
+| Nouvelle facture | Non | NON | NON |
+| Changement statut dossier | Non | NON | NON |
+| Relance envoyee | Oui (send-relance) | Non | OUI (seul cas correct) |
 
-- **Ajouter un lien "Mot de passe oublie ?"** sur les pages de login (`AdminLogin.tsx` et `ClientSignup.tsx` / page login client).
+**Seules les relances** utilisent correctement `pushEmail` du hook `useEmailLogs` en mode reel.
 
-- **Creer une page `/reset-password`** qui permet a l'utilisateur de saisir son nouveau mot de passe apres avoir clique sur le lien dans l'email.
+---
 
-## Details techniques
+### 3. Plan de correction
 
-### Edge function `send-password-reset`
-- Recoit `{ email }` en POST (pas besoin d'auth)
-- Utilise `supabase.auth.admin.generateLink({ type: 'recovery', email })` pour obtenir un token
-- Envoie un email Resend avec le template premium Impartial
-- Le lien pointe vers `/reset-password?token=...`
+Ajouter dans chaque hook reel les appels a `addNotification` et `pushEmail` qui existent deja en mode demo :
 
-### Page `/reset-password`
-- Lit le token depuis l'URL
-- Affiche un formulaire nouveau mot de passe + confirmation
-- Appelle `supabase.auth.updateUser({ password })` une fois la session etablie via le token
+#### Fichier `src/hooks/use-demandes.ts`
+- `addDemande` : apres l'envoi de l'email Edge Function, creer une notification admin ("Nouvelle demande") + notification client ("Demande envoyee") + log email
+- `updateStatut` : apres l'envoi de l'email statut, creer une notification client ("Demande validee/refusee") + log email
 
-### Modifications des pages login
-- Ajouter un lien "Mot de passe oublie ?" sous le champ mot de passe
-- Ce lien ouvre un dialog ou navigue vers une page dediee avec saisie email + envoi
+#### Fichier `src/hooks/use-devis.ts`
+- `addDevis` : creer une notification client ("Nouveau devis disponible") + log email
+- `updateSignature` : creer une notification admin ("Devis signe par le client") + log email
+- `updateStatut` : creer une notification selon le nouveau statut
 
-### Test du welcome email
-- Le `create-client-account` necessite un token admin pour fonctionner (verification du role admin)
-- On verifiera que le mot de passe temporaire est bien genere et inclus dans l'email
+#### Fichier `src/hooks/use-factures.ts`
+- `addFacture` : creer une notification client ("Nouvelle facture") + log email
+- `updateStatut` (payee) : apres l'envoi de l'email paiement, creer une notification admin ("Paiement recu") + notification client ("Paiement confirme") + log email
+
+#### Fichier `src/hooks/use-dossiers.ts`
+- `updateStatut` : creer une notification client quand le statut change
+- `addDossier` : creer une notification admin + client
+
+#### Approche technique
+
+Chaque hook devra importer et utiliser `supabase.from("notifications").insert(...)` et `supabase.from("email_logs").insert(...)` directement (sans passer par les hooks React, car on est deja dans un `mutationFn`). Les insertions seront faites en parallele avec `Promise.all` pour ne pas ralentir le flux principal, et enveloppees dans des try/catch pour ne pas bloquer l'action principale en cas d'echec.
+
+Le modele a suivre est exactement celui du `DemoDataContext` qui definit deja tous les messages, titres et contenus pour chaque evenement.
+
+---
+
+### 4. Estimation
+
+- 6 fichiers a modifier (4 hooks + verification des 2 pages admin)
+- ~15-20 insertions de notifications/emails a ajouter
+- Aucune modification de schema necessaire (les tables `notifications` et `email_logs` existent deja avec les bonnes colonnes et RLS)
 
