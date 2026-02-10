@@ -108,7 +108,7 @@ export default function ClientSignup() {
             Un email de confirmation a été envoyé à <strong>{email}</strong>.
             Veuillez vérifier votre boîte de réception et cliquer sur le lien pour activer votre compte.
           </p>
-          <Button variant="outline" onClick={() => navigate("/admin/login")} className="gap-2">
+          <Button variant="outline" onClick={() => navigate("/client/login")} className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             Retour à la connexion
           </Button>
@@ -193,7 +193,7 @@ export default function ClientSignup() {
           <div className="text-center space-y-1.5 text-sm text-muted-foreground">
             <p>
               Déjà un compte ?{" "}
-              <Link to="/admin/login" className="text-primary hover:underline font-medium">Se connecter</Link>
+              <Link to="/client/login" className="text-primary hover:underline font-medium">Se connecter</Link>
             </p>
             <Link to="/" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors mx-auto">
               <Home className="h-3.5 w-3.5" />

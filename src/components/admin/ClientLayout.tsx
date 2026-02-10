@@ -38,7 +38,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
   if (loading) return null;
 
   if (!isDemo && !isRealAuth) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/client/login" replace />;
   }
 
   if (isDemoAuth && demoUser?.role !== "client" && !isRealAuth) {
