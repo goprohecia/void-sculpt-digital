@@ -3,8 +3,9 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { motion } from "framer-motion";
-import { LifeBuoy, Plus, Send, ArrowLeft, X } from "lucide-react";
-import { getTicketsByClient, DEMO_CLIENT_ID, type Ticket, type TicketPriority, type TicketStatus } from "@/data/mockData";
+import { LifeBuoy, Plus, Send, ArrowLeft } from "lucide-react";
+import { useTickets } from "@/hooks/use-tickets";
+import { DEMO_CLIENT_ID, type Ticket, type TicketPriority, type TicketStatus } from "@/data/mockData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,12 +17,20 @@ import { toast } from "sonner";
 type FilterStatus = "tous" | TicketStatus;
 
 export default function ClientSupport() {
-  const [tickets, setTickets] = useState(() => getTicketsByClient(DEMO_CLIENT_ID));
+  const { getTicketsByClient } = useTickets();
+  const initialTickets = getTicketsByClient(DEMO_CLIENT_ID);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [initialized, setInitialized] = useState(false);
   const [filter, setFilter] = useState<FilterStatus>("tous");
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [newMessage, setNewMessage] = useState("");
   const [showNewTicket, setShowNewTicket] = useState(false);
   const [newTicket, setNewTicket] = useState({ sujet: "", description: "", priorite: "normale" as TicketPriority });
+
+  if (initialTickets.length > 0 && !initialized) {
+    setTickets(initialTickets);
+    setInitialized(true);
+  }
 
   const filteredTickets = filter === "tous" ? tickets : tickets.filter((t) => t.statut === filter);
 

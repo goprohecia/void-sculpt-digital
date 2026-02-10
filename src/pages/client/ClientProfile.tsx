@@ -9,24 +9,24 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { User, Building2, Mail, Phone, MapPin, Save, CheckCircle } from "lucide-react";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useClients } from "@/hooks/use-clients";
 import { toast } from "sonner";
 
 export default function ClientProfile() {
-  const { getClientById, updateClient } = useDemoData();
+  const { getClientById, updateClient } = useClients();
   const client = getClientById(DEMO_CLIENT_ID)!;
 
   const [form, setForm] = useState({
-    prenom: client.prenom,
-    nom: client.nom,
-    email: client.email,
-    telephone: client.telephone,
-    entreprise: client.entreprise,
-    siret: client.siret || "",
-    adresse: client.adresse || "",
-    codePostal: client.codePostal || "",
-    ville: client.ville || "",
-    pays: client.pays || "",
+    prenom: client?.prenom ?? "",
+    nom: client?.nom ?? "",
+    email: client?.email ?? "",
+    telephone: client?.telephone ?? "",
+    entreprise: client?.entreprise ?? "",
+    siret: client?.siret || "",
+    adresse: client?.adresse || "",
+    codePostal: client?.codePostal || "",
+    ville: client?.ville || "",
+    pays: client?.pays || "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -38,23 +38,28 @@ export default function ClientProfile() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    updateClient(DEMO_CLIENT_ID, {
-      prenom: form.prenom,
-      nom: form.nom,
-      email: form.email,
-      telephone: form.telephone,
-      entreprise: form.entreprise,
-      siret: form.siret,
-      adresse: form.adresse,
-      codePostal: form.codePostal,
-      ville: form.ville,
-      pays: form.pays,
+    updateClient({
+      id: DEMO_CLIENT_ID,
+      updates: {
+        prenom: form.prenom,
+        nom: form.nom,
+        email: form.email,
+        telephone: form.telephone,
+        entreprise: form.entreprise,
+        siret: form.siret,
+        adresse: form.adresse,
+        codePostal: form.codePostal,
+        ville: form.ville,
+        pays: form.pays,
+      },
     });
     setTimeout(() => {
       setSaving(false);
       toast.success("Coordonnées mises à jour avec succès");
     }, 400);
   };
+
+  if (!client) return <ClientLayout><div className="p-8 text-center text-muted-foreground">Chargement...</div></ClientLayout>;
 
   return (
     <ClientLayout>

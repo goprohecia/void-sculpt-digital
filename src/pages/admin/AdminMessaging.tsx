@@ -2,14 +2,19 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
-import { conversations, type Conversation } from "@/data/mockData";
+import { useConversations } from "@/hooks/use-conversations";
+import { type Conversation } from "@/data/mockData";
 import { MessageSquare, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function AdminMessaging() {
-  const [selectedConv, setSelectedConv] = useState<Conversation | null>(conversations[0]);
+  const { conversations } = useConversations();
+  const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
   const [showList, setShowList] = useState(true);
+
+  // Auto-select first conversation when data loads
+  const activeConv = selectedConv ?? conversations[0] ?? null;
 
   const handleSelectConv = (conv: Conversation) => {
     setSelectedConv(conv);
@@ -48,7 +53,7 @@ export default function AdminMessaging() {
                     onClick={() => handleSelectConv(conv)}
                     className={cn(
                       "w-full text-left p-3 border-b border-border/10 hover:bg-muted/20 transition-colors",
-                      selectedConv?.id === conv.id && "bg-muted/30"
+                      activeConv?.id === conv.id && "bg-muted/30"
                     )}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -75,7 +80,7 @@ export default function AdminMessaging() {
             {/* Message detail */}
             <AnimatePresence mode="wait">
               <motion.div
-                key={selectedConv?.id || "empty"}
+                key={activeConv?.id || "empty"}
                 className={cn(
                   "flex-1 flex flex-col",
                   showList && "hidden md:flex"
@@ -85,7 +90,7 @@ export default function AdminMessaging() {
                 exit={{ opacity: 0, x: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                {selectedConv ? (
+                {activeConv ? (
                   <>
                     <div className="p-4 border-b border-border/30 flex items-center gap-3">
                       <button
@@ -95,13 +100,13 @@ export default function AdminMessaging() {
                         ← Retour
                       </button>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold">{selectedConv.clientNom}</p>
-                        <p className="text-xs text-muted-foreground">{selectedConv.sujet}</p>
+                        <p className="text-sm font-semibold">{activeConv.clientNom}</p>
+                        <p className="text-xs text-muted-foreground">{activeConv.sujet}</p>
                       </div>
                     </div>
 
                     <div className="flex-1 overflow-auto p-4 space-y-3">
-                      {selectedConv.messages.map((msg) => (
+                      {activeConv.messages.map((msg) => (
                         <div
                           key={msg.id}
                           className={cn(
