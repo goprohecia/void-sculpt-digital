@@ -4,7 +4,9 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { motion } from "framer-motion";
 import { LifeBuoy, Send, ArrowLeft } from "lucide-react";
-import { tickets as allTickets, clients, type Ticket, type TicketStatus } from "@/data/mockData";
+import { useTickets } from "@/hooks/use-tickets";
+import { useClients } from "@/hooks/use-clients";
+import { type Ticket, type TicketStatus } from "@/data/mockData";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatDistanceToNow } from "date-fns";
@@ -13,11 +15,20 @@ import { fr } from "date-fns/locale";
 type FilterStatus = "tous" | TicketStatus;
 
 export default function AdminSupport() {
-  const [tickets, setTickets] = useState(allTickets);
+  const { tickets: allTickets } = useTickets();
+  const { clients } = useClients();
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [initialized, setInitialized] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("tous");
   const [filterClient, setFilterClient] = useState("tous");
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [newMessage, setNewMessage] = useState("");
+
+  // Sync from hook data (keeps local state for message mutations)
+  if (allTickets.length > 0 && !initialized) {
+    setTickets(allTickets);
+    setInitialized(true);
+  }
 
   const filtered = tickets
     .filter((t) => filterStatus === "tous" || t.statut === filterStatus)

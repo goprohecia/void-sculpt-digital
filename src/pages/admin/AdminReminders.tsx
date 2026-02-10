@@ -4,8 +4,9 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
-import { useDemoData } from "@/contexts/DemoDataContext";
-import { relances, type RelanceStatus } from "@/data/mockData";
+import { useRelances } from "@/hooks/use-relances";
+import { useEmailLogs } from "@/hooks/use-email-logs";
+import { type RelanceStatus } from "@/data/mockData";
 import { Bell, Calendar, Mail, Send } from "lucide-react";
 import { toast } from "sonner";
 
@@ -18,7 +19,8 @@ const statusFilters: { key: "tous" | RelanceStatus; label: string }[] = [
 
 export default function AdminReminders() {
   const [filterStatut, setFilterStatut] = useState<"tous" | RelanceStatus>("tous");
-  const { emailLogs, pushEmail } = useDemoData();
+  const { relances } = useRelances();
+  const { emailLogs, pushEmail } = useEmailLogs();
 
   const filtered = relances.filter(
     (r) => filterStatut === "tous" || r.statut === filterStatut

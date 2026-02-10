@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { useDemoData, type DemandePrestation, type Demande } from "@/contexts/DemoDataContext";
+import { useDemandes } from "@/hooks/use-demandes";
+import { useCahiers } from "@/hooks/use-cahiers";
+import { type DemandePrestation, type Demande } from "@/contexts/DemoDataContext";
 import { DEMO_CLIENT_ID } from "@/data/mockData";
 import { Send, Plus, FileText, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,8 @@ import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 const prestationTypes: DemandePrestation[] = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autre"];
 
 export default function ClientDemandes() {
-  const { demandes, addDemande, getDemandesByClient, getCahierByDemande, saveCahierDesCharges } = useDemoData();
+  const { demandes, addDemande, getDemandesByClient } = useDemandes();
+  const { getCahierByDemande, saveCahierDesCharges } = useCahiers();
   const mesDemandes = getDemandesByClient(DEMO_CLIENT_ID);
   const [open, setOpen] = useState(false);
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
