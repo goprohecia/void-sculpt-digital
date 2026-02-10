@@ -21,6 +21,14 @@ function mapRow(row: any): Dossier {
   };
 }
 
+const STATUT_LABELS: Record<string, string> = {
+  en_attente: "en attente",
+  en_cours: "en cours",
+  en_revue: "en revue",
+  termine: "terminé",
+  livre: "livré",
+};
+
 export function useDossiers() {
   const { isDemo, isLoading: authLoading } = useIsDemo();
   const demoData = useDemoData();
@@ -44,6 +52,19 @@ export function useDossiers() {
       if (isDemo) { demoData.updateDossierStatut(id, statut); return; }
       const { error } = await supabase.from("dossiers").update({ statut }).eq("id", id);
       if (error) throw error;
+
+      // Notification client
+      const dossier = data.find((d) => d.id === id);
+      if (dossier) {
+        try {
+          const label = STATUT_LABELS[statut] || statut;
+          await supabase.from("notifications").insert({
+            type: "dossier", titre: "Statut dossier mis à jour",
+            description: `Votre dossier ${dossier.reference} est maintenant "${label}"`,
+            lien: "/client/dossiers", destinataire: "client", client_id: dossier.clientId,
+          });
+        } catch (e) { console.error("Erreur notification dossier statut:", e); }
+      }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["dossiers"] }),
   });
@@ -68,6 +89,22 @@ export function useDossiers() {
         rdv_effectue: d.rdvEffectue ?? false,
       });
       if (error) throw error;
+
+      // Notifications admin + client
+      try {
+        await Promise.all([
+          supabase.from("notifications").insert({
+            type: "dossier", titre: "Nouveau dossier",
+            description: `Dossier ${d.reference} créé pour ${d.clientNom} (${d.typePrestation})`,
+            lien: "/admin/dossiers", destinataire: "admin",
+          }),
+          supabase.from("notifications").insert({
+            type: "dossier", titre: "Nouveau dossier",
+            description: `Votre dossier ${d.reference} (${d.typePrestation}) a été créé`,
+            lien: "/client/dossiers", destinataire: "client", client_id: d.clientId,
+          }),
+        ]);
+      } catch (e) { console.error("Erreur notifications dossier:", e); }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["dossiers"] }),
   });

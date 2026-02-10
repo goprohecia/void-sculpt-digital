@@ -45,6 +45,26 @@ export function useDevis() {
       if (isDemo) { demoData.updateDevisStatut(id, statut); return; }
       const { error } = await supabase.from("devis").update({ statut }).eq("id", id);
       if (error) throw error;
+
+      // Notifications for status changes
+      const d = data.find((x) => x.id === id);
+      if (d) {
+        try {
+          if (statut === "accepte") {
+            await supabase.from("notifications").insert({
+              type: "devis", titre: "Devis accepté",
+              description: `${d.clientNom} a accepté le devis ${d.reference} (${d.montant.toLocaleString()} €)`,
+              lien: "/admin/facturation", destinataire: "admin",
+            });
+          } else if (statut === "refuse") {
+            await supabase.from("notifications").insert({
+              type: "devis", titre: "Devis refusé",
+              description: `${d.clientNom} a refusé le devis ${d.reference}`,
+              lien: "/admin/facturation", destinataire: "admin",
+            });
+          }
+        } catch (e) { console.error("Erreur notification devis statut:", e); }
+      }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["devis"] }),
   });
@@ -56,6 +76,26 @@ export function useDevis() {
         signature_url: signatureDataUrl, signataire_nom: signataireNom, date_signature: dateSignature, statut: "accepte",
       }).eq("id", id);
       if (error) throw error;
+
+      // Notification admin: devis signé
+      const d = data.find((x) => x.id === id);
+      if (d) {
+        try {
+          await Promise.all([
+            supabase.from("notifications").insert({
+              type: "devis", titre: "Devis signé",
+              description: `${d.clientNom} a signé le devis ${d.reference} (${d.montant.toLocaleString()} €)`,
+              lien: "/admin/facturation", destinataire: "admin",
+            }),
+            supabase.from("email_logs").insert({
+              type: "devis", destinataire: d.clientNom,
+              sujet: `Devis signé — ${d.reference}`,
+              contenu: `<p>Le devis <strong>${d.reference}</strong> a été signé par <strong>${signataireNom}</strong> le ${dateSignature}.</p>`,
+              client_id: d.clientId, reference: d.reference,
+            }),
+          ]);
+        } catch (e) { console.error("Erreur notification signature devis:", e); }
+      }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["devis"] }),
   });
@@ -69,6 +109,24 @@ export function useDevis() {
         date_emission: d.dateEmission, date_validite: d.dateValidite,
       });
       if (error) throw error;
+
+      // Notification client + email log
+      try {
+        const { data: clientRow } = await supabase.from("clients").select("email").eq("id", d.clientId).maybeSingle();
+        await Promise.all([
+          supabase.from("notifications").insert({
+            type: "devis", titre: "Nouveau devis",
+            description: `Un devis "${d.titre}" (${d.montant.toLocaleString()} €) est disponible`,
+            lien: "/client/devis", destinataire: "client", client_id: d.clientId,
+          }),
+          supabase.from("email_logs").insert({
+            type: "devis", destinataire: clientRow?.email || d.clientNom,
+            sujet: `Nouveau devis — ${d.reference}`,
+            contenu: `<p>Bonjour,</p><p>Un nouveau devis <strong>"${d.titre}"</strong> d'un montant de <strong>${d.montant.toLocaleString()} €</strong> est disponible dans votre espace client.</p><p>Vous pouvez le consulter et l'accepter directement en ligne.</p><p>L'équipe Impartial</p>`,
+            client_id: d.clientId, reference: d.reference,
+          }),
+        ]);
+      } catch (e) { console.error("Erreur notifications/email_logs devis:", e); }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["devis"] }),
   });

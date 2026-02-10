@@ -42,11 +42,10 @@ export function useFactures() {
       const { error } = await supabase.from("factures").update({ statut }).eq("id", id);
       if (error) throw error;
 
-      // Send payment confirmation email when marking as paid
+      // Send payment confirmation email + notifications when marking as paid
       if (statut === "payee") {
         const facture = data.find((f) => f.id === id);
         if (facture) {
-          // Look up client email from clients table
           const { data: clientRow } = await supabase.from("clients").select("email, prenom").eq("id", facture.clientId).maybeSingle();
           if (clientRow?.email) {
             try {
@@ -62,6 +61,28 @@ export function useFactures() {
               console.error("Erreur envoi email paiement:", e);
             }
           }
+
+          // Notifications + email log
+          try {
+            await Promise.all([
+              supabase.from("notifications").insert({
+                type: "facture", titre: "Paiement reçu",
+                description: `${facture.clientNom} a réglé la facture ${facture.reference} (${facture.montant.toLocaleString()} €)`,
+                lien: "/admin/facturation", destinataire: "admin",
+              }),
+              supabase.from("notifications").insert({
+                type: "facture", titre: "Paiement confirmé",
+                description: `Votre paiement de ${facture.montant.toLocaleString()} € pour ${facture.reference} est confirmé`,
+                lien: "/client/factures", destinataire: "client", client_id: facture.clientId,
+              }),
+              supabase.from("email_logs").insert({
+                type: "paiement", destinataire: clientRow?.email || facture.clientNom,
+                sujet: `Confirmation de paiement — ${facture.reference}`,
+                contenu: `<p>Bonjour,</p><p>Nous confirmons la réception de votre paiement de <strong>${facture.montant.toLocaleString()} €</strong> pour la facture <strong>${facture.reference}</strong>.</p><p>Merci pour votre confiance.</p><p>L'équipe Impartial</p>`,
+                client_id: facture.clientId, reference: facture.reference,
+              }),
+            ]);
+          } catch (e) { console.error("Erreur notifications/email_logs paiement:", e); }
         }
       }
     },
@@ -77,6 +98,24 @@ export function useFactures() {
         date_emission: f.dateEmission, date_echeance: f.dateEcheance,
       });
       if (error) throw error;
+
+      // Notification client + email log
+      try {
+        const { data: clientRow } = await supabase.from("clients").select("email").eq("id", f.clientId).maybeSingle();
+        await Promise.all([
+          supabase.from("notifications").insert({
+            type: "facture", titre: "Nouvelle facture",
+            description: `Facture ${f.reference} (${f.montant.toLocaleString()} €) disponible`,
+            lien: "/client/factures", destinataire: "client", client_id: f.clientId,
+          }),
+          supabase.from("email_logs").insert({
+            type: "devis", destinataire: clientRow?.email || f.clientNom,
+            sujet: `Nouvelle facture — ${f.reference}`,
+            contenu: `<p>Bonjour,</p><p>Une nouvelle facture <strong>${f.reference}</strong> d'un montant de <strong>${f.montant.toLocaleString()} €</strong> est disponible dans votre espace client.</p><p>L'équipe Impartial</p>`,
+            client_id: f.clientId, reference: f.reference,
+          }),
+        ]);
+      } catch (e) { console.error("Erreur notifications/email_logs facture:", e); }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["factures"] }),
   });
