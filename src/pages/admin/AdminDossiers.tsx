@@ -6,9 +6,11 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDossiers } from "@/hooks/use-dossiers";
+import { useDemandes } from "@/hooks/use-demandes";
+import { useCahiers } from "@/hooks/use-cahiers";
 import type { DossierStatus } from "@/data/mockData";
-import { Search, FolderOpen, Eye, Send, FileText } from "lucide-react";
+import { Search, FolderOpen, Eye, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -27,7 +29,11 @@ export default function AdminDossiers() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus>("tous");
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
-  const { dossiers, demandes, updateDemandeStatut, addDossier, getCahierByDemande } = useDemoData();
+  
+  const { dossiers, addDossier } = useDossiers();
+  const { demandes, updateDemandeStatut } = useDemandes();
+  const { getCahierByDemande } = useCahiers();
+  
   const cdcDemande = cdcDemandeId ? demandes.find((d) => d.id === cdcDemandeId) : null;
 
   const filtered = dossiers.filter((d) => {
@@ -52,7 +58,7 @@ export default function AdminDossiers() {
       dateEcheance: "",
     };
     addDossier(newDossier);
-    updateDemandeStatut(dem.id, "validee");
+    updateDemandeStatut({ id: dem.id, statut: "validee" });
     toast.success(`Dossier ${newDossier.reference} créé depuis la demande`);
   };
 
@@ -139,7 +145,7 @@ export default function AdminDossiers() {
                       <p className="text-xs text-muted-foreground">{d.typePrestation}</p>
                       <div className="flex items-center justify-between pt-1 border-t border-border/20">
                         <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
-                        <span className="text-xs text-muted-foreground">{new Date(d.dateEcheance).toLocaleDateString("fr-FR")}</span>
+                        <span className="text-xs text-muted-foreground">{d.dateEcheance ? new Date(d.dateEcheance).toLocaleDateString("fr-FR") : "—"}</span>
                       </div>
                     </motion.div>
                   </Link>
@@ -181,7 +187,7 @@ export default function AdminDossiers() {
                       <div className="flex gap-2">
                         {dem.statut !== "validee" && dem.statut !== "refusee" && (
                           <>
-                            <Select onValueChange={(val) => { updateDemandeStatut(dem.id, val as any); toast.success("Statut mis à jour"); }}>
+                            <Select onValueChange={(val) => { updateDemandeStatut({ id: dem.id, statut: val as any }); toast.success("Statut mis à jour"); }}>
                               <SelectTrigger className="w-32 h-8 text-xs"><SelectValue placeholder="Changer statut" /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="en_revue">En revue</SelectItem>
