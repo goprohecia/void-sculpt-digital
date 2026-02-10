@@ -68,6 +68,26 @@ export function useClients() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["clients"] }),
   });
 
+  const createClient = useMutation({
+    mutationFn: async (newClient: { prenom: string; nom: string; email: string; telephone?: string; entreprise?: string; siret?: string; adresse?: string; codePostal?: string; ville?: string; pays?: string }) => {
+      if (isDemo) return;
+      const { error } = await supabase.from("clients").insert({
+        prenom: newClient.prenom,
+        nom: newClient.nom,
+        email: newClient.email,
+        telephone: newClient.telephone || "",
+        entreprise: newClient.entreprise || "",
+        siret: newClient.siret || null,
+        adresse: newClient.adresse || null,
+        code_postal: newClient.codePostal || null,
+        ville: newClient.ville || null,
+        pays: newClient.pays || null,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["clients"] }),
+  });
+
   const deleteClient = useMutation({
     mutationFn: async (id: string) => {
       if (isDemo) return;
@@ -83,6 +103,7 @@ export function useClients() {
     clients: data,
     loading,
     error: query.error,
+    createClient: createClient.mutateAsync,
     updateClient: updateClient.mutate,
     updateClientAsync: updateClient.mutateAsync,
     deleteClient: deleteClient.mutate,

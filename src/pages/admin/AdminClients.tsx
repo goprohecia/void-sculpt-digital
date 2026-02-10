@@ -12,7 +12,7 @@ import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import type { Client } from "@/data/mockData";
-import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save } from "lucide-react";
+import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -24,8 +24,10 @@ export default function AdminClients() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [deletingClient, setDeletingClient] = useState<Client | null>(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [newClient, setNewClient] = useState({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "" });
   const isMobile = useIsMobile();
-  const { clients, updateClient, updateClientAsync, deleteClient } = useClients();
+  const { clients, createClient, updateClient, updateClientAsync, deleteClient } = useClients();
   const { getDossiersByClient } = useDossiers();
   const { getDemandesByClient } = useDemandes();
 
@@ -82,6 +84,21 @@ export default function AdminClients() {
       setEditingClient(null);
     } catch {
       toast.error("Erreur lors de la mise à jour");
+    }
+  };
+
+  const handleCreateClient = async () => {
+    if (!newClient.prenom || !newClient.nom || !newClient.email) {
+      toast.error("Prénom, nom et email sont obligatoires");
+      return;
+    }
+    try {
+      await createClient(newClient);
+      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé`);
+      setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "" });
+      setShowCreateDialog(false);
+    } catch {
+      toast.error("Erreur lors de la création du client");
     }
   };
 
@@ -193,9 +210,14 @@ export default function AdminClients() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Clients</h1>
-            <p className="text-muted-foreground text-sm">{clients.length} clients enregistrés</p>
+          <motion.div className="flex items-center justify-between" variants={staggerItem}>
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Clients</h1>
+              <p className="text-muted-foreground text-sm">{clients.length} clients enregistrés</p>
+            </div>
+            <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5">
+              <UserPlus className="h-4 w-4" /> Nouveau client
+            </Button>
           </motion.div>
 
           <motion.div className="flex flex-col sm:flex-row gap-3" variants={staggerItem}>
@@ -385,6 +407,69 @@ export default function AdminClients() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      {/* Create client dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Nouveau client</DialogTitle>
+            <DialogDescription>Renseignez les informations du nouveau client.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Prénom *</label>
+                <Input value={newClient.prenom} onChange={(e) => setNewClient({ ...newClient, prenom: e.target.value })} className="h-9" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Nom *</label>
+                <Input value={newClient.nom} onChange={(e) => setNewClient({ ...newClient, nom: e.target.value })} className="h-9" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Email *</label>
+                <Input type="email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} className="h-9" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Téléphone</label>
+                <Input value={newClient.telephone} onChange={(e) => setNewClient({ ...newClient, telephone: e.target.value })} className="h-9" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Entreprise</label>
+                <Input value={newClient.entreprise} onChange={(e) => setNewClient({ ...newClient, entreprise: e.target.value })} className="h-9" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">SIRET</label>
+                <Input value={newClient.siret} onChange={(e) => setNewClient({ ...newClient, siret: e.target.value })} className="h-9" />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-muted-foreground">Adresse</label>
+              <Input value={newClient.adresse} onChange={(e) => setNewClient({ ...newClient, adresse: e.target.value })} className="h-9" />
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Code postal</label>
+                <Input value={newClient.codePostal} onChange={(e) => setNewClient({ ...newClient, codePostal: e.target.value })} className="h-9" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Ville</label>
+                <Input value={newClient.ville} onChange={(e) => setNewClient({ ...newClient, ville: e.target.value })} className="h-9" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Pays</label>
+                <Input value={newClient.pays} onChange={(e) => setNewClient({ ...newClient, pays: e.target.value })} className="h-9" />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Annuler</Button>
+            <Button onClick={handleCreateClient} className="gap-1.5"><UserPlus className="h-3.5 w-3.5" /> Créer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 }
