@@ -11,13 +11,13 @@ interface AdminLayoutProps {
 }
 
 export function AdminLayout({ children }: AdminLayoutProps) {
-  const { isAuthenticated } = useDemoAuth();
-  const { supabaseUserId, isLoading } = useIsDemo();
+  const { isAuthenticated: isDemoAuth } = useDemoAuth();
+  const { isDemo, isLoading, supabaseUserId } = useIsDemo();
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useDemoData();
 
   if (isLoading) return null;
 
-  if (!isAuthenticated && !supabaseUserId) {
+  if (!isDemoAuth && !supabaseUserId) {
     return <Navigate to="/client/login" replace />;
   }
 
@@ -34,9 +34,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               onMarkRead={markNotificationRead}
               onMarkAllRead={() => markAllNotificationsRead("admin")}
             />
-            <span className="text-xs text-muted-foreground px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-              Mode démo
-            </span>
+            {isDemo ? (
+              <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+                Mode démo
+              </span>
+            ) : (
+              <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-medium">
+                Connecté
+              </span>
+            )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
             {children}
