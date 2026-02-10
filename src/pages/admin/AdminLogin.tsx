@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, Eye, EyeOff, Home } from "lucide-react";
+import { LogIn, Eye, EyeOff, Home, CheckCircle } from "lucide-react";
 import logoHero from "@/assets/logo-hero.png";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 
@@ -18,6 +18,8 @@ export default function AdminLogin() {
   const [googleUserId, setGoogleUserId] = useState("");
   const { login, isAuthenticated, user } = useDemoAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const verified = searchParams.get("verified") === "1";
 
   // Check if returning from Google OAuth with incomplete profile
   useEffect(() => {
@@ -103,6 +105,14 @@ export default function AdminLogin() {
           </Link>
           <h1 className="text-2xl font-bold">Back-office Impartial</h1>
         </div>
+
+        {/* Verified banner */}
+        {verified && (
+          <div className="flex items-center gap-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4">
+            <CheckCircle className="h-5 w-5 text-green-400 shrink-0" />
+            <p className="text-sm text-green-300">Votre compte a été vérifié avec succès ! Vous pouvez maintenant vous connecter.</p>
+          </div>
+        )}
 
         {/* Form */}
         <div className="glass-card p-8 space-y-5">
