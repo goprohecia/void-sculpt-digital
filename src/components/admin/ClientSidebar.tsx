@@ -14,7 +14,9 @@ import {
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useDemoData } from "@/contexts/DemoDataContext";
-import { getConversationsByClient, getOpenTicketsCount, DEMO_CLIENT_ID } from "@/data/mockData";
+import { DEMO_CLIENT_ID } from "@/data/mockData";
+import { useConversations } from "@/hooks/use-conversations";
+import { useTickets } from "@/hooks/use-tickets";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Sidebar,
@@ -30,27 +32,36 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-const clientConvNonLus = getConversationsByClient(DEMO_CLIENT_ID).reduce((acc, c) => acc + c.nonLus, 0);
-
-const navItems = [
-  { title: "Tableau de bord", url: "/client", icon: LayoutDashboard },
-  { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen },
-  { title: "Demandes", url: "/client/demandes", icon: Send },
-  { title: "Devis", url: "/client/devis", icon: FileText },
-  { title: "Factures", url: "/client/factures", icon: Receipt },
-  { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
-  { title: "Rendez-vous", url: "/client/rendez-vous", icon: CalendarDays },
-  { title: "Support", url: "/client/support", icon: LifeBuoy, badge: getOpenTicketsCount(DEMO_CLIENT_ID) },
-  { title: "Mon profil", url: "/client/profil", icon: UserCircle },
-  { title: "Paramètres", url: "/client/parametres", icon: Settings },
-];
-
 export function ClientSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useDemoAuth();
   const { getClientById } = useDemoData();
+  const { conversations } = useConversations();
+  const { tickets } = useTickets();
   const client = getClientById(DEMO_CLIENT_ID);
+
+  const clientConvNonLus = conversations
+    .filter((c) => c.clientId === DEMO_CLIENT_ID)
+    .reduce((acc, c) => acc + (c.nonLus || 0), 0);
+
+  const openClientTickets = tickets
+    .filter((t) => t.clientId === DEMO_CLIENT_ID && (t.statut === "ouvert" || t.statut === "en_cours"))
+    .length;
+
+  const navItems = [
+    { title: "Tableau de bord", url: "/client", icon: LayoutDashboard },
+    { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen },
+    { title: "Demandes", url: "/client/demandes", icon: Send },
+    { title: "Devis", url: "/client/devis", icon: FileText },
+    { title: "Factures", url: "/client/factures", icon: Receipt },
+    { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
+    { title: "Rendez-vous", url: "/client/rendez-vous", icon: CalendarDays },
+    { title: "Support", url: "/client/support", icon: LifeBuoy, badge: openClientTickets },
+    { title: "Mon profil", url: "/client/profil", icon: UserCircle },
+    { title: "Paramètres", url: "/client/parametres", icon: Settings },
+  ];
+
   const isActive = (url: string) => {
     if (url === "/client") return location.pathname === "/client";
     return location.pathname.startsWith(url);
