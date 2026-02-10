@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface CalendlyEvent {
   id: string;
@@ -12,6 +13,9 @@ export interface CalendlyEvent {
 }
 
 async function fetchCalendlyEvents(minDate?: string, maxDate?: string, status?: string): Promise<CalendlyEvent[]> {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) throw new Error("Non authentifié");
+
   const params: Record<string, string> = {};
   if (minDate) params.min_date = minDate;
   if (maxDate) params.max_date = maxDate;
@@ -21,7 +25,7 @@ async function fetchCalendlyEvents(minDate?: string, maxDate?: string, status?: 
   const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/calendly-events?${queryString}`;
   const res = await fetch(url, {
     headers: {
-      Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+      Authorization: `Bearer ${session.access_token}`,
       apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
     },
   });
@@ -39,7 +43,7 @@ export function useCalendlyEvents(minDate?: string, maxDate?: string) {
   return useQuery({
     queryKey: ["calendly-events", minDate, maxDate],
     queryFn: () => fetchCalendlyEvents(minDate, maxDate),
-    staleTime: 60_000, // 1 min
-    refetchInterval: 120_000, // auto-refresh every 2 min
+    staleTime: 60_000,
+    refetchInterval: 120_000,
   });
 }
