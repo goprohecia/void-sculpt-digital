@@ -68,7 +68,24 @@ export function useClients() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["clients"] }),
   });
 
+  const deleteClient = useMutation({
+    mutationFn: async (id: string) => {
+      if (isDemo) return;
+      const { error } = await supabase.from("clients").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["clients"] }),
+  });
+
   const getClientById = (id: string) => data.find((c) => c.id === id);
 
-  return { clients: data, loading, error: query.error, updateClient: updateClient.mutate, getClientById };
+  return {
+    clients: data,
+    loading,
+    error: query.error,
+    updateClient: updateClient.mutate,
+    updateClientAsync: updateClient.mutateAsync,
+    deleteClient: deleteClient.mutate,
+    getClientById,
+  };
 }
