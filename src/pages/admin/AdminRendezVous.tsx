@@ -105,7 +105,7 @@ export default function AdminRendezVous() {
                     {dayRdv.map((r) => (
                       <div
                         key={r.id}
-                        className={`mt-0.5 text-[10px] px-1 py-0.5 rounded truncate ${
+                        className={`mt-0.5 text-[10px] px-1 py-0.5 rounded truncate cursor-pointer hover:ring-1 hover:ring-primary/40 transition-all ${
                           r.statut === "a_venir"
                             ? "bg-primary/20 text-primary"
                             : r.statut === "passe"
@@ -113,6 +113,7 @@ export default function AdminRendezVous() {
                             : "bg-destructive/20 text-destructive"
                         }`}
                         title={`${r.heure} - ${r.clientNom}: ${r.sujet}`}
+                        onClick={() => setSelectedRdv(r)}
                       >
                         {r.heure} {r.clientNom.split(" ")[0]}
                       </div>
