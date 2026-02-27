@@ -6,6 +6,7 @@ import {
   CalendarDays,
   UserCircle,
   LogOut,
+  Package,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -35,6 +36,7 @@ export function EmployeeSidebar() {
     { title: "Dossiers assignés", url: "/employee/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
     { title: "Calendrier", url: "/employee/calendrier", icon: CalendarDays, moduleKey: "calendrier" },
     { title: "Messagerie", url: "/employee/messagerie", icon: MessageSquare, moduleKey: "messagerie" },
+    { title: "Stock", url: "/employee/stock", icon: Package, moduleKey: "stock" },
     { title: "Mon profil", url: "/employee/profil", icon: UserCircle, moduleKey: "profil" },
   ];
 
