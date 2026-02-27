@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { EmployeeSidebar } from "./EmployeeSidebar";
+import { AdminPageTransition } from "./AdminPageTransition";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 interface EmployeeLayoutProps {
@@ -61,7 +62,7 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
             )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            {children}
+            <AdminPageTransition>{children}</AdminPageTransition>
           </main>
         </div>
       </div>
