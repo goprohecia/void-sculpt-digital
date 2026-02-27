@@ -12,7 +12,7 @@ import { useFactures } from "@/hooks/use-factures";
 import { useRelances } from "@/hooks/use-relances";
 import { useConversations } from "@/hooks/use-conversations";
 import { useIsDemo } from "@/hooks/useIsDemo";
-import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Mail } from "lucide-react";
+import { Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Mail, UserCheck, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   activites as mockActivites,
@@ -96,6 +96,51 @@ export default function AdminDashboard() {
             <motion.div variants={staggerItem}>
               <DashboardKPI title="Factures en attente" value={facturesEnAttente} icon={Receipt} />
             </motion.div>
+          </motion.div>
+
+          {/* Prospects vs Clients */}
+          <motion.div className="glass-card p-5" variants={staggerItem}>
+            {(() => {
+              const nbClients = clients.filter((c) => (c as any).segment !== "prospect").length;
+              const nbProspects = clients.filter((c) => (c as any).segment === "prospect").length;
+              const total = nbClients + nbProspects;
+              const pctClients = total > 0 ? Math.round((nbClients / total) * 100) : 0;
+              const pctProspects = total > 0 ? 100 - pctClients : 0;
+              return (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold flex items-center gap-2">
+                      <Users className="h-4 w-4 text-primary" /> Répartition clients
+                    </h3>
+                    <span className="text-xs text-muted-foreground">{total} au total</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex items-center gap-2 flex-1 rounded-xl bg-emerald-500/10 p-3">
+                      <UserCheck className="h-5 w-5 text-emerald-400" />
+                      <div>
+                        <p className="text-lg font-bold text-emerald-400">{nbClients}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Clients</p>
+                      </div>
+                      <span className="ml-auto text-xs font-semibold text-emerald-400">{pctClients}%</span>
+                    </div>
+                    <div className="flex items-center gap-2 flex-1 rounded-xl bg-amber-500/10 p-3">
+                      <UserPlus className="h-5 w-5 text-amber-400" />
+                      <div>
+                        <p className="text-lg font-bold text-amber-400">{nbProspects}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prospects</p>
+                      </div>
+                      <span className="ml-auto text-xs font-semibold text-amber-400">{pctProspects}%</span>
+                    </div>
+                  </div>
+                  {total > 0 && (
+                    <div className="h-2 rounded-full bg-muted/30 overflow-hidden flex">
+                      <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${pctClients}%` }} />
+                      <div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${pctProspects}%` }} />
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </motion.div>
 
           <motion.div className="grid grid-cols-1 lg:grid-cols-3 gap-6" variants={staggerItem}>
