@@ -519,6 +519,11 @@ export default function AdminClients() {
                   <Input value={editingClient.pays || ""} onChange={(e) => setEditingClient({ ...editingClient, pays: e.target.value })} className="h-9" />
                 </div>
               </div>
+              {/* Tags */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground flex items-center gap-1"><Tag className="h-3 w-3" /> Tags</label>
+                <ClientTagManager clientId={editingClient.id} />
+              </div>
             </div>
           )}
           <DialogFooter>
