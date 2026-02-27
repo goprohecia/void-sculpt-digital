@@ -1,174 +1,186 @@
 
-# My Business Assistant - Plan de transformation
+# Plan d'ajout des fonctionnalites manquantes
 
-## Vue d'ensemble
-
-Transformation du back-office "Impartial" en une plateforme SaaS modulable **"My Business Assistant"** avec 3 espaces (Admin, Salarie, Client) et une navigation configurable par l'admin dans les parametres.
+Ce plan couvre les fonctionnalites demandees dans votre cahier des charges qui ne sont pas encore presentes dans les espaces existants.
 
 ---
 
-## Phase 1 : Rebranding et navigation configurable
+## 1. Produits / Services (AdminStock) -- Ajout de la marge
 
-### 1.1 Rebranding "Impartial" vers "My Business Assistant"
-- Renommer toutes les references "Impartial" / "IM" dans `AdminSidebar.tsx`, `ClientSidebar.tsx`, `AdminSettings.tsx`, `DemoAuthContext.tsx`, `Header.tsx`, `Footer.tsx`
-- Mettre a jour les comptes demo : `admin@mba.demo`, `client@mba.demo`
-- Remplacer le logo "IM" par "MBA" dans les sidebars
+**Actuellement** : Le stock affiche deja prix achat, prix vente, categories, fournisseurs, mouvements, bons de commande.
 
-### 1.2 Systeme de modules configurables (Settings)
-- Ajouter un onglet **"Modules"** dans `AdminSettings.tsx` avec des switches pour activer/desactiver chaque section de navigation :
-  - Vue d'ensemble, Clients, Produits/Services, Dossiers, Salaries, Facturation, Relances, Calendrier, Analyse, Emails, Messagerie, Support, Parametres
-- Stocker la configuration dans une nouvelle table `app_settings` (cle/valeur JSON) en base de donnees
-- Creer un hook `use-app-settings.ts` qui recupere les modules actifs
-- Filtrer dynamiquement les `navItems` dans `AdminSidebar.tsx`, `ClientSidebar.tsx` et le futur `EmployeeSidebar.tsx` en fonction des modules actifs
-- L'admin peut aussi configurer quels onglets apparaissent cote client et cote salarie
+**A ajouter** :
+- Colonne **Marge** calculee automatiquement (prix_vente - prix_achat) dans le tableau produits
+- Colonne **Marge %** pour la rentabilite
 
-### Schema de la table :
+---
+
+## 2. Dossiers (AdminDossiers) -- Filtres avances
+
+**Actuellement** : Filtre par statut et recherche texte (reference, client, prestation).
+
+**A ajouter** :
+- Filtre par **tag client** (via la relation client_tags)
+- Filtre par **montant** (au-dessus de / en dessous de X euros) avec deux champs min/max
+- Filtre par **personne associee** (employee assigne) -- necessite d'ajouter un champ `employee_id` a la table `dossiers` via migration
+- Affichage du nom de l'employe assigne dans le tableau
+
+**Migration SQL** :
 ```text
-app_settings
-  id         uuid (PK)
-  key        text (unique) -- ex: "enabled_modules", "client_visible_modules", "employee_visible_modules"
-  value      jsonb         -- ex: ["clients","dossiers","facturation",...]
-  updated_at timestamptz
+ALTER TABLE public.dossiers ADD COLUMN employee_id uuid REFERENCES public.employees(id);
 ```
 
 ---
 
-## Phase 2 : Espace Salarie (nouveau dashboard)
+## 3. Salaries (AdminEmployees) -- Acces modules + donnees d'activite
 
-### 2.1 Table `employees` et role `employee`
-- Ajouter le role `'employee'` au type enum `app_role`
-- Creer la table `employees` :
+**Actuellement** : Liste des salaries avec nom, email, poste, statut, date d'embauche.
+
+**A ajouter** :
+- Colonne **Modules** affichant les modules accessibles du salarie (depuis `acces_modules` en DB)
+- Bouton pour **modifier les acces modules** de chaque salarie individuellement (dialog avec checkboxes)
+- Section **Activite** : nombre de dossiers assignes, derniere connexion
+
+---
+
+## 4. Facturation (AdminBilling) -- Personnalisation facture
+
+**Actuellement** : Creation/apercu/export PDF de factures et devis.
+
+**A ajouter** :
+- Champs de personnalisation dans les Parametres entreprise (logo URL, mentions legales, coordonnees bancaires) qui seront utilises dans le PDF genere
+- Mise a jour de `generatePdf.ts` pour integrer ces informations dans le template PDF
+
+---
+
+## 5. Relances (AdminReminders) -- Template pre-enregistre + facture jointe
+
+**Actuellement** : Bouton "Envoyer" qui envoie un email de relance avec un texte fixe.
+
+**A ajouter** :
+- **Templates de relance** : possibilite de sauvegarder des templates (table `email_templates` en DB)
+- Selection du template avant envoi dans un dialog
+- La facture est mentionnee automatiquement (deja fait via `factureRef`)
+
+**Migration SQL** :
 ```text
-employees
-  id              uuid (PK)
-  user_id         uuid (ref auth.users)
-  nom             text
-  prenom          text
-  email           text
-  telephone       text
-  poste           text
-  date_embauche   timestamptz
-  statut          text (actif/inactif)
-  acces_modules   jsonb  -- modules auxquels le salarie a acces
-  created_at      timestamptz
-  updated_at      timestamptz
+CREATE TABLE public.email_templates (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  nom text NOT NULL,
+  sujet text NOT NULL DEFAULT '',
+  contenu text NOT NULL DEFAULT '',
+  type text NOT NULL DEFAULT 'relance',
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.email_templates ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins full access email_templates" ON public.email_templates
+  FOR ALL USING (has_role(auth.uid(), 'admin')) WITH CHECK (has_role(auth.uid(), 'admin'));
 ```
-- Politiques RLS : admin full CRUD, employee lecture de son propre profil
-
-### 2.2 Pages salarie
-- `src/pages/employee/EmployeeDashboard.tsx` -- tableau de bord personnel
-- `src/pages/employee/EmployeeDossiers.tsx` -- dossiers assignes
-- `src/pages/employee/EmployeeCalendrier.tsx` -- planning/horaires
-- `src/pages/employee/EmployeeMessaging.tsx` -- messagerie avec admin
-- `src/pages/employee/EmployeeProfile.tsx` -- profil personnel
-- `src/components/admin/EmployeeLayout.tsx` -- layout avec sidebar filtree
-- `src/components/admin/EmployeeSidebar.tsx` -- navigation salarie
-
-### 2.3 Gestion des salaries cote admin
-- `src/pages/admin/AdminEmployees.tsx` -- liste, creation, edition, suppression des salaries
-- Attribution des droits d'acces par salarie (quels modules il peut voir, quelles donnees d'activite)
-- Possibilite d'inviter un salarie (creation de compte avec role employee)
-
-### 2.4 Routes et auth
-- Ajouter les routes `/employee/*` dans `AnimatedRoutes.tsx`
-- Ajouter `"employee"` au type `DemoRole` dans `DemoAuthContext.tsx` + compte demo `employee@mba.demo`
-- Fonction `handle_new_employee` ou mise a jour de `handle_new_user` pour gerer le role employee
 
 ---
 
-## Phase 3 : Nouveaux modules metier
+## 6. Calendrier / Rendez-vous (AdminRendezVous) -- Planning employes
 
-### 3.1 Produits / Services
-- Table `products` :
+**Actuellement** : Calendrier avec events Calendly uniquement.
+
+**A ajouter** :
+- Possibilite de **creer un evenement manuellement** (rdv, evenement interne) via un dialog
+- Affichage des evenements manuels dans le calendrier a cote des events Calendly
+- Champ "employe assigne" pour chaque evenement
+
+Necessite une table `events_manuels` :
 ```text
-products
-  id            uuid (PK)
-  nom           text
-  description   text
-  categorie     text
-  prix_achat    numeric
-  prix_vente    numeric
-  stock         integer (nullable)
-  statut        text (actif/inactif)
-  created_at    timestamptz
-  updated_at    timestamptz
+CREATE TABLE public.events_manuels (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  titre text NOT NULL,
+  description text DEFAULT '',
+  date timestamptz NOT NULL,
+  heure text NOT NULL DEFAULT '09:00',
+  duree integer NOT NULL DEFAULT 60,
+  employee_id uuid REFERENCES public.employees(id),
+  client_id uuid REFERENCES public.clients(id),
+  type text NOT NULL DEFAULT 'rdv',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE public.events_manuels ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins full access events_manuels" ON public.events_manuels
+  FOR ALL USING (has_role(auth.uid(), 'admin')) WITH CHECK (has_role(auth.uid(), 'admin'));
+CREATE POLICY "Employees view own events" ON public.events_manuels
+  FOR SELECT USING (employee_id IN (SELECT id FROM employees WHERE user_id = auth.uid()));
 ```
-- Table `expenses` (depenses) :
-```text
-expenses
-  id          uuid (PK)
-  libelle     text
-  montant     numeric
-  categorie   text
-  date        timestamptz
-  created_at  timestamptz
-```
-- Page `AdminProducts.tsx` avec vue catalogue, marge calculee automatiquement (prix_vente - prix_achat)
-- Route `/admin/produits`
-
-### 3.2 Tags clients
-- Table `client_tags` : `id`, `nom`, `couleur`
-- Table `client_tag_assignments` : `client_id`, `tag_id`
-- Ajout dans `AdminClients.tsx` : affichage des tags, filtrage par tag, attribution multi-tags
-- Segmentation client/prospect via un champ `type` ("client" / "prospect") dans la table `clients`
-
-### 3.3 Dossiers ameliores
-- Ajouter `assigned_employee_id` (uuid, nullable) dans la table `dossiers` pour assigner un salarie
-- Ajouter `product_id` (uuid, nullable) pour lier a un produit/service
-- Filtres avances dans `AdminDossiers.tsx` : par tag client, statut, montant min/max, salarie assigne
-
-### 3.4 Calendrier unifie
-- Remplacer le simple calendrier d'echeances par un vrai calendrier :
-  - Rendez-vous, evenements, planning employes
-  - Vue mensuelle/hebdomadaire
-- Table `calendar_events` : `id`, `titre`, `description`, `date_debut`, `date_fin`, `type` (rdv/evenement/planning), `employee_id`, `client_id`, `created_at`
-
-### 3.5 Emails ameliores
-- Table `email_templates` : `id`, `nom`, `sujet`, `contenu_html`, `created_at`
-- Envoi de masse avec filtres (par tag, statut client, etc.)
-- Programmation d'envoi differe (champ `scheduled_at` dans `email_logs`)
-- Aide a la redaction IA via Lovable AI (Gemini)
-
-### 3.6 Relances ameliorees
-- Pop-up d'envoi avec editeur de mail integre
-- Selection de template pre-enregistre
-- Aide IA pour rediger la relance
-- Facture jointe automatiquement
-
-### 3.7 Facturation personnalisable
-- Champ `logo_url` et `mentions_legales` dans `app_settings` pour customiser les factures
-- Apercu PDF avec logo integre
 
 ---
 
-## Phase 4 : Configuration des espaces client et salarie
+## 7. Analyse (AdminAnalytics) -- Depenses + comparatif
 
-### 4.1 Parametres admin pour les espaces
-- Dans l'onglet "Modules" des parametres, l'admin definit :
-  - Quels onglets apparaissent dans l'espace client
-  - Quels onglets apparaissent dans l'espace salarie
-- Chaque `EmployeeSidebar` et `ClientSidebar` filtre ses `navItems` en fonction de ces settings
+**Actuellement** : CA, encaissements, dossiers, graphiques de tendances, repartition paiements, ventes par type, support.
 
----
-
-## Ordre d'implementation recommande
-
-Etant donne l'ampleur du projet, je recommande de proceder par **etapes incrementales** :
-
-1. **Etape 1** : Rebranding + table `app_settings` + onglet Modules dans Parametres + filtrage dynamique de la navigation admin
-2. **Etape 2** : Table `employees` + role employee + pages salarie + gestion salaries cote admin
-3. **Etape 3** : Module Produits/Services + Tags clients + Dossiers ameliores
-4. **Etape 4** : Calendrier unifie + Emails ameliores (templates, masse, IA) + Relances ameliorees
-5. **Etape 5** : Configuration des espaces client/salarie depuis les parametres
+**A ajouter** :
+- Section **Depenses** : KPI depenses totales + graphique depenses vs recettes
+- Necessite une table `depenses` ou utilisation des bons de commande existants comme source de depenses
+- Graphique compare **recettes vs depenses** par mois
 
 ---
 
-## Details techniques
+## 8. Emails (AdminEmails) -- Envoi classique + masse + templates + programmation
 
-- **Migrations DB** : 4-5 migrations pour les nouvelles tables et modifications d'enum
-- **Nouvelles pages** : environ 8-10 nouvelles pages React
-- **Nouveaux hooks** : `use-app-settings`, `use-employees`, `use-products`, `use-expenses`, `use-client-tags`, `use-calendar-events`, `use-email-templates`
-- **Edge functions** : mise a jour de `send-signup-confirmation` pour gerer le role employee, nouvelle function pour l'aide IA a la redaction
-- **Securite** : RLS sur toutes les nouvelles tables, role employee dans `user_roles`
+**Actuellement** : Journal des emails envoyes avec filtres.
 
-Souhaitez-vous approuver ce plan pour demarrer l'implementation par l'etape 1 (rebranding + modules configurables) ?
+**A ajouter** :
+- Bouton **Composer un email** : dialog pour envoyer un email individuel ou groupé avec selection de destinataires (filtres par tag, segment, statut)
+- Onglet **Templates** : CRUD de templates d'emails reutilisables (partage avec relances)
+- Option **Programmer un envoi** : champ date/heure pour envoi differe (stocke en DB, traite par cron/edge function)
+- Aide IA a la redaction (bouton "Suggerer" qui utilise Lovable AI)
+
+---
+
+## 9. Messagerie (AdminMessaging) -- Messagerie avec salaries
+
+**Actuellement** : Messagerie avec les clients uniquement.
+
+**A ajouter** :
+- **Onglet Salaries** dans la messagerie pour permettre les echanges admin-salarie
+- Reutilisation du meme composant de conversation avec un filtre "Clients / Salaries"
+
+---
+
+## 10. Support (AdminSupport) -- Reception emails
+
+**Actuellement** : Systeme de tickets avec messages internes.
+
+**Deja fonctionnel** : Les tickets peuvent etre crees depuis l'espace client et depuis le site. Aucun ajout majeur requis.
+
+---
+
+## 11. Parametres (AdminSettings) -- Controle de visibilite
+
+**Actuellement** : Modules admin/client/salarie avec toggles, profil, entreprise, notifications.
+
+**Deja fonctionnel** : Le controle de visibilite des modules cote client et salarie est deja en place dans l'onglet Modules.
+
+---
+
+## Resumee des modifications par fichier
+
+| Fichier | Modifications |
+|---------|--------------|
+| `AdminStock.tsx` | Ajout colonne marge |
+| `AdminDossiers.tsx` | Filtres tag, montant, employe assigne |
+| `AdminEmployees.tsx` | Acces modules, activite |
+| `AdminBilling.tsx` | Personnalisation facture (logo, mentions) |
+| `AdminReminders.tsx` | Templates de relance |
+| `AdminRendezVous.tsx` | Creation evenements manuels |
+| `AdminAnalytics.tsx` | Section depenses vs recettes |
+| `AdminEmails.tsx` | Composer email, templates, programmation, aide IA |
+| `AdminMessaging.tsx` | Onglet salaries |
+| Migration DB | `employee_id` sur dossiers, `email_templates`, `events_manuels` |
+
+## Ordre d'implementation
+
+1. Migrations DB (3 tables/colonnes)
+2. Modifications simples (marge stock, filtres dossiers)
+3. Features moyennes (acces employes, templates, events manuels)
+4. Features complexes (composer email, depenses, messagerie salaries)
+
+> Ce plan est consequent. Je recommande de l'approuver pour que je l'implemente etape par etape, en commencant par les migrations puis les modifications de chaque page.
