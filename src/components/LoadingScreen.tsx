@@ -12,7 +12,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     const timer = setTimeout(() => {
       setIsLoading(false);
       onComplete?.();
-    }, 2200);
+    }, 2800);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
@@ -27,71 +27,109 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      {/* Subtle ambient gradient */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-neon-violet/20 rounded-full blur-[150px]" />
+      {/* Ambient glow */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full"
+          style={{
+            background: "radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 70%)",
+          }}
+          animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
 
-      {/* Minimal accent lines */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-1/3 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-1/3 bg-gradient-to-t from-transparent via-white/10 to-transparent" />
+      {/* Decorative lines */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-1/4 bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-1/4 bg-gradient-to-t from-transparent via-primary/20 to-transparent" />
 
       <div className="relative z-10 flex flex-col items-center">
-        {/* Brand text with reveal animation */}
+        {/* MBA monogram */}
+        <motion.div
+          className="relative mb-6"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <div className="w-20 h-20 rounded-2xl border border-primary/30 flex items-center justify-center backdrop-blur-sm bg-primary/5">
+            <motion.span
+              className="text-2xl font-bold tracking-wider text-primary"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.6 }}
+            >
+              MBA
+            </motion.span>
+          </div>
+          {/* Corner accents */}
+          <motion.div
+            className="absolute -top-1 -right-1 w-3 h-3 border-t border-r border-primary/50 rounded-tr-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          />
+          <motion.div
+            className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l border-primary/50 rounded-bl-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          />
+        </motion.div>
+
+        {/* Brand name */}
         <div className="overflow-hidden">
           <motion.h1
-            className="text-4xl md:text-6xl font-light tracking-[0.3em] text-foreground"
-            initial={{ y: 60, opacity: 0 }}
+            className="text-2xl md:text-4xl font-bold tracking-[0.15em] text-foreground"
+            initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.7, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            IMPARTIAL
+            MY BUSINESS
+          </motion.h1>
+        </div>
+        <div className="overflow-hidden">
+          <motion.h1
+            className="text-2xl md:text-4xl font-light tracking-[0.25em] text-primary"
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            ASSISTANT
           </motion.h1>
         </div>
 
-        {/* Subtle tagline */}
+        {/* Tagline */}
         <motion.p
           className="mt-4 text-xs uppercase tracking-[0.4em] text-muted-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
         >
-          Games
+          Votre gestion simplifiée
         </motion.p>
 
-        {/* Minimal loading indicator */}
+        {/* Loading bar */}
         <motion.div
-          className="mt-12 flex items-center gap-2"
+          className="mt-10 w-48 h-px bg-muted/30 rounded-full overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 1.2 }}
+          transition={{ delay: 1.4 }}
         >
           <motion.div
-            className="w-8 h-px bg-gradient-to-r from-transparent via-neon-violet to-transparent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
-          />
-          <motion.div
-            className="w-1.5 h-1.5 rounded-full bg-neon-violet"
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="w-8 h-px bg-gradient-to-r from-transparent via-neon-violet to-transparent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
+            className="h-full bg-gradient-to-r from-primary/50 via-primary to-primary/50 rounded-full"
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 1.2, delay: 1.5, ease: [0.25, 0.1, 0.25, 1] }}
           />
         </motion.div>
       </div>
 
-      {/* Exit animation overlay */}
+      {/* Exit wipe */}
       <motion.div
         className="absolute inset-0 bg-background"
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
-        transition={{ duration: 0.5, delay: 1.8, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: 0.5, delay: 2.4, ease: [0.25, 0.1, 0.25, 1] }}
         style={{ transformOrigin: "bottom" }}
       />
     </motion.div>

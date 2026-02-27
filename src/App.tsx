@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AnimatedRoutes } from "@/components/AnimatedRoutes";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -12,18 +14,23 @@ import { DemoDataProvider } from "@/contexts/DemoDataContext";
 const queryClient = new QueryClient();
 
 const App = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <DemoAuthProvider>
           <DemoDataProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <AnimatedRoutes />
-              <CookieBanner />
-              <ScrollToTop />
-            </BrowserRouter>
+            <LoadingScreen onComplete={() => setIsLoaded(true)} />
+            <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AnimatedRoutes />
+                <CookieBanner />
+                <ScrollToTop />
+              </BrowserRouter>
+            </div>
           </DemoDataProvider>
         </DemoAuthProvider>
       </TooltipProvider>
