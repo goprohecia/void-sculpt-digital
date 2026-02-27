@@ -9,12 +9,114 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Palette } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
+import { useTags } from "@/hooks/use-produits";
+
+const TAG_COLORS = [
+  "#6366f1", "#f43f5e", "#10b981", "#f59e0b", "#3b82f6",
+  "#8b5cf6", "#ec4899", "#14b8a6", "#ef4444", "#06b6d4",
+];
+
+function TagsManager() {
+  const { tags, addTag, deleteTag } = useTags();
+  const [newName, setNewName] = useState("");
+  const [newColor, setNewColor] = useState(TAG_COLORS[0]);
+  const [deleting, setDeleting] = useState<string | null>(null);
+
+  const handleCreate = async () => {
+    if (!newName.trim()) return;
+    try {
+      await addTag({ nom: newName.trim(), couleur: newColor });
+      setNewName("");
+      toast.success("Tag créé");
+    } catch {
+      toast.error("Erreur lors de la création");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    setDeleting(id);
+    try {
+      await deleteTag(id);
+      toast.success("Tag supprimé");
+    } catch {
+      toast.error("Erreur lors de la suppression");
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base flex items-center gap-2">
+          <Tag className="h-4 w-4" /> Gestion des tags
+        </CardTitle>
+        <CardDescription>Créez et gérez les tags que vous pouvez attribuer à vos clients.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div className="flex gap-2 items-end">
+          <div className="flex-1 space-y-1.5">
+            <Label>Nouveau tag</Label>
+            <Input
+              placeholder="Nom du tag"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Couleur</Label>
+            <div className="flex gap-1">
+              {TAG_COLORS.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setNewColor(c)}
+                  className={`h-9 w-9 rounded-lg border-2 transition-all ${newColor === c ? "border-foreground scale-110" : "border-transparent"}`}
+                  style={{ backgroundColor: c }}
+                />
+              ))}
+            </div>
+          </div>
+          <Button onClick={handleCreate} disabled={!newName.trim()} className="gap-1.5 h-9">
+            <Plus className="h-4 w-4" /> Créer
+          </Button>
+        </div>
+
+        <Separator />
+
+        {tags.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-6">Aucun tag créé pour le moment.</p>
+        ) : (
+          <div className="space-y-2">
+            {tags.map((tag: any) => (
+              <div key={tag.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-muted/20">
+                <div className="flex items-center gap-2.5">
+                  <span className="h-4 w-4 rounded-full" style={{ backgroundColor: tag.couleur || "#6366f1" }} />
+                  <span className="text-sm font-medium">{tag.nom}</span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                  onClick={() => handleDelete(tag.id)}
+                  disabled={deleting === tag.id}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function AdminSettings() {
   const { user } = useDemoAuth();
@@ -106,10 +208,11 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-6">
                 <TabsTrigger value="profil" className="gap-1.5"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
                 <TabsTrigger value="facturation" className="gap-1.5"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
+                <TabsTrigger value="tags" className="gap-1.5"><Tag className="h-3.5 w-3.5" /> Tags</TabsTrigger>
                 <TabsTrigger value="modules" className="gap-1.5"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
                 <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
               </TabsList>
@@ -276,6 +379,11 @@ export default function AdminSettings() {
                     </div>
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              {/* TAGS TAB */}
+              <TabsContent value="tags">
+                <TagsManager />
               </TabsContent>
 
               {/* MODULES TAB */}

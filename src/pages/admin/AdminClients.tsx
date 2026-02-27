@@ -44,6 +44,7 @@ export default function AdminClients() {
   const [bulkMessage, setBulkMessage] = useState("");
   const [bulkSending, setBulkSending] = useState(false);
   const [newClient, setNewClient] = useState({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
+  const [newClientTagIds, setNewClientTagIds] = useState<string[]>([]);
   const isMobile = useIsMobile();
   const { clients, createClient, updateClient, updateClientAsync, deleteClient } = useClients();
   const { getDossiersByClient } = useDossiers();
@@ -114,8 +115,26 @@ export default function AdminClients() {
     }
     try {
       await createClient(newClient);
+      // Assign tags if any selected — find the newly created client by email
+      if (newClientTagIds.length > 0) {
+        const { data: createdClients } = await supabase
+          .from("clients")
+          .select("id")
+          .eq("email", newClient.email)
+          .order("created_at", { ascending: false })
+          .limit(1);
+        if (createdClients?.[0]) {
+          const clientId = createdClients[0].id;
+          await Promise.all(
+            newClientTagIds.map((tagId) =>
+              supabase.from("client_tags").insert({ client_id: clientId, tag_id: tagId })
+            )
+          );
+        }
+      }
       toast.success(`Client ${newClient.prenom} ${newClient.nom} créé`);
       setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
+      setNewClientTagIds([]);
       setShowCreateDialog(false);
     } catch {
       toast.error("Erreur lors de la création du client");
@@ -575,6 +594,38 @@ export default function AdminClients() {
                 </div>
               </div>
             </div>
+            {/* Tags selector */}
+            {tags.length > 0 && (
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground flex items-center gap-1"><Tag className="h-3 w-3" /> Tags</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {tags.map((tag: any) => {
+                    const isSelected = newClientTagIds.includes(tag.id);
+                    return (
+                      <button
+                        key={tag.id}
+                        type="button"
+                        onClick={() => setNewClientTagIds(
+                          isSelected
+                            ? newClientTagIds.filter((id) => id !== tag.id)
+                            : [...newClientTagIds, tag.id]
+                        )}
+                        className={`inline-flex items-center gap-1 text-xs rounded-full px-2.5 py-1 transition-all border ${
+                          isSelected ? "border-current" : "border-transparent hover:opacity-80"
+                        }`}
+                        style={{
+                          backgroundColor: `${tag.couleur || "#6366f1"}${isSelected ? "30" : "15"}`,
+                          color: tag.couleur || "#6366f1",
+                        }}
+                      >
+                        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: tag.couleur || "#6366f1" }} />
+                        {tag.nom}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">SIRET</label>
