@@ -271,7 +271,7 @@ export function useTags() {
 export function useClientTags(clientId?: string) {
   const { isDemo, isLoading: authLoading } = useIsDemo();
   const queryClient = useQueryClient();
-  const [demoClientTags, setDemoClientTags] = useState<Array<{ id: string; client_id: string; tag_id: string; tags: any }>>([]);
+  const [demoClientTags, setDemoClientTags] = useState<Array<{ id: string; client_id: string; tag_id: string; created_at: string; tags: any }>>([]);
 
   const query = useQuery({
     queryKey: ["client_tags", clientId],
@@ -288,7 +288,7 @@ export function useClientTags(clientId?: string) {
   const addClientTag = useMutation({
     mutationFn: async ({ client_id, tag_id }: { client_id: string; tag_id: string }) => {
       if (isDemo) {
-        setDemoClientTags((prev) => [...prev, { id: crypto.randomUUID(), client_id, tag_id, tags: null }]);
+        setDemoClientTags((prev) => [...prev, { id: crypto.randomUUID(), client_id, tag_id, created_at: new Date().toISOString(), tags: null }]);
         return;
       }
       const { error } = await supabase.from("client_tags").insert({ client_id, tag_id });
