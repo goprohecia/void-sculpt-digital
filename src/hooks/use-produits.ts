@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "./useIsDemo";
@@ -211,6 +212,7 @@ export function useBonsCommande() {
 export function useTags() {
   const { isDemo, isLoading: authLoading } = useIsDemo();
   const queryClient = useQueryClient();
+  const [demoTags, setDemoTags] = useState<Array<{ id: string; nom: string; couleur: string | null; created_at: string }>>([]);
 
   const query = useQuery({
     queryKey: ["tags"],
@@ -224,30 +226,42 @@ export function useTags() {
 
   const addTag = useMutation({
     mutationFn: async (t: { nom: string; couleur?: string }) => {
+      if (isDemo) {
+        setDemoTags((prev) => [...prev, { id: crypto.randomUUID(), nom: t.nom, couleur: t.couleur || "#6366f1", created_at: new Date().toISOString() }]);
+        return;
+      }
       const { error } = await supabase.from("tags").insert(t);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tags"] }),
+    onSuccess: () => { if (!isDemo) queryClient.invalidateQueries({ queryKey: ["tags"] }); },
   });
 
   const updateTag = useMutation({
     mutationFn: async ({ id, ...updates }: { id: string; nom?: string; couleur?: string }) => {
+      if (isDemo) {
+        setDemoTags((prev) => prev.map((t) => t.id === id ? { ...t, ...updates } : t));
+        return;
+      }
       const { error } = await supabase.from("tags").update(updates).eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tags"] }),
+    onSuccess: () => { if (!isDemo) queryClient.invalidateQueries({ queryKey: ["tags"] }); },
   });
 
   const deleteTag = useMutation({
     mutationFn: async (id: string) => {
+      if (isDemo) {
+        setDemoTags((prev) => prev.filter((t) => t.id !== id));
+        return;
+      }
       const { error } = await supabase.from("tags").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tags"] }),
+    onSuccess: () => { if (!isDemo) queryClient.invalidateQueries({ queryKey: ["tags"] }); },
   });
 
   return {
-    tags: isDemo ? [] : (query.data ?? []),
+    tags: isDemo ? demoTags : (query.data ?? []),
     addTag: addTag.mutateAsync,
     updateTag: updateTag.mutateAsync,
     deleteTag: deleteTag.mutateAsync,
