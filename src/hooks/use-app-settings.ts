@@ -80,11 +80,22 @@ export function useAppSettings() {
       if (isDemo) return;
       const { error } = await (supabase as any)
         .from("app_settings")
-        .update({ value })
-        .eq("key", key);
+        .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: "key" });
       if (error) throw error;
     },
-    onSuccess: () => {
+    onMutate: async ({ key, value }) => {
+      await queryClient.cancelQueries({ queryKey: ["app-settings"] });
+      const prev = queryClient.getQueryData(["app-settings"]);
+      queryClient.setQueryData(["app-settings"], (old: any) => ({
+        ...old,
+        [key]: value,
+      }));
+      return { prev };
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.prev) queryClient.setQueryData(["app-settings"], context.prev);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["app-settings"] });
     },
   });
