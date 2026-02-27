@@ -17,13 +17,13 @@ interface DemoAuthContextType {
 }
 
 const DEMO_ACCOUNTS: Record<string, { password: string; user: DemoUser }> = {
-  "admin@impartial.demo": {
+  "admin@mba.demo": {
     password: "demo2026",
-    user: { email: "admin@impartial.demo", nom: "Admin Impartial", role: "admin" },
+    user: { email: "admin@mba.demo", nom: "Admin MBA", role: "admin" },
   },
-  "client@impartial.demo": {
+  "client@mba.demo": {
     password: "demo2026",
-    user: { email: "client@impartial.demo", nom: "Client Demo", role: "client" },
+    user: { email: "client@mba.demo", nom: "Client Demo", role: "client" },
   },
 };
 

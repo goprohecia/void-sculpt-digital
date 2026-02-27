@@ -119,7 +119,7 @@ export function Header() {
                 className="text-base sm:text-lg md:text-xl font-bold text-gradient-premium hidden sm:block"
                 whileHover={{ scale: 1.05 }}>
 
-                IMPARTIAL GAMES 
+                MY BUSINESS ASSISTANT
               </motion.span>
             </Link>
           </MagneticButton>
