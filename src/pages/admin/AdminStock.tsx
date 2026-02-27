@@ -118,14 +118,19 @@ export default function AdminStock() {
                         <TableHead className="hidden md:table-cell">Catégorie</TableHead>
                         <TableHead className="text-right">P. Achat</TableHead>
                         <TableHead className="text-right">P. Vente</TableHead>
+                        <TableHead className="text-right hidden lg:table-cell">Marge</TableHead>
+                        <TableHead className="text-right hidden lg:table-cell">Marge %</TableHead>
                         <TableHead className="text-center">Stock</TableHead>
                         <TableHead className="text-center">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredProduits.length === 0 ? (
-                        <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Aucun produit</TableCell></TableRow>
-                      ) : filteredProduits.map((p: any) => (
+                        <TableRow><TableCell colSpan={9} className="text-center py-8 text-muted-foreground">Aucun produit</TableCell></TableRow>
+                      ) : filteredProduits.map((p: any) => {
+                        const marge = p.prix_vente - p.prix_achat;
+                        const margePct = p.prix_achat > 0 ? Math.round((marge / p.prix_achat) * 100) : 0;
+                        return (
                         <TableRow key={p.id}>
                           <TableCell className="font-mono text-xs">{p.reference}</TableCell>
                           <TableCell><div><p className="font-medium text-sm">{p.nom}</p>{p.fournisseurs?.nom && <p className="text-xs text-muted-foreground">{p.fournisseurs.nom}</p>}</div></TableCell>
@@ -134,6 +139,8 @@ export default function AdminStock() {
                           </TableCell>
                           <TableCell className="text-right text-sm">{p.prix_achat} €</TableCell>
                           <TableCell className="text-right text-sm font-medium">{p.prix_vente} €</TableCell>
+                          <TableCell className={`text-right text-sm hidden lg:table-cell font-medium ${marge >= 0 ? "text-emerald-400" : "text-destructive"}`}>{marge.toLocaleString()} €</TableCell>
+                          <TableCell className={`text-right text-sm hidden lg:table-cell ${margePct >= 0 ? "text-emerald-400" : "text-destructive"}`}>{margePct}%</TableCell>
                           <TableCell className="text-center">
                             <Badge variant={p.quantite_stock <= p.seuil_alerte ? "destructive" : "default"}>{p.quantite_stock}</Badge>
                           </TableCell>
@@ -141,7 +148,8 @@ export default function AdminStock() {
                             <Button size="sm" variant="ghost" onClick={() => deleteProduit(p.id).then(() => toast.success("Supprimé"))}><Trash2 className="h-3.5 w-3.5" /></Button>
                           </TableCell>
                         </TableRow>
-                      ))}
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </CardContent>

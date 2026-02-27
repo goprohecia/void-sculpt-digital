@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -9,14 +9,18 @@ import { Badge } from "@/components/ui/badge";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useCahiers } from "@/hooks/use-cahiers";
+import { useClients } from "@/hooks/use-clients";
 import type { DossierStatus } from "@/data/mockData";
-import { Search, FolderOpen, Eye, FileText } from "lucide-react";
+import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useIsDemo } from "@/hooks/useIsDemo";
 
 const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
   { key: "tous", label: "Tous" },
@@ -29,22 +33,65 @@ const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
 export default function AdminDossiers() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus>("tous");
+  const [filterMontantMin, setFilterMontantMin] = useState("");
+  const [filterMontantMax, setFilterMontantMax] = useState("");
+  const [filterTag, setFilterTag] = useState("");
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
   
   const { dossiers, addDossier } = useDossiers();
   const { demandes, updateDemandeStatut } = useDemandes();
   const { getCahierByDemande } = useCahiers();
+  const { clients } = useClients();
+  const { isDemo } = useIsDemo();
+
+  // Fetch tags
+  const { data: tags = [] } = useQuery<any[]>({
+    queryKey: ["tags"],
+    queryFn: async () => {
+      if (isDemo) return [{ id: "t1", nom: "VIP" }, { id: "t2", nom: "Premium" }];
+      const { data, error } = await (supabase as any).from("tags").select("*");
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  // Fetch client_tags for filtering
+  const { data: clientTags = [] } = useQuery<any[]>({
+    queryKey: ["client_tags"],
+    queryFn: async () => {
+      if (isDemo) return [];
+      const { data, error } = await (supabase as any).from("client_tags").select("*");
+      if (error) throw error;
+      return data || [];
+    },
+  });
   
   const cdcDemande = cdcDemandeId ? demandes.find((d) => d.id === cdcDemandeId) : null;
 
-  const filtered = dossiers.filter((d) => {
-    const matchSearch =
-      d.reference.toLowerCase().includes(search.toLowerCase()) ||
-      d.clientNom.toLowerCase().includes(search.toLowerCase()) ||
-      d.typePrestation.toLowerCase().includes(search.toLowerCase());
-    const matchStatut = filterStatut === "tous" || d.statut === filterStatut;
-    return matchSearch && matchStatut;
-  });
+  const filtered = useMemo(() => {
+    let list = dossiers;
+    // Text search
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter((d) =>
+        d.reference.toLowerCase().includes(q) ||
+        d.clientNom.toLowerCase().includes(q) ||
+        d.typePrestation.toLowerCase().includes(q)
+      );
+    }
+    // Status
+    if (filterStatut !== "tous") list = list.filter((d) => d.statut === filterStatut);
+    // Montant min/max
+    if (filterMontantMin) list = list.filter((d) => d.montant >= parseFloat(filterMontantMin));
+    if (filterMontantMax) list = list.filter((d) => d.montant <= parseFloat(filterMontantMax));
+    // Tag filter
+    if (filterTag) {
+      const clientIdsWithTag = clientTags.filter((ct: any) => ct.tag_id === filterTag).map((ct: any) => ct.client_id);
+      list = list.filter((d) => clientIdsWithTag.includes(d.clientId));
+    }
+    return list;
+  }, [dossiers, search, filterStatut, filterMontantMin, filterMontantMax, filterTag, clientTags]);
 
   const handleTransformDemande = (dem: typeof demandes[0]) => {
     const newDossier = {
@@ -83,19 +130,48 @@ export default function AdminDossiers() {
 
             <TabsContent value="dossiers" className="space-y-4 mt-4">
               {/* Filters */}
-              <motion.div className="flex flex-col sm:flex-row gap-3" variants={staggerItem}>
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Rechercher..." value={search} onChange={(e) => setSearch(e.target.value)} className="glass-input border-0 pl-9 h-10" />
+              <motion.div className="flex flex-col gap-3" variants={staggerItem}>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="Rechercher..." value={search} onChange={(e) => setSearch(e.target.value)} className="glass-input border-0 pl-9 h-10" />
+                  </div>
+                  <div className="flex gap-2 flex-wrap items-center">
+                    {statusFilters.map((s) => (
+                      <button key={s.key} onClick={() => setFilterStatut(s.key)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${filterStatut === s.key ? "bg-primary text-primary-foreground" : "glass-button"}`}>
+                        {s.label}
+                      </button>
+                    ))}
+                    <Button size="sm" variant="ghost" onClick={() => setShowAdvanced(!showAdvanced)} className="gap-1">
+                      <Filter className="h-3.5 w-3.5" /> Filtres
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2 flex-wrap">
-                  {statusFilters.map((s) => (
-                    <button key={s.key} onClick={() => setFilterStatut(s.key)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${filterStatut === s.key ? "bg-primary text-primary-foreground" : "glass-button"}`}>
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
+
+                {showAdvanced && (
+                  <div className="flex flex-wrap gap-3 p-3 rounded-lg bg-muted/10 border border-border/20">
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">Montant min (€)</label>
+                      <Input type="number" placeholder="0" value={filterMontantMin} onChange={(e) => setFilterMontantMin(e.target.value)} className="h-8 w-28 text-sm" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">Montant max (€)</label>
+                      <Input type="number" placeholder="∞" value={filterMontantMax} onChange={(e) => setFilterMontantMax(e.target.value)} className="h-8 w-28 text-sm" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">Tag client</label>
+                      <Select value={filterTag} onValueChange={setFilterTag}>
+                        <SelectTrigger className="h-8 w-36 text-sm"><SelectValue placeholder="Tous" /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">Tous</SelectItem>
+                          {tags.map((t: any) => <SelectItem key={t.id} value={t.id}>{t.nom}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button size="sm" variant="ghost" className="self-end h-8 text-xs" onClick={() => { setFilterMontantMin(""); setFilterMontantMax(""); setFilterTag(""); }}>Réinitialiser</Button>
+                  </div>
+                )}
               </motion.div>
 
               {/* Table */}
@@ -121,9 +197,7 @@ export default function AdminDossiers() {
                           <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
                           <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
                           <td className="py-3 px-4 text-center">
-                            <Link to={`/admin/dossiers/${d.id}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
-                              <Eye className="h-3 w-3" /> Voir
-                            </Link>
+                            <Link to={`/admin/dossiers/${d.id}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline"><Eye className="h-3 w-3" /> Voir</Link>
                           </td>
                         </tr>
                       ))}
@@ -170,19 +244,14 @@ export default function AdminDossiers() {
                       </div>
                       <StatusBadge status={dem.statut} />
                     </div>
-                    <div>
-                      <p className="font-medium text-sm">{dem.titre}</p>
-                      <p className="text-xs text-muted-foreground">{dem.clientNom} · {dem.typePrestation}</p>
-                    </div>
+                    <div><p className="font-medium text-sm">{dem.titre}</p><p className="text-xs text-muted-foreground">{dem.clientNom} · {dem.typePrestation}</p></div>
                     <p className="text-xs text-muted-foreground line-clamp-2">{dem.description}</p>
                     {dem.budget && <p className="text-xs text-muted-foreground">Budget : {dem.budget}</p>}
                     <div className="flex items-center justify-between pt-2 border-t border-border/20">
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-muted-foreground">{new Date(dem.dateCreation).toLocaleDateString("fr-FR")}</span>
                         {getCahierByDemande(dem.id) && (
-                          <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={() => setCdcDemandeId(dem.id)}>
-                            <FileText className="h-3 w-3" /> Voir CDC
-                          </Button>
+                          <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={() => setCdcDemandeId(dem.id)}><FileText className="h-3 w-3" /> Voir CDC</Button>
                         )}
                       </div>
                       <div className="flex gap-2">
@@ -197,9 +266,7 @@ export default function AdminDossiers() {
                               </SelectContent>
                             </Select>
                             {dem.statut === "en_revue" && (
-                              <Button size="sm" variant="outline" className="h-8 text-xs gap-1" onClick={() => handleTransformDemande(dem)}>
-                                <FolderOpen className="h-3 w-3" /> Créer dossier
-                              </Button>
+                              <Button size="sm" variant="outline" className="h-8 text-xs gap-1" onClick={() => handleTransformDemande(dem)}><FolderOpen className="h-3 w-3" /> Créer dossier</Button>
                             )}
                           </>
                         )}

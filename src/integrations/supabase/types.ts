@@ -548,6 +548,7 @@ export type Database = {
           date_creation: string
           date_echeance: string | null
           demande_id: string | null
+          employee_id: string | null
           id: string
           montant: number
           preview_url: string | null
@@ -564,6 +565,7 @@ export type Database = {
           date_creation?: string
           date_echeance?: string | null
           demande_id?: string | null
+          employee_id?: string | null
           id?: string
           montant?: number
           preview_url?: string | null
@@ -580,6 +582,7 @@ export type Database = {
           date_creation?: string
           date_echeance?: string | null
           demande_id?: string | null
+          employee_id?: string | null
           id?: string
           montant?: number
           preview_url?: string | null
@@ -595,6 +598,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
             referencedColumns: ["id"]
           },
         ]
@@ -640,6 +650,36 @@ export type Database = {
           },
         ]
       }
+      email_templates: {
+        Row: {
+          contenu: string
+          created_at: string
+          id: string
+          nom: string
+          sujet: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          contenu?: string
+          created_at?: string
+          id?: string
+          nom: string
+          sujet?: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          contenu?: string
+          created_at?: string
+          id?: string
+          nom?: string
+          sujet?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employees: {
         Row: {
           acces_modules: Json
@@ -684,6 +724,60 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      events_manuels: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          date: string
+          description: string | null
+          duree: number
+          employee_id: string | null
+          heure: string
+          id: string
+          titre: string
+          type: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          date: string
+          description?: string | null
+          duree?: number
+          employee_id?: string | null
+          heure?: string
+          id?: string
+          titre: string
+          type?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          date?: string
+          description?: string | null
+          duree?: number
+          employee_id?: string | null
+          heure?: string
+          id?: string
+          titre?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_manuels_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_manuels_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       factures: {
         Row: {
