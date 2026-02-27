@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -34,6 +35,13 @@ export default function AdminSettings() {
     ville: "Paris",
     emailContact: "contact@mba.app",
     telephone: "01 23 45 67 89",
+  });
+
+  const [invoiceSettings, setInvoiceSettings] = useState({
+    logoUrl: "",
+    mentionsLegales: "Conditions de paiement : 30 jours net. En cas de retard, des pénalités de 3 fois le taux d'intérêt légal seront appliquées.",
+    iban: "",
+    bic: "",
   });
 
   const [notifs, setNotifs] = useState({
@@ -98,9 +106,10 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="profil" className="gap-1.5"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
+                <TabsTrigger value="facturation" className="gap-1.5"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
                 <TabsTrigger value="modules" className="gap-1.5"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
                 <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
               </TabsList>
@@ -222,6 +231,45 @@ export default function AdminSettings() {
 
                     <div className="flex justify-end pt-2">
                       <Button onClick={() => handleSave("Entreprise")} disabled={saving} className="gap-2">
+                        {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                        Enregistrer
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* FACTURATION TAB */}
+              <TabsContent value="facturation">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Receipt className="h-4 w-4" /> Personnalisation des factures / devis
+                    </CardTitle>
+                    <CardDescription>Ces informations apparaîtront sur les PDF générés.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="inv-logo">URL du logo (optionnel)</Label>
+                      <Input id="inv-logo" placeholder="https://example.com/logo.png" value={invoiceSettings.logoUrl} onChange={(e) => setInvoiceSettings((s) => ({ ...s, logoUrl: e.target.value }))} />
+                      <p className="text-xs text-muted-foreground">Le logo sera affiché en haut à gauche des factures et devis.</p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="inv-iban">IBAN</Label>
+                        <Input id="inv-iban" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" value={invoiceSettings.iban} onChange={(e) => setInvoiceSettings((s) => ({ ...s, iban: e.target.value }))} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="inv-bic">BIC / SWIFT</Label>
+                        <Input id="inv-bic" placeholder="BNPAFRPP" value={invoiceSettings.bic} onChange={(e) => setInvoiceSettings((s) => ({ ...s, bic: e.target.value }))} />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="inv-mentions">Mentions légales</Label>
+                      <Textarea id="inv-mentions" rows={4} placeholder="Conditions de paiement, pénalités de retard..." value={invoiceSettings.mentionsLegales} onChange={(e) => setInvoiceSettings((s) => ({ ...s, mentionsLegales: e.target.value }))} />
+                    </div>
+                    <div className="flex justify-end pt-2">
+                      <Button onClick={() => handleSave("Facturation")} disabled={saving} className="gap-2">
                         {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
                         Enregistrer
                       </Button>

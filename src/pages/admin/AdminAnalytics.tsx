@@ -10,7 +10,9 @@ import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useTickets } from "@/hooks/use-tickets";
 import { donneesMensuelles as mockDonneesMensuelles } from "@/data/mockData";
-import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet, Pencil, Check, X } from "lucide-react";
+import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet, Pencil, Check, X, ArrowDownUp } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { exportCsv } from "@/lib/exportCsv";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -205,6 +207,52 @@ export default function AdminAnalytics() {
   const openTicketsCount = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
   const resolvedTicketsCount = tickets.filter((t) => t.statut === "resolu" || t.statut === "ferme").length;
   const resolutionRate = tickets.length > 0 ? Math.round((resolvedTicketsCount / tickets.length) * 100) : 0;
+
+  // ======= DEPENSES (bons de commande) =======
+  const { data: bonsCommande = [] } = useQuery({
+    queryKey: ["bons-commande-analytics"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("bons_commande").select("montant_total, date_commande, statut");
+      if (error) throw error;
+      return data ?? [];
+    },
+    enabled: !isDemo,
+  });
+
+  const totalDepenses = useMemo(() => {
+    if (isDemo) return 42500; // demo mock
+    return bonsCommande.reduce((acc, bc) => acc + Number(bc.montant_total), 0);
+  }, [bonsCommande, isDemo]);
+
+  const depensesVsRecettes = useMemo(() => {
+    if (isDemo) {
+      return [
+        { mois: "Jan", recettes: 18500, depenses: 5200 },
+        { mois: "Fév", recettes: 22300, depenses: 7800 },
+        { mois: "Mar", recettes: 28900, depenses: 9500 },
+        { mois: "Avr", recettes: 31200, depenses: 6300 },
+        { mois: "Mai", recettes: 26800, depenses: 8100 },
+        { mois: "Juin", recettes: 35600, depenses: 5600 },
+      ];
+    }
+    const moisList = donneesMensuelles.map((d) => d.mois);
+    return moisList.map((mois) => {
+      const mm = moisMap[mois];
+      const monthRecettes = factures
+        .filter((f) => f.statut === "payee" && f.dateEmission.startsWith("2026-" + mm))
+        .reduce((s, f) => s + f.montant, 0);
+      const monthDepenses = bonsCommande
+        .filter((bc) => bc.date_commande?.startsWith("2026-" + mm))
+        .reduce((s, bc) => s + Number(bc.montant_total), 0);
+      return { mois, recettes: monthRecettes, depenses: monthDepenses };
+    });
+  }, [isDemo, donneesMensuelles, factures, bonsCommande, moisMap]);
+
+  const margeNette = useMemo(() => {
+    const totalRecettes = depensesVsRecettes.reduce((s, d) => s + d.recettes, 0);
+    const totalDep = depensesVsRecettes.reduce((s, d) => s + d.depenses, 0);
+    return totalRecettes - totalDep;
+  }, [depensesVsRecettes]);
 
   // Static mock support timeline data — only in demo
   const ticketsByWeek = isDemo ? [
@@ -677,6 +725,46 @@ export default function AdminAnalytics() {
           ) : (
             <motion.div className="glass-card p-8 text-center" variants={staggerItem}>
               <p className="text-muted-foreground text-sm">Aucune donnée mensuelle disponible. Les graphiques s'afficheront dès que l'activité commencera.</p>
+            </motion.div>
+          )}
+
+          {/* ======= SECTION DEPENSES VS RECETTES ======= */}
+          <motion.div variants={staggerItem} className="pt-4">
+            <h2 className="text-lg font-bold flex items-center gap-2 mb-4">
+              <ArrowDownUp className="h-5 w-5 text-primary" />
+              Dépenses vs Recettes
+            </h2>
+          </motion.div>
+
+          <motion.div className="grid grid-cols-1 sm:grid-cols-3 gap-4" variants={staggerContainer} initial="initial" animate="animate">
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Total dépenses" value={`${(totalDepenses / 1000).toFixed(0)}k €`} icon={TrendingUp} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Total recettes" value={`${(depensesVsRecettes.reduce((s, d) => s + d.recettes, 0) / 1000).toFixed(0)}k €`} icon={Euro} />
+            </motion.div>
+            <motion.div variants={staggerItem}>
+              <DashboardKPI title="Marge nette" value={`${(margeNette / 1000).toFixed(0)}k €`} icon={CheckCircle} trend={margeNette > 0 ? { value: Math.round((margeNette / Math.max(depensesVsRecettes.reduce((s, d) => s + d.recettes, 0), 1)) * 100), label: "marge" } : undefined} />
+            </motion.div>
+          </motion.div>
+
+          {depensesVsRecettes.length > 0 && (
+            <motion.div className="glass-card p-4 sm:p-6" variants={staggerItem}>
+              <h3 className="text-sm font-semibold mb-4">Recettes vs Dépenses (mensuel)</h3>
+              <div className="h-56 sm:h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={depensesVsRecettes}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(250, 15%, 20%)" />
+                    <XAxis dataKey="mois" tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} />
+                    <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 40 : 60} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend wrapperStyle={{ fontSize: tickFontSize }} />
+                    <Bar dataKey="recettes" name="Recettes €" fill="hsl(155, 100%, 45%)" radius={[4, 4, 0, 0]} opacity={0.8} />
+                    <Bar dataKey="depenses" name="Dépenses €" fill="hsl(0, 84%, 60%)" radius={[4, 4, 0, 0]} opacity={0.8} />
+                    <Line type="monotone" dataKey="recettes" name="Tendance recettes" stroke="hsl(155, 100%, 65%)" strokeWidth={2} dot={false} strokeDasharray="5 5" />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
             </motion.div>
           )}
 
