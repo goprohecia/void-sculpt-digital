@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Palette } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,10 +23,12 @@ const TAG_COLORS = [
 ];
 
 function TagsManager() {
-  const { tags, addTag, deleteTag } = useTags();
+  const { tags, addTag, updateTag, deleteTag } = useTags();
   const [newName, setNewName] = useState("");
   const [newColor, setNewColor] = useState(TAG_COLORS[0]);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState("");
 
   const handleCreate = async () => {
     if (!newName.trim()) return;
@@ -48,6 +50,26 @@ function TagsManager() {
       toast.error("Erreur lors de la suppression");
     } finally {
       setDeleting(null);
+    }
+  };
+
+  const handleStartRename = (tag: any) => {
+    setEditingId(tag.id);
+    setEditingName(tag.nom);
+  };
+
+  const handleRename = async (id: string) => {
+    if (!editingName.trim() || editingName.trim() === tags.find((t: any) => t.id === id)?.nom) {
+      setEditingId(null);
+      return;
+    }
+    try {
+      await updateTag({ id, nom: editingName.trim() });
+      toast.success("Tag renommé");
+    } catch {
+      toast.error("Erreur lors du renommage");
+    } finally {
+      setEditingId(null);
     }
   };
 
@@ -96,19 +118,52 @@ function TagsManager() {
           <div className="space-y-2">
             {tags.map((tag: any) => (
               <div key={tag.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-muted/20">
-                <div className="flex items-center gap-2.5">
-                  <span className="h-4 w-4 rounded-full" style={{ backgroundColor: tag.couleur || "#6366f1" }} />
-                  <span className="text-sm font-medium">{tag.nom}</span>
+                <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                  <span className="h-4 w-4 rounded-full shrink-0" style={{ backgroundColor: tag.couleur || "#6366f1" }} />
+                  {editingId === tag.id ? (
+                    <Input
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleRename(tag.id);
+                        if (e.key === "Escape") setEditingId(null);
+                      }}
+                      onBlur={() => handleRename(tag.id)}
+                      className="h-7 text-sm"
+                      autoFocus
+                    />
+                  ) : (
+                    <span
+                      className="text-sm font-medium cursor-pointer hover:text-primary transition-colors truncate"
+                      onDoubleClick={() => handleStartRename(tag)}
+                      title="Double-cliquer pour renommer"
+                    >
+                      {tag.nom}
+                    </span>
+                  )}
                 </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-                  onClick={() => handleDelete(tag.id)}
-                  disabled={deleting === tag.id}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <div className="flex items-center gap-1 shrink-0">
+                  {editingId !== tag.id && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+                      onClick={() => handleStartRename(tag)}
+                      title="Renommer"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                    onClick={() => handleDelete(tag.id)}
+                    disabled={deleting === tag.id}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>

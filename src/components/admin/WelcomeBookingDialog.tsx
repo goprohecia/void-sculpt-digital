@@ -20,12 +20,12 @@ export function WelcomeBookingDialog({ open, onOpenChange }: WelcomeBookingDialo
 
   const handleBook = () => {
     onOpenChange(false);
-    localStorage.setItem("impartial_first_visit_done", "true");
+    localStorage.setItem("mba_first_visit_done", "true");
     setShowCalendly(true);
   };
 
   const handleLater = () => {
-    localStorage.setItem("impartial_first_visit_done", "true");
+    localStorage.setItem("mba_first_visit_done", "true");
     onOpenChange(false);
   };
 

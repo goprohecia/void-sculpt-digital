@@ -285,7 +285,7 @@ export default function AdminAnalytics() {
       const now = new Date().toLocaleDateString("fr-FR");
 
       doc.setFontSize(20);
-      doc.text("Rapport Analytique — Impartial", 14, 20);
+      doc.text("Rapport Analytique — My Business Assistant", 14, 20);
       doc.setFontSize(10);
       doc.setTextColor(120);
       doc.text(`Généré le ${now}`, 14, 28);
@@ -385,7 +385,7 @@ export default function AdminAnalytics() {
         });
       }
 
-      doc.save(`rapport-impartial-${now.replace(/\//g, "-")}.pdf`);
+      doc.save(`rapport-mba-${now.replace(/\//g, "-")}.pdf`);
       toast.success("Rapport PDF exporté avec succès");
     } catch (err) {
       toast.error("Erreur lors de l'export PDF");

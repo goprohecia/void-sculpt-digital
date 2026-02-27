@@ -4,10 +4,9 @@ import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, Eye, EyeOff, Home, Shield } from "lucide-react";
-import logoHero from "@/assets/logo-hero.png";
+import { LogIn, Eye, EyeOff, Shield } from "lucide-react";
 
-const ADMIN_EMAIL = "studio@impartialgames.com";
+const ADMIN_EMAIL = "admin@mybusinessassistant.com";
 
 export default function AdminOnlyLogin() {
   const [email, setEmail] = useState("");
@@ -76,9 +75,6 @@ export default function AdminOnlyLogin() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
-          </Link>
           <div className="flex items-center justify-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
             <h1 className="text-2xl font-bold">Administration</h1>
@@ -125,9 +121,8 @@ export default function AdminOnlyLogin() {
               <p className="text-[10px] text-muted-foreground">admin@mba.demo</p>
             </button>
             <div className="text-center pt-1">
-              <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                <Home className="h-3.5 w-3.5" />
-                Retour à l'accueil
+              <Link to="/client/login" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Retour à la connexion
               </Link>
             </div>
           </div>

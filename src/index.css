@@ -15,7 +15,7 @@
     --popover: 250 15% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 265 85% 60%;
+    --primary: 215 85% 55%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 250 15% 12%;
@@ -24,7 +24,7 @@
     --muted: 250 15% 15%;
     --muted-foreground: 250 10% 55%;
 
-    --accent: 265 85% 60%;
+    --accent: 215 85% 55%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84% 60%;
@@ -32,7 +32,7 @@
 
     --border: 250 15% 15%;
     --input: 250 15% 15%;
-    --ring: 265 85% 60%;
+    --ring: 215 85% 55%;
 
     --radius: 1.25rem;
 
@@ -41,7 +41,7 @@
     --neon-green: 155 100% 45%;
     --neon-blue: 200 100% 50%;
     --neon-white: 0 0% 100%;
-    --neon-violet: 265 85% 60%;
+    --neon-violet: 215 85% 55%;
 
     /* ========================================
        GLASSMORPHISM PREMIUM DESIGN SYSTEM V2
@@ -58,39 +58,39 @@
     --glass-highlight: 0.12;
     
     /* Glass Surface Colors - Richer */
-    --glass-bg: 265 25% 12%;
-    --glass-border: 265 40% 40%;
+    --glass-bg: 215 25% 12%;
+    --glass-border: 215 40% 40%;
     --glass-highlight-color: 0 0% 100%;
     
     /* Glass Shadows - More depth */
-    --glass-shadow-diffuse: 0 25px 60px -20px hsl(265 50% 15% / 0.5);
+    --glass-shadow-diffuse: 0 25px 60px -20px hsl(215 50% 15% / 0.5);
     --glass-shadow-sharp: 0 10px 40px hsl(0 0% 0% / 0.35);
-    --glass-shadow-glow: 0 0 80px -15px hsl(265 85% 60% / 0.3);
+    --glass-shadow-glow: 0 0 80px -15px hsl(215 85% 55% / 0.3);
     --glass-shadow-inner: inset 0 1px 1px hsl(0 0% 100% / 0.08);
     
     /* Premium Accent Luxe - Iridescent */
-    --accent-luxe: 265 90% 65%;
+    --accent-luxe: 215 90% 60%;
     --accent-luxe-secondary: 200 100% 60%;
-    --accent-luxe-tertiary: 320 85% 60%;
+    --accent-luxe-tertiary: 190 85% 55%;
     
     /* Atmosphere */
-    --atmosphere-primary: 265 85% 60%;
+    --atmosphere-primary: 215 85% 55%;
     --atmosphere-secondary: 200 100% 50%;
-    --atmosphere-tertiary: 320 80% 55%;
+    --atmosphere-tertiary: 190 80% 55%;
 
     /* Card tiers */
     --tier-start: 0 0% 70%;
-    --tier-pro: 265 85% 60%;
+    --tier-pro: 215 85% 55%;
     --tier-custom: 45 93% 55%;
 
     --sidebar-background: 250 15% 4%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 265 85% 60%;
+    --sidebar-primary: 215 85% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 250 15% 10%;
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 250 15% 15%;
-    --sidebar-ring: 265 85% 60%;
+    --sidebar-ring: 215 85% 55%;
   }
 }
 
@@ -465,15 +465,15 @@
      GRADIENT TEXT
      ======================================== */
   .text-gradient-neon {
-    @apply bg-gradient-to-r from-violet-400 via-purple-500 to-indigo-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-400 via-sky-500 to-blue-400 bg-clip-text text-transparent;
   }
 
   .text-gradient-premium {
     background: linear-gradient(
       135deg,
       hsl(0 0% 100%) 0%,
-      hsl(265 50% 90%) 25%,
-      hsl(265 85% 75%) 50%,
+      hsl(215 50% 90%) 25%,
+      hsl(215 85% 70%) 50%,
       hsl(200 100% 80%) 75%,
       hsl(0 0% 100%) 100%
     );
@@ -485,12 +485,12 @@
   }
 
   .text-logo-gradient {
-    background: linear-gradient(90deg, #8b5cf6 0%, #6366f1 14%, #22d3ee 28%, #10b981 42%, #ef4444 56%, #8b5cf6 70%, #6366f1 84%, #22d3ee 100%);
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 14%, #22d3ee 28%, #10b981 42%, #ef4444 56%, #3b82f6 70%, #2563eb 84%, #22d3ee 100%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6));
+    filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.6));
     animation: gradient-flow 4s ease-in-out infinite;
     position: relative;
   }
@@ -520,7 +520,7 @@
   }
 
   .text-gradient-violet {
-    @apply bg-gradient-to-r from-purple-400 via-violet-500 to-purple-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-400 via-sky-500 to-blue-600 bg-clip-text text-transparent;
   }
 
   .border-gradient-neon {
@@ -552,7 +552,7 @@
 
   .btn-gradient {
     @apply relative overflow-hidden font-semibold;
-    background: linear-gradient(135deg, hsl(265 85% 55%), hsl(265 85% 45%));
+    background: linear-gradient(135deg, hsl(215 85% 50%), hsl(215 85% 40%));
     border: 1px solid hsl(var(--neon-violet) / 0.5);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -582,15 +582,15 @@
 
   .card-hover:hover {
     @apply border-primary/50;
-    box-shadow: 0 25px 50px rgba(139, 92, 246, 0.15), 0 0 30px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 25px 50px rgba(59, 130, 246, 0.15), 0 0 30px rgba(59, 130, 246, 0.1);
     transform: translateY(-5px);
   }
 
   /* Grid Background */
   .grid-bg {
     background-image: 
-      linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+      linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 

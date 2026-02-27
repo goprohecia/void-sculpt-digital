@@ -5,8 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, Eye, EyeOff, Home, CheckCircle } from "lucide-react";
-import logoHero from "@/assets/logo-hero.png";
+import { LogIn, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 
 export default function AdminLogin() {
@@ -61,7 +60,7 @@ export default function AdminLogin() {
     }
 
     // Block admin email from client login
-    if (email.toLowerCase() === "studio@impartialgames.com") {
+    if (email.toLowerCase() === "admin@mybusinessassistant.com") {
       setError("Ce compte est réservé à l'espace administrateur");
       return;
     }
@@ -103,10 +102,8 @@ export default function AdminLogin() {
       <div className="w-full max-w-md space-y-6">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
-          </Link>
           <h1 className="text-2xl font-bold">My Business Assistant</h1>
+          <p className="text-sm text-muted-foreground">Connectez-vous à votre espace</p>
         </div>
 
         {/* Verified banner */}
@@ -197,10 +194,6 @@ export default function AdminLogin() {
                 Pas encore de compte ?{" "}
                 <Link to="/signup" className="text-primary hover:underline font-medium">Créer un compte client</Link>
               </p>
-              <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                <Home className="h-3.5 w-3.5" />
-                Retour à l'accueil
-              </Link>
             </div>
           </div>
         </div>

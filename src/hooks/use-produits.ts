@@ -230,6 +230,14 @@ export function useTags() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tags"] }),
   });
 
+  const updateTag = useMutation({
+    mutationFn: async ({ id, ...updates }: { id: string; nom?: string; couleur?: string }) => {
+      const { error } = await supabase.from("tags").update(updates).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tags"] }),
+  });
+
   const deleteTag = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("tags").delete().eq("id", id);
@@ -241,6 +249,7 @@ export function useTags() {
   return {
     tags: isDemo ? [] : (query.data ?? []),
     addTag: addTag.mutateAsync,
+    updateTag: updateTag.mutateAsync,
     deleteTag: deleteTag.mutateAsync,
   };
 }

@@ -3,10 +3,10 @@ import autoTable from "jspdf-autotable";
 import type { Facture, Devis, Client } from "@/data/mockData";
 
 const COMPANY = {
-  name: "Impartial",
+  name: "My Business Assistant",
   address: "Delaware, États-Unis",
-  email: "studio@impartialgames.com",
-  website: "impartialgames.com",
+  email: "contact@mybusinessassistant.com",
+  website: "mybusinessassistant.com",
 };
 
 /** Format number with space as thousands separator */
