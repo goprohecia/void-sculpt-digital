@@ -6,6 +6,7 @@ import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSidebar } from "./ClientSidebar";
 import { NotificationPanel } from "./NotificationPanel";
+import { AdminPageTransition } from "./AdminPageTransition";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 interface ClientLayoutProps {
@@ -73,7 +74,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
             )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            {children}
+            <AdminPageTransition>{children}</AdminPageTransition>
           </main>
         </div>
       </div>

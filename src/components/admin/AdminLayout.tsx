@@ -4,6 +4,7 @@ import { useIsDemo } from "@/hooks/useIsDemo";
 import { useNotificationsData } from "@/hooks/use-notifications-data";
 import { AdminSidebar } from "./AdminSidebar";
 import { NotificationPanel } from "./NotificationPanel";
+import { AdminPageTransition } from "./AdminPageTransition";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 interface AdminLayoutProps {
@@ -45,7 +46,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            {children}
+            <AdminPageTransition>{children}</AdminPageTransition>
           </main>
         </div>
       </div>
