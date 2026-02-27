@@ -7,7 +7,6 @@ export const ALL_ADMIN_MODULES = [
   { key: "overview", label: "Vue d'ensemble" },
   { key: "clients", label: "Clients" },
   { key: "employees", label: "Salariés" },
-  { key: "produits", label: "Produits / Services" },
   { key: "dossiers", label: "Dossiers" },
   { key: "messagerie", label: "Messagerie" },
   { key: "facturation", label: "Facturation" },
@@ -15,6 +14,7 @@ export const ALL_ADMIN_MODULES = [
   { key: "emails", label: "Emails" },
   { key: "rendez-vous", label: "Rendez-vous" },
   { key: "support", label: "Support" },
+  { key: "stock", label: "Stock / Produits" },
   { key: "analyse", label: "Analyse" },
   { key: "parametres", label: "Paramètres" },
 ] as const;
@@ -37,6 +37,7 @@ export const ALL_EMPLOYEE_MODULES = [
   { key: "dossiers", label: "Dossiers assignés" },
   { key: "calendrier", label: "Calendrier" },
   { key: "messagerie", label: "Messagerie" },
+  { key: "stock", label: "Stock" },
   { key: "profil", label: "Mon profil" },
 ] as const;
 
