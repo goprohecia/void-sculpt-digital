@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import logoHero from "@/assets/logo-hero.png";
+
 interface LoadingScreenProps {
   onComplete?: () => void;
 }
@@ -51,15 +51,15 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           animate={{ scale: 1, rotate: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <div className="w-24 h-24 rounded-2xl border border-primary/30 flex items-center justify-center backdrop-blur-sm bg-primary/5 p-3">
-            <motion.img
-              src={logoHero}
-              alt="My Business Assistant"
-              className="w-full h-full object-contain drop-shadow-[0_0_15px_hsl(var(--primary)/0.4)]"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
+          <div className="w-20 h-20 rounded-2xl border border-primary/30 flex items-center justify-center backdrop-blur-sm bg-primary/5">
+            <motion.span
+              className="text-2xl font-bold tracking-wider text-primary"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.6 }}
-            />
+            >
+              MBA
+            </motion.span>
           </div>
           {/* Corner accents */}
           <motion.div
