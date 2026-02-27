@@ -62,8 +62,10 @@ import EmployeeCalendrier from "@/pages/employee/EmployeeCalendrier";
 import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
 import EmployeeProfile from "@/pages/employee/EmployeeProfile";
 
-// Admin employees management
+// Admin employees & stock management
 import AdminEmployees from "@/pages/admin/AdminEmployees";
+import AdminStock from "@/pages/admin/AdminStock";
+import EmployeeStock from "@/pages/employee/EmployeeStock";
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -106,6 +108,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/support" element={<AdminSupport />} />
         <Route path="/admin/rendez-vous" element={<AdminRendezVous />} />
         <Route path="/admin/employees" element={<AdminEmployees />} />
+        <Route path="/admin/stock" element={<AdminStock />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
         
@@ -128,6 +131,7 @@ export function AnimatedRoutes() {
         <Route path="/employee/dossiers" element={<EmployeeDossiers />} />
         <Route path="/employee/calendrier" element={<EmployeeCalendrier />} />
         <Route path="/employee/messagerie" element={<EmployeeMessaging />} />
+        <Route path="/employee/stock" element={<EmployeeStock />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
         
         <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />

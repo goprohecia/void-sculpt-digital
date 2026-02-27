@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   CalendarDays,
+  Package,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
@@ -54,6 +55,7 @@ export function AdminSidebar() {
     { title: "Emails", url: "/admin/emails", icon: Mail, moduleKey: "emails" },
     { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
     { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
+    { title: "Stock", url: "/admin/stock", icon: Package, moduleKey: "stock" },
     { title: "Analyse", url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
