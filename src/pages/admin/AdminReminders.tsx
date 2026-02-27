@@ -8,10 +8,14 @@ import { useRelances } from "@/hooks/use-relances";
 import { useEmailLogs } from "@/hooks/use-email-logs";
 import { useClients } from "@/hooks/use-clients";
 import { useIsDemo } from "@/hooks/useIsDemo";
+import { useEmailTemplates } from "@/hooks/use-email-templates";
 import { supabase } from "@/integrations/supabase/client";
 import { type RelanceStatus } from "@/data/mockData";
-import { Bell, Calendar, Mail, Send } from "lucide-react";
+import { Bell, Calendar, Mail, Send, FileText } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const statusFilters: { key: "tous" | RelanceStatus; label: string }[] = [
@@ -27,46 +31,52 @@ export default function AdminReminders() {
   const { emailLogs, pushEmail } = useEmailLogs();
   const { getClientById } = useClients();
   const { isDemo } = useIsDemo();
+  const { templates } = useEmailTemplates();
 
-  const filtered = relances.filter(
-    (r) => filterStatut === "tous" || r.statut === filterStatut
-  );
+  const [sendDialogOpen, setSendDialogOpen] = useState(false);
+  const [pendingRelance, setPendingRelance] = useState<typeof relances[0] | null>(null);
+  const [selectedTemplateId, setSelectedTemplateId] = useState("");
 
-  const prochaines = relances
-    .filter((r) => r.statut === "a_envoyer" && r.dateProchaine)
-    .sort((a, b) => a.dateProchaine.localeCompare(b.dateProchaine));
+  const relanceTemplates = templates.filter((t) => t.type === "relance");
 
+  const filtered = relances.filter((r) => filterStatut === "tous" || r.statut === filterStatut);
+  const prochaines = relances.filter((r) => r.statut === "a_envoyer" && r.dateProchaine).sort((a, b) => a.dateProchaine.localeCompare(b.dateProchaine));
   const relanceEmails = emailLogs.filter((e) => e.type === "relance");
 
-  const handleSendRelance = async (r: typeof relances[0]) => {
-    // Always log in email_logs (demo or real)
-    pushEmail("relance", r.clientNom, `Relance facture ${r.factureRef}`,
-      `<p>Bonjour,</p><p>Nous nous permettons de vous rappeler que la facture <strong>${r.factureRef}</strong> d'un montant de <strong>${r.montant.toLocaleString()} €</strong> est en attente de règlement.</p><p>Merci de procéder au paiement dans les meilleurs délais.</p><p>L'équipe Impartial</p>`,
-      undefined, r.factureRef);
+  const openSendDialog = (r: typeof relances[0]) => {
+    setPendingRelance(r);
+    setSelectedTemplateId(relanceTemplates[0]?.id || "");
+    setSendDialogOpen(true);
+  };
 
-    // Send real email via edge function when not in demo
+  const handleSendRelance = async () => {
+    const r = pendingRelance;
+    if (!r) return;
+
+    const tpl = relanceTemplates.find((t) => t.id === selectedTemplateId);
+    const sujet = tpl ? tpl.sujet.replace(/\{\{factureRef\}\}/g, r.factureRef).replace(/\{\{montant\}\}/g, r.montant.toLocaleString()) : `Relance facture ${r.factureRef}`;
+    const contenu = tpl ? tpl.contenu.replace(/\{\{factureRef\}\}/g, r.factureRef).replace(/\{\{montant\}\}/g, r.montant.toLocaleString()) : `<p>Relance pour la facture ${r.factureRef} de ${r.montant.toLocaleString()} €.</p>`;
+
+    pushEmail("relance", r.clientNom, sujet, contenu, undefined, r.factureRef);
+
     if (!isDemo) {
       const client = getClientById(r.clientId);
       if (client?.email) {
         try {
           const { error } = await supabase.functions.invoke("send-relance", {
-            body: {
-              email: client.email,
-              prenom: client.prenom,
-              factureRef: r.factureRef,
-              montant: r.montant,
-              dateEcheance: r.dateProchaine,
-            },
+            body: { email: client.email, prenom: client.prenom, factureRef: r.factureRef, montant: r.montant, dateEcheance: r.dateProchaine },
           });
           if (error) throw error;
         } catch (e: any) {
           console.error("Erreur envoi relance:", e);
           toast.error("Erreur lors de l'envoi de l'email de relance");
+          setSendDialogOpen(false);
           return;
         }
       }
     }
     toast.success(`Relance envoyée pour ${r.factureRef}`);
+    setSendDialogOpen(false);
   };
 
   return (
@@ -74,50 +84,30 @@ export default function AdminReminders() {
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
           <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Bell className="h-6 w-6 text-primary" />
-              Relances
-            </h1>
+            <h1 className="text-2xl font-bold flex items-center gap-2"><Bell className="h-6 w-6 text-primary" /> Relances</h1>
             <p className="text-muted-foreground text-sm">{relances.length} relances</p>
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Upcoming reminders */}
+            {/* Upcoming reminders + email log */}
             <motion.div className="glass-card p-6 lg:col-span-1 order-first space-y-6" variants={staggerItem}>
               <div>
-                <h3 className="text-sm font-semibold flex items-center gap-2 mb-4">
-                  <Calendar className="h-4 w-4 text-primary" />
-                  Prochaines relances
-                </h3>
+                <h3 className="text-sm font-semibold flex items-center gap-2 mb-4"><Calendar className="h-4 w-4 text-primary" /> Prochaines relances</h3>
                 <div className="space-y-3">
                   {prochaines.length > 0 ? prochaines.map((r) => (
                     <div key={r.id} className="p-3 rounded-lg bg-muted/20 space-y-2">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium">{r.clientNom}</p>
-                        <span className="text-xs text-[hsl(45,93%,65%)]">
-                          {new Date(r.dateProchaine).toLocaleDateString("fr-FR")}
-                        </span>
+                        <span className="text-xs text-[hsl(45,93%,65%)]">{new Date(r.dateProchaine).toLocaleDateString("fr-FR")}</span>
                       </div>
                       <p className="text-xs text-muted-foreground">{r.factureRef} — {r.montant.toLocaleString()} €</p>
-                      <button
-                        onClick={() => handleSendRelance(r)}
-                        className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                      >
-                        <Send className="h-3 w-3" /> Envoyer
-                      </button>
+                      <button onClick={() => openSendDialog(r)} className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"><Send className="h-3 w-3" /> Envoyer</button>
                     </div>
-                  )) : (
-                    <p className="text-sm text-muted-foreground">Aucune relance programmée</p>
-                  )}
+                  )) : <p className="text-sm text-muted-foreground">Aucune relance programmée</p>}
                 </div>
               </div>
-
-              {/* Email log for relances */}
               <div>
-                <h3 className="text-sm font-semibold flex items-center gap-2 mb-3">
-                  <Mail className="h-4 w-4 text-primary" />
-                  Emails envoyés
-                </h3>
+                <h3 className="text-sm font-semibold flex items-center gap-2 mb-3"><Mail className="h-4 w-4 text-primary" /> Emails envoyés</h3>
                 <EmailLogPanel emails={relanceEmails} maxItems={5} compact />
               </div>
             </motion.div>
@@ -126,17 +116,7 @@ export default function AdminReminders() {
             <motion.div className="lg:col-span-2 space-y-4 order-last" variants={staggerItem}>
               <div className="flex gap-2 flex-wrap">
                 {statusFilters.map((s) => (
-                  <button
-                    key={s.key}
-                    onClick={() => setFilterStatut(s.key)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                      filterStatut === s.key
-                        ? "bg-primary text-primary-foreground"
-                        : "glass-button"
-                    }`}
-                  >
-                    {s.label}
-                  </button>
+                  <button key={s.key} onClick={() => setFilterStatut(s.key)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${filterStatut === s.key ? "bg-primary text-primary-foreground" : "glass-button"}`}>{s.label}</button>
                 ))}
               </div>
 
@@ -146,22 +126,14 @@ export default function AdminReminders() {
                   <AdminEmptyState icon={Bell} title="Aucune relance" description="Les relances de paiement apparaîtront ici." hint="Les relances sont créées à partir des factures en retard." />
                 ) : filtered.map((r) => (
                   <div key={r.id} className="glass-card p-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">{r.clientNom}</p>
-                      <StatusBadge status={r.statut} />
-                    </div>
+                    <div className="flex items-center justify-between"><p className="font-medium text-sm">{r.clientNom}</p><StatusBadge status={r.statut} /></div>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span className="font-mono">{r.factureRef}</span>
                       <span className="font-medium text-foreground">{r.montant.toLocaleString()} €</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-muted-foreground">{r.type}</span>
-                      <button
-                        onClick={() => handleSendRelance(r)}
-                        className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                      >
-                        <Send className="h-3 w-3" /> Envoyer
-                      </button>
+                      <button onClick={() => openSendDialog(r)} className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors"><Send className="h-3 w-3" /> Envoyer</button>
                     </div>
                   </div>
                 ))}
@@ -190,13 +162,7 @@ export default function AdminReminders() {
                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{r.type}</td>
                           <td className="py-3 px-4 text-center"><StatusBadge status={r.statut} /></td>
                           <td className="py-3 px-4 text-center">
-                            <button
-                              onClick={() => handleSendRelance(r)}
-                              className="p-1.5 rounded-lg hover:bg-primary/10 text-primary transition-colors"
-                              title="Envoyer la relance"
-                            >
-                              <Send className="h-4 w-4" />
-                            </button>
+                            <button onClick={() => openSendDialog(r)} className="p-1.5 rounded-lg hover:bg-primary/10 text-primary transition-colors" title="Envoyer la relance"><Send className="h-4 w-4" /></button>
                           </td>
                         </tr>
                       ))}
@@ -208,6 +174,34 @@ export default function AdminReminders() {
             </motion.div>
           </div>
         </motion.div>
+
+        {/* Send with template dialog */}
+        <Dialog open={sendDialogOpen} onOpenChange={setSendDialogOpen}>
+          <DialogContent>
+            <DialogHeader><DialogTitle className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /> Envoyer la relance</DialogTitle></DialogHeader>
+            {pendingRelance && (
+              <div className="space-y-4 pt-2">
+                <div className="p-3 rounded-lg bg-muted/20 space-y-1">
+                  <p className="text-sm font-medium">{pendingRelance.clientNom}</p>
+                  <p className="text-xs text-muted-foreground">{pendingRelance.factureRef} — {pendingRelance.montant.toLocaleString()} €</p>
+                </div>
+                {relanceTemplates.length > 0 && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Template</label>
+                    <Select value={selectedTemplateId} onValueChange={setSelectedTemplateId}>
+                      <SelectTrigger><SelectValue placeholder="Sélectionner un template" /></SelectTrigger>
+                      <SelectContent>
+                        {relanceTemplates.map((t) => <SelectItem key={t.id} value={t.id}>{t.nom}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                {relanceTemplates.length === 0 && <p className="text-xs text-muted-foreground">Aucun template de relance. Le texte par défaut sera utilisé.</p>}
+                <Button className="w-full gap-2" onClick={handleSendRelance}><Send className="h-4 w-4" /> Envoyer</Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );

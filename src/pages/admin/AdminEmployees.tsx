@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, Plus, Search, Mail, Phone, Briefcase, Send } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Users, Plus, Search, Mail, Phone, Briefcase, Send, Settings2 } from "lucide-react";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -27,11 +28,21 @@ interface Employee {
   statut: string;
   date_embauche: string;
   created_at: string;
+  acces_modules: string[];
 }
 
+const ALL_MODULES = [
+  { key: "overview", label: "Dashboard" },
+  { key: "dossiers", label: "Dossiers" },
+  { key: "calendrier", label: "Calendrier" },
+  { key: "messagerie", label: "Messagerie" },
+  { key: "stock", label: "Stock" },
+  { key: "profil", label: "Profil" },
+];
+
 const DEMO_EMPLOYEES: Employee[] = [
-  { id: "demo-emp-1", nom: "Martin", prenom: "Sophie", email: "sophie.martin@mba.demo", telephone: "06 12 34 56 78", poste: "Développeuse", statut: "actif", date_embauche: "2025-03-01T00:00:00Z", created_at: "2025-03-01T00:00:00Z" },
-  { id: "demo-emp-2", nom: "Dupont", prenom: "Lucas", email: "lucas.dupont@mba.demo", telephone: "06 98 76 54 32", poste: "Chef de projet", statut: "actif", date_embauche: "2025-06-15T00:00:00Z", created_at: "2025-06-15T00:00:00Z" },
+  { id: "demo-emp-1", nom: "Martin", prenom: "Sophie", email: "sophie.martin@mba.demo", telephone: "06 12 34 56 78", poste: "Développeuse", statut: "actif", date_embauche: "2025-03-01T00:00:00Z", created_at: "2025-03-01T00:00:00Z", acces_modules: ["overview", "dossiers", "calendrier", "messagerie", "profil"] },
+  { id: "demo-emp-2", nom: "Dupont", prenom: "Lucas", email: "lucas.dupont@mba.demo", telephone: "06 98 76 54 32", poste: "Chef de projet", statut: "actif", date_embauche: "2025-06-15T00:00:00Z", created_at: "2025-06-15T00:00:00Z", acces_modules: ["overview", "dossiers", "calendrier", "messagerie", "stock", "profil"] },
 ];
 
 export default function AdminEmployees() {
@@ -40,6 +51,9 @@ export default function AdminEmployees() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [modulesOpen, setModulesOpen] = useState(false);
+  const [selectedEmp, setSelectedEmp] = useState<Employee | null>(null);
+  const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [form, setForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
   const [inviteForm, setInviteForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
 
@@ -49,7 +63,7 @@ export default function AdminEmployees() {
       if (isDemo) return DEMO_EMPLOYEES;
       const { data, error } = await (supabase as any).from("employees").select("*").order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return (data || []).map((e: any) => ({ ...e, acces_modules: Array.isArray(e.acces_modules) ? e.acces_modules : [] }));
     },
   });
 
@@ -70,14 +84,29 @@ export default function AdminEmployees() {
       if (res.error) throw new Error(res.error.message);
       if (res.data?.error) throw new Error(res.data.error);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-      toast.success("Invitation envoyée par email");
-      setInviteOpen(false);
-      setInviteForm({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
-    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["employees"] }); toast.success("Invitation envoyée par email"); setInviteOpen(false); setInviteForm({ nom: "", prenom: "", email: "", telephone: "", poste: "" }); },
     onError: (e: any) => toast.error(e.message || "Erreur lors de l'invitation"),
   });
+
+  const updateModules = useMutation({
+    mutationFn: async ({ id, modules }: { id: string; modules: string[] }) => {
+      if (isDemo) { toast.success("Modules mis à jour (mode démo)"); return; }
+      const { error } = await (supabase as any).from("employees").update({ acces_modules: modules }).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["employees"] }); toast.success("Accès modules mis à jour"); setModulesOpen(false); },
+    onError: () => toast.error("Erreur"),
+  });
+
+  const openModulesDialog = (emp: Employee) => {
+    setSelectedEmp(emp);
+    setSelectedModules([...(emp.acces_modules || [])]);
+    setModulesOpen(true);
+  };
+
+  const toggleModule = (key: string) => {
+    setSelectedModules((prev) => prev.includes(key) ? prev.filter((m) => m !== key) : [...prev, key]);
+  };
 
   const filtered = employees.filter((e) =>
     `${e.prenom} ${e.nom} ${e.email} ${e.poste}`.toLowerCase().includes(search.toLowerCase())
@@ -144,20 +173,35 @@ export default function AdminEmployees() {
                       <TableHead>Salarié</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Poste</TableHead>
+                      <TableHead>Modules</TableHead>
                       <TableHead>Statut</TableHead>
                       <TableHead>Embauche</TableHead>
+                      <TableHead className="text-center">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filtered.length === 0 ? (
-                      <TableRow><TableCell colSpan={5} className="text-center py-8 text-muted-foreground">Aucun salarié trouvé</TableCell></TableRow>
+                      <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Aucun salarié trouvé</TableCell></TableRow>
                     ) : filtered.map((emp) => (
                       <TableRow key={emp.id}>
                         <TableCell className="font-medium">{emp.prenom} {emp.nom}</TableCell>
                         <TableCell className="text-muted-foreground">{emp.email}</TableCell>
                         <TableCell>{emp.poste || "—"}</TableCell>
+                        <TableCell>
+                          <div className="flex gap-1 flex-wrap max-w-[200px]">
+                            {(emp.acces_modules || []).slice(0, 3).map((m) => (
+                              <Badge key={m} variant="secondary" className="text-[10px] px-1.5">{m}</Badge>
+                            ))}
+                            {(emp.acces_modules || []).length > 3 && <Badge variant="outline" className="text-[10px] px-1.5">+{emp.acces_modules.length - 3}</Badge>}
+                          </div>
+                        </TableCell>
                         <TableCell><Badge variant={emp.statut === "actif" ? "default" : "secondary"}>{emp.statut}</Badge></TableCell>
                         <TableCell className="text-muted-foreground text-sm">{emp.date_embauche ? format(new Date(emp.date_embauche), "dd MMM yyyy", { locale: fr }) : "—"}</TableCell>
+                        <TableCell className="text-center">
+                          <Button size="sm" variant="ghost" onClick={() => openModulesDialog(emp)} title="Gérer les accès modules">
+                            <Settings2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -166,6 +210,24 @@ export default function AdminEmployees() {
             </Card>
           </motion.div>
         </motion.div>
+
+        {/* Modules access dialog */}
+        <Dialog open={modulesOpen} onOpenChange={setModulesOpen}>
+          <DialogContent>
+            <DialogHeader><DialogTitle>Accès modules — {selectedEmp?.prenom} {selectedEmp?.nom}</DialogTitle></DialogHeader>
+            <div className="space-y-3 pt-2">
+              {ALL_MODULES.map((mod) => (
+                <label key={mod.key} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
+                  <Checkbox checked={selectedModules.includes(mod.key)} onCheckedChange={() => toggleModule(mod.key)} />
+                  <span className="text-sm">{mod.label}</span>
+                </label>
+              ))}
+              <Button className="w-full mt-4" onClick={() => selectedEmp && updateModules.mutate({ id: selectedEmp.id, modules: selectedModules })} disabled={updateModules.isPending}>
+                {updateModules.isPending ? "Mise à jour..." : "Enregistrer"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );
