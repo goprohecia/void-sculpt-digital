@@ -399,26 +399,24 @@ export default function AdminClients() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border/50 bg-muted/20">
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Email</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Téléphone</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden xl:table-cell">Segment</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden xl:table-cell">Ville</th>
-                    <th className="text-center py-3 px-4 text-muted-foreground font-medium">Dossiers</th>
-                    <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                    <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((c) => (
-                    <tr key={c.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                      <td className="py-3 px-4"><div><p className="font-medium">{c.prenom} {c.nom}</p><p className="text-xs text-muted-foreground">{c.entreprise}</p><ClientTagBadges clientId={c.id} /></div></td>
-                      <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{c.email}</td>
-                      <td className="py-3 px-4 hidden lg:table-cell text-muted-foreground">{c.telephone}</td>
-                      <td className="py-3 px-4 hidden xl:table-cell">{getSegmentBadge(c)}</td>
-                      <td className="py-3 px-4 hidden xl:table-cell text-muted-foreground text-xs">{c.ville ? `${c.codePostal} ${c.ville}` : "—"}</td>
-                      <td className="py-3 px-4 text-center">{c.nombreDossiers}</td>
+                 <tr className="border-b border-border/50 bg-muted/20">
+                     <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Email</th>
+                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Téléphone</th>
+                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden xl:table-cell">Tags</th>
+                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Dossiers</th>
+                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
+                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   {filtered.map((c) => (
+                     <tr key={c.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                       <td className="py-3 px-4"><div><p className="font-medium">{c.prenom} {c.nom}</p><p className="text-xs text-muted-foreground">{c.entreprise}</p></div></td>
+                       <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{c.email}</td>
+                       <td className="py-3 px-4 hidden lg:table-cell text-muted-foreground">{c.telephone}</td>
+                       <td className="py-3 px-4 hidden xl:table-cell"><ClientTagBadges clientId={c.id} /></td>
+                       <td className="py-3 px-4 text-center">{c.nombreDossiers}</td>
                       <td className="py-3 px-4 text-center"><StatusBadge status={c.statut} /></td>
                       <td className="py-3 px-4 text-center">
                         <ActionButtons client={c} />
