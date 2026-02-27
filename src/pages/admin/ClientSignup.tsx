@@ -4,8 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UserPlus, Eye, EyeOff, ArrowLeft, CheckCircle, Home } from "lucide-react";
-import logoHero from "@/assets/logo-hero.png";
+import { UserPlus, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 
 export default function ClientSignup() {
@@ -121,10 +120,8 @@ export default function ClientSignup() {
       <div className="w-full max-w-lg space-y-4">
         {/* Logo */}
         <div className="text-center space-y-1">
-          <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-12 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
-          </Link>
           <h1 className="text-xl font-bold">Créer un compte client</h1>
+          <p className="text-sm text-muted-foreground">My Business Assistant</p>
         </div>
 
         {/* Form */}
@@ -194,10 +191,6 @@ export default function ClientSignup() {
               Déjà un compte ?{" "}
               <Link to="/client/login" className="text-primary hover:underline font-medium">Se connecter</Link>
             </p>
-            <Link to="/" className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors mx-auto">
-              <Home className="h-3.5 w-3.5" />
-              Accueil
-            </Link>
           </div>
         </div>
       </div>

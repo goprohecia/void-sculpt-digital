@@ -24,7 +24,7 @@ export default function ClientDashboard() {
   const { getConversationsByClient } = useConversations();
 
   useEffect(() => {
-    const hasVisited = localStorage.getItem("impartial_first_visit_done");
+    const hasVisited = localStorage.getItem("mba_first_visit_done");
     if (!hasVisited) {
       setShowWelcome(true);
     }

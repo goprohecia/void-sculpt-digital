@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
-import logoHero from "@/assets/logo-hero.png";
+
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -42,9 +42,7 @@ export default function ForgotPassword() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <div className="w-full max-w-md space-y-6 text-center">
-          <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)]" />
-          </Link>
+          <h2 className="text-xl font-bold">My Business Assistant</h2>
           <div className="glass-card p-8 space-y-4">
             <CheckCircle className="h-12 w-12 text-green-500 mx-auto" />
             <h2 className="text-xl font-bold">Email envoyé !</h2>
@@ -66,9 +64,6 @@ export default function ForgotPassword() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/">
-            <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
-          </Link>
           <h1 className="text-2xl font-bold">Mot de passe oublié</h1>
           <p className="text-muted-foreground text-sm">Entrez votre adresse email pour recevoir un lien de réinitialisation</p>
         </div>

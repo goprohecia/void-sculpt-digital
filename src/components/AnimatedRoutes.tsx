@@ -1,26 +1,6 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import { PageTransition3D } from "./PageTransition3D";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
-import Index from "@/pages/Index";
-import Studio from "@/pages/Studio";
-import Contact from "@/pages/Contact";
-import Portfolio from "@/pages/Portfolio";
-import WebService from "@/pages/services/WebService";
-import MobileService from "@/pages/services/MobileService";
-import BackofficeService from "@/pages/services/BackofficeService";
-import FullStackService from "@/pages/services/FullStackService";
-import CGU from "@/pages/legal/CGU";
-import CGV from "@/pages/legal/CGV";
-import Cookies from "@/pages/legal/Cookies";
-import MentionsLegales from "@/pages/legal/MentionsLegales";
-import PolitiqueConfidentialite from "@/pages/legal/PolitiqueConfidentialite";
-import NotFound from "@/pages/NotFound";
-
-// Portfolio project pages
-import WeCloseProject from "@/pages/portfolio/WeCloseProject";
-import AltarysProject from "@/pages/portfolio/AltarysProject";
-import PropheciaProject from "@/pages/portfolio/PropheciaProject";
 
 // Admin pages
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -39,6 +19,9 @@ import AdminAnalytics from "@/pages/admin/AdminAnalytics";
 import AdminSupport from "@/pages/admin/AdminSupport";
 import AdminEmails from "@/pages/admin/AdminEmails";
 import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminRendezVous from "@/pages/admin/AdminRendezVous";
+import AdminEmployees from "@/pages/admin/AdminEmployees";
+import AdminStock from "@/pages/admin/AdminStock";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
@@ -53,7 +36,6 @@ import ClientSupport from "@/pages/client/ClientSupport";
 import ClientPaiement from "@/pages/client/ClientPaiement";
 import ClientSettings from "@/pages/client/ClientSettings";
 import ClientRendezVous from "@/pages/client/ClientRendezVous";
-import AdminRendezVous from "@/pages/admin/AdminRendezVous";
 
 // Employee pages
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
@@ -61,11 +43,9 @@ import EmployeeDossiers from "@/pages/employee/EmployeeDossiers";
 import EmployeeCalendrier from "@/pages/employee/EmployeeCalendrier";
 import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
 import EmployeeProfile from "@/pages/employee/EmployeeProfile";
-
-// Admin employees & stock management
-import AdminEmployees from "@/pages/admin/AdminEmployees";
-import AdminStock from "@/pages/admin/AdminStock";
 import EmployeeStock from "@/pages/employee/EmployeeStock";
+
+import NotFound from "@/pages/NotFound";
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -74,29 +54,17 @@ export function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition3D><Index /></PageTransition3D>} />
-        <Route path="/studio" element={<PageTransition3D><Studio /></PageTransition3D>} />
-        <Route path="/portfolio" element={<PageTransition3D><Portfolio /></PageTransition3D>} />
-        <Route path="/portfolio/weclose" element={<PageTransition3D><WeCloseProject /></PageTransition3D>} />
-        <Route path="/portfolio/altarys" element={<PageTransition3D><AltarysProject /></PageTransition3D>} />
-        <Route path="/portfolio/prophecia" element={<PageTransition3D><PropheciaProject /></PageTransition3D>} />
-        <Route path="/contact" element={<PageTransition3D><Contact /></PageTransition3D>} />
-        <Route path="/services/web" element={<PageTransition3D><WebService /></PageTransition3D>} />
-        <Route path="/services/mobile" element={<PageTransition3D><MobileService /></PageTransition3D>} />
-        <Route path="/services/backoffice" element={<PageTransition3D><BackofficeService /></PageTransition3D>} />
-        <Route path="/services/360" element={<PageTransition3D><FullStackService /></PageTransition3D>} />
-        <Route path="/cgu" element={<PageTransition3D><CGU /></PageTransition3D>} />
-        <Route path="/cgv" element={<PageTransition3D><CGV /></PageTransition3D>} />
-        <Route path="/cookies" element={<PageTransition3D><Cookies /></PageTransition3D>} />
-        <Route path="/mentions-legales" element={<PageTransition3D><MentionsLegales /></PageTransition3D>} />
-        <Route path="/politique-confidentialite" element={<PageTransition3D><PolitiqueConfidentialite /></PageTransition3D>} />
-        
-        {/* Admin routes */}
+        {/* Redirect root to login */}
+        <Route path="/" element={<Navigate to="/client/login" replace />} />
+
+        {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
         <Route path="/admin/access" element={<AdminOnlyLogin />} />
         <Route path="/signup" element={<ClientSignup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* Admin routes */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
@@ -111,7 +79,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/stock" element={<AdminStock />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
-        
+
         {/* Client routes */}
         <Route path="/client" element={<ClientDashboard />} />
         <Route path="/client/dossiers" element={<ClientDossiers />} />
@@ -125,7 +93,7 @@ export function AnimatedRoutes() {
         <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
         <Route path="/client/profil" element={<ClientProfile />} />
         <Route path="/client/parametres" element={<ClientSettings />} />
-        
+
         {/* Employee routes */}
         <Route path="/employee" element={<EmployeeDashboard />} />
         <Route path="/employee/dossiers" element={<EmployeeDossiers />} />
@@ -133,8 +101,8 @@ export function AnimatedRoutes() {
         <Route path="/employee/messagerie" element={<EmployeeMessaging />} />
         <Route path="/employee/stock" element={<EmployeeStock />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
-        
-        <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
   );
