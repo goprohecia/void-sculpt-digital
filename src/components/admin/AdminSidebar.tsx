@@ -91,7 +91,7 @@ export function AdminSidebar() {
     ));
 
   return (
-    <Sidebar className="border-r border-border/50">
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-5 pb-4">
         <Link to="/admin" className="flex flex-col items-center text-center gap-1">
           <p className="text-lg font-bold tracking-tight">MBA</p>
