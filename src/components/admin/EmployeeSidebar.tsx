@@ -50,7 +50,7 @@ export function EmployeeSidebar() {
   const initials = user?.nom?.split(" ").map((n) => n[0]).join("").slice(0, 2) || "SA";
 
   return (
-    <Sidebar className="border-r border-border/50">
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-4">
         <Link to="/employee" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">

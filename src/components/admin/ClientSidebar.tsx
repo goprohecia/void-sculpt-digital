@@ -70,7 +70,7 @@ export function ClientSidebar() {
   };
 
   return (
-    <Sidebar className="border-r border-border/50">
+    <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-4">
         <Link to="/client" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-[hsl(200,100%,50%)]/20 flex items-center justify-center">
