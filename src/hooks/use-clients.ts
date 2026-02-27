@@ -18,6 +18,7 @@ function mapRowToClient(row: any): Client {
     ville: row.ville ?? undefined,
     pays: row.pays ?? undefined,
     statut: row.statut as Client["statut"],
+    segment: (row as any).segment ?? "client",
     dateCreation: row.date_creation?.split("T")[0] ?? "",
     nombreDossiers: row.nombre_dossiers,
   };
@@ -62,6 +63,7 @@ export function useClients() {
       if (updates.ville !== undefined) dbUpdates.ville = updates.ville;
       if (updates.pays !== undefined) dbUpdates.pays = updates.pays;
       if (updates.statut !== undefined) dbUpdates.statut = updates.statut;
+      if ((updates as any).segment !== undefined) dbUpdates.segment = (updates as any).segment;
       const { error } = await supabase.from("clients").update(dbUpdates).eq("id", id);
       if (error) throw error;
     },
