@@ -271,6 +271,7 @@ export function useTags() {
 export function useClientTags(clientId?: string) {
   const { isDemo, isLoading: authLoading } = useIsDemo();
   const queryClient = useQueryClient();
+  const [demoClientTags, setDemoClientTags] = useState<Array<{ id: string; client_id: string; tag_id: string; tags: any }>>([]);
 
   const query = useQuery({
     queryKey: ["client_tags", clientId],
@@ -286,22 +287,33 @@ export function useClientTags(clientId?: string) {
 
   const addClientTag = useMutation({
     mutationFn: async ({ client_id, tag_id }: { client_id: string; tag_id: string }) => {
+      if (isDemo) {
+        setDemoClientTags((prev) => [...prev, { id: crypto.randomUUID(), client_id, tag_id, tags: null }]);
+        return;
+      }
       const { error } = await supabase.from("client_tags").insert({ client_id, tag_id });
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["client_tags"] }),
+    onSuccess: () => { if (!isDemo) queryClient.invalidateQueries({ queryKey: ["client_tags"] }); },
   });
 
   const removeClientTag = useMutation({
     mutationFn: async (id: string) => {
+      if (isDemo) {
+        setDemoClientTags((prev) => prev.filter((ct) => ct.id !== id));
+        return;
+      }
       const { error } = await supabase.from("client_tags").delete().eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["client_tags"] }),
+    onSuccess: () => { if (!isDemo) queryClient.invalidateQueries({ queryKey: ["client_tags"] }); },
   });
 
+  const allTags = isDemo ? demoClientTags : (query.data ?? []);
+  const filtered = clientId ? allTags.filter((ct: any) => ct.client_id === clientId) : allTags;
+
   return {
-    clientTags: isDemo ? [] : (query.data ?? []),
+    clientTags: filtered,
     addClientTag: addClientTag.mutateAsync,
     removeClientTag: removeClientTag.mutateAsync,
   };
