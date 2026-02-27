@@ -279,6 +279,7 @@ export type Database = {
           nombre_dossiers: number
           pays: string | null
           prenom: string
+          segment: string
           siret: string | null
           statut: string
           telephone: string
@@ -298,6 +299,7 @@ export type Database = {
           nombre_dossiers?: number
           pays?: string | null
           prenom: string
+          segment?: string
           siret?: string | null
           statut?: string
           telephone?: string
@@ -317,6 +319,7 @@ export type Database = {
           nombre_dossiers?: number
           pays?: string | null
           prenom?: string
+          segment?: string
           siret?: string | null
           statut?: string
           telephone?: string

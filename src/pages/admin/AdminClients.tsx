@@ -8,21 +8,30 @@ import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import type { Client } from "@/data/mockData";
-import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus, Tag } from "lucide-react";
+import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus, Tag, Mail, Send } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { ClientTagManager, ClientTagBadges } from "@/components/admin/ClientTagManager";
 import { useTags, useClientTags } from "@/hooks/use-produits";
+import { supabase } from "@/integrations/supabase/client";
+
+const SEGMENTS = [
+  { value: "tous", label: "Tous" },
+  { value: "client", label: "Clients" },
+  { value: "prospect", label: "Prospects" },
+] as const;
 
 export default function AdminClients() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | "actif" | "inactif">("tous");
+  const [filterSegment, setFilterSegment] = useState<"tous" | "client" | "prospect">("tous");
   const [filterTagId, setFilterTagId] = useState<string | null>(null);
   const { tags } = useTags();
   const { clientTags: allClientTags } = useClientTags();
@@ -30,7 +39,11 @@ export default function AdminClients() {
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [deletingClient, setDeletingClient] = useState<Client | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [newClient, setNewClient] = useState({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "" });
+  const [showBulkEmailDialog, setShowBulkEmailDialog] = useState(false);
+  const [bulkSubject, setBulkSubject] = useState("");
+  const [bulkMessage, setBulkMessage] = useState("");
+  const [bulkSending, setBulkSending] = useState(false);
+  const [newClient, setNewClient] = useState({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
   const isMobile = useIsMobile();
   const { clients, createClient, updateClient, updateClientAsync, deleteClient } = useClients();
   const { getDossiersByClient } = useDossiers();
@@ -43,8 +56,9 @@ export default function AdminClients() {
       c.entreprise.toLowerCase().includes(search.toLowerCase()) ||
       c.email.toLowerCase().includes(search.toLowerCase());
     const matchStatut = filterStatut === "tous" || c.statut === filterStatut;
+    const matchSegment = filterSegment === "tous" || (c as any).segment === filterSegment;
     const matchTag = !filterTagId || allClientTags.some((ct: any) => ct.client_id === c.id && ct.tag_id === filterTagId);
-    return matchSearch && matchStatut && matchTag;
+    return matchSearch && matchStatut && matchSegment && matchTag;
   });
 
   const clientDossiers = selectedClient ? getDossiersByClient(selectedClient.id) : [];
@@ -101,11 +115,48 @@ export default function AdminClients() {
     try {
       await createClient(newClient);
       toast.success(`Client ${newClient.prenom} ${newClient.nom} créé`);
-      setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "" });
+      setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
       setShowCreateDialog(false);
     } catch {
       toast.error("Erreur lors de la création du client");
     }
+  };
+
+  const handleSendBulkEmail = async () => {
+    if (!bulkSubject.trim() || !bulkMessage.trim()) {
+      toast.error("Sujet et message sont obligatoires");
+      return;
+    }
+    if (filtered.length === 0) {
+      toast.error("Aucun client dans la sélection");
+      return;
+    }
+    setBulkSending(true);
+    try {
+      const recipients = filtered.map((c) => ({ email: c.email, prenom: c.prenom, clientId: c.id }));
+      const { data, error } = await supabase.functions.invoke("send-bulk-email", {
+        body: { recipients, subject: bulkSubject, message: bulkMessage },
+      });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      toast.success(`Email envoyé à ${data?.sent || filtered.length} client(s)`);
+      setShowBulkEmailDialog(false);
+      setBulkSubject("");
+      setBulkMessage("");
+    } catch (e: any) {
+      toast.error(e.message || "Erreur lors de l'envoi");
+    } finally {
+      setBulkSending(false);
+    }
+  };
+
+  const getSegmentBadge = (client: Client) => {
+    const seg = (client as any).segment || "client";
+    return seg === "prospect" ? (
+      <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-amber-500/20 text-amber-400">Prospect</span>
+    ) : (
+      <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400">Client</span>
+    );
   };
 
   const ActionButtons = ({ client, compact = false }: { client: Client; compact?: boolean }) => (
@@ -161,6 +212,7 @@ export default function AdminClients() {
           <div><p className="text-muted-foreground">Email</p><p className="break-all">{selectedClient?.email}</p></div>
           <div><p className="text-muted-foreground">Téléphone</p><p>{selectedClient?.telephone}</p></div>
           <div><p className="text-muted-foreground">Statut</p><StatusBadge status={selectedClient?.statut || "actif"} /></div>
+          <div><p className="text-muted-foreground">Segment</p>{selectedClient && getSegmentBadge(selectedClient)}</div>
           <div><p className="text-muted-foreground">Depuis</p><p>{selectedClient ? new Date(selectedClient.dateCreation).toLocaleDateString("fr-FR") : ""}</p></div>
         </div>
 
@@ -230,9 +282,16 @@ export default function AdminClients() {
               <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Clients</h1>
               <p className="text-muted-foreground text-sm">{clients.length} clients enregistrés</p>
             </div>
-            <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5">
-              <UserPlus className="h-4 w-4" /> Nouveau client
-            </Button>
+            <div className="flex gap-2">
+              {filtered.length > 0 && (
+                <Button variant="outline" onClick={() => setShowBulkEmailDialog(true)} className="gap-1.5">
+                  <Mail className="h-4 w-4" /> Email groupé ({filtered.length})
+                </Button>
+              )}
+              <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5">
+                <UserPlus className="h-4 w-4" /> Nouveau client
+              </Button>
+            </div>
           </motion.div>
 
           <motion.div className="flex flex-col sm:flex-row gap-3" variants={staggerItem}>
@@ -248,6 +307,20 @@ export default function AdminClients() {
                 </button>
               ))}
             </div>
+          </motion.div>
+
+          {/* Segment filter */}
+          <motion.div className="flex flex-wrap gap-2 items-center" variants={staggerItem}>
+            <Users className="h-3.5 w-3.5 text-muted-foreground" />
+            {SEGMENTS.map((seg) => (
+              <button
+                key={seg.value}
+                onClick={() => setFilterSegment(seg.value as any)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${filterSegment === seg.value ? "bg-primary text-primary-foreground" : "glass-button"}`}
+              >
+                {seg.label}
+              </button>
+            ))}
           </motion.div>
 
           {/* Tag filters */}
@@ -287,7 +360,10 @@ export default function AdminClients() {
                   <div>
                     <p className="font-medium text-sm">{c.prenom} {c.nom}</p>
                     <p className="text-xs text-muted-foreground">{c.entreprise}</p>
-                    <ClientTagBadges clientId={c.id} />
+                    <div className="flex items-center gap-1 mt-1">
+                      {getSegmentBadge(c)}
+                      <ClientTagBadges clientId={c.id} />
+                    </div>
                   </div>
                   <StatusBadge status={c.statut} />
                 </div>
@@ -308,7 +384,7 @@ export default function AdminClients() {
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Email</th>
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Téléphone</th>
-                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden xl:table-cell">SIRET</th>
+                    <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden xl:table-cell">Segment</th>
                     <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden xl:table-cell">Ville</th>
                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Dossiers</th>
                     <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
@@ -321,7 +397,7 @@ export default function AdminClients() {
                       <td className="py-3 px-4"><div><p className="font-medium">{c.prenom} {c.nom}</p><p className="text-xs text-muted-foreground">{c.entreprise}</p><ClientTagBadges clientId={c.id} /></div></td>
                       <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{c.email}</td>
                       <td className="py-3 px-4 hidden lg:table-cell text-muted-foreground">{c.telephone}</td>
-                      <td className="py-3 px-4 hidden xl:table-cell text-muted-foreground text-xs">{c.siret || "—"}</td>
+                      <td className="py-3 px-4 hidden xl:table-cell">{getSegmentBadge(c)}</td>
                       <td className="py-3 px-4 hidden xl:table-cell text-muted-foreground text-xs">{c.ville ? `${c.codePostal} ${c.ville}` : "—"}</td>
                       <td className="py-3 px-4 text-center">{c.nombreDossiers}</td>
                       <td className="py-3 px-4 text-center"><StatusBadge status={c.statut} /></td>
@@ -450,6 +526,7 @@ export default function AdminClients() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
       {/* Create client dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent className="max-w-lg">
@@ -484,6 +561,22 @@ export default function AdminClients() {
                 <Input value={newClient.entreprise} onChange={(e) => setNewClient({ ...newClient, entreprise: e.target.value })} className="h-9" />
               </div>
               <div className="space-y-1.5">
+                <label className="text-xs font-medium text-muted-foreground">Segment</label>
+                <div className="flex gap-2">
+                  {(["client", "prospect"] as const).map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setNewClient({ ...newClient, segment: s })}
+                      className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${newClient.segment === s ? "bg-primary text-primary-foreground" : "glass-button"}`}
+                    >
+                      {s === "client" ? "Client" : "Prospect"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">SIRET</label>
                 <Input value={newClient.siret} onChange={(e) => setNewClient({ ...newClient, siret: e.target.value })} className="h-9" />
               </div>
@@ -510,6 +603,42 @@ export default function AdminClients() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Annuler</Button>
             <Button onClick={handleCreateClient} className="gap-1.5"><UserPlus className="h-3.5 w-3.5" /> Créer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk email dialog */}
+      <Dialog open={showBulkEmailDialog} onOpenChange={setShowBulkEmailDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> Email groupé</DialogTitle>
+            <DialogDescription>
+              Envoyez un email à {filtered.length} client{filtered.length > 1 ? "s" : ""} correspondant aux filtres actifs.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-1 p-3 rounded-lg bg-muted/20 max-h-24 overflow-auto">
+              {filtered.slice(0, 10).map((c) => (
+                <span key={c.id} className="text-[10px] rounded-full px-2 py-0.5 bg-primary/10 text-primary">
+                  {c.prenom} {c.nom}
+                </span>
+              ))}
+              {filtered.length > 10 && <span className="text-[10px] text-muted-foreground">+{filtered.length - 10} autres</span>}
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-muted-foreground">Sujet *</label>
+              <Input value={bulkSubject} onChange={(e) => setBulkSubject(e.target.value)} placeholder="Sujet de l'email" className="h-9" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-muted-foreground">Message *</label>
+              <Textarea value={bulkMessage} onChange={(e) => setBulkMessage(e.target.value)} placeholder="Contenu de l'email..." rows={6} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowBulkEmailDialog(false)}>Annuler</Button>
+            <Button onClick={handleSendBulkEmail} disabled={bulkSending || !bulkSubject.trim() || !bulkMessage.trim()} className="gap-1.5">
+              <Send className="h-3.5 w-3.5" /> {bulkSending ? "Envoi..." : `Envoyer (${filtered.length})`}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

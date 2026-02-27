@@ -9,6 +9,8 @@ export type DevisStatus = "accepte" | "en_attente" | "refuse" | "expire";
 export type RelanceStatus = "a_envoyer" | "envoyee" | "reponse_recue";
 export type MessageRole = "admin" | "client";
 
+export type ClientSegment = "client" | "prospect";
+
 export interface Client {
   id: string;
   nom: string;
@@ -22,6 +24,7 @@ export interface Client {
   ville?: string;
   pays?: string;
   statut: ClientStatus;
+  segment?: ClientSegment;
   dateCreation: string;
   nombreDossiers: number;
 }
