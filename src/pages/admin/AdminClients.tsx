@@ -12,15 +12,20 @@ import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import type { Client } from "@/data/mockData";
-import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus } from "lucide-react";
+import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus, Tag } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
+import { ClientTagManager, ClientTagBadges } from "@/components/admin/ClientTagManager";
+import { useTags, useClientTags } from "@/hooks/use-produits";
 
 export default function AdminClients() {
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | "actif" | "inactif">("tous");
+  const [filterTagId, setFilterTagId] = useState<string | null>(null);
+  const { tags } = useTags();
+  const { clientTags: allClientTags } = useClientTags();
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [deletingClient, setDeletingClient] = useState<Client | null>(null);
@@ -38,7 +43,8 @@ export default function AdminClients() {
       c.entreprise.toLowerCase().includes(search.toLowerCase()) ||
       c.email.toLowerCase().includes(search.toLowerCase());
     const matchStatut = filterStatut === "tous" || c.statut === filterStatut;
-    return matchSearch && matchStatut;
+    const matchTag = !filterTagId || allClientTags.some((ct: any) => ct.client_id === c.id && ct.tag_id === filterTagId);
+    return matchSearch && matchStatut && matchTag;
   });
 
   const clientDossiers = selectedClient ? getDossiersByClient(selectedClient.id) : [];
@@ -142,6 +148,15 @@ export default function AdminClients() {
             <Trash2 className="h-3 w-3" /> Supprimer
           </Button>
         </div>
+
+        {/* Tags */}
+        {selectedClient && (
+          <div>
+            <p className="text-sm font-semibold mb-2 flex items-center gap-1.5"><Tag className="h-3.5 w-3.5" /> Tags</p>
+            <ClientTagManager clientId={selectedClient.id} />
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div><p className="text-muted-foreground">Email</p><p className="break-all">{selectedClient?.email}</p></div>
           <div><p className="text-muted-foreground">Téléphone</p><p>{selectedClient?.telephone}</p></div>
@@ -235,6 +250,33 @@ export default function AdminClients() {
             </div>
           </motion.div>
 
+          {/* Tag filters */}
+          {tags.length > 0 && (
+            <motion.div className="flex flex-wrap gap-1.5 items-center" variants={staggerItem}>
+              <Tag className="h-3.5 w-3.5 text-muted-foreground" />
+              <button
+                onClick={() => setFilterTagId(null)}
+                className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${!filterTagId ? "bg-primary text-primary-foreground" : "glass-button"}`}
+              >
+                Tous
+              </button>
+              {tags.map((tag: any) => (
+                <button
+                  key={tag.id}
+                  onClick={() => setFilterTagId(filterTagId === tag.id ? null : tag.id)}
+                  className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${filterTagId === tag.id ? "ring-2 ring-offset-1 ring-offset-background" : "hover:opacity-80"}`}
+                  style={{
+                    backgroundColor: `${tag.couleur || "#6366f1"}${filterTagId === tag.id ? "40" : "20"}`,
+                    color: tag.couleur || "#6366f1",
+                    ...(filterTagId === tag.id ? { ringColor: tag.couleur } : {}),
+                  }}
+                >
+                  {tag.nom}
+                </button>
+              ))}
+            </motion.div>
+          )}
+
           {/* Mobile cards */}
           <motion.div className="sm:hidden space-y-3" variants={staggerItem}>
             {filtered.length === 0 ? (
@@ -245,6 +287,7 @@ export default function AdminClients() {
                   <div>
                     <p className="font-medium text-sm">{c.prenom} {c.nom}</p>
                     <p className="text-xs text-muted-foreground">{c.entreprise}</p>
+                    <ClientTagBadges clientId={c.id} />
                   </div>
                   <StatusBadge status={c.statut} />
                 </div>
@@ -275,7 +318,7 @@ export default function AdminClients() {
                 <tbody>
                   {filtered.map((c) => (
                     <tr key={c.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                      <td className="py-3 px-4"><div><p className="font-medium">{c.prenom} {c.nom}</p><p className="text-xs text-muted-foreground">{c.entreprise}</p></div></td>
+                      <td className="py-3 px-4"><div><p className="font-medium">{c.prenom} {c.nom}</p><p className="text-xs text-muted-foreground">{c.entreprise}</p><ClientTagBadges clientId={c.id} /></div></td>
                       <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{c.email}</td>
                       <td className="py-3 px-4 hidden lg:table-cell text-muted-foreground">{c.telephone}</td>
                       <td className="py-3 px-4 hidden xl:table-cell text-muted-foreground text-xs">{c.siret || "—"}</td>
