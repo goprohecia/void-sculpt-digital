@@ -2,36 +2,37 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
 
 export default function AdminSettings() {
   const { user } = useDemoAuth();
-
+  const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
   const [profile, setProfile] = useState({
     nom: user?.nom || "Admin",
-    email: "admin@impartial.fr",
+    email: "admin@mba.demo",
     telephone: "01 23 45 67 89",
     newPassword: "",
     confirmPassword: "",
   });
 
   const [company, setCompany] = useState({
-    nom: "Impartial",
+    nom: "My Business Assistant",
     siret: "123 456 789 00012",
     adresse: "42 avenue des Champs-Élysées",
     codePostal: "75008",
     ville: "Paris",
-    emailContact: "contact@impartial.fr",
+    emailContact: "contact@mba.app",
     telephone: "01 23 45 67 89",
   });
 
@@ -97,9 +98,10 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="profil" className="gap-1.5"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
+                <TabsTrigger value="modules" className="gap-1.5"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
                 <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
               </TabsList>
 
@@ -226,6 +228,97 @@ export default function AdminSettings() {
                     </div>
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              {/* MODULES TAB */}
+              <TabsContent value="modules">
+                <div className="space-y-6">
+                  {/* Admin modules */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <Puzzle className="h-4 w-4" /> Modules admin actifs
+                      </CardTitle>
+                      <CardDescription>Choisissez les modules visibles dans votre navigation admin.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {ALL_ADMIN_MODULES.map((mod) => {
+                        const isAlwaysOn = mod.key === "overview" || mod.key === "parametres";
+                        const isOn = enabledModules.includes(mod.key);
+                        return (
+                          <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                            <p className="text-sm font-medium">{mod.label}</p>
+                            <Switch
+                              checked={isOn}
+                              disabled={isAlwaysOn}
+                              onCheckedChange={(v) => {
+                                const next = v
+                                  ? [...enabledModules, mod.key]
+                                  : enabledModules.filter((k) => k !== mod.key);
+                                updateSetting.mutate({ key: "enabled_modules", value: next });
+                                toast.success(`Module "${mod.label}" ${v ? "activé" : "désactivé"}`);
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
+
+                  {/* Client visible modules */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Modules visibles côté client</CardTitle>
+                      <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {ALL_CLIENT_MODULES.map((mod) => {
+                        const isOn = clientVisibleModules.includes(mod.key);
+                        return (
+                          <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                            <p className="text-sm font-medium">{mod.label}</p>
+                            <Switch
+                              checked={isOn}
+                              onCheckedChange={(v) => {
+                                const next = v
+                                  ? [...clientVisibleModules, mod.key]
+                                  : clientVisibleModules.filter((k) => k !== mod.key);
+                                updateSetting.mutate({ key: "client_visible_modules", value: next });
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
+
+                  {/* Employee visible modules */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Modules visibles côté salarié</CardTitle>
+                      <CardDescription>Configurez les onglets accessibles dans l'espace salarié.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {ALL_EMPLOYEE_MODULES.map((mod) => {
+                        const isOn = employeeVisibleModules.includes(mod.key);
+                        return (
+                          <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                            <p className="text-sm font-medium">{mod.label}</p>
+                            <Switch
+                              checked={isOn}
+                              onCheckedChange={(v) => {
+                                const next = v
+                                  ? [...employeeVisibleModules, mod.key]
+                                  : employeeVisibleModules.filter((k) => k !== mod.key);
+                                updateSetting.mutate({ key: "employee_visible_modules", value: next });
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
+                </div>
               </TabsContent>
 
               {/* NOTIFICATIONS TAB */}

@@ -17,6 +17,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
 import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import {
   Sidebar,
   SidebarContent,
@@ -38,6 +39,7 @@ export function ClientSidebar() {
   const { clientId, clientName, clientInitials } = useClientId();
   const { conversations } = useConversations();
   const { tickets } = useTickets();
+  const { clientVisibleModules } = useAppSettings();
 
   const clientConvNonLus = clientId
     ? conversations.filter((c) => c.clientId === clientId).reduce((acc, c) => acc + (c.nonLus || 0), 0)
@@ -47,18 +49,20 @@ export function ClientSidebar() {
     ? tickets.filter((t) => t.clientId === clientId && (t.statut === "ouvert" || t.statut === "en_cours")).length
     : 0;
 
-  const navItems = [
-    { title: "Tableau de bord", url: "/client", icon: LayoutDashboard },
-    { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen },
-    { title: "Demandes", url: "/client/demandes", icon: Send },
-    { title: "Devis", url: "/client/devis", icon: FileText },
-    { title: "Factures", url: "/client/factures", icon: Receipt },
-    { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus },
-    { title: "Rendez-vous", url: "/client/rendez-vous", icon: CalendarDays },
-    { title: "Support", url: "/client/support", icon: LifeBuoy, badge: openClientTickets },
-    { title: "Mon profil", url: "/client/profil", icon: UserCircle },
-    { title: "Paramètres", url: "/client/parametres", icon: Settings },
+  const allNavItems = [
+    { title: "Tableau de bord", url: "/client", icon: LayoutDashboard, moduleKey: "overview" },
+    { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: "Demandes", url: "/client/demandes", icon: Send, moduleKey: "demandes" },
+    { title: "Devis", url: "/client/devis", icon: FileText, moduleKey: "devis" },
+    { title: "Factures", url: "/client/factures", icon: Receipt, moduleKey: "factures" },
+    { title: "Messagerie", url: "/client/messagerie", icon: MessageSquare, badge: clientConvNonLus, moduleKey: "messagerie" },
+    { title: "Rendez-vous", url: "/client/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
+    { title: "Support", url: "/client/support", icon: LifeBuoy, badge: openClientTickets, moduleKey: "support" },
+    { title: "Mon profil", url: "/client/profil", icon: UserCircle, moduleKey: "profil" },
+    { title: "Paramètres", url: "/client/parametres", icon: Settings, moduleKey: "parametres" },
   ];
+
+  const navItems = allNavItems.filter((item) => clientVisibleModules.includes(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/client") return location.pathname === "/client";

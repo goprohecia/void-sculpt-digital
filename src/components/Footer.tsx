@@ -16,10 +16,10 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2 space-y-6">
             <Link to="/" className="text-xl font-medium tracking-wide">
-              IMPARTIAL
+              MY BUSINESS ASSISTANT
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Studio digital spécialisé dans la création d'expériences web et mobiles immersives pour les marques ambitieuses.
+              Plateforme SaaS modulable pour la gestion de votre entreprise, vos clients et vos salariés.
             </p>
           </div>
 
@@ -93,7 +93,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 max-w-6xl mx-auto">
           <p className="text-sm text-muted-foreground">
-            © 2025 IMPARTIAL. Tous droits réservés.
+            © 2025 MY BUSINESS ASSISTANT. Tous droits réservés.
           </p>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
             {[

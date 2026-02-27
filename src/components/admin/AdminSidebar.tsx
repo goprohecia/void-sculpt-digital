@@ -17,6 +17,7 @@ import {
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
+import { useAppSettings } from "@/hooks/use-app-settings";
 import {
   Sidebar,
   SidebarContent,
@@ -37,23 +38,26 @@ export function AdminSidebar() {
   const { user, logout } = useDemoAuth();
   const { conversations } = useConversations();
   const { tickets } = useTickets();
+  const { enabledModules } = useAppSettings();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
 
-  const navItems = [
-    { title: "Vue d'ensemble", url: "/admin", icon: LayoutDashboard },
-    { title: "Clients", url: "/admin/clients", icon: Users },
-    { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen },
-    { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus },
-    { title: "Facturation", url: "/admin/facturation", icon: Receipt },
-    { title: "Relances", url: "/admin/relances", icon: Bell },
-    { title: "Emails", url: "/admin/emails", icon: Mail },
-    { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays },
-    { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: openTickets },
-    { title: "Analyse", url: "/admin/analyse", icon: BarChart3 },
-    { title: "Paramètres", url: "/admin/parametres", icon: Settings },
+  const allNavItems = [
+    { title: "Vue d'ensemble", url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
+    { title: "Clients", url: "/admin/clients", icon: Users, moduleKey: "clients" },
+    { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
+    { title: "Facturation", url: "/admin/facturation", icon: Receipt, moduleKey: "facturation" },
+    { title: "Relances", url: "/admin/relances", icon: Bell, moduleKey: "relances" },
+    { title: "Emails", url: "/admin/emails", icon: Mail, moduleKey: "emails" },
+    { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
+    { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
+    { title: "Analyse", url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
+    { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
+
+  const navItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
@@ -65,10 +69,10 @@ export function AdminSidebar() {
       <SidebarHeader className="p-4">
         <Link to="/admin" className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-            <span className="text-primary font-bold text-sm">IM</span>
+            <span className="text-primary font-bold text-sm">MBA</span>
           </div>
           <div>
-            <p className="text-sm font-semibold">Impartial</p>
+            <p className="text-sm font-semibold">My Business Assistant</p>
             <p className="text-xs text-muted-foreground">Back-office</p>
           </div>
         </Link>
