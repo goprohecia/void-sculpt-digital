@@ -24,7 +24,8 @@ export default function AdminLogin() {
   // Check if returning from Google OAuth with incomplete profile
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(user?.role === "client" ? "/client" : "/admin", { replace: true });
+      const dest = user?.role === "employee" ? "/employee" : user?.role === "client" ? "/client" : "/admin";
+      navigate(dest, { replace: true });
       return;
     }
     const checkSession = async () => {
@@ -53,8 +54,9 @@ export default function AdminLogin() {
 
     const demoSuccess = login(email, password);
     if (demoSuccess) {
-      const account = email.toLowerCase().includes("client") ? "/client" : "/admin";
-      navigate(account, { replace: true });
+      const low = email.toLowerCase();
+      const dest = low.includes("employee") ? "/employee" : low.includes("client") ? "/client" : "/admin";
+      navigate(dest, { replace: true });
       return;
     }
 
@@ -89,8 +91,9 @@ export default function AdminLogin() {
     }
   };
 
-  const fillDemo = (type: "admin" | "client") => {
-    setEmail(type === "admin" ? "admin@impartial.demo" : "client@impartial.demo");
+  const fillDemo = (type: "admin" | "client" | "employee") => {
+    const emails = { admin: "admin@mba.demo", client: "client@mba.demo", employee: "employee@mba.demo" };
+    setEmail(emails[type]);
     setPassword("demo2026");
     setError("");
   };
@@ -103,7 +106,7 @@ export default function AdminLogin() {
           <Link to="/">
             <img src={logoHero} alt="Impartial" className="h-14 w-auto mx-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] hover:scale-105 transition-transform cursor-pointer" />
           </Link>
-          <h1 className="text-2xl font-bold">Back-office Impartial</h1>
+          <h1 className="text-2xl font-bold">My Business Assistant</h1>
         </div>
 
         {/* Verified banner */}
@@ -175,14 +178,18 @@ export default function AdminLogin() {
                 <span className="bg-card px-2 text-muted-foreground">Comptes de démonstration</span>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <button onClick={() => fillDemo("admin")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
                 <p className="text-xs font-semibold text-primary">Admin</p>
-                <p className="text-[10px] text-muted-foreground">admin@impartial.demo</p>
+                <p className="text-[10px] text-muted-foreground">admin@mba.demo</p>
+              </button>
+              <button onClick={() => fillDemo("employee")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
+                <p className="text-xs font-semibold text-amber-400">Salarié</p>
+                <p className="text-[10px] text-muted-foreground">employee@mba.demo</p>
               </button>
               <button onClick={() => fillDemo("client")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
                 <p className="text-xs font-semibold text-neon-blue">Client</p>
-                <p className="text-[10px] text-muted-foreground">client@impartial.demo</p>
+                <p className="text-[10px] text-muted-foreground">client@mba.demo</p>
               </button>
             </div>
             <div className="text-center pt-1 space-y-2">

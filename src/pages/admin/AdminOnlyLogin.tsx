@@ -90,7 +90,7 @@ export default function AdminOnlyLogin() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Email</label>
-              <Input type="email" placeholder="admin@impartial.demo" value={email} onChange={(e) => setEmail(e.target.value)} className="glass-input border-0 h-11" required />
+              <Input type="email" placeholder="admin@mba.demo" value={email} onChange={(e) => setEmail(e.target.value)} className="glass-input border-0 h-11" required />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Mot de passe</label>
@@ -118,11 +118,11 @@ export default function AdminOnlyLogin() {
               </div>
             </div>
             <button
-              onClick={() => { setEmail("admin@impartial.demo"); setPassword("demo2026"); setError(""); }}
+              onClick={() => { setEmail("admin@mba.demo"); setPassword("demo2026"); setError(""); }}
               className="glass-button p-3 w-full text-left space-y-1 hover:border-primary/30"
             >
               <p className="text-xs font-semibold text-primary">Compte Admin démo</p>
-              <p className="text-[10px] text-muted-foreground">admin@impartial.demo</p>
+              <p className="text-[10px] text-muted-foreground">admin@mba.demo</p>
             </button>
             <div className="text-center pt-1">
               <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">

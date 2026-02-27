@@ -55,6 +55,16 @@ import ClientSettings from "@/pages/client/ClientSettings";
 import ClientRendezVous from "@/pages/client/ClientRendezVous";
 import AdminRendezVous from "@/pages/admin/AdminRendezVous";
 
+// Employee pages
+import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
+import EmployeeDossiers from "@/pages/employee/EmployeeDossiers";
+import EmployeeCalendrier from "@/pages/employee/EmployeeCalendrier";
+import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
+import EmployeeProfile from "@/pages/employee/EmployeeProfile";
+
+// Admin employees management
+import AdminEmployees from "@/pages/admin/AdminEmployees";
+
 export function AnimatedRoutes() {
   const location = useLocation();
   useScrollToTop();
@@ -95,6 +105,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/emails" element={<AdminEmails />} />
         <Route path="/admin/support" element={<AdminSupport />} />
         <Route path="/admin/rendez-vous" element={<AdminRendezVous />} />
+        <Route path="/admin/employees" element={<AdminEmployees />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
         
@@ -111,6 +122,13 @@ export function AnimatedRoutes() {
         <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
         <Route path="/client/profil" element={<ClientProfile />} />
         <Route path="/client/parametres" element={<ClientSettings />} />
+        
+        {/* Employee routes */}
+        <Route path="/employee" element={<EmployeeDashboard />} />
+        <Route path="/employee/dossiers" element={<EmployeeDossiers />} />
+        <Route path="/employee/calendrier" element={<EmployeeCalendrier />} />
+        <Route path="/employee/messagerie" element={<EmployeeMessaging />} />
+        <Route path="/employee/profil" element={<EmployeeProfile />} />
         
         <Route path="*" element={<PageTransition3D><NotFound /></PageTransition3D>} />
       </Routes>
