@@ -512,6 +512,51 @@ export type Database = {
           },
         ]
       }
+      employees: {
+        Row: {
+          acces_modules: Json
+          created_at: string
+          date_embauche: string | null
+          email: string
+          id: string
+          nom: string
+          poste: string | null
+          prenom: string
+          statut: string
+          telephone: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          acces_modules?: Json
+          created_at?: string
+          date_embauche?: string | null
+          email?: string
+          id?: string
+          nom?: string
+          poste?: string | null
+          prenom?: string
+          statut?: string
+          telephone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          acces_modules?: Json
+          created_at?: string
+          date_embauche?: string | null
+          email?: string
+          id?: string
+          nom?: string
+          poste?: string | null
+          prenom?: string
+          statut?: string
+          telephone?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       factures: {
         Row: {
           client_id: string
@@ -943,7 +988,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "client"
+      app_role: "admin" | "client" | "employee"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1071,7 +1116,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "client"],
+      app_role: ["admin", "client", "employee"],
     },
   },
 } as const
