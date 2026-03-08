@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { useDemoPlan, ALL_MODULE_KEYS, type } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
 import { Save, Layers, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";

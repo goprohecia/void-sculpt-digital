@@ -36,6 +36,7 @@ const App = () => {
                 </BrowserRouter>
               </div>
             </WhiteLabelProvider>
+            </DemoPlanProvider>
           </DemoDataProvider>
         </DemoAuthProvider>
       </TooltipProvider>
