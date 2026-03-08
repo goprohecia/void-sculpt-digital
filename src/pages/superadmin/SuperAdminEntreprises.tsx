@@ -79,7 +79,15 @@ export default function SuperAdminEntreprises() {
                         {e.statut}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground">{e.email}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {e.email}
+                      {e.sector && (
+                        <span className="ml-2 inline-flex items-center gap-1">
+                          <span>{SECTORS.find(s => s.key === e.sector)?.icon}</span>
+                          <span>{SECTORS.find(s => s.key === e.sector)?.label}</span>
+                        </span>
+                      )}
+                    </p>
                   </div>
                   <div className="hidden sm:flex items-center gap-6 text-sm">
                     <div className="text-center">
