@@ -13,6 +13,11 @@ import Conciergerie from "@/pages/secteurs/Conciergerie";
 import Immobilier from "@/pages/secteurs/Immobilier";
 import Garages from "@/pages/secteurs/Garages";
 import BTP from "@/pages/secteurs/BTP";
+import Mariage from "@/pages/secteurs/Mariage";
+import Coiffure from "@/pages/secteurs/Coiffure";
+import Cabinets from "@/pages/secteurs/Cabinets";
+import Evenementiel from "@/pages/secteurs/Evenementiel";
+import Nettoyage from "@/pages/secteurs/Nettoyage";
 
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -76,6 +81,11 @@ export function AnimatedRoutes() {
         <Route path="/secteurs/immobilier" element={<Immobilier />} />
         <Route path="/secteurs/garages" element={<Garages />} />
         <Route path="/secteurs/btp" element={<BTP />} />
+        <Route path="/secteurs/mariage" element={<Mariage />} />
+        <Route path="/secteurs/coiffure" element={<Coiffure />} />
+        <Route path="/secteurs/cabinets" element={<Cabinets />} />
+        <Route path="/secteurs/evenementiel" element={<Evenementiel />} />
+        <Route path="/secteurs/nettoyage" element={<Nettoyage />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />

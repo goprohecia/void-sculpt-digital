@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Home, Building2, Wrench, HardHat } from "lucide-react";
+import { Home, Building2, Wrench, HardHat, Heart, Scissors, Scale, PartyPopper, SprayCan } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ScrollReveal, StaggerContainer, staggerItemVariants } from "@/components/animations";
 
@@ -28,6 +28,36 @@ const sectors = [
     description: "Chantiers, devis, factures et gestion des équipes sur le terrain.",
     href: "/secteurs/btp",
   },
+  {
+    icon: Heart,
+    title: "Boutiques de mariage",
+    description: "Fiches mariées, stock robes, essayages et facturation avec acomptes.",
+    href: "/secteurs/mariage",
+  },
+  {
+    icon: Scissors,
+    title: "Salons & Instituts de beauté",
+    description: "Rendez-vous, fiches clients, stock produits et encaissements.",
+    href: "/secteurs/coiffure",
+  },
+  {
+    icon: Scale,
+    title: "Cabinets comptables & juridiques",
+    description: "Dossiers clients, échéances légales et facturation récurrente.",
+    href: "/secteurs/cabinets",
+  },
+  {
+    icon: PartyPopper,
+    title: "Agences événementielles",
+    description: "Projets événementiels, prestataires, planning et facturation.",
+    href: "/secteurs/evenementiel",
+  },
+  {
+    icon: SprayCan,
+    title: "Nettoyage & Propreté",
+    description: "Contrats récurrents, planning interventions et stock produits.",
+    href: "/secteurs/nettoyage",
+  },
 ];
 
 export function ServicesSection() {
@@ -54,8 +84,8 @@ export function ServicesSection() {
         </div>
 
         <StaggerContainer
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto"
-          staggerDelay={0.08}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+          staggerDelay={0.06}
         >
           {sectors.map((sector) => (
             <motion.div key={sector.title} variants={staggerItemVariants}>
