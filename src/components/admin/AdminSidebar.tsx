@@ -89,9 +89,10 @@ export function AdminSidebar() {
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  const navItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
-  const mainItems = navItems.filter((item) => mainMenuKeys.includes(item.moduleKey));
-  const toolItems = navItems.filter((item) => toolsKeys.includes(item.moduleKey));
+  const principalItems = navItems.filter((item) => principalKeys.includes(item.moduleKey));
+  const commercialItems = navItems.filter((item) => commercialKeys.includes(item.moduleKey));
+  const outilsItems = navItems.filter((item) => outilsKeys.includes(item.moduleKey));
+  const gestionItems = navItems.filter((item) => gestionKeys.includes(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
