@@ -1,5 +1,5 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Building2, CreditCard, BarChart3, Settings, LogOut, Layers } from "lucide-react";
+import { LayoutDashboard, Building2, CreditCard, BarChart3, Settings, LogOut, Layers, MapPin } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -21,6 +21,7 @@ const navItems = [
   { title: "Entreprises", url: "/superadmin/entreprises", icon: Building2 },
   { title: "Abonnements", url: "/superadmin/abonnements", icon: CreditCard },
   { title: "Formules", url: "/superadmin/formules", icon: Layers },
+  { title: "Secteurs", url: "/superadmin/secteurs", icon: MapPin },
   { title: "Statistiques", url: "/superadmin/stats", icon: BarChart3 },
   { title: "Paramètres MBA", url: "/superadmin/parametres", icon: Settings },
 ];

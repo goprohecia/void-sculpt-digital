@@ -1,9 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import {
   SECTOR_MODULE_OVERRIDES,
-  getModuleLabel as _getModuleLabel,
-  getModuleDescription as _getModuleDescription,
-  isModuleHidden as _isModuleHidden,
+  GENERIC_MODULE_LABELS,
   type SectorModulesConfig,
 } from "@/data/sectorModules";
 
@@ -113,10 +111,26 @@ export function DemoPlanProvider({ children }: { children: ReactNode }) {
   const [sectorModuleOverrides, setSectorModuleOverrides] = useState<Record<string, SectorModulesConfig>>(SECTOR_MODULE_OVERRIDES);
   const [demoSector, setDemoSector] = useState<SectorKey | null>("developpeur");
 
-  // Helpers that use the current demo sector
-  const getModuleLabel = (moduleKey: string) => _getModuleLabel(moduleKey, demoSector);
-  const isModuleHiddenFn = (moduleKey: string) => _isModuleHidden(moduleKey, demoSector);
-  const getModuleDescriptionFn = (moduleKey: string) => _getModuleDescription(moduleKey, demoSector);
+  // Helpers that use the current demo sector + live overrides from state
+  const getModuleLabel = useCallback((moduleKey: string) => {
+    if (demoSector) {
+      const override = sectorModuleOverrides[demoSector]?.[moduleKey];
+      if (override && !override.hidden) return override.label;
+    }
+    return GENERIC_MODULE_LABELS[moduleKey] || moduleKey;
+  }, [demoSector, sectorModuleOverrides]);
+
+  const isModuleHiddenFn = useCallback((moduleKey: string) => {
+    if (!demoSector) return false;
+    return sectorModuleOverrides[demoSector]?.[moduleKey]?.hidden === true;
+  }, [demoSector, sectorModuleOverrides]);
+
+  const getModuleDescriptionFn = useCallback((moduleKey: string) => {
+    if (demoSector) {
+      return sectorModuleOverrides[demoSector]?.[moduleKey]?.description;
+    }
+    return undefined;
+  }, [demoSector, sectorModuleOverrides]);
 
   return (
     <DemoPlanContext.Provider value={{
