@@ -42,8 +42,9 @@ const packs: Pack[] = [
     tagline: "La puissance pour scaler",
     description: "Plus de modules, plus de contrôle.",
     priceMonthly: 250,
-    priceAnnual: 2500,
+    priceAnnual: 2100,
     modulesLimit: "6 modules au choix",
+    engagement: "Sans engagement",
     features: [
       "6 modules activables au choix",
       "Tout le plan Starter inclus",
