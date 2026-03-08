@@ -629,6 +629,54 @@ export type Database = {
         }
         Relationships: []
       }
+      dossier_timeline: {
+        Row: {
+          created_at: string
+          current_step: number
+          dossier_id: string
+          id: string
+          step_dates: Json
+          step_notes: Json
+          template_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_step?: number
+          dossier_id: string
+          id?: string
+          step_dates?: Json
+          step_notes?: Json
+          template_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_step?: number
+          dossier_id?: string
+          id?: string
+          step_dates?: Json
+          step_notes?: Json
+          template_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossier_timeline_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: true
+            referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossier_timeline_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "timeline_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dossiers: {
         Row: {
           client_id: string
@@ -1502,6 +1550,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      timeline_templates: {
+        Row: {
+          created_at: string
+          id: string
+          is_default: boolean
+          name: string
+          steps: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          steps?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          steps?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
