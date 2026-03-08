@@ -142,11 +142,18 @@ export default function AdminBilling() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Receipt className="h-6 w-6 text-primary" />
-              Facturation
-            </h1>
+          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <Receipt className="h-6 w-6 text-primary" />
+                Facturation
+              </h1>
+            </div>
+            <AIContextButton
+              label="Suggestion de relance"
+              context={`facturation - ${factures.filter(f => f.statut === "en_retard").length} factures en retard, ${factures.filter(f => f.statut === "en_attente").length} en attente. Total facturé: ${statsFactures.total.toLocaleString()}€, encaissé: ${statsFactures.paye.toLocaleString()}€, impayé: ${statsFactures.enRetard.toLocaleString()}€.`}
+              prompt="Propose une stratégie de relance pour les factures impayées. Priorise par montant et ancienneté. Suggère des modèles d'emails de relance adaptés (première relance amiable, deuxième relance ferme, mise en demeure)."
+            />
           </motion.div>
 
           {/* Summary */}

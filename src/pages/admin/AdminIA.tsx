@@ -484,5 +484,6 @@ export default function AdminIA() {
         </Tabs>
       </div>
     </AdminPageTransition>
+    </AdminLayout>
   );
 }
