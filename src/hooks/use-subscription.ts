@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
-export type SubscriptionPlan = "starter" | "business" | "enterprise";
+export type { SubscriptionPlan } from "@/contexts/DemoPlanContext";
 
 export interface SubscriptionData {
   plan: SubscriptionPlan;
