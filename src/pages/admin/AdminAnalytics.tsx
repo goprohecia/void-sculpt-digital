@@ -11,6 +11,7 @@ import { useDossiers } from "@/hooks/use-dossiers";
 import { useTickets } from "@/hooks/use-tickets";
 import { donneesMensuelles as mockDonneesMensuelles } from "@/data/mockData";
 import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet, Pencil, Check, X, ArrowDownUp } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
