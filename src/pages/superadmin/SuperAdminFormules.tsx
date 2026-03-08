@@ -30,7 +30,7 @@ const ALWAYS_INCLUDED = ["overview", "parametres"];
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
 
 export default function SuperAdminFormules() {
-  const { planModules, setPlanModules, planPrices, setPlanPrices, sectorRecommendations, setSectorRecommendations } = useDemoPlan();
+  const { planModules, setPlanModules, planPrices, setPlanPrices, sectorRecommendations, setSectorRecommendations, sectorModuleOverrides, setSectorModuleOverrides } = useDemoPlan();
   const { toast } = useToast();
 
   const [localModules, setLocalModules] = useState<Record<SubscriptionPlan, string[] | "all">>({ ...planModules });
