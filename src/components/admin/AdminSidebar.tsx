@@ -22,6 +22,7 @@ import {
   Zap,
   StickyNote,
   Target,
+  Bot,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
