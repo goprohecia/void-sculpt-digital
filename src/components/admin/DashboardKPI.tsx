@@ -1,6 +1,7 @@
 import { type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface DashboardKPIProps {
   title: string;
@@ -20,6 +21,38 @@ const colorMap = {
   primary: { bg: "bg-primary/10", text: "text-primary" },
 };
 
+function AnimatedValue({ value }: { value: string | number }) {
+  const [display, setDisplay] = useState("0");
+
+  useEffect(() => {
+    const str = String(value);
+    // Extract the numeric part (supports decimals like "12.5k €")
+    const match = str.match(/^([^0-9]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
+    if (!match) {
+      setDisplay(str);
+      return;
+    }
+
+    const prefix = match[1];
+    const num = parseFloat(match[2]);
+    const suffix = match[3];
+    const decimals = match[2].includes(".") ? match[2].split(".")[1].length : 0;
+
+    const mv = useMotionValue(0);
+    const controls = animate(mv, num, {
+      duration: 1,
+      ease: [0.25, 0.46, 0.45, 0.94],
+      onUpdate: (v) => {
+        setDisplay(`${prefix}${v.toFixed(decimals)}${suffix}`);
+      },
+    });
+
+    return () => controls.stop();
+  }, [value]);
+
+  return <>{display}</>;
+}
+
 export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "primary", className }: DashboardKPIProps) {
   const colors = colorMap[iconColor];
 
@@ -38,7 +71,9 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
       <div className="flex items-start justify-between">
         <div className="space-y-1.5 sm:space-y-2">
           <p className="text-xs sm:text-sm text-muted-foreground">{title}</p>
-          <p className="text-xl sm:text-2xl font-bold tracking-tight">{value}</p>
+          <p className="text-xl sm:text-2xl font-bold tracking-tight">
+            <AnimatedValue value={value} />
+          </p>
           {trend && (
             <p className={cn(
               "text-xs font-medium",
