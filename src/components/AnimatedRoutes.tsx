@@ -53,6 +53,14 @@ import AdminSettings from "@/pages/admin/AdminSettings";
 import AdminRendezVous from "@/pages/admin/AdminRendezVous";
 import AdminEmployees from "@/pages/admin/AdminEmployees";
 import AdminStock from "@/pages/admin/AdminStock";
+import AdminTaches from "@/pages/admin/AdminTaches";
+import AdminAgenda from "@/pages/admin/AdminAgenda";
+import AdminRapports from "@/pages/admin/AdminRapports";
+import AdminDocuments from "@/pages/admin/AdminDocuments";
+import AdminTemps from "@/pages/admin/AdminTemps";
+import AdminAutomatisations from "@/pages/admin/AdminAutomatisations";
+import AdminNotes from "@/pages/admin/AdminNotes";
+import AdminPipeline from "@/pages/admin/AdminPipeline";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
@@ -139,6 +147,14 @@ export function AnimatedRoutes() {
         <Route path="/admin/employees" element={<AdminEmployees />} />
         <Route path="/admin/stock" element={<AdminStock />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
+        <Route path="/admin/taches" element={<AdminTaches />} />
+        <Route path="/admin/agenda" element={<AdminAgenda />} />
+        <Route path="/admin/rapports" element={<AdminRapports />} />
+        <Route path="/admin/documents" element={<AdminDocuments />} />
+        <Route path="/admin/temps" element={<AdminTemps />} />
+        <Route path="/admin/automatisations" element={<AdminAutomatisations />} />
+        <Route path="/admin/notes" element={<AdminNotes />} />
+        <Route path="/admin/pipeline" element={<AdminPipeline />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
 
         {/* Client routes */}

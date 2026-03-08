@@ -17,6 +17,14 @@ export const ALL_ADMIN_MODULES = [
   { key: "support", label: "Support" },
   { key: "stock", label: "Stock / Produits" },
   { key: "analyse", label: "Analyse" },
+  { key: "taches", label: "Tâches" },
+  { key: "agenda", label: "Agenda" },
+  { key: "rapports", label: "Rapports" },
+  { key: "documents", label: "Documents" },
+  { key: "temps", label: "Suivi du temps" },
+  { key: "automatisations", label: "Automatisations" },
+  { key: "notes", label: "Notes" },
+  { key: "pipeline", label: "Pipeline CRM" },
   { key: "parametres", label: "Paramètres" },
 ] as const;
 

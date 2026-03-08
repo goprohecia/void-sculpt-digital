@@ -14,6 +14,14 @@ import {
   LogOut,
   CalendarDays,
   Package,
+  CheckSquare,
+  Calendar,
+  FileText,
+  FolderClosed,
+  Timer,
+  Zap,
+  StickyNote,
+  Target,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
@@ -38,8 +46,8 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-const mainMenuKeys = ["overview", "clients", "employees", "dossiers", "rendez-vous"];
-const toolsKeys = ["messagerie", "facturation", "relances", "emails", "support", "stock", "analyse", "parametres"];
+const mainMenuKeys = ["overview", "clients", "employees", "dossiers", "rendez-vous", "pipeline"];
+const toolsKeys = ["messagerie", "facturation", "relances", "emails", "support", "stock", "analyse", "taches", "agenda", "rapports", "documents", "temps", "automatisations", "notes", "parametres"];
 
 export function AdminSidebar() {
   const location = useLocation();
@@ -61,6 +69,7 @@ export function AdminSidebar() {
     { title: "Salariés", url: "/admin/employees", icon: Users, moduleKey: "employees" },
     { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
     { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
+    { title: "Pipeline CRM", url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
     { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
     { title: "Facturation", url: "/admin/facturation", icon: Receipt, moduleKey: "facturation" },
     { title: "Relances", url: "/admin/relances", icon: Bell, moduleKey: "relances" },
@@ -68,6 +77,13 @@ export function AdminSidebar() {
     { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
     { title: "Stock", url: "/admin/stock", icon: Package, moduleKey: "stock" },
     { title: "Analyse", url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
+    { title: "Tâches", url: "/admin/taches", icon: CheckSquare, moduleKey: "taches" },
+    { title: "Agenda", url: "/admin/agenda", icon: Calendar, moduleKey: "agenda" },
+    { title: "Rapports", url: "/admin/rapports", icon: FileText, moduleKey: "rapports" },
+    { title: "Documents", url: "/admin/documents", icon: FolderClosed, moduleKey: "documents" },
+    { title: "Suivi du temps", url: "/admin/temps", icon: Timer, moduleKey: "temps" },
+    { title: "Automatisations", url: "/admin/automatisations", icon: Zap, moduleKey: "automatisations" },
+    { title: "Notes", url: "/admin/notes", icon: StickyNote, moduleKey: "notes" },
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
