@@ -12,14 +12,7 @@ import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown, 
 import { useToast } from "@/hooks/use-toast";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 
-const MODULE_LABELS: Record<string, string> = {
-  overview: "Vue d'ensemble", clients: "Clients", employees: "Salariés", dossiers: "Dossiers",
-  pipeline: "Pipeline CRM", facturation: "Facturation", relances: "Relances", stock: "Stock",
-  messagerie: "Messagerie", emails: "Emails", "rendez-vous": "Rendez-vous", agenda: "Agenda",
-  taches: "Tâches", support: "Support", notes: "Notes", analyse: "Analyse", rapports: "Rapports",
-  documents: "Documents", temps: "Suivi du temps", automatisations: "Automatisations", ia: "Intelligence IA",
-  parametres: "Paramètres",
-};
+const MODULE_LABELS = GENERIC_MODULE_LABELS;
 
 const PLAN_COLORS: Record<SubscriptionPlan, string> = {
   starter: "border-muted-foreground/30",
