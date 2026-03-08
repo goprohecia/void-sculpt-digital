@@ -68,11 +68,15 @@ export function EmployeeSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-4">
         <Link to="/employee" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-            <span className="text-primary font-bold text-sm">MBA</span>
-          </div>
+          {wl.logoUrl ? (
+            <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
+          ) : (
+            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
+              <span className="text-primary font-bold text-sm">{wl.brandShort}</span>
+            </div>
+          )}
           <div>
-            <p className="text-sm font-semibold">My Business Assistant</p>
+            <p className="text-sm font-semibold">{wl.brandName}</p>
             <p className="text-xs text-muted-foreground">Espace salarié</p>
           </div>
         </Link>

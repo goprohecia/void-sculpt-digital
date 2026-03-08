@@ -41,6 +41,7 @@ export function ClientSidebar() {
   const { conversations } = useConversations();
   const { tickets } = useTickets();
   const { clientVisibleModules } = useAppSettings();
+  const { config: wl } = useWhiteLabel();
 
   const clientConvNonLus = clientId
     ? conversations.filter((c) => c.clientId === clientId).reduce((acc, c) => acc + (c.nonLus || 0), 0)

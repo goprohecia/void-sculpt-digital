@@ -22,16 +22,18 @@ const App = () => {
       <TooltipProvider>
         <DemoAuthProvider>
           <DemoDataProvider>
-            <LoadingScreen onComplete={() => setIsLoaded(true)} />
-            <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <AnimatedRoutes />
-                <CookieBanner />
-                <ScrollToTop />
-              </BrowserRouter>
-            </div>
+            <WhiteLabelProvider>
+              <LoadingScreen onComplete={() => setIsLoaded(true)} />
+              <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <AnimatedRoutes />
+                  <CookieBanner />
+                  <ScrollToTop />
+                </BrowserRouter>
+              </div>
+            </WhiteLabelProvider>
           </DemoDataProvider>
         </DemoAuthProvider>
       </TooltipProvider>

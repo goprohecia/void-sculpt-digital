@@ -101,8 +101,12 @@ export function AdminSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-5 pb-4">
         <Link to="/admin" className="flex flex-col items-center text-center gap-1">
-          <p className="text-lg font-bold tracking-tight">MBA</p>
-          <p className="text-xs text-muted-foreground">My Business Assistant</p>
+          {wl.logoUrl ? (
+            <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
+          ) : (
+            <p className="text-lg font-bold tracking-tight">{wl.brandShort}</p>
+          )}
+          <p className="text-xs text-muted-foreground">{wl.brandName}</p>
         </Link>
       </SidebarHeader>
 
