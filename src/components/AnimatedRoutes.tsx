@@ -53,6 +53,14 @@ import AdminSettings from "@/pages/admin/AdminSettings";
 import AdminRendezVous from "@/pages/admin/AdminRendezVous";
 import AdminEmployees from "@/pages/admin/AdminEmployees";
 import AdminStock from "@/pages/admin/AdminStock";
+import AdminTaches from "@/pages/admin/AdminTaches";
+import AdminAgenda from "@/pages/admin/AdminAgenda";
+import AdminRapports from "@/pages/admin/AdminRapports";
+import AdminDocuments from "@/pages/admin/AdminDocuments";
+import AdminTemps from "@/pages/admin/AdminTemps";
+import AdminAutomatisations from "@/pages/admin/AdminAutomatisations";
+import AdminNotes from "@/pages/admin/AdminNotes";
+import AdminPipeline from "@/pages/admin/AdminPipeline";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
