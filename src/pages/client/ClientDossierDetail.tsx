@@ -242,6 +242,13 @@ export default function ClientDossierDetail() {
             </motion.div>
           )}
 
+          {/* Timeline de livraison */}
+          {dossier.statut !== "annule" && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <DossierTimeline dossierId={dossier.id} isAdmin={false} isEnterprise={false} />
+            </motion.div>
+          )}
+
           {/* Preview Link */}
           {dossier.previewUrl && (
             <motion.div className="glass-card p-5" variants={staggerItem}>

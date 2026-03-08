@@ -207,6 +207,13 @@ export default function AdminDossierDetail() {
             </motion.div>
           )}
 
+          {/* Timeline de livraison */}
+          {dossier.statut !== "annule" && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <DossierTimeline dossierId={dossier.id} isAdmin={true} isEnterprise={isEnterprise} />
+            </motion.div>
+          )}
+
           {/* Cahier des charges */}
           <motion.div className="glass-card p-5" variants={staggerItem}>
             <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
