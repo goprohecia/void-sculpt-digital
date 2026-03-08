@@ -22,11 +22,10 @@ const colorMap = {
 };
 
 function AnimatedValue({ value }: { value: string | number }) {
-  const [display, setDisplay] = useState("0");
+  const [display, setDisplay] = useState(String(value));
 
   useEffect(() => {
     const str = String(value);
-    // Extract the numeric part (supports decimals like "12.5k €")
     const match = str.match(/^([^0-9]*)([0-9]+(?:\.[0-9]+)?)(.*)$/);
     if (!match) {
       setDisplay(str);
@@ -38,8 +37,7 @@ function AnimatedValue({ value }: { value: string | number }) {
     const suffix = match[3];
     const decimals = match[2].includes(".") ? match[2].split(".")[1].length : 0;
 
-    const mv = useMotionValue(0);
-    const controls = animate(mv, num, {
+    const controls = animate(0, num, {
       duration: 1,
       ease: [0.25, 0.46, 0.45, 0.94],
       onUpdate: (v) => {
