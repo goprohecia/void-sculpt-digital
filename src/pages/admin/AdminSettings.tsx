@@ -17,8 +17,157 @@ import { toast } from "sonner";
 import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
 import { useTags } from "@/hooks/use-produits";
 import { useSubscription } from "@/hooks/use-subscription";
+import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+
+const AVAILABLE_MODULES_FOR_SPACES = [
+  { key: "overview", label: "Vue d'ensemble" },
+  { key: "dossiers", label: "Dossiers" },
+  { key: "calendrier", label: "Calendrier" },
+  { key: "messagerie", label: "Messagerie" },
+  { key: "facturation", label: "Facturation" },
+  { key: "relances", label: "Relances" },
+  { key: "support", label: "Support" },
+  { key: "stock", label: "Stock" },
+  { key: "analyse", label: "Analyse" },
+  { key: "profil", label: "Profil" },
+];
+
+function CustomSpacesManager() {
+  const { spaces, createSpace, updateSpace, deleteSpace } = useCustomSpaces();
+  const [newName, setNewName] = useState("");
+  const [newBaseRole, setNewBaseRole] = useState<"employee" | "client">("employee");
+  const [newModules, setNewModules] = useState<string[]>(["overview"]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState("");
+
+  const handleCreate = async () => {
+    if (!newName.trim()) return;
+    try {
+      await createSpace.mutateAsync({ name: newName.trim(), base_role: newBaseRole, enabled_modules: newModules });
+      setNewName("");
+      setNewModules(["overview"]);
+      toast.success("Espace créé");
+    } catch {
+      toast.error("Erreur lors de la création");
+    }
+  };
+
+  const toggleModule = (key: string) => {
+    setNewModules((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-amber-400" /> Espaces personnalisés
+        </CardTitle>
+        <CardDescription>Créez des espaces sur mesure au-delà d'Admin, Salarié et Client.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Create form */}
+        <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/30">
+          <p className="text-sm font-medium">Nouvel espace</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label>Nom</Label>
+              <Input placeholder="Ex: Conseillère" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Rôle de base</Label>
+              <Select value={newBaseRole} onValueChange={(v) => setNewBaseRole(v as "employee" | "client")}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="employee">Salarié</SelectItem>
+                  <SelectItem value="client">Client</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Modules activés</Label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {AVAILABLE_MODULES_FOR_SPACES.map((mod) => (
+                <label key={mod.key} className="flex items-center gap-2 text-sm cursor-pointer">
+                  <Checkbox checked={newModules.includes(mod.key)} onCheckedChange={() => toggleModule(mod.key)} />
+                  {mod.label}
+                </label>
+              ))}
+            </div>
+          </div>
+          <Button onClick={handleCreate} disabled={!newName.trim()} className="gap-1.5">
+            <Plus className="h-4 w-4" /> Créer l'espace
+          </Button>
+        </div>
+
+        <Separator />
+
+        {/* List */}
+        {spaces.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-6">Aucun espace personnalisé créé.</p>
+        ) : (
+          <div className="space-y-3">
+            {spaces.map((space) => (
+              <div key={space.id} className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
+                <div className="flex-1 min-w-0">
+                  {editingId === space.id ? (
+                    <Input
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          updateSpace.mutate({ id: space.id, name: editingName.trim() });
+                          setEditingId(null);
+                          toast.success("Espace renommé");
+                        }
+                        if (e.key === "Escape") setEditingId(null);
+                      }}
+                      onBlur={() => {
+                        if (editingName.trim() && editingName !== space.name) {
+                          updateSpace.mutate({ id: space.id, name: editingName.trim() });
+                          toast.success("Espace renommé");
+                        }
+                        setEditingId(null);
+                      }}
+                      className="h-7 text-sm"
+                      autoFocus
+                    />
+                  ) : (
+                    <div>
+                      <p className="text-sm font-medium">{space.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Base : {space.base_role === "employee" ? "Salarié" : "Client"} · {space.enabled_modules.length} modules
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 shrink-0 ml-2">
+                  {editingId !== space.id && (
+                    <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => { setEditingId(space.id); setEditingName(space.name); }}>
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                    onClick={() => { deleteSpace.mutate(space.id); toast.success("Espace supprimé"); }}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
 const TAG_COLORS = [
   "#6366f1", "#f43f5e", "#10b981", "#f59e0b", "#3b82f6",
