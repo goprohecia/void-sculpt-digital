@@ -816,11 +816,16 @@ export default function AdminSettings() {
                         <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <Label htmlFor="wl-brand">Nom de la marque</Label>
                             <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
-                            <p className="text-xs text-muted-foreground">Remplace "MBA" partout dans l'interface.</p>
+                            <p className="text-xs text-muted-foreground">Remplace "My Business Assistant" partout.</p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-short">Abréviation</Label>
+                            <Input id="wl-short" value={whiteLabel.brandShort} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandShort: e.target.value }))} placeholder="MBA" maxLength={5} />
+                            <p className="text-xs text-muted-foreground">Affichée dans les sidebars (3-5 car.).</p>
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="wl-footer">Texte du footer</Label>
