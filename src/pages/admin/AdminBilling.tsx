@@ -151,7 +151,7 @@ export default function AdminBilling() {
             </div>
             <AIContextButton
               label="Suggestion de relance"
-              context={`facturation - ${factures.filter(f => f.statut === "en_retard").length} factures en retard, ${factures.filter(f => f.statut === "en_attente").length} en attente. Total facturé: ${statsFactures.total.toLocaleString()}€, encaissé: ${statsFactures.paye.toLocaleString()}€, impayé: ${statsFactures.enRetard.toLocaleString()}€.`}
+              context={`facturation - ${factures.filter(f => f.statut === "en_retard").length} factures en retard, ${factures.filter(f => f.statut === "en_attente").length} en attente. Total facturé: ${statsFactures.total.toLocaleString()}€, impayé: ${statsFactures.enRetard.toLocaleString()}€.`}
               prompt="Propose une stratégie de relance pour les factures impayées. Priorise par montant et ancienneté. Suggère des modèles d'emails de relance adaptés (première relance amiable, deuxième relance ferme, mise en demeure)."
             />
           </motion.div>
