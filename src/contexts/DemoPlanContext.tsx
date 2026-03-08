@@ -89,6 +89,16 @@ interface DemoPlanContextType {
   setPlanPrices: (prices: Record<SubscriptionPlan, number>) => void;
   sectorRecommendations: Record<SectorKey, string[]>;
   setSectorRecommendations: (r: Record<SectorKey, string[]>) => void;
+  // Sector module overrides (editable by SuperAdmin)
+  sectorModuleOverrides: Record<string, SectorModulesConfig>;
+  setSectorModuleOverrides: (o: Record<string, SectorModulesConfig>) => void;
+  // Current demo sector (set during signup or demo)
+  demoSector: SectorKey | null;
+  setDemoSector: (s: SectorKey | null) => void;
+  // Helpers
+  getModuleLabel: (moduleKey: string) => string;
+  isModuleHidden: (moduleKey: string) => boolean;
+  getModuleDescription: (moduleKey: string) => string | undefined;
 }
 
 const DemoPlanContext = createContext<DemoPlanContextType | null>(null);
