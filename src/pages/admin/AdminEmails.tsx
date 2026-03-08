@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { EmailLogType } from "@/contexts/DemoDataContext";
 import { exportCsv } from "@/lib/exportCsv";
 import { Mail, Download, Search, Plus, FileText, Send, Trash2, Pencil } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
