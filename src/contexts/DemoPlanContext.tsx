@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import type { SubscriptionPlan } from "@/hooks/use-subscription";
 import {
   SECTOR_MODULE_OVERRIDES,
   getModuleLabel as _getModuleLabel,
@@ -7,6 +6,9 @@ import {
   isModuleHidden as _isModuleHidden,
   type SectorModulesConfig,
 } from "@/data/sectorModules";
+
+// Defined here to avoid circular dependency with use-subscription.ts
+export type SubscriptionPlan = "starter" | "business" | "enterprise";
 
 // All available module keys in the system
 export const ALL_MODULE_KEYS = [

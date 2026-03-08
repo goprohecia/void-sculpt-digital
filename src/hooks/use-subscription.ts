@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
-import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, type SubscriptionPlan } from "@/contexts/DemoPlanContext";
 
-export type SubscriptionPlan = "starter" | "business" | "enterprise";
+export type { SubscriptionPlan };
 
 export interface SubscriptionData {
   plan: SubscriptionPlan;
