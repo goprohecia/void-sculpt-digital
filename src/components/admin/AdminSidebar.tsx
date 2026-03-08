@@ -14,6 +14,14 @@ import {
   LogOut,
   CalendarDays,
   Package,
+  CheckSquare,
+  Calendar,
+  FileText,
+  FolderClosed,
+  Timer,
+  Zap,
+  StickyNote,
+  Target,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
