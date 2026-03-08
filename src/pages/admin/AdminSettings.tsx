@@ -686,16 +686,25 @@ export default function AdminSettings() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-base">Modules visibles côté client</CardTitle>
-                      <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
+                      <CardDescription>Configurez les onglets accessibles dans l'espace client. Seuls les modules activés côté admin sont proposés.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {ALL_CLIENT_MODULES.map((mod) => {
                         const isOn = clientVisibleModules.includes(mod.key);
+                        const adminHasIt = enabledModules.includes(mod.key) || mod.key === "overview" || mod.key === "profil" || mod.key === "parametres" || mod.key === "demandes" || mod.key === "devis" || mod.key === "factures";
                         return (
                           <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                            <p className="text-sm font-medium">{mod.label}</p>
+                            <div className="flex items-center gap-2">
+                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{mod.label}</p>
+                              {!adminHasIt && (
+                                <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
+                                  Désactivé côté admin
+                                </Badge>
+                              )}
+                            </div>
                             <Switch
                               checked={isOn}
+                              disabled={!adminHasIt}
                               onCheckedChange={(v) => {
                                 const next = v
                                   ? [...clientVisibleModules, mod.key]
