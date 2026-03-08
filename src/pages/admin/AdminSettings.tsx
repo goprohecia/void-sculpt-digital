@@ -589,21 +589,7 @@ export default function AdminSettings() {
 
                   {/* Custom Spaces - Enterprise only */}
                   {canCustomizeSpaces ? (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Sparkles className="h-4 w-4 text-amber-400" /> Espaces personnalisés
-                        </CardTitle>
-                        <CardDescription>
-                          Créez des espaces sur mesure au-delà d'Admin, Salarié et Client.
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground text-center py-6">
-                          Fonctionnalité bientôt disponible — contactez-nous pour un setup anticipé.
-                        </p>
-                      </CardContent>
-                    </Card>
+                    <CustomSpacesManager />
                   ) : (
                     <UpgradeBanner
                       currentPlan={plan}
