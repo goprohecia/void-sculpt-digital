@@ -83,10 +83,32 @@ export default function SuperAdminFormules() {
     setLocalSectorRecs((prev) => ({ ...prev, [sector]: current }));
   };
 
+  const updateOverrideLabel = (sector: string, moduleKey: string, label: string) => {
+    setLocalOverrides((prev) => {
+      const sectorCfg = { ...prev[sector] };
+      sectorCfg[moduleKey] = { ...sectorCfg[moduleKey], label: label || MODULE_LABELS[moduleKey] || moduleKey };
+      return { ...prev, [sector]: sectorCfg };
+    });
+  };
+
+  const toggleOverrideHidden = (sector: string, moduleKey: string) => {
+    setLocalOverrides((prev) => {
+      const sectorCfg = { ...prev[sector] };
+      const current = sectorCfg[moduleKey];
+      if (current) {
+        sectorCfg[moduleKey] = { ...current, hidden: !current.hidden };
+      } else {
+        sectorCfg[moduleKey] = { label: MODULE_LABELS[moduleKey] || moduleKey, hidden: true };
+      }
+      return { ...prev, [sector]: sectorCfg };
+    });
+  };
+
   const handleSave = () => {
     setPlanModules(localModules);
     setPlanPrices(localPrices);
     setSectorRecommendations(localSectorRecs);
+    setSectorModuleOverrides(localOverrides);
     toast({ title: "Formules mises à jour", description: "Les changements ont été appliqués avec succès." });
   };
 
