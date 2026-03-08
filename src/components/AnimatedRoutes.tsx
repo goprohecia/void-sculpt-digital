@@ -61,6 +61,7 @@ import AdminTemps from "@/pages/admin/AdminTemps";
 import AdminAutomatisations from "@/pages/admin/AdminAutomatisations";
 import AdminNotes from "@/pages/admin/AdminNotes";
 import AdminPipeline from "@/pages/admin/AdminPipeline";
+import AdminIA from "@/pages/admin/AdminIA";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
