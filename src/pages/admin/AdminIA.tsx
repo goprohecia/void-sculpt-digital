@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
