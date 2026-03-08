@@ -25,8 +25,9 @@ const packs: Pack[] = [
     tagline: "L'essentiel pour démarrer",
     description: "Lancez votre gestion avec les fondamentaux.",
     priceMonthly: 150,
-    priceAnnual: 1500, // 10 months = 2 free
+    priceAnnual: 1260,
     modulesLimit: "3 modules au choix",
+    engagement: "Sans engagement",
     features: [
       "3 modules activables au choix",
       "Espace admin + client + salarié",
