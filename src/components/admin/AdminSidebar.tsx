@@ -128,7 +128,30 @@ export function AdminSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         )}
-      </SidebarContent>
+
+        {/* Custom Spaces - Enterprise only */}
+        {isEnterprise && spaces.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70 flex items-center gap-1.5">
+              <Sparkles className="h-3 w-3 text-amber-400" />
+              Espaces personnalisés
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {spaces.map((space) => (
+                  <SidebarMenuItem key={space.id}>
+                    <SidebarMenuButton tooltip={space.name}>
+                      <span className="flex items-center gap-3">
+                        <span className="h-2 w-2 rounded-full bg-amber-400/60" />
+                        <span>{space.name}</span>
+                      </span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
 
       <SidebarFooter className="p-4">
         <SidebarSeparator className="mb-3" />
