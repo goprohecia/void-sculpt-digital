@@ -19,6 +19,7 @@ import { useTags } from "@/hooks/use-produits";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
