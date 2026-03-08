@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
-import { useDemoPlan, SECTORS, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, SECTORS, ALL_MODULE_KEYS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { GENERIC_MODULE_LABELS, type SectorModuleOverride, type SectorModulesConfig } from "@/data/sectorModules";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,11 +10,92 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
-import { Save, RotateCcw, Eye, EyeOff, Pencil } from "lucide-react";
+import {
+  Save, RotateCcw, Eye, EyeOff, Pencil, MonitorSmartphone,
+  LayoutDashboard, Users, FolderOpen, Target, Receipt, Bell,
+  Package, MessageSquare, Mail, CalendarDays, Calendar,
+  CheckSquare, LifeBuoy, StickyNote, BarChart3, FileText,
+  FolderClosed, Timer, Zap, Bot, Settings,
+} from "lucide-react";
+
+// Icon map for sidebar preview
+const MODULE_ICONS: Record<string, React.ElementType> = {
+  overview: LayoutDashboard, clients: Users, employees: Users,
+  dossiers: FolderOpen, pipeline: Target, facturation: Receipt,
+  relances: Bell, stock: Package, messagerie: MessageSquare,
+  emails: Mail, "rendez-vous": CalendarDays, agenda: Calendar,
+  taches: CheckSquare, support: LifeBuoy, notes: StickyNote,
+  analyse: BarChart3, rapports: FileText, documents: FolderClosed,
+  temps: Timer, automatisations: Zap, ia: Bot, parametres: Settings,
+};
+
+function SidebarPreview({ overrides, sectorKey }: { overrides: SectorModulesConfig; sectorKey: string }) {
+  const sectorInfo = SECTORS.find((s) => s.key === sectorKey);
+
+  const modules = ALL_MODULE_KEYS.map((key) => {
+    const override = overrides[key];
+    const label = override?.label || GENERIC_MODULE_LABELS[key] || key;
+    const hidden = override?.hidden === true;
+    const isOverridden = !!override;
+    const Icon = MODULE_ICONS[key] || FolderOpen;
+    return { key, label, hidden, isOverridden, Icon };
+  });
+
+  return (
+    <div className="w-[260px] rounded-2xl border border-border/50 bg-sidebar/80 backdrop-blur-xl overflow-hidden">
+      {/* Header */}
+      <div className="p-4 border-b border-border/30 text-center">
+        <p className="text-lg font-bold">{sectorInfo?.icon} {sectorInfo?.label}</p>
+        <p className="text-[10px] text-muted-foreground mt-0.5">Prévisualisation sidebar</p>
+      </div>
+
+      {/* Module list */}
+      <ScrollArea className="h-[420px]">
+        <div className="p-2 space-y-0.5">
+          {modules.map((m) => {
+            if (m.hidden) {
+              return (
+                <div key={m.key} className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg opacity-30 line-through text-xs text-muted-foreground">
+                  <m.Icon className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">{m.label}</span>
+                  <EyeOff className="h-3 w-3 ml-auto shrink-0" />
+                </div>
+              );
+            }
+            return (
+              <div
+                key={m.key}
+                className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                  m.key === "overview" ? "bg-primary/10 text-primary font-medium" : "text-foreground/80 hover:bg-muted/50"
+                }`}
+              >
+                <m.Icon className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{m.label}</span>
+                {m.isOverridden && (
+                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary shrink-0" title="Override actif" />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-border/30 text-center">
+        <p className="text-[10px] text-muted-foreground">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary mr-1 align-middle" />
+          = module avec override
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function SuperAdminSecteurs() {
-  const { sectorModuleOverrides, setSectorModuleOverrides } = useDemoPlan();
+  const { sectorModuleOverrides, setSectorModuleOverrides, setDemoSector } = useDemoPlan();
   const [selectedSector, setSelectedSector] = useState<string>(SECTORS[0].key);
   const [localOverrides, setLocalOverrides] = useState<Record<string, SectorModulesConfig>>(() => JSON.parse(JSON.stringify(sectorModuleOverrides)));
   const [editingModule, setEditingModule] = useState<string | null>(null);
@@ -57,13 +138,20 @@ export default function SuperAdminSecteurs() {
     toast.info("Modifications annulées");
   };
 
+  const handlePreviewInAdmin = () => {
+    // Save current overrides to context, switch sector, and open admin in new tab
+    setSectorModuleOverrides(localOverrides);
+    setDemoSector(selectedSector as SectorKey);
+    window.open("/admin", "_blank");
+  };
+
   const overriddenKeys = Object.keys(currentOverrides);
   const nonOverriddenKeys = ALL_MODULE_KEYS.filter((k) => !overriddenKeys.includes(k));
 
   return (
     <SuperAdminLayout>
       <div className="space-y-6 max-w-5xl">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h1 className="text-2xl font-bold">Overrides sectoriels</h1>
             <p className="text-muted-foreground text-sm mt-1">
@@ -71,6 +159,28 @@ export default function SuperAdminSecteurs() {
             </p>
           </div>
           <div className="flex gap-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <MonitorSmartphone className="h-4 w-4 mr-1" /> Prévisualiser
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-fit">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    {sectorInfo?.icon} Prévisualisation — {sectorInfo?.label}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="flex justify-center py-4">
+                  <SidebarPreview overrides={currentOverrides} sectorKey={selectedSector} />
+                </div>
+                <div className="flex justify-center">
+                  <Button size="sm" variant="secondary" onClick={handlePreviewInAdmin}>
+                    <Eye className="h-4 w-4 mr-1" /> Ouvrir dans l'espace Admin
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
             <Button variant="outline" size="sm" onClick={handleReset}>
               <RotateCcw className="h-4 w-4 mr-1" /> Annuler
             </Button>
