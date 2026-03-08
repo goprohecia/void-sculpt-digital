@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { Sparkles, ArrowUpRight } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { useNotificationsData } from "@/hooks/use-notifications-data";
@@ -59,6 +60,30 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
+            {plan !== "enterprise" && (
+              <div className="mb-4 rounded-xl border border-primary/20 bg-primary/5 p-4 flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium">
+                    Vous êtes en plan <span className={PLAN_INFO[plan].color}>{PLAN_INFO[plan].label}</span> — débloquez {plan === "starter" ? "plus de modules et fonctionnalités" : "tous les modules, l'IA et les espaces personnalisés"}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {plan === "starter"
+                      ? `Passez en Business (${PLAN_INFO.business.price}€/mois) ou Enterprise (${PLAN_INFO.enterprise.price}€/mois)`
+                      : `Passez en Enterprise (${PLAN_INFO.enterprise.price}€/mois) pour un accès illimité`}
+                  </p>
+                </div>
+                <a
+                  href="/contact?subject=Upgrade%20abonnement%20MBA"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline shrink-0"
+                >
+                  Passer au supérieur
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+              </div>
+            )}
             <AdminPageTransition>{children}</AdminPageTransition>
           </main>
         </div>
