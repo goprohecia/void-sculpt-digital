@@ -2,12 +2,26 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 
-// Admin pages
+// Public pages
+import Index from "@/pages/Index";
+import Contact from "@/pages/Contact";
+import Fonctionnalites from "@/pages/Fonctionnalites";
+import NotFound from "@/pages/NotFound";
+
+// Sector pages
+import Conciergerie from "@/pages/secteurs/Conciergerie";
+import Immobilier from "@/pages/secteurs/Immobilier";
+import Garages from "@/pages/secteurs/Garages";
+import BTP from "@/pages/secteurs/BTP";
+
+// Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminOnlyLogin from "@/pages/admin/AdminOnlyLogin";
 import ClientSignup from "@/pages/admin/ClientSignup";
 import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
+
+// Admin pages
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
@@ -45,9 +59,6 @@ import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
 import EmployeeProfile from "@/pages/employee/EmployeeProfile";
 import EmployeeStock from "@/pages/employee/EmployeeStock";
 
-import Fonctionnalites from "@/pages/Fonctionnalites";
-import NotFound from "@/pages/NotFound";
-
 export function AnimatedRoutes() {
   const location = useLocation();
   useScrollToTop();
@@ -55,9 +66,16 @@ export function AnimatedRoutes() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* Redirect root to login */}
-        <Route path="/" element={<Navigate to="/client/login" replace />} />
+        {/* Public */}
+        <Route path="/" element={<Index />} />
         <Route path="/fonctionnalites" element={<Fonctionnalites />} />
+        <Route path="/contact" element={<Contact />} />
+
+        {/* Sectors */}
+        <Route path="/secteurs/conciergerie" element={<Conciergerie />} />
+        <Route path="/secteurs/immobilier" element={<Immobilier />} />
+        <Route path="/secteurs/garages" element={<Garages />} />
+        <Route path="/secteurs/btp" element={<BTP />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
@@ -103,6 +121,11 @@ export function AnimatedRoutes() {
         <Route path="/employee/messagerie" element={<EmployeeMessaging />} />
         <Route path="/employee/stock" element={<EmployeeStock />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
+
+        {/* Legacy redirects */}
+        <Route path="/services/*" element={<Navigate to="/" replace />} />
+        <Route path="/portfolio/*" element={<Navigate to="/" replace />} />
+        <Route path="/studio" element={<Navigate to="/" replace />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
