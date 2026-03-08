@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CahierDesChargesForm } from "@/components/admin/CahierDesChargesForm";
 import { CalendlyBookingDialog } from "@/components/admin/CalendlyBookingDialog";
+import { DossierTimeline } from "@/components/admin/DossierTimeline";
 
 const etapes = ["Demande reçue", "Rendez-vous", "Cahier des charges", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
 
@@ -238,6 +239,13 @@ export default function ClientDossierDetail() {
                   </div>
                 ))}
               </div>
+            </motion.div>
+          )}
+
+          {/* Timeline de livraison */}
+          {dossier.statut !== "annule" && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <DossierTimeline dossierId={dossier.id} isAdmin={false} isEnterprise={false} />
             </motion.div>
           )}
 

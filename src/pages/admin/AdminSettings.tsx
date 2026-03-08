@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock } from "lucide-react";
+import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -456,14 +457,15 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-7">
-                <TabsTrigger value="profil" className="gap-1.5"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
-                <TabsTrigger value="entreprise" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
-                <TabsTrigger value="facturation" className="gap-1.5"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
-                <TabsTrigger value="tags" className="gap-1.5"><Tag className="h-3.5 w-3.5" /> Tags</TabsTrigger>
-                <TabsTrigger value="modules" className="gap-1.5"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
-                <TabsTrigger value="whitelabel" className="gap-1.5"><Palette className="h-3.5 w-3.5" /> White Label</TabsTrigger>
-                <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-8">
+                <TabsTrigger value="profil" className="gap-1.5 text-xs"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
+                <TabsTrigger value="entreprise" className="gap-1.5 text-xs"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
+                <TabsTrigger value="facturation" className="gap-1.5 text-xs"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
+                <TabsTrigger value="tags" className="gap-1.5 text-xs"><Tag className="h-3.5 w-3.5" /> Tags</TabsTrigger>
+                <TabsTrigger value="modules" className="gap-1.5 text-xs"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
+                <TabsTrigger value="timeline" className="gap-1.5 text-xs"><Clock className="h-3.5 w-3.5" /> Timeline</TabsTrigger>
+                <TabsTrigger value="whitelabel" className="gap-1.5 text-xs"><Palette className="h-3.5 w-3.5" /> White Label</TabsTrigger>
+                <TabsTrigger value="notifications" className="gap-1.5 text-xs"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
               </TabsList>
 
               {/* PROFIL TAB */}
@@ -809,6 +811,21 @@ export default function AdminSettings() {
                     />
                   )}
                 </div>
+              </TabsContent>
+
+              {/* TIMELINE TAB */}
+              <TabsContent value="timeline">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
+                    </CardTitle>
+                    <CardDescription>Personnalisez les étapes de suivi de vos projets (Enterprise uniquement).</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <TimelineTemplateEditor />
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               {/* WHITE LABEL TAB */}

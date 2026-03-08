@@ -18,6 +18,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
+import { DossierTimeline } from "@/components/admin/DossierTimeline";
+import { useSubscription } from "@/hooks/use-subscription";
 
 const etapes = ["Demande reçue", "Rendez-vous", "Cahier des charges", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
 
@@ -93,6 +95,7 @@ export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getDossierById, updateDossierStatut, updateDossierPreviewUrl, marquerRdvEffectue } = useDossiers();
+  const { isEnterprise } = useSubscription();
   const { getFacturesByDossier } = useFactures();
   const { getDevisByDossier } = useDevis();
   const { getPreviewVisitsByDossier, addPreviewVisit } = usePreviewVisits();
@@ -201,6 +204,13 @@ export default function AdminDossierDetail() {
                   </div>
                 ))}
               </div>
+            </motion.div>
+          )}
+
+          {/* Timeline de livraison */}
+          {dossier.statut !== "annule" && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <DossierTimeline dossierId={dossier.id} isAdmin={true} isEnterprise={isEnterprise} />
             </motion.div>
           )}
 
