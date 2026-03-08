@@ -81,7 +81,7 @@ export function AdminSidebar() {
   const { tickets } = useTickets();
   const { enabledModules } = useAppSettings();
   const { spaces } = useCustomSpaces();
-  const { isEnterprise } = useSubscription();
+  const { isEnterprise, modulesLimit } = useSubscription();
   const { config: wl } = useWhiteLabel();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
@@ -112,7 +112,16 @@ export function AdminSidebar() {
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  const navItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
+  // Filter by enabled modules, then apply plan limit (overview + parametres always included)
+  const enabledItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
+  const alwaysVisible = ["overview", "parametres"];
+  const navItems = modulesLimit === null
+    ? enabledItems
+    : enabledItems.filter((item) => {
+        if (alwaysVisible.includes(item.moduleKey)) return true;
+        const idx = enabledItems.filter(i => !alwaysVisible.includes(i.moduleKey)).indexOf(item);
+        return idx < modulesLimit;
+      });
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";

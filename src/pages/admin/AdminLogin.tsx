@@ -23,7 +23,7 @@ export default function AdminLogin() {
   // Check if returning from Google OAuth with incomplete profile
   useEffect(() => {
     if (isAuthenticated) {
-      const dest = user?.role === "employee" ? "/employee" : user?.role === "client" ? "/client" : "/admin";
+      const dest = user?.role === "superadmin" ? "/superadmin" : user?.role === "employee" ? "/employee" : user?.role === "client" ? "/client" : "/admin";
       navigate(dest, { replace: true });
       return;
     }
@@ -54,8 +54,9 @@ export default function AdminLogin() {
     const demoSuccess = login(email, password);
     if (demoSuccess) {
       const low = email.toLowerCase();
-      const dest = low.includes("employee") ? "/employee" : low.includes("client") ? "/client" : "/admin";
+      const dest = low.includes("superadmin") ? "/superadmin" : low.includes("employee") ? "/employee" : low.includes("client") ? "/client" : "/admin";
       navigate(dest, { replace: true });
+      return;
       return;
     }
 
@@ -175,7 +176,7 @@ export default function AdminLogin() {
                 <span className="bg-card px-2 text-muted-foreground">Comptes de démonstration</span>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <button onClick={() => fillDemo("admin")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
                 <p className="text-xs font-semibold text-primary">Admin</p>
                 <p className="text-[10px] text-muted-foreground">admin@mba.demo</p>
@@ -187,6 +188,10 @@ export default function AdminLogin() {
               <button onClick={() => fillDemo("client")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
                 <p className="text-xs font-semibold text-neon-blue">Client</p>
                 <p className="text-[10px] text-muted-foreground">client@mba.demo</p>
+              </button>
+              <button onClick={() => { setEmail("superadmin@mba.demo"); setPassword("demo2026"); setError(""); }} className="glass-button p-3 text-left space-y-1 hover:border-amber-500/30 border-amber-500/20">
+                <p className="text-xs font-semibold text-amber-500">Super Admin</p>
+                <p className="text-[10px] text-muted-foreground">superadmin@mba.demo</p>
               </button>
             </div>
             <div className="text-center pt-1 space-y-2">

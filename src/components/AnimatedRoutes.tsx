@@ -63,6 +63,12 @@ import AdminNotes from "@/pages/admin/AdminNotes";
 import AdminPipeline from "@/pages/admin/AdminPipeline";
 import AdminIA from "@/pages/admin/AdminIA";
 
+// Super Admin pages
+import SuperAdminDashboard from "@/pages/superadmin/SuperAdminDashboard";
+import SuperAdminEntreprises from "@/pages/superadmin/SuperAdminEntreprises";
+import SuperAdminAbonnements from "@/pages/superadmin/SuperAdminAbonnements";
+import SuperAdminStats from "@/pages/superadmin/SuperAdminStats";
+
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
 import ClientDossiers from "@/pages/client/ClientDossiers";
@@ -187,6 +193,12 @@ export function AnimatedRoutes() {
         <Route path="/employee/stock" element={<EmployeeStock />} />
         <Route path="/employee/analyse" element={<EmployeeAnalyse />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
+
+        {/* Super Admin routes */}
+        <Route path="/superadmin" element={<SuperAdminDashboard />} />
+        <Route path="/superadmin/entreprises" element={<SuperAdminEntreprises />} />
+        <Route path="/superadmin/abonnements" element={<SuperAdminAbonnements />} />
+        <Route path="/superadmin/stats" element={<SuperAdminStats />} />
 
         {/* Legacy redirects */}
         <Route path="/services/*" element={<Navigate to="/" replace />} />
