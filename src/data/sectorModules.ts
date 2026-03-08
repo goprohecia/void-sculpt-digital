@@ -55,9 +55,24 @@ const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
   stock: { label: "Stock", hidden: true },
 };
 
+const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Séances photo", description: "Planification et suivi des séances (studio, extérieur, événement)" },
+  taches: { label: "Retouche & Post-prod", description: "Suivi des retouches, éditions et traitements" },
+  documents: { label: "Galeries & Livraisons", description: "Galeries clients, livraison de photos HD" },
+  pipeline: { label: "Pipeline Bookings", description: "Funnel de réservations et prospects" },
+  analyse: { label: "Dashboard Photo", description: "KPIs : séances réalisées, CA par type, taux de conversion" },
+  temps: { label: "Temps par séance", description: "Suivi du temps passé par shooting et retouche" },
+  stock: { label: "Matériel", description: "Inventaire matériel photo (boîtiers, objectifs, éclairages)" },
+  notes: { label: "Mood boards", description: "Notes créatives et références visuelles" },
+  support: { label: "SAV Client", description: "Demandes de retouches supplémentaires, réclamations" },
+  "rendez-vous": { label: "Réservations", description: "Créneaux de shooting et rendez-vous clients" },
+  emails: { label: "Emails & Relances", description: "Communications automatisées avec les clients" },
+};
+
 // ── Master map — add new sectors here ──
 export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   developpeur: DEVELOPPEUR_OVERRIDES,
+  photographe: PHOTOGRAPHE_OVERRIDES,
 };
 
 // ── Helpers ──
