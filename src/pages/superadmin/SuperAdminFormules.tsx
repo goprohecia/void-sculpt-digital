@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
-import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown } from "lucide-react";
+import { GENERIC_MODULE_LABELS, SECTOR_MODULE_OVERRIDES, type SectorModulesConfig } from "@/data/sectorModules";
+import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown, Puzzle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 
