@@ -7,7 +7,7 @@ import {
   type SectorModulesConfig,
 } from "@/data/sectorModules";
 
-// Defined here to avoid circular dependency with use-subscription.ts
+// SubscriptionPlan is defined here (single source of truth) to avoid circular deps
 export type SubscriptionPlan = "starter" | "business" | "enterprise";
 
 // All available module keys in the system
