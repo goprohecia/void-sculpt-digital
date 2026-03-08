@@ -8,21 +8,21 @@ const cibles = [
     title: "Tech & Digital",
     color: "text-blue-400",
     bg: "bg-blue-500/10",
-    metiers: ["Agences web", "Freelances dev/design", "SaaS B2B", "Startups tech", "Studios créatifs"],
+    metiers: ["Développeur freelance", "Designer / Motion", "Photographe / Vidéaste", "Community Manager", "Réparateur de téléphones"],
   },
   {
     icon: Briefcase,
     title: "Services & Conseil",
     color: "text-emerald-400",
     bg: "bg-emerald-500/10",
-    metiers: ["Cabinets conseil", "Comptables / RH", "Architectes", "Avocats", "Conciergeries"],
+    metiers: ["Consultant (marketing, RH)", "Coach sportif / Personal trainer", "Agent immobilier indépendant", "Conciergerie Airbnb", "Formateur indépendant"],
   },
   {
     icon: ShoppingBag,
     title: "Commerce & Événementiel",
     color: "text-amber-400",
     bg: "bg-amber-500/10",
-    metiers: ["Wedding planners", "Salons de coiffure", "Garages auto", "BTP / artisans", "Nettoyage"],
+    metiers: ["Gérant de boutique", "Organisateur d'événements", "Wedding planner", "Traiteur indépendant", "DJ / Animateur"],
   },
 ];
 
