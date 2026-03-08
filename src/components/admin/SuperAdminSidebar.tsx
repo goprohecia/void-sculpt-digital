@@ -20,6 +20,7 @@ const navItems = [
   { title: "Vue d'ensemble", url: "/superadmin", icon: LayoutDashboard },
   { title: "Entreprises", url: "/superadmin/entreprises", icon: Building2 },
   { title: "Abonnements", url: "/superadmin/abonnements", icon: CreditCard },
+  { title: "Formules", url: "/superadmin/formules", icon: Layers },
   { title: "Statistiques", url: "/superadmin/stats", icon: BarChart3 },
   { title: "Paramètres MBA", url: "/superadmin/parametres", icon: Settings },
 ];
