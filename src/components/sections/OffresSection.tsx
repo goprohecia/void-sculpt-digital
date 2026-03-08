@@ -61,8 +61,9 @@ const packs: Pack[] = [
     tagline: "Votre CRM, votre marque",
     description: "Personnalisation totale, accès illimité.",
     priceMonthly: 400,
-    priceAnnual: 4000,
+    priceAnnual: 3360,
     modulesLimit: "Tous les modules",
+    engagement: "6 mois minimum",
     features: [
       "Accès illimité à tous les modules",
       "Tout le plan Business inclus",
