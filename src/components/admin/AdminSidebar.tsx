@@ -46,8 +46,8 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-const mainMenuKeys = ["overview", "clients", "employees", "dossiers", "rendez-vous"];
-const toolsKeys = ["messagerie", "facturation", "relances", "emails", "support", "stock", "analyse", "parametres"];
+const mainMenuKeys = ["overview", "clients", "employees", "dossiers", "rendez-vous", "pipeline"];
+const toolsKeys = ["messagerie", "facturation", "relances", "emails", "support", "stock", "analyse", "taches", "agenda", "rapports", "documents", "temps", "automatisations", "notes", "parametres"];
 
 export function AdminSidebar() {
   const location = useLocation();
