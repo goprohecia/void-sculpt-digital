@@ -194,6 +194,12 @@ export function AnimatedRoutes() {
         <Route path="/employee/analyse" element={<EmployeeAnalyse />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
 
+        {/* Super Admin routes */}
+        <Route path="/superadmin" element={<SuperAdminDashboard />} />
+        <Route path="/superadmin/entreprises" element={<SuperAdminEntreprises />} />
+        <Route path="/superadmin/abonnements" element={<SuperAdminAbonnements />} />
+        <Route path="/superadmin/stats" element={<SuperAdminStats />} />
+
         {/* Legacy redirects */}
         <Route path="/services/*" element={<Navigate to="/" replace />} />
         <Route path="/portfolio/*" element={<Navigate to="/" replace />} />
