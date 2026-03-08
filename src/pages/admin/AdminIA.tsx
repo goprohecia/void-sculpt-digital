@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -244,6 +245,7 @@ export default function AdminIA() {
   };
 
   return (
+    <AdminLayout>
     <AdminPageTransition>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -482,5 +484,6 @@ export default function AdminIA() {
         </Tabs>
       </div>
     </AdminPageTransition>
+    </AdminLayout>
   );
 }

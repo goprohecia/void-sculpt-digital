@@ -13,6 +13,7 @@ import { useIsDemo } from "@/hooks/useIsDemo";
 import { supabase } from "@/integrations/supabase/client";
 import type { FactureStatus, Facture, Devis } from "@/data/mockData";
 import { Receipt, Euro, AlertTriangle, Plus, Download, Eye, Send, Clock } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -141,11 +142,18 @@ export default function AdminBilling() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <Receipt className="h-6 w-6 text-primary" />
-              Facturation
-            </h1>
+          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <Receipt className="h-6 w-6 text-primary" />
+                Facturation
+              </h1>
+            </div>
+            <AIContextButton
+              label="Suggestion de relance"
+              context={`facturation - ${factures.filter(f => f.statut === "en_retard").length} factures en retard, ${factures.filter(f => f.statut === "en_attente").length} en attente. Total facturé: ${statsFactures.total.toLocaleString()}€, impayé: ${statsFactures.enRetard.toLocaleString()}€.`}
+              prompt="Propose une stratégie de relance pour les factures impayées. Priorise par montant et ancienneté. Suggère des modèles d'emails de relance adaptés (première relance amiable, deuxième relance ferme, mise en demeure)."
+            />
           </motion.div>
 
           {/* Summary */}

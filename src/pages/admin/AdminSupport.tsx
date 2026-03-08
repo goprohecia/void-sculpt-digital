@@ -4,6 +4,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { motion } from "framer-motion";
 import { LifeBuoy, Send, ArrowLeft } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { useTickets } from "@/hooks/use-tickets";
 import { useClients } from "@/hooks/use-clients";
@@ -71,14 +72,21 @@ export default function AdminSupport() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div variants={staggerContainer} initial="initial" animate="animate" className="space-y-6">
-          <motion.div variants={staggerItem} className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-primary/10">
-              <LifeBuoy className="h-6 w-6 text-primary" />
+          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-primary/10">
+                <LifeBuoy className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">Support</h1>
+                <p className="text-sm text-muted-foreground">{tickets.length} ticket(s) au total</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold">Support</h1>
-              <p className="text-sm text-muted-foreground">{tickets.length} ticket(s) au total</p>
-            </div>
+            <AIContextButton
+              label="Réponse IA"
+              context={`support - ${tickets.filter(t => t.statut === "ouvert").length} tickets ouverts, ${tickets.filter(t => t.statut === "en_cours").length} en cours. Sujets récents: ${tickets.slice(0, 3).map(t => t.sujet).join(", ")}.`}
+              prompt="Propose une réponse professionnelle et empathique pour répondre aux tickets de support ouverts. Priorise les tickets urgents et suggère des solutions concrètes."
+            />
           </motion.div>
 
           {/* Filters */}
