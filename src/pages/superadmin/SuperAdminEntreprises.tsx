@@ -60,6 +60,19 @@ export default function SuperAdminEntreprises() {
               <SelectItem value="enterprise">Enterprise</SelectItem>
             </SelectContent>
           </Select>
+          <Select value={filterSector} onValueChange={setFilterSector}>
+            <SelectTrigger className="w-[220px] glass-input border-0">
+              <SelectValue placeholder="Tous les secteurs" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les secteurs</SelectItem>
+              {SECTORS.map((s) => (
+                <SelectItem key={s.key} value={s.key}>
+                  {s.icon} {s.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Liste */}

@@ -30,12 +30,26 @@ const PLAN_DISTRIBUTION = [
 ];
 
 const MOCK_ENTERPRISES = [
-  { nom: "TechVision SAS", plan: "enterprise", users: 12, mrr: 400, statut: "actif", date: "2025-09-15" },
-  { nom: "Studio Créatif", plan: "business", users: 5, mrr: 250, statut: "actif", date: "2025-11-02" },
-  { nom: "BTP Renov", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-01-10" },
-  { nom: "Immo+", plan: "business", users: 8, mrr: 250, statut: "actif", date: "2025-10-20" },
-  { nom: "CleanPro", plan: "enterprise", users: 15, mrr: 400, statut: "actif", date: "2025-08-05" },
-  { nom: "DigitalCraft", plan: "starter", users: 1, mrr: 150, statut: "essai", date: "2026-02-28" },
+  { nom: "TechVision SAS", plan: "enterprise", users: 12, mrr: 400, statut: "actif", date: "2025-09-15", sector: "developpeur" },
+  { nom: "Studio Créatif", plan: "business", users: 5, mrr: 250, statut: "actif", date: "2025-11-02", sector: "designer" },
+  { nom: "BTP Renov", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-01-10", sector: "btp" },
+  { nom: "Immo+", plan: "business", users: 8, mrr: 250, statut: "actif", date: "2025-10-20", sector: "immobilier" },
+  { nom: "CleanPro", plan: "enterprise", users: 15, mrr: 400, statut: "actif", date: "2025-08-05", sector: "nettoyage" },
+  { nom: "DigitalCraft", plan: "starter", users: 1, mrr: 150, statut: "essai", date: "2026-02-28", sector: "community-manager" },
+  { nom: "EventPro", plan: "business", users: 4, mrr: 250, statut: "actif", date: "2026-01-15", sector: "evenementiel" },
+  { nom: "CoachFit", plan: "starter", users: 1, mrr: 150, statut: "actif", date: "2026-02-01", sector: "coach-sportif" },
+  { nom: "SnapStudio", plan: "business", users: 3, mrr: 250, statut: "actif", date: "2025-12-10", sector: "photographe" },
+  { nom: "GarageExpert", plan: "enterprise", users: 10, mrr: 400, statut: "actif", date: "2025-07-20", sector: "garages" },
+  { nom: "FormaPlus", plan: "business", users: 2, mrr: 250, statut: "actif", date: "2025-11-15", sector: "formateur" },
+  { nom: "ConciergeVIP", plan: "starter", users: 1, mrr: 150, statut: "actif", date: "2026-01-20", sector: "conciergerie" },
+  { nom: "ConsultPro", plan: "business", users: 3, mrr: 250, statut: "actif", date: "2025-10-05", sector: "consultant" },
+  { nom: "WedDream", plan: "enterprise", users: 6, mrr: 400, statut: "actif", date: "2025-09-01", sector: "mariage" },
+  { nom: "TraiteurSaveur", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-02-15", sector: "traiteur" },
+  { nom: "RepairMobile", plan: "starter", users: 1, mrr: 150, statut: "actif", date: "2026-03-01", sector: "reparateur" },
+  { nom: "DJ Max", plan: "business", users: 1, mrr: 250, statut: "actif", date: "2025-12-20", sector: "dj-animateur" },
+  { nom: "SalonGlam", plan: "business", users: 4, mrr: 250, statut: "actif", date: "2025-11-25", sector: "coiffure" },
+  { nom: "CabinetDroit", plan: "enterprise", users: 7, mrr: 400, statut: "actif", date: "2025-08-15", sector: "cabinets" },
+  { nom: "ShopTrend", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-01-05", sector: "boutique" },
 ];
 
 const planColors: Record<string, string> = {
