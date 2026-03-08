@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { Sparkles, ArrowUpRight } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { useNotificationsData } from "@/hooks/use-notifications-data";
