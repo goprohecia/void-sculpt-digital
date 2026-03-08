@@ -112,16 +112,15 @@ export function AdminSidebar() {
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // Filter by enabled modules, then apply plan limit (overview + parametres always included)
+  // Filter by enabled modules, then apply plan-specific module list
   const enabledItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
   const alwaysVisible = ["overview", "parametres"];
-  const navItems = modulesLimit === null
+  const planModules = PLAN_MODULES[plan];
+  const navItems = planModules === "all"
     ? enabledItems
-    : enabledItems.filter((item) => {
-        if (alwaysVisible.includes(item.moduleKey)) return true;
-        const idx = enabledItems.filter(i => !alwaysVisible.includes(i.moduleKey)).indexOf(item);
-        return idx < modulesLimit;
-      });
+    : enabledItems.filter((item) =>
+        alwaysVisible.includes(item.moduleKey) || planModules.includes(item.moduleKey)
+      );
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
