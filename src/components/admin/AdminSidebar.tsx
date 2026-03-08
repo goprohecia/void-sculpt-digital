@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
 import {
   LayoutDashboard,
   Users,
@@ -84,7 +85,7 @@ export function AdminSidebar() {
   const { spaces } = useCustomSpaces();
   const { isEnterprise, plan, currentPlanModules } = useSubscription();
   const { config: wl } = useWhiteLabel();
-  const { getModuleLabel, isModuleHidden } = useDemoPlan();
+  const { getModuleLabel, isModuleHidden, demoSector, setDemoSector } = useDemoPlan();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
@@ -173,6 +174,20 @@ export function AdminSidebar() {
           <p className="text-xs text-muted-foreground">{wl.brandName}</p>
         </Link>
       </SidebarHeader>
+
+      {/* Sector selector */}
+      <div className="px-3 pb-2">
+        <select
+          value={demoSector || ""}
+          onChange={(e) => setDemoSector(e.target.value ? (e.target.value as SectorKey) : null)}
+          className="w-full h-8 rounded-md bg-muted/50 border border-border/50 px-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring truncate"
+        >
+          <option value="">— Générique —</option>
+          {SECTORS.map((s) => (
+            <option key={s.key} value={s.key}>{s.icon} {s.label}</option>
+          ))}
+        </select>
+      </div>
 
       <SidebarSeparator />
 
