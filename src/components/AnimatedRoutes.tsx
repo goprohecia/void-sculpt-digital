@@ -59,11 +59,18 @@ import ClientRendezVous from "@/pages/client/ClientRendezVous";
 
 // Employee pages
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
+import EmployeeClients from "@/pages/employee/EmployeeClients";
 import EmployeeDossiers from "@/pages/employee/EmployeeDossiers";
 import EmployeeCalendrier from "@/pages/employee/EmployeeCalendrier";
 import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
-import EmployeeProfile from "@/pages/employee/EmployeeProfile";
+import EmployeeFacturation from "@/pages/employee/EmployeeFacturation";
+import EmployeeRelances from "@/pages/employee/EmployeeRelances";
+import EmployeeEmails from "@/pages/employee/EmployeeEmails";
+import EmployeeRendezVous from "@/pages/employee/EmployeeRendezVous";
+import EmployeeSupport from "@/pages/employee/EmployeeSupport";
 import EmployeeStock from "@/pages/employee/EmployeeStock";
+import EmployeeAnalyse from "@/pages/employee/EmployeeAnalyse";
+import EmployeeProfile from "@/pages/employee/EmployeeProfile";
 
 export function AnimatedRoutes() {
   const location = useLocation();
