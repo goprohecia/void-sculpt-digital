@@ -1,42 +1,34 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan : Analytiques par secteur d'activite dans le Super Admin
 
-## Modifications
+### Constat
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+Le flow d'inscription avec choix de secteur est deja implemente dans `ClientSignup.tsx` (etape 2). Les secteurs sont definis dans `DemoPlanContext.tsx` (20 secteurs). Les mock enterprises dans `SuperAdminEntreprises.tsx` ont deja un champ `sector`. Ce qui manque : des analytiques par secteur dans le dashboard Super Admin et un filtre secteur dans la liste des entreprises.
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+### Modifications
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+#### 1. `SuperAdminEntreprises.tsx` — Ajouter un filtre par secteur
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+- Ajouter un `Select` "Tous les secteurs" a cote du filtre plan existant
+- Filtrer les entreprises par secteur en plus du plan et de la recherche
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+#### 2. `SuperAdminDashboard.tsx` — Ajouter des analytiques par secteur
 
-## Details techniques
+- Ajouter les mock enterprises avec leur champ `sector` dans le dashboard
+- Ajouter un graphique **"Repartition par secteur"** (BarChart horizontal ou PieChart) montrant combien d'entreprises par secteur
+- Ajouter un graphique **"Secteurs par plan"** (BarChart empile) montrant la distribution des plans par secteur d'activite
+- Ajouter une section "Top secteurs" avec MRR par secteur
+- Enrichir les mock `MOCK_ENTERPRISES` du dashboard avec un champ `sector` pour alimenter ces graphiques
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+#### 3. `SuperAdminStats.tsx` — Verifier s'il existe et enrichir
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+- Si cette page existe, y ajouter aussi une vue detaillee par secteur
+
+### Fichiers impactes
+
+| Action | Fichier |
+|--------|---------|
+| Modifier | `src/pages/superadmin/SuperAdminEntreprises.tsx` — filtre par secteur |
+| Modifier | `src/pages/superadmin/SuperAdminDashboard.tsx` — graphiques par secteur + enrichir mocks |
+
