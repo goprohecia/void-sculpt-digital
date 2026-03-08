@@ -77,7 +77,7 @@ export function useSubscription() {
   const updatePlan = useMutation({
     mutationFn: async (newPlan: SubscriptionPlan) => {
       if (isDemo) {
-        demoOverride.current = newPlan;
+        setDemoPlan(newPlan);
         return;
       }
 
