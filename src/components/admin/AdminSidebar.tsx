@@ -21,6 +21,7 @@ import { useTickets } from "@/hooks/use-tickets";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { useSubscription } from "@/hooks/use-subscription";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -49,6 +50,7 @@ export function AdminSidebar() {
   const { enabledModules } = useAppSettings();
   const { spaces } = useCustomSpaces();
   const { isEnterprise } = useSubscription();
+  const { config: wl } = useWhiteLabel();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
@@ -99,8 +101,12 @@ export function AdminSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-5 pb-4">
         <Link to="/admin" className="flex flex-col items-center text-center gap-1">
-          <p className="text-lg font-bold tracking-tight">MBA</p>
-          <p className="text-xs text-muted-foreground">My Business Assistant</p>
+          {wl.logoUrl ? (
+            <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
+          ) : (
+            <p className="text-lg font-bold tracking-tight">{wl.brandShort}</p>
+          )}
+          <p className="text-xs text-muted-foreground">{wl.brandName}</p>
         </Link>
       </SidebarHeader>
 

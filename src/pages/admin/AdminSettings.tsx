@@ -19,6 +19,7 @@ import { useTags } from "@/hooks/use-produits";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -329,6 +330,32 @@ export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
   const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
+  const { config: wlConfig, updateConfig: updateWhiteLabel } = useWhiteLabel();
+  const [whiteLabel, setWhiteLabel] = useState({
+    brandName: "",
+    brandShort: "",
+    logoUrl: "",
+    faviconUrl: "",
+    primaryColor: "",
+    accentColor: "",
+    bgColor: "",
+    customDomain: "",
+    senderName: "",
+    senderEmail: "",
+    loginTitle: "",
+    loginSubtitle: "",
+    footerText: "",
+    hidePoweredBy: true,
+    customCss: "",
+  });
+  const [wlInitialized, setWlInitialized] = useState(false);
+
+  // Sync from hook config once loaded
+  if (!wlInitialized && wlConfig.brandName) {
+    setWhiteLabel({ ...wlConfig });
+    setWlInitialized(true);
+  }
+
   const [profile, setProfile] = useState({
     nom: user?.nom || "Admin",
     email: "admin@mba.demo",
@@ -354,22 +381,6 @@ export default function AdminSettings() {
     bic: "",
   });
 
-  const [whiteLabel, setWhiteLabel] = useState({
-    brandName: "My Business Assistant",
-    logoUrl: "",
-    faviconUrl: "",
-    primaryColor: "#6366f1",
-    accentColor: "#8b5cf6",
-    bgColor: "#0a0a0f",
-    customDomain: "",
-    senderName: "My Business Assistant",
-    senderEmail: "noreply@mondomaine.com",
-    loginTitle: "Bienvenue sur votre espace",
-    loginSubtitle: "Connectez-vous pour accéder à votre tableau de bord",
-    footerText: "© 2026 My Business Assistant. Tous droits réservés.",
-    hidePoweredBy: true,
-    customCss: "",
-  });
   const [notifs, setNotifs] = useState({
     emailRelance: true,
     emailPaiement: true,
@@ -385,6 +396,11 @@ export default function AdminSettings() {
 
   const handleSave = (section: string) => {
     setSaving(true);
+    // Persist white label for WL sections
+    const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé"];
+    if (wlSections.includes(section)) {
+      updateWhiteLabel(whiteLabel);
+    }
     setTimeout(() => {
       setSaving(false);
       toast.success(`${section} mis à jour avec succès`);
@@ -800,11 +816,16 @@ export default function AdminSettings() {
                         <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                           <div className="space-y-2">
                             <Label htmlFor="wl-brand">Nom de la marque</Label>
                             <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
-                            <p className="text-xs text-muted-foreground">Remplace "MBA" partout dans l'interface.</p>
+                            <p className="text-xs text-muted-foreground">Remplace "My Business Assistant" partout.</p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-short">Abréviation</Label>
+                            <Input id="wl-short" value={whiteLabel.brandShort} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandShort: e.target.value }))} placeholder="MBA" maxLength={5} />
+                            <p className="text-xs text-muted-foreground">Affichée dans les sidebars (3-5 car.).</p>
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="wl-footer">Texte du footer</Label>

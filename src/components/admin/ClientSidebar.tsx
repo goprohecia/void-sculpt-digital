@@ -18,6 +18,7 @@ import { useTickets } from "@/hooks/use-tickets";
 import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import {
   Sidebar,
   SidebarContent,
@@ -40,6 +41,7 @@ export function ClientSidebar() {
   const { conversations } = useConversations();
   const { tickets } = useTickets();
   const { clientVisibleModules } = useAppSettings();
+  const { config: wl } = useWhiteLabel();
 
   const clientConvNonLus = clientId
     ? conversations.filter((c) => c.clientId === clientId).reduce((acc, c) => acc + (c.nonLus || 0), 0)
@@ -73,14 +75,18 @@ export function ClientSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-4">
         <Link to="/client" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-[hsl(200,100%,50%)]/20 flex items-center justify-center">
-            <span className="text-[hsl(200,100%,60%)] font-bold text-sm">
-              {clientInitials}
-            </span>
-          </div>
+          {wl.logoUrl ? (
+            <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
+          ) : (
+            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
+              <span className="text-primary font-bold text-sm">
+                {clientInitials}
+              </span>
+            </div>
+          )}
           <div>
             <p className="text-sm font-semibold">{clientName}</p>
-            <p className="text-xs text-muted-foreground">Espace client</p>
+            <p className="text-xs text-muted-foreground">Espace client · {wl.brandShort}</p>
           </div>
         </Link>
       </SidebarHeader>

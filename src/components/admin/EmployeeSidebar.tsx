@@ -17,6 +17,7 @@ import {
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import {
   Sidebar,
   SidebarContent,
@@ -36,6 +37,7 @@ export function EmployeeSidebar() {
   const navigate = useNavigate();
   const { user, logout } = useDemoAuth();
   const { employeeVisibleModules } = useAppSettings();
+  const { config: wl } = useWhiteLabel();
 
   const allNavItems = [
     { title: "Tableau de bord", url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
@@ -66,11 +68,15 @@ export function EmployeeSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-4">
         <Link to="/employee" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-            <span className="text-primary font-bold text-sm">MBA</span>
-          </div>
+          {wl.logoUrl ? (
+            <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
+          ) : (
+            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
+              <span className="text-primary font-bold text-sm">{wl.brandShort}</span>
+            </div>
+          )}
           <div>
-            <p className="text-sm font-semibold">My Business Assistant</p>
+            <p className="text-sm font-semibold">{wl.brandName}</p>
             <p className="text-xs text-muted-foreground">Espace salarié</p>
           </div>
         </Link>
