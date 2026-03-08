@@ -81,7 +81,7 @@ export function AdminSidebar() {
   const { tickets } = useTickets();
   const { enabledModules } = useAppSettings();
   const { spaces } = useCustomSpaces();
-  const { isEnterprise, modulesLimit } = useSubscription();
+  const { isEnterprise, plan } = useSubscription();
   const { config: wl } = useWhiteLabel();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
