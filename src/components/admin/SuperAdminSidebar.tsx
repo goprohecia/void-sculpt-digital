@@ -1,5 +1,5 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Building2, CreditCard, BarChart3, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Building2, CreditCard, BarChart3, Settings, LogOut, Layers } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
