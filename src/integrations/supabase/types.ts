@@ -370,6 +370,36 @@ export type Database = {
           },
         ]
       }
+      custom_spaces: {
+        Row: {
+          base_role: string
+          created_at: string
+          enabled_modules: Json
+          id: string
+          name: string
+          sort_order: number
+          user_id: string
+        }
+        Insert: {
+          base_role?: string
+          created_at?: string
+          enabled_modules?: Json
+          id?: string
+          name: string
+          sort_order?: number
+          user_id: string
+        }
+        Update: {
+          base_role?: string
+          created_at?: string
+          enabled_modules?: Json
+          id?: string
+          name?: string
+          sort_order?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       demandes: {
         Row: {
           budget: string | null
@@ -1269,6 +1299,42 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          created_at: string
+          custom_modules: Json | null
+          expires_at: string | null
+          id: string
+          modules_limit: number | null
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_modules?: Json | null
+          expires_at?: string | null
+          id?: string
+          modules_limit?: number | null
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          custom_modules?: Json | null
+          expires_at?: string | null
+          id?: string
+          modules_limit?: number | null
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           couleur: string | null
@@ -1411,6 +1477,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "client" | "employee"
+      subscription_plan: "starter" | "business" | "enterprise"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1539,6 +1606,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "client", "employee"],
+      subscription_plan: ["starter", "business", "enterprise"],
     },
   },
 } as const
