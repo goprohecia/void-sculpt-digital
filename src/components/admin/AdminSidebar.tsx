@@ -35,7 +35,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
-import { useSubscription, PLAN_MODULES } from "@/hooks/use-subscription";
+import { useSubscription } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -81,7 +81,7 @@ export function AdminSidebar() {
   const { tickets } = useTickets();
   const { enabledModules } = useAppSettings();
   const { spaces } = useCustomSpaces();
-  const { isEnterprise, plan } = useSubscription();
+  const { isEnterprise, plan, currentPlanModules } = useSubscription();
   const { config: wl } = useWhiteLabel();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
@@ -112,10 +112,10 @@ export function AdminSidebar() {
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // Filter by enabled modules, then apply plan-specific module list
+  // Filter by enabled modules, then apply plan-specific module list (from context)
   const enabledItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
   const alwaysVisible = ["overview", "parametres"];
-  const planModules = PLAN_MODULES[plan];
+  const planModules = currentPlanModules[plan];
   const navItems = planModules === "all"
     ? enabledItems
     : enabledItems.filter((item) =>

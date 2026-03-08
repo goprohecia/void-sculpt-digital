@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
-import { useState, useCallback } from "react";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
 export type SubscriptionPlan = "starter" | "business" | "enterprise";
 
@@ -33,7 +33,7 @@ export const PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = {
 export function useSubscription() {
   const { isDemo } = useIsDemo();
   const queryClient = useQueryClient();
-  const [demoPlan, setDemoPlan] = useState<SubscriptionPlan>("enterprise");
+  const { demoPlan, setDemoPlan, planModules } = useDemoPlan();
 
   const { data: subscription, isLoading } = useQuery({
     queryKey: ["subscription", isDemo ? demoPlan : "real"],
@@ -61,7 +61,6 @@ export function useSubscription() {
       if (error) throw error;
 
       if (!data) {
-        // Default to starter if no subscription exists
         return {
           plan: "starter",
           status: "active",
@@ -109,7 +108,10 @@ export function useSubscription() {
     },
   });
 
-  const plan = subscription?.plan ?? "starter";
+  const plan = subscription?.plan ?? (isDemo ? demoPlan : "starter");
+
+  // Use dynamic planModules from context (editable by SuperAdmin)
+  const currentPlanModules = planModules;
 
   return {
     plan,
@@ -125,5 +127,6 @@ export function useSubscription() {
     canWhiteLabel: plan === "enterprise",
     updatePlan,
     PLAN_LIMITS,
+    currentPlanModules,
   };
 }

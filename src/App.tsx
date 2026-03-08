@@ -11,6 +11,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { DemoAuthProvider } from "@/contexts/DemoAuthContext";
 import { DemoDataProvider } from "@/contexts/DemoDataContext";
 import { WhiteLabelProvider } from "@/hooks/use-white-label";
+import { DemoPlanProvider } from "@/contexts/DemoPlanContext";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => {
       <TooltipProvider>
         <DemoAuthProvider>
           <DemoDataProvider>
+            <DemoPlanProvider>
             <WhiteLabelProvider>
               <LoadingScreen onComplete={() => setIsLoaded(true)} />
               <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
@@ -34,6 +36,7 @@ const App = () => {
                 </BrowserRouter>
               </div>
             </WhiteLabelProvider>
+            </DemoPlanProvider>
           </DemoDataProvider>
         </DemoAuthProvider>
       </TooltipProvider>

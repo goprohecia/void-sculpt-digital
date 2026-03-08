@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { Sparkles, ArrowUpRight } from "lucide-react";
+import { Sparkles, ArrowUpRight, X } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { useNotificationsData } from "@/hooks/use-notifications-data";
@@ -19,6 +20,12 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const { isDemo, isLoading, supabaseUserId } = useIsDemo();
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useNotificationsData();
   const { plan, updatePlan } = useSubscription();
+  const [showBanner, setShowBanner] = useState(true);
+
+  // Reset banner visibility when plan changes
+  useEffect(() => {
+    setShowBanner(true);
+  }, [plan]);
 
   if (isLoading) return null;
 
@@ -60,12 +67,19 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            {plan !== "enterprise" && (
-              <div className="mb-4 rounded-xl border border-primary/20 bg-primary/5 p-4 flex items-center gap-3">
+            {plan !== "enterprise" && showBanner && (
+              <div className="mb-4 rounded-xl border border-primary/20 bg-primary/5 p-4 flex items-center gap-3 relative">
+                <button
+                  onClick={() => setShowBanner(false)}
+                  className="absolute top-2 right-2 p-1 rounded-md hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Masquer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
                 <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Sparkles className="h-5 w-5 text-primary" />
                 </div>
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 pr-6">
                   <p className="text-sm font-medium">
                     Vous êtes en plan <span className={PLAN_INFO[plan].color}>{PLAN_INFO[plan].label}</span> — débloquez {plan === "starter" ? "plus de modules et fonctionnalités" : "tous les modules, l'IA et les espaces personnalisés"}
                   </p>
