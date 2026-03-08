@@ -7,6 +7,7 @@ import Index from "@/pages/Index";
 import Contact from "@/pages/Contact";
 import Fonctionnalites from "@/pages/Fonctionnalites";
 import NotFound from "@/pages/NotFound";
+import DemoTour from "@/pages/DemoTour";
 
 // Sector pages
 import Conciergerie from "@/pages/secteurs/Conciergerie";
