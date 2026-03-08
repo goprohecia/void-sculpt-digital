@@ -84,6 +84,7 @@ export function AdminSidebar() {
   const { spaces } = useCustomSpaces();
   const { isEnterprise, plan, currentPlanModules } = useSubscription();
   const { config: wl } = useWhiteLabel();
+  const { getModuleLabel, isModuleHidden } = useDemoPlan();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
