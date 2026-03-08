@@ -1,42 +1,69 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan: Sélecteur de plan demo + Espace Super Admin
 
-## Modifications
+### 1. Remplacer le badge "Mode démo" par un sélecteur de plan
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+**Fichier: `src/components/admin/AdminLayout.tsx`**
+- Remplacer le badge statique "Mode démo" par un dropdown (Select) avec 3 options : Starter, Business, Enterprise
+- Chaque option affiche le nom du plan + prix (150€, 250€, 400€)
+- Au changement, appeler `updatePlan.mutate(newPlan)` du hook `useSubscription`
+- Couleurs distinctes : Starter = gris, Business = bleu (recommandé), Enterprise = or/amber
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+**Fichier: `src/hooks/use-subscription.ts`**
+- Modifier le `demoOverride` pour qu'il soit réactif (useState au lieu de useRef) afin que le changement de plan en démo provoque un re-render immédiat
+- Ajouter les infos pricing dans les constantes :
+  - Starter: 150€/mois, 3 modules, pas d'onboarding, pas de module sur mesure, mois par mois
+  - Business: 250€/mois, 6 modules, appel inclus, mois par mois
+  - Enterprise: 400€/mois, tous modules, appel dédié, module sur mesure, 6 mois minimum
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+**Fichier: `src/components/admin/AdminSidebar.tsx`**
+- Filtrer les items de navigation en fonction du plan actif ET du `modulesLimit`
+- Starter : afficher seulement les 3 premiers modules activés (overview toujours inclus + 2 au choix, ou les 3 premiers par défaut)
+- Business : 6 modules max
+- Enterprise : tous les modules
+- Masquer les fonctionnalités Enterprise-only (espaces personnalisés, IA, etc.) pour Starter/Business
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+### 2. Créer l'espace Super Admin MBA
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+**Nouveau fichier: `src/pages/superadmin/SuperAdminDashboard.tsx`**
+- Dashboard global MBA avec KPIs : nombre total d'entreprises inscrites, MRR, répartition par plan, taux de churn
+- Liste de toutes les entreprises clientes avec leur plan, statut, date d'inscription
+- Accès rapide pour voir le détail d'une entreprise
 
-## Details techniques
+**Nouveau fichier: `src/pages/superadmin/SuperAdminEntreprises.tsx`**
+- Liste complète des entreprises avec filtres (plan, statut, date)
+- Détail d'une entreprise : infos, plan actif, modules activés, nombre d'utilisateurs
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+**Nouveau fichier: `src/components/admin/SuperAdminLayout.tsx`**
+- Layout dédié avec sidebar spécifique Super Admin
+- Navigation : Dashboard, Entreprises, Abonnements, Statistiques
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+**Nouveau fichier: `src/components/admin/SuperAdminSidebar.tsx`**
+- Sidebar avec les sections : Vue d'ensemble, Entreprises, Abonnements, Statistiques globales, Paramètres MBA
+
+**Fichier: `src/contexts/DemoAuthContext.tsx`**
+- Ajouter un compte démo `superadmin@mba.demo` avec rôle `superadmin`
+- Ajouter le type `superadmin` dans `DemoRole`
+
+**Fichier: `src/components/AnimatedRoutes.tsx`**
+- Ajouter les routes `/superadmin`, `/superadmin/entreprises`, `/superadmin/abonnements`, `/superadmin/stats`
+
+**Fichier: `src/pages/admin/AdminLogin.tsx`**
+- Ajouter un bouton démo "Super Admin" dans la grille des comptes démo
+
+### Résumé des fichiers impactés
+
+| Action | Fichier |
+|--------|---------|
+| Modifier | `AdminLayout.tsx` — sélecteur de plan |
+| Modifier | `use-subscription.ts` — demo plan réactif + pricing |
+| Modifier | `AdminSidebar.tsx` — filtrage modules par plan |
+| Modifier | `DemoAuthContext.tsx` — ajout superadmin |
+| Modifier | `AnimatedRoutes.tsx` — routes superadmin |
+| Modifier | `AdminLogin.tsx` — bouton démo superadmin |
+| Créer | `SuperAdminLayout.tsx` |
+| Créer | `SuperAdminSidebar.tsx` |
+| Créer | `SuperAdminDashboard.tsx` |
+| Créer | `SuperAdminEntreprises.tsx` |
+
