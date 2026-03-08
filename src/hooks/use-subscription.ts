@@ -21,7 +21,7 @@ const PLAN_LIMITS: Record<SubscriptionPlan, number | null> = {
 export function useSubscription() {
   const { isDemo } = useIsDemo();
   const queryClient = useQueryClient();
-  const demoOverride = useRef<SubscriptionPlan>("business");
+  const demoOverride = useRef<SubscriptionPlan>("enterprise");
 
   const { data: subscription, isLoading } = useQuery({
     queryKey: ["subscription"],
