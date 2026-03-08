@@ -14,6 +14,7 @@ interface Pack {
   priceMonthly: number;
   priceAnnual: number;
   modulesLimit: string;
+  engagement: string;
   features: string[];
   recommended?: boolean;
 }
