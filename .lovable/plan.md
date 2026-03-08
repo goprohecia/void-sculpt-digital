@@ -1,103 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-# Plan — Système d'abonnement + Espaces personnalisables + Site vitrine MBA
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-## État actuel
+## Modifications
 
-**Déjà fait :**
-- DB : tables `subscriptions` et `custom_spaces` existent avec RLS
-- Hook `use-subscription.ts` fonctionnel (Starter 3 / Business 6 / Enterprise illimité)
-- `AdminSettings.tsx` : onglet Modules avec gating par plan, UpgradeBanner
-- `OffresSection.tsx` : 3 offres MBA avec toggle mensuel/annuel
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-**À faire :**
-- Espaces personnalisés : le CRUD UI est un placeholder "bientôt disponible"
-- Site vitrine : le Hero dit "IMPARTIAL GAMES" et parle de "web agency". Tout le contenu (Hero, ProofStrip, Services, Méthode, Principes, Réalisations, CTA, Header, Footer) doit être rebrandé pour présenter MBA comme un **CRM SaaS modulaire multi-sectoriel**
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
----
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-## 1. Espaces personnalisables (Enterprise only)
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-### Dans `AdminSettings.tsx` — Remplacer le placeholder par un vrai CRUD
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-- Formulaire : nom de l'espace + base_role (salarié/client) + modules à activer
-- Liste des espaces créés avec boutons renommer / supprimer
-- Hook `use-custom-spaces.ts` : CRUD sur la table `custom_spaces` (query + mutations)
-- Limité aux admins Enterprise (déjà gatté par `canCustomizeSpaces`)
+## Details techniques
 
-### Dans `AdminSidebar.tsx`
-- Pour Enterprise : afficher les custom spaces dans une section dédiée de la navigation
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
----
-
-## 2. Refonte complète du site vitrine MBA
-
-Transformer le site d'une agence web ("Impartial Games") en **site vitrine SaaS pour MBA**.
-
-### A. `HeroPremium.tsx` — Nouveau Hero MBA
-- Titre : "Votre CRM. Votre métier. **Votre assistant.**"
-- Sous-titre : "La plateforme de gestion modulaire pour les entreprises de services."
-- CTA principal : "Essayer gratuitement" → `/contact?subject=Demo%20MBA`
-- CTA secondaire : "Découvrir les offres" → `#offres`
-- Supprimer toute référence à "Impartial Games"
-
-### B. `ProofStrip.tsx` — Proof points MBA
-- Remplacer par : "Multi-sectoriel" / "Modulaire" / "White Label" / "Support réactif"
-
-### C. `ServicesSection.tsx` → Rebaptiser en "Secteurs d'activité"
-- Remplacer les 4 services web par les secteurs cibles :
-  - Conciergerie & Gestion locative
-  - Agences immobilières
-  - Garages & Carrosseries
-  - BTP & Artisans
-- Chaque carte avec icône, titre, description courte
-
-### D. `RealisationsSection.tsx` → "Fonctionnalités clés"
-- Remplacer le portfolio par une vitrine des modules MBA :
-  - Gestion clients, Dossiers, Facturation, Messagerie, Support, Stock, Analyse
-- Avec des descriptions et icônes adaptées
-
-### E. `MethodeSection.tsx` → "Comment ça marche"
-- 4 étapes : Inscription → Configuration des modules → Invitation de l'équipe → C'est parti !
-
-### F. `PrincipesSection.tsx` → "Pourquoi MBA"
-- Valeurs : Modulaire / Multi-rôles / Sécurisé / Simple / Évolutif
-
-### G. `CTAFinal.tsx` — CTA MBA
-- "Prêt à simplifier votre gestion ?"
-- Boutons : "Demander une démo" + "Voir les offres"
-- Supprimer email impartialgames
-
-### H. `Header.tsx` — Navigation MBA
-- Remplacer les liens Services (web/mobile/backoffice/360) par : Fonctionnalités / Secteurs / Offres
-- Garder le CTA "Essayer MBA"
-
-### I. `Footer.tsx` — Footer MBA
-- Déjà partiellement rebrandé "MY BUSINESS ASSISTANT"
-- Mettre à jour les liens (Fonctionnalités, Secteurs, Offres au lieu de services web)
-
-### J. `Index.tsx` — Réordonner les sections
-- Hero → ProofStrip → Secteurs → Fonctionnalités → Offres → Comment ça marche → Pourquoi MBA → FAQ → CTA
-
----
-
-## 3. Fichiers impactés
-
-| Fichier | Action |
-|---|---|
-| `src/hooks/use-custom-spaces.ts` | **Créer** — CRUD hook |
-| `src/pages/admin/AdminSettings.tsx` | **Modifier** — UI espaces personnalisés |
-| `src/components/admin/AdminSidebar.tsx` | **Modifier** — Afficher custom spaces |
-| `src/components/sections/HeroPremium.tsx` | **Modifier** — Rebrand MBA |
-| `src/components/sections/ProofStrip.tsx` | **Modifier** — Rebrand MBA |
-| `src/components/sections/ServicesSection.tsx` | **Modifier** — Secteurs d'activité |
-| `src/components/sections/RealisationsSection.tsx` | **Modifier** — Fonctionnalités |
-| `src/components/sections/MethodeSection.tsx` | **Modifier** — Comment ça marche |
-| `src/components/sections/PrincipesSection.tsx` | **Modifier** — Pourquoi MBA |
-| `src/components/sections/CTAFinal.tsx` | **Modifier** — CTA MBA |
-| `src/components/Header.tsx` | **Modifier** — Nav MBA |
-| `src/components/Footer.tsx` | **Modifier** — Footer MBA |
-| `src/pages/Index.tsx` | **Modifier** — Réordonnancement sections |
-
-Aucune migration DB nécessaire — les tables existent déjà.
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.

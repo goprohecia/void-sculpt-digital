@@ -14,26 +14,25 @@ import {
 const Index = () => {
   return (
     <Layout>
-
-      {/* A. Hero Section - Premium */}
+      {/* A. Hero */}
       <HeroPremium />
 
-      {/* B. Proof Strip - Crédibilité */}
+      {/* B. Proof Strip */}
       <ProofStrip />
 
-      {/* C. Offres / Packs */}
-      <OffresSection />
-
-      {/* D. Services Grid */}
+      {/* C. Secteurs d'activité */}
       <ServicesSection />
 
-      {/* E. Réalisations / Portfolio */}
+      {/* D. Fonctionnalités / Modules */}
       <RealisationsSection />
 
-      {/* F. Méthode */}
+      {/* E. Offres / Pricing */}
+      <OffresSection />
+
+      {/* F. Comment ça marche */}
       <MethodeSection />
 
-      {/* G. Principes / Standards */}
+      {/* G. Pourquoi MBA */}
       <PrincipesSection />
 
       {/* H. FAQ */}

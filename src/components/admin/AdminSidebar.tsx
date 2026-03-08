@@ -19,6 +19,9 @@ import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
 import { useAppSettings } from "@/hooks/use-app-settings";
+import { useCustomSpaces } from "@/hooks/use-custom-spaces";
+import { useSubscription } from "@/hooks/use-subscription";
+import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Sidebar,
@@ -44,6 +47,8 @@ export function AdminSidebar() {
   const { conversations } = useConversations();
   const { tickets } = useTickets();
   const { enabledModules } = useAppSettings();
+  const { spaces } = useCustomSpaces();
+  const { isEnterprise } = useSubscription();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
@@ -120,6 +125,30 @@ export function AdminSidebar() {
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>{renderItems(toolItems)}</SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+
+        {/* Custom Spaces - Enterprise only */}
+        {isEnterprise && spaces.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70 flex items-center gap-1.5">
+              <Sparkles className="h-3 w-3 text-amber-400" />
+              Espaces personnalisés
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {spaces.map((space) => (
+                  <SidebarMenuItem key={space.id}>
+                    <SidebarMenuButton tooltip={space.name}>
+                      <span className="flex items-center gap-3">
+                        <span className="h-2 w-2 rounded-full bg-amber-400/60" />
+                        <span>{space.name}</span>
+                      </span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         )}
