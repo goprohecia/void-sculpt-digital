@@ -46,10 +46,10 @@ export function CTAFinal() {
                       </motion.div>
 
                       <Link
-                        to="/#offres"
+                        to="/demo"
                         className="glass-button inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-xl text-lg hover:border-neon-violet/50"
                       >
-                        Voir les offres
+                        Essayer la démo
                       </Link>
                     </div>
                   </ScrollReveal>
