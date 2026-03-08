@@ -106,6 +106,17 @@ export function AnimatedRoutes() {
         <Route path="/secteurs/cabinets" element={<Cabinets />} />
         <Route path="/secteurs/evenementiel" element={<Evenementiel />} />
         <Route path="/secteurs/nettoyage" element={<Nettoyage />} />
+        <Route path="/secteurs/developpeur" element={<Developpeur />} />
+        <Route path="/secteurs/designer" element={<Designer />} />
+        <Route path="/secteurs/photographe" element={<Photographe />} />
+        <Route path="/secteurs/community-manager" element={<CommunityManager />} />
+        <Route path="/secteurs/reparateur" element={<Reparateur />} />
+        <Route path="/secteurs/consultant" element={<Consultant />} />
+        <Route path="/secteurs/coach-sportif" element={<CoachSportif />} />
+        <Route path="/secteurs/formateur" element={<Formateur />} />
+        <Route path="/secteurs/boutique" element={<Boutique />} />
+        <Route path="/secteurs/traiteur" element={<Traiteur />} />
+        <Route path="/secteurs/dj-animateur" element={<DjAnimateur />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
