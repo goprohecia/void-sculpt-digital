@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -23,6 +24,11 @@ import {
   StickyNote,
   Target,
   Bot,
+  Building2,
+  Briefcase,
+  Wrench,
+  ClipboardList,
+  ChevronDown,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
@@ -33,6 +39,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -46,11 +53,25 @@ import {
   SidebarFooter,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import type { LucideIcon } from "lucide-react";
 
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
+
+type GroupConfig = {
+  label: string;
+  icon: LucideIcon;
+  keys: string[];
+};
+
+const GROUPS: GroupConfig[] = [
+  { label: "Principal", icon: Building2, keys: principalKeys },
+  { label: "Commercial", icon: Briefcase, keys: commercialKeys },
+  { label: "Outils", icon: Wrench, keys: outilsKeys },
+  { label: "Gestion", icon: ClipboardList, keys: gestionKeys },
+];
 
 export function AdminSidebar() {
   const location = useLocation();
@@ -92,15 +113,24 @@ export function AdminSidebar() {
   ];
 
   const navItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
-  const principalItems = navItems.filter((item) => principalKeys.includes(item.moduleKey));
-  const commercialItems = navItems.filter((item) => commercialKeys.includes(item.moduleKey));
-  const outilsItems = navItems.filter((item) => outilsKeys.includes(item.moduleKey));
-  const gestionItems = navItems.filter((item) => gestionKeys.includes(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
     return location.pathname.startsWith(url);
   };
+
+  // Determine which groups have an active route (for default open)
+  const groupHasActive = (keys: string[]) =>
+    navItems.some((item) => keys.includes(item.moduleKey) && isActive(item.url));
+
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    GROUPS.forEach((g) => { initial[g.label] = groupHasActive(g.keys) || g.label === "Principal"; });
+    return initial;
+  });
+
+  const toggleGroup = (label: string) =>
+    setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
 
   const renderItems = (items: typeof navItems) =>
     items.map((item) => (
@@ -119,18 +149,6 @@ export function AdminSidebar() {
       </SidebarMenuItem>
     ));
 
-  const groupLabel = "text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70";
-
-  const renderGroup = (label: string, items: typeof navItems) =>
-    items.length > 0 ? (
-      <SidebarGroup>
-        <SidebarGroupLabel className={groupLabel}>{label}</SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>{renderItems(items)}</SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-    ) : null;
-
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-5 pb-4">
@@ -147,16 +165,37 @@ export function AdminSidebar() {
       <SidebarSeparator />
 
       <SidebarContent>
-        {renderGroup("Principal", principalItems)}
-        {renderGroup("Commercial", commercialItems)}
-        {renderGroup("Outils", outilsItems)}
-        {renderGroup("Gestion", gestionItems)}
+        {GROUPS.map((group) => {
+          const items = navItems.filter((item) => group.keys.includes(item.moduleKey));
+          if (items.length === 0) return null;
+          const GroupIcon = group.icon;
+          const isOpen = openGroups[group.label] ?? true;
+
+          return (
+            <Collapsible key={group.label} open={isOpen} onOpenChange={() => toggleGroup(group.label)}>
+              <SidebarGroup>
+                <CollapsibleTrigger asChild>
+                  <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70 flex items-center gap-1.5 cursor-pointer hover:text-muted-foreground transition-colors select-none">
+                    <GroupIcon className="h-3.5 w-3.5" />
+                    <span className="flex-1">{group.label}</span>
+                    <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isOpen ? "" : "-rotate-90"}`} />
+                  </SidebarGroupLabel>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarGroupContent>
+                    <SidebarMenu>{renderItems(items)}</SidebarMenu>
+                  </SidebarGroupContent>
+                </CollapsibleContent>
+              </SidebarGroup>
+            </Collapsible>
+          );
+        })}
 
         {/* Custom Spaces - Enterprise only */}
         {isEnterprise && spaces.length > 0 && (
           <SidebarGroup>
             <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70 flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3 text-amber-400" />
+              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
               Espaces personnalisés
             </SidebarGroupLabel>
             <SidebarGroupContent>

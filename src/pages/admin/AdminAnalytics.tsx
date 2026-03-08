@@ -11,6 +11,7 @@ import { useDossiers } from "@/hooks/use-dossiers";
 import { useTickets } from "@/hooks/use-tickets";
 import { donneesMensuelles as mockDonneesMensuelles } from "@/data/mockData";
 import { Euro, TrendingUp, FolderOpen, Users, BarChart3, LifeBuoy, Clock, CheckCircle, Download, Loader2, FileText, CreditCard, FileSpreadsheet, Pencil, Check, X, ArrowDownUp } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -408,6 +409,11 @@ export default function AdminAnalytics() {
               <p className="text-muted-foreground text-sm">Données analytiques 2026</p>
             </div>
             <div className="flex flex-wrap gap-2 self-start">
+              <AIContextButton
+                label="Analyse IA"
+                context={`analyse - CA total: ${totalCA}€, Encaissements: ${totalEncaissements}€, ${totalDossiers} dossiers, ${totalNouveauxClients} nouveaux clients. Factures: ${factures.filter(f => f.statut === "payee").length} payées, ${factures.filter(f => f.statut === "en_retard").length} en retard.`}
+                prompt="Analyse les données financières et commerciales. Identifie les tendances, les points forts, les risques et propose des recommandations stratégiques concrètes."
+              />
               <button
                 onClick={exportPDF}
                 disabled={exporting}

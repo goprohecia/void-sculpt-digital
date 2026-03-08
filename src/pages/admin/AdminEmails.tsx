@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { EmailLogType } from "@/contexts/DemoDataContext";
 import { exportCsv } from "@/lib/exportCsv";
 import { Mail, Download, Search, Plus, FileText, Send, Trash2, Pencil } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -100,6 +101,11 @@ export default function AdminEmails() {
               <p className="text-muted-foreground text-sm">{emailLogs.length} email{emailLogs.length !== 1 ? "s" : ""} · {templates.length} template{templates.length !== 1 ? "s" : ""}</p>
             </div>
             <div className="flex gap-2 self-start">
+              <AIContextButton
+                label="Suggestion d'email"
+                context={`email - ${emailLogs.length} emails envoyés, ${templates.length} templates disponibles. Derniers types: ${emailLogs.slice(0, 5).map(e => e.type).join(", ")}.`}
+                prompt="Suggère un email professionnel à envoyer basé sur le contexte actuel. Propose un objet accrocheur et un contenu structuré adapté au contexte business."
+              />
               <Button onClick={() => setComposeOpen(true)} size="sm" className="gap-1"><Plus className="h-4 w-4" /> Composer</Button>
               <Button onClick={handleExportCsv} variant="outline" size="sm" className="gap-1"><Download className="h-4 w-4" /> CSV</Button>
             </div>
