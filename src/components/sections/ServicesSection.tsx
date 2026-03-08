@@ -28,11 +28,11 @@ const sectorGroups: SectorGroup[] = [
     color: "text-blue-400",
     bg: "bg-blue-500/10",
     sectors: [
-      { icon: Code, title: "Développeur freelance", description: "Gestion de projets, clients et facturation pour développeurs indépendants." },
-      { icon: Palette, title: "Designer / Motion", description: "Suivi créatif, briefs clients et livrables organisés." },
-      { icon: Camera, title: "Photographe / Vidéaste", description: "Bookings, galeries clients, devis et contrats." },
-      { icon: Users, title: "Community Manager", description: "Gestion multi-clients, plannings et reporting." },
-      { icon: Smartphone, title: "Réparateur de téléphones", description: "Suivi réparations, stock pièces et facturation." },
+      { icon: Code, title: "Développeur freelance", description: "Gestion de projets, clients et facturation pour développeurs indépendants.", href: "/secteurs/developpeur" },
+      { icon: Palette, title: "Designer / Motion", description: "Suivi créatif, briefs clients et livrables organisés.", href: "/secteurs/designer" },
+      { icon: Camera, title: "Photographe / Vidéaste", description: "Bookings, galeries clients, devis et contrats.", href: "/secteurs/photographe" },
+      { icon: Users, title: "Community Manager", description: "Gestion multi-clients, plannings et reporting.", href: "/secteurs/community-manager" },
+      { icon: Smartphone, title: "Réparateur de téléphones", description: "Suivi réparations, stock pièces et facturation.", href: "/secteurs/reparateur" },
     ],
   },
   {
@@ -40,11 +40,11 @@ const sectorGroups: SectorGroup[] = [
     color: "text-emerald-400",
     bg: "bg-emerald-500/10",
     sectors: [
-      { icon: Briefcase, title: "Consultant (marketing, RH)", description: "Missions, propositions commerciales et suivi client." },
-      { icon: Dumbbell, title: "Coach sportif / Personal trainer", description: "Planning séances, fiches clients et paiements." },
+      { icon: Briefcase, title: "Consultant (marketing, RH)", description: "Missions, propositions commerciales et suivi client.", href: "/secteurs/consultant" },
+      { icon: Dumbbell, title: "Coach sportif / Personal trainer", description: "Planning séances, fiches clients et paiements.", href: "/secteurs/coach-sportif" },
       { icon: Building2, title: "Agent immobilier indépendant", description: "Mandats, visites, dossiers acquéreurs et facturation.", href: "/secteurs/immobilier" },
       { icon: Home, title: "Conciergerie Airbnb", description: "Gestion des biens, check-in/out, interventions et revenus.", href: "/secteurs/conciergerie" },
-      { icon: GraduationCap, title: "Formateur indépendant", description: "Sessions, inscriptions, conventions et facturation." },
+      { icon: GraduationCap, title: "Formateur indépendant", description: "Sessions, inscriptions, conventions et facturation.", href: "/secteurs/formateur" },
     ],
   },
   {
@@ -52,11 +52,11 @@ const sectorGroups: SectorGroup[] = [
     color: "text-amber-400",
     bg: "bg-amber-500/10",
     sectors: [
-      { icon: ShoppingBag, title: "Gérant de boutique", description: "Stock, ventes, fiches clients et caisse." },
+      { icon: ShoppingBag, title: "Gérant de boutique", description: "Stock, ventes, fiches clients et caisse.", href: "/secteurs/boutique" },
       { icon: PartyPopper, title: "Organisateur d'événements", description: "Projets, prestataires, planning et budgets.", href: "/secteurs/evenementiel" },
       { icon: Heart, title: "Wedding planner", description: "Couples, prestataires, planning jour J et devis.", href: "/secteurs/mariage" },
-      { icon: UtensilsCrossed, title: "Traiteur indépendant", description: "Commandes, menus, stock ingrédients et livraisons." },
-      { icon: Music, title: "DJ / Animateur", description: "Bookings, contrats, calendrier et facturation." },
+      { icon: UtensilsCrossed, title: "Traiteur indépendant", description: "Commandes, menus, stock ingrédients et livraisons.", href: "/secteurs/traiteur" },
+      { icon: Music, title: "DJ / Animateur", description: "Bookings, contrats, calendrier et facturation.", href: "/secteurs/dj-animateur" },
     ],
   },
   {
