@@ -8,15 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, Eye, EyeOff, ArrowLeft, ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
+import { getModuleLabel as getSectorModuleLabel, isModuleHidden } from "@/data/sectorModules";
+import { GENERIC_MODULE_LABELS } from "@/data/sectorModules";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
-
-const MODULE_LABELS: Record<string, string> = {
-  clients: "Clients", employees: "Salariés", dossiers: "Dossiers", pipeline: "Pipeline CRM",
-  facturation: "Facturation", relances: "Relances", stock: "Stock", messagerie: "Messagerie",
-  emails: "Emails", "rendez-vous": "Rendez-vous", agenda: "Agenda", taches: "Tâches",
-  support: "Support", notes: "Notes", analyse: "Analyse", rapports: "Rapports",
-  documents: "Documents", temps: "Suivi du temps", automatisations: "Automatisations", ia: "Intelligence IA",
-};
 
 const ALWAYS_INCLUDED = ["overview", "parametres"];
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
@@ -215,7 +209,7 @@ export default function ClientSignup() {
                     {modules !== "all" && (
                       <div className="flex flex-wrap gap-1">
                         {modules.map((m) => (
-                          <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground capitalize">{MODULE_LABELS[m] || m}</span>
+                          <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground capitalize">{GENERIC_MODULE_LABELS[m] || m}</span>
                         ))}
                       </div>
                     )}
@@ -282,7 +276,7 @@ export default function ClientSignup() {
             )}
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {SELECTABLE_MODULES.map((key) => {
+              {SELECTABLE_MODULES.filter((k) => !isModuleHidden(k, selectedSector)).map((key) => {
                 const isSelected = selectedModules.includes(key);
                 const limit = getModuleLimit(selectedPlan);
                 const disabled = !isSelected && limit !== null && selectedModules.length >= limit;
@@ -300,7 +294,7 @@ export default function ClientSignup() {
                       disabled={disabled}
                       onCheckedChange={() => toggleModule(key)}
                     />
-                    <span className="text-sm">{MODULE_LABELS[key] || key}</span>
+                    <span className="text-sm">{getSectorModuleLabel(key, selectedSector)}</span>
                     {isRecommended && !isSelected && (
                       <Sparkles className="h-3 w-3 text-primary/50 ml-auto" />
                     )}

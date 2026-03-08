@@ -5,19 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
-import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown } from "lucide-react";
+import { GENERIC_MODULE_LABELS, SECTOR_MODULE_OVERRIDES, type SectorModulesConfig } from "@/data/sectorModules";
+import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown, Puzzle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 
-const MODULE_LABELS: Record<string, string> = {
-  overview: "Vue d'ensemble", clients: "Clients", employees: "Salariés", dossiers: "Dossiers",
-  pipeline: "Pipeline CRM", facturation: "Facturation", relances: "Relances", stock: "Stock",
-  messagerie: "Messagerie", emails: "Emails", "rendez-vous": "Rendez-vous", agenda: "Agenda",
-  taches: "Tâches", support: "Support", notes: "Notes", analyse: "Analyse", rapports: "Rapports",
-  documents: "Documents", temps: "Suivi du temps", automatisations: "Automatisations", ia: "Intelligence IA",
-  parametres: "Paramètres",
-};
+const MODULE_LABELS = GENERIC_MODULE_LABELS;
 
 const PLAN_COLORS: Record<SubscriptionPlan, string> = {
   starter: "border-muted-foreground/30",
@@ -35,7 +30,7 @@ const ALWAYS_INCLUDED = ["overview", "parametres"];
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
 
 export default function SuperAdminFormules() {
-  const { planModules, setPlanModules, planPrices, setPlanPrices, sectorRecommendations, setSectorRecommendations } = useDemoPlan();
+  const { planModules, setPlanModules, planPrices, setPlanPrices, sectorRecommendations, setSectorRecommendations, sectorModuleOverrides, setSectorModuleOverrides } = useDemoPlan();
   const { toast } = useToast();
 
   const [localModules, setLocalModules] = useState<Record<SubscriptionPlan, string[] | "all">>({ ...planModules });
@@ -47,6 +42,8 @@ export default function SuperAdminFormules() {
   });
   const [localSectorRecs, setLocalSectorRecs] = useState<Record<SectorKey, string[]>>({ ...sectorRecommendations });
   const [expandedSector, setExpandedSector] = useState<SectorKey | null>(null);
+  const [localOverrides, setLocalOverrides] = useState<Record<string, SectorModulesConfig>>({ ...sectorModuleOverrides });
+  const [expandedOverrideSector, setExpandedOverrideSector] = useState<SectorKey | null>(null);
 
   const plans: SubscriptionPlan[] = ["starter", "business", "enterprise"];
 
@@ -86,10 +83,32 @@ export default function SuperAdminFormules() {
     setLocalSectorRecs((prev) => ({ ...prev, [sector]: current }));
   };
 
+  const updateOverrideLabel = (sector: string, moduleKey: string, label: string) => {
+    setLocalOverrides((prev) => {
+      const sectorCfg = { ...prev[sector] };
+      sectorCfg[moduleKey] = { ...sectorCfg[moduleKey], label: label || MODULE_LABELS[moduleKey] || moduleKey };
+      return { ...prev, [sector]: sectorCfg };
+    });
+  };
+
+  const toggleOverrideHidden = (sector: string, moduleKey: string) => {
+    setLocalOverrides((prev) => {
+      const sectorCfg = { ...prev[sector] };
+      const current = sectorCfg[moduleKey];
+      if (current) {
+        sectorCfg[moduleKey] = { ...current, hidden: !current.hidden };
+      } else {
+        sectorCfg[moduleKey] = { label: MODULE_LABELS[moduleKey] || moduleKey, hidden: true };
+      }
+      return { ...prev, [sector]: sectorCfg };
+    });
+  };
+
   const handleSave = () => {
     setPlanModules(localModules);
     setPlanPrices(localPrices);
     setSectorRecommendations(localSectorRecs);
+    setSectorModuleOverrides(localOverrides);
     toast({ title: "Formules mises à jour", description: "Les changements ont été appliqués avec succès." });
   };
 
@@ -272,6 +291,74 @@ export default function SuperAdminFormules() {
                           ))}
                         </div>
                       )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        {/* Sector Module Overrides */}
+        <Card className="glass-card border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Puzzle className="h-5 w-5 text-primary" />
+              Modules par secteur
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Personnalisez les labels et la visibilité des modules pour chaque secteur d'activité.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {SECTORS.map((sector) => {
+              const isExpanded = expandedOverrideSector === sector.key;
+              const overrides = localOverrides[sector.key] || {};
+              const overrideCount = Object.keys(overrides).filter((k) => overrides[k]?.label !== MODULE_LABELS[k] || overrides[k]?.hidden).length;
+
+              return (
+                <div key={sector.key} className="border border-border/50 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => setExpandedOverrideSector(isExpanded ? null : sector.key)}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/20 transition-colors text-left"
+                  >
+                    {isExpanded ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+                    <span className="text-lg">{sector.icon}</span>
+                    <span className="text-sm font-medium flex-1">{sector.label}</span>
+                    {overrideCount > 0 && (
+                      <Badge variant="secondary" className="text-[10px]">{overrideCount} personnalisé{overrideCount > 1 ? "s" : ""}</Badge>
+                    )}
+                  </button>
+
+                  {isExpanded && (
+                    <div className="px-4 pb-4 space-y-2">
+                      <div className="grid grid-cols-[1fr_1fr_auto] gap-2 text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                        <span>Module générique</span>
+                        <span>Label secteur</span>
+                        <span>Visible</span>
+                      </div>
+                      {SELECTABLE_MODULES.map((key) => {
+                        const override = overrides[key];
+                        const isHidden = override?.hidden === true;
+                        const customLabel = override?.label || "";
+                        const genericLabel = MODULE_LABELS[key] || key;
+
+                        return (
+                          <div key={key} className={`grid grid-cols-[1fr_1fr_auto] gap-2 items-center px-1 py-1.5 rounded-md ${isHidden ? "opacity-50" : ""}`}>
+                            <span className="text-sm text-muted-foreground">{genericLabel}</span>
+                            <Input
+                              value={customLabel}
+                              onChange={(e) => updateOverrideLabel(sector.key, key, e.target.value)}
+                              placeholder={genericLabel}
+                              className="glass-input border-0 h-8 text-sm"
+                            />
+                            <Switch
+                              checked={!isHidden}
+                              onCheckedChange={() => toggleOverrideHidden(sector.key, key)}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

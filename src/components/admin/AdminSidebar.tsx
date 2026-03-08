@@ -37,6 +37,7 @@ import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -83,37 +84,40 @@ export function AdminSidebar() {
   const { spaces } = useCustomSpaces();
   const { isEnterprise, plan, currentPlanModules } = useSubscription();
   const { config: wl } = useWhiteLabel();
+  const { getModuleLabel, isModuleHidden } = useDemoPlan();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
 
   const allNavItems = [
-    { title: "Vue d'ensemble", url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
-    { title: "Clients", url: "/admin/clients", icon: Users, moduleKey: "clients" },
-    { title: "Salariés", url: "/admin/employees", icon: Users, moduleKey: "employees" },
-    { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
-    { title: "Rendez-vous", url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
-    { title: "Pipeline CRM", url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
-    { title: "Messagerie", url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
-    { title: "Facturation", url: "/admin/facturation", icon: Receipt, moduleKey: "facturation" },
-    { title: "Relances", url: "/admin/relances", icon: Bell, moduleKey: "relances" },
-    { title: "Emails", url: "/admin/emails", icon: Mail, moduleKey: "emails" },
-    { title: "Support", url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
-    { title: "Stock", url: "/admin/stock", icon: Package, moduleKey: "stock" },
-    { title: "Analyse", url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
-    { title: "Tâches", url: "/admin/taches", icon: CheckSquare, moduleKey: "taches" },
-    { title: "Agenda", url: "/admin/agenda", icon: Calendar, moduleKey: "agenda" },
-    { title: "Rapports", url: "/admin/rapports", icon: FileText, moduleKey: "rapports" },
-    { title: "Documents", url: "/admin/documents", icon: FolderClosed, moduleKey: "documents" },
-    { title: "Suivi du temps", url: "/admin/temps", icon: Timer, moduleKey: "temps" },
-    { title: "Automatisations", url: "/admin/automatisations", icon: Zap, moduleKey: "automatisations" },
-    { title: "Notes", url: "/admin/notes", icon: StickyNote, moduleKey: "notes" },
-    { title: "Intelligence IA", url: "/admin/ia", icon: Bot, moduleKey: "ia" },
-    { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
+    { title: getModuleLabel("overview"), url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
+    { title: getModuleLabel("clients"), url: "/admin/clients", icon: Users, moduleKey: "clients" },
+    { title: getModuleLabel("employees"), url: "/admin/employees", icon: Users, moduleKey: "employees" },
+    { title: getModuleLabel("dossiers"), url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: getModuleLabel("rendez-vous"), url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
+    { title: getModuleLabel("pipeline"), url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
+    { title: getModuleLabel("messagerie"), url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
+    { title: getModuleLabel("facturation"), url: "/admin/facturation", icon: Receipt, moduleKey: "facturation" },
+    { title: getModuleLabel("relances"), url: "/admin/relances", icon: Bell, moduleKey: "relances" },
+    { title: getModuleLabel("emails"), url: "/admin/emails", icon: Mail, moduleKey: "emails" },
+    { title: getModuleLabel("support"), url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
+    { title: getModuleLabel("stock"), url: "/admin/stock", icon: Package, moduleKey: "stock" },
+    { title: getModuleLabel("analyse"), url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
+    { title: getModuleLabel("taches"), url: "/admin/taches", icon: CheckSquare, moduleKey: "taches" },
+    { title: getModuleLabel("agenda"), url: "/admin/agenda", icon: Calendar, moduleKey: "agenda" },
+    { title: getModuleLabel("rapports"), url: "/admin/rapports", icon: FileText, moduleKey: "rapports" },
+    { title: getModuleLabel("documents"), url: "/admin/documents", icon: FolderClosed, moduleKey: "documents" },
+    { title: getModuleLabel("temps"), url: "/admin/temps", icon: Timer, moduleKey: "temps" },
+    { title: getModuleLabel("automatisations"), url: "/admin/automatisations", icon: Zap, moduleKey: "automatisations" },
+    { title: getModuleLabel("notes"), url: "/admin/notes", icon: StickyNote, moduleKey: "notes" },
+    { title: getModuleLabel("ia"), url: "/admin/ia", icon: Bot, moduleKey: "ia" },
+    { title: getModuleLabel("parametres"), url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // Filter by enabled modules, then apply plan-specific module list (from context)
-  const enabledItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
+  // Filter by enabled modules, sector visibility, then plan-specific module list
+  const enabledItems = allNavItems
+    .filter((item) => enabledModules.includes(item.moduleKey))
+    .filter((item) => !isModuleHidden(item.moduleKey));
   const alwaysVisible = ["overview", "parametres"];
   const planModules = currentPlanModules[plan];
   const navItems = planModules === "all"
