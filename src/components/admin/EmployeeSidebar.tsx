@@ -17,6 +17,7 @@ import {
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import {
   Sidebar,
   SidebarContent,
