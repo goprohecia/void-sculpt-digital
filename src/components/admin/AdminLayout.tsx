@@ -20,6 +20,12 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const { isDemo, isLoading, supabaseUserId } = useIsDemo();
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useNotificationsData();
   const { plan, updatePlan } = useSubscription();
+  const [showBanner, setShowBanner] = useState(true);
+
+  // Reset banner visibility when plan changes
+  useEffect(() => {
+    setShowBanner(true);
+  }, [plan]);
 
   if (isLoading) return null;
 
