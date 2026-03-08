@@ -1,42 +1,36 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan: Graphiques Super Admin + Filtrage sidebar par plan
 
-## Modifications
+### 1. Graphiques recharts dans SuperAdminDashboard
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+**Fichier: `src/pages/superadmin/SuperAdminDashboard.tsx`**
+- Ajouter un graphique **AreaChart** pour l'evolution du MRR (6 derniers mois) avec gradient
+- Ajouter un **BarChart** pour les inscriptions vs churns par mois
+- Utiliser les composants `ChartContainer`, `ChartTooltip` deja disponibles dans le projet
+- Placer les 2 graphiques côte à côte sous les KPIs, au-dessus du tableau
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+**Fichier: `src/pages/superadmin/SuperAdminStats.tsx`**
+- Ajouter egalement un LineChart MRR + BarChart inscriptions/churns pour remplacer/completer le tableau existant
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+### 2. Modules distincts par plan dans la sidebar
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+**Fichier: `src/components/admin/AdminSidebar.tsx`**
+- Remplacer la logique de filtrage par index (les N premiers) par une liste explicite de modules par plan :
+  - **Starter (3 modules)** : `overview`, `clients`, `dossiers`, `parametres` (overview + parametres toujours inclus + 3 modules = clients, dossiers, facturation)
+  - **Business (6 modules)** : Starter + `messagerie`, `facturation`, `relances`, `support`, `emails`, `rendez-vous`
+  - **Enterprise** : Tous les modules sans restriction
+- Cela garantit que chaque plan a un back-office visuellement distinct avec des fonctionnalites coherentes
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+**Fichier: `src/hooks/use-subscription.ts`**
+- Ajouter une constante `PLAN_MODULES` exportee qui definit les moduleKeys autorises par plan pour centraliser la logique
 
-## Details techniques
+### Fichiers impactes
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+| Action | Fichier |
+|--------|---------|
+| Modifier | `SuperAdminDashboard.tsx` — ajout AreaChart MRR + BarChart inscriptions |
+| Modifier | `SuperAdminStats.tsx` — ajout graphiques recharts |
+| Modifier | `use-subscription.ts` — ajout PLAN_MODULES constant |
+| Modifier | `AdminSidebar.tsx` — filtrage par liste de modules explicite par plan |
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
