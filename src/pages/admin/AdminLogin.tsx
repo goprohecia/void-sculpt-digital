@@ -54,8 +54,9 @@ export default function AdminLogin() {
     const demoSuccess = login(email, password);
     if (demoSuccess) {
       const low = email.toLowerCase();
-      const dest = low.includes("employee") ? "/employee" : low.includes("client") ? "/client" : "/admin";
+      const dest = low.includes("superadmin") ? "/superadmin" : low.includes("employee") ? "/employee" : low.includes("client") ? "/client" : "/admin";
       navigate(dest, { replace: true });
+      return;
       return;
     }
 
