@@ -19,6 +19,17 @@ import Coiffure from "@/pages/secteurs/Coiffure";
 import Cabinets from "@/pages/secteurs/Cabinets";
 import Evenementiel from "@/pages/secteurs/Evenementiel";
 import Nettoyage from "@/pages/secteurs/Nettoyage";
+import Developpeur from "@/pages/secteurs/Developpeur";
+import Designer from "@/pages/secteurs/Designer";
+import Photographe from "@/pages/secteurs/Photographe";
+import CommunityManager from "@/pages/secteurs/CommunityManager";
+import Reparateur from "@/pages/secteurs/Reparateur";
+import Consultant from "@/pages/secteurs/Consultant";
+import CoachSportif from "@/pages/secteurs/CoachSportif";
+import Formateur from "@/pages/secteurs/Formateur";
+import Boutique from "@/pages/secteurs/Boutique";
+import Traiteur from "@/pages/secteurs/Traiteur";
+import DjAnimateur from "@/pages/secteurs/DjAnimateur";
 
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -95,6 +106,17 @@ export function AnimatedRoutes() {
         <Route path="/secteurs/cabinets" element={<Cabinets />} />
         <Route path="/secteurs/evenementiel" element={<Evenementiel />} />
         <Route path="/secteurs/nettoyage" element={<Nettoyage />} />
+        <Route path="/secteurs/developpeur" element={<Developpeur />} />
+        <Route path="/secteurs/designer" element={<Designer />} />
+        <Route path="/secteurs/photographe" element={<Photographe />} />
+        <Route path="/secteurs/community-manager" element={<CommunityManager />} />
+        <Route path="/secteurs/reparateur" element={<Reparateur />} />
+        <Route path="/secteurs/consultant" element={<Consultant />} />
+        <Route path="/secteurs/coach-sportif" element={<CoachSportif />} />
+        <Route path="/secteurs/formateur" element={<Formateur />} />
+        <Route path="/secteurs/boutique" element={<Boutique />} />
+        <Route path="/secteurs/traiteur" element={<Traiteur />} />
+        <Route path="/secteurs/dj-animateur" element={<DjAnimateur />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
