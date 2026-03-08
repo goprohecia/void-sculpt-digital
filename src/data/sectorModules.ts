@@ -84,11 +84,43 @@ const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
   relances: { label: "Relances abonnement", description: "Renouvellements et réengagement clients" },
 };
 
+const BTP_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Chantiers", description: "Suivi de chantiers, phases et avancement" },
+  taches: { label: "Planning chantier", description: "Tâches par lot, sous-traitants et jalons" },
+  documents: { label: "Plans & Documents", description: "Plans techniques, permis, CCTP et PV de réception" },
+  pipeline: { label: "Devis techniques", description: "Pipeline de devis et appels d'offres" },
+  analyse: { label: "Dashboard BTP", description: "KPIs : marge par chantier, avancement, délais" },
+  temps: { label: "Heures chantier", description: "Pointage et suivi horaire par chantier et ouvrier" },
+  stock: { label: "Matériaux", description: "Stock de matériaux, commandes fournisseurs" },
+  notes: { label: "Journal de chantier", description: "Observations terrain, incidents et comptes-rendus" },
+  support: { label: "SAV & Garanties", description: "Garanties décennales, levées de réserves" },
+  "rendez-vous": { label: "Visites chantier", description: "Planification des visites et réunions de chantier" },
+  relances: { label: "Relances situations", description: "Relances des situations de travaux impayées" },
+  employees: { label: "Équipes & Ouvriers", description: "Gestion des équipes terrain et sous-traitants" },
+};
+
+const COIFFURE_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Prestations", description: "Historique des prestations par client" },
+  taches: { label: "Tâches salon", description: "Organisation quotidienne du salon" },
+  documents: { label: "Fiches client", description: "Fiches techniques, colorations et préférences" },
+  pipeline: { label: "Fidélité clients", description: "Suivi fidélité, parrainage et réengagement" },
+  analyse: { label: "Dashboard Salon", description: "KPIs : CA par coiffeur, panier moyen, fréquentation" },
+  temps: { label: "Durée prestations", description: "Temps moyen par prestation et par coiffeur" },
+  stock: { label: "Produits capillaires", description: "Stock produits, colorations et revente" },
+  "rendez-vous": { label: "Rendez-vous salon", description: "Créneaux de réservation en ligne et au salon" },
+  notes: { label: "Notes coiffeur", description: "Préférences client, formules coloration" },
+  support: { label: "Réclamations", description: "Retouches et insatisfactions clients" },
+  emails: { label: "Emails & Promos", description: "Promotions saisonnières et rappels rendez-vous" },
+  relances: { label: "Relances clients", description: "Clients inactifs et rappels de visite" },
+};
+
 // ── Master map — add new sectors here ──
 export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   developpeur: DEVELOPPEUR_OVERRIDES,
   photographe: PHOTOGRAPHE_OVERRIDES,
   "coach-sportif": COACH_SPORTIF_OVERRIDES,
+  btp: BTP_OVERRIDES,
+  coiffure: COIFFURE_OVERRIDES,
 };
 
 // ── Helpers ──
