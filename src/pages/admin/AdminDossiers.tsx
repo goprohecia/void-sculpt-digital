@@ -12,6 +12,7 @@ import { useCahiers } from "@/hooks/use-cahiers";
 import { useClients } from "@/hooks/use-clients";
 import type { DossierStatus } from "@/data/mockData";
 import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
