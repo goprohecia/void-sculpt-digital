@@ -46,8 +46,10 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-const mainMenuKeys = ["overview", "clients", "employees", "dossiers", "rendez-vous", "pipeline"];
-const toolsKeys = ["messagerie", "facturation", "relances", "emails", "support", "stock", "analyse", "taches", "agenda", "rapports", "documents", "temps", "automatisations", "notes", "parametres"];
+const principalKeys = ["overview", "clients", "employees", "dossiers"];
+const commercialKeys = ["pipeline", "facturation", "relances", "stock"];
+const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
+const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "parametres"];
 
 export function AdminSidebar() {
   const location = useLocation();
@@ -88,8 +90,10 @@ export function AdminSidebar() {
   ];
 
   const navItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
-  const mainItems = navItems.filter((item) => mainMenuKeys.includes(item.moduleKey));
-  const toolItems = navItems.filter((item) => toolsKeys.includes(item.moduleKey));
+  const principalItems = navItems.filter((item) => principalKeys.includes(item.moduleKey));
+  const commercialItems = navItems.filter((item) => commercialKeys.includes(item.moduleKey));
+  const outilsItems = navItems.filter((item) => outilsKeys.includes(item.moduleKey));
+  const gestionItems = navItems.filter((item) => gestionKeys.includes(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
@@ -113,6 +117,18 @@ export function AdminSidebar() {
       </SidebarMenuItem>
     ));
 
+  const groupLabel = "text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70";
+
+  const renderGroup = (label: string, items: typeof navItems) =>
+    items.length > 0 ? (
+      <SidebarGroup>
+        <SidebarGroupLabel className={groupLabel}>{label}</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>{renderItems(items)}</SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    ) : null;
+
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-5 pb-4">
@@ -129,27 +145,10 @@ export function AdminSidebar() {
       <SidebarSeparator />
 
       <SidebarContent>
-        {mainItems.length > 0 && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70">
-              Menu principal
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>{renderItems(mainItems)}</SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
-
-        {toolItems.length > 0 && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70">
-              Outils
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>{renderItems(toolItems)}</SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
+        {renderGroup("Principal", principalItems)}
+        {renderGroup("Commercial", commercialItems)}
+        {renderGroup("Outils", outilsItems)}
+        {renderGroup("Gestion", gestionItems)}
 
         {/* Custom Spaces - Enterprise only */}
         {isEnterprise && spaces.length > 0 && (
