@@ -4,6 +4,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { motion } from "framer-motion";
 import { LifeBuoy, Send, ArrowLeft } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { useTickets } from "@/hooks/use-tickets";
 import { useClients } from "@/hooks/use-clients";
