@@ -374,6 +374,7 @@ export default function SuperAdminDashboard() {
                 <thead>
                   <tr className="border-b border-border">
                     <th className="text-left py-2 font-medium text-muted-foreground">Entreprise</th>
+                    <th className="text-left py-2 font-medium text-muted-foreground">Secteur</th>
                     <th className="text-left py-2 font-medium text-muted-foreground">Plan</th>
                     <th className="text-center py-2 font-medium text-muted-foreground">Utilisateurs</th>
                     <th className="text-right py-2 font-medium text-muted-foreground">MRR</th>
@@ -381,9 +382,12 @@ export default function SuperAdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {MOCK_ENTERPRISES.map((e, i) => (
+                  {MOCK_ENTERPRISES.slice(0, 8).map((e, i) => {
+                    const sector = SECTORS.find(s => s.key === e.sector);
+                    return (
                     <tr key={i} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                       <td className="py-3 font-medium">{e.nom}</td>
+                      <td className="py-3 text-xs text-muted-foreground">{sector ? `${sector.icon} ${sector.label}` : "—"}</td>
                       <td className="py-3">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${planColors[e.plan]}`}>
                           {e.plan}
@@ -397,7 +401,8 @@ export default function SuperAdminDashboard() {
                         </span>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
