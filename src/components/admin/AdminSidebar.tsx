@@ -22,6 +22,7 @@ import {
   Zap,
   StickyNote,
   Target,
+  Bot,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
@@ -49,7 +50,7 @@ import {
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
-const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "parametres"];
+const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
 export function AdminSidebar() {
   const location = useLocation();
@@ -86,6 +87,7 @@ export function AdminSidebar() {
     { title: "Suivi du temps", url: "/admin/temps", icon: Timer, moduleKey: "temps" },
     { title: "Automatisations", url: "/admin/automatisations", icon: Zap, moduleKey: "automatisations" },
     { title: "Notes", url: "/admin/notes", icon: StickyNote, moduleKey: "notes" },
+    { title: "Intelligence IA", url: "/admin/ia", icon: Bot, moduleKey: "ia" },
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 

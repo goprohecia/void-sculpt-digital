@@ -61,6 +61,7 @@ import AdminTemps from "@/pages/admin/AdminTemps";
 import AdminAutomatisations from "@/pages/admin/AdminAutomatisations";
 import AdminNotes from "@/pages/admin/AdminNotes";
 import AdminPipeline from "@/pages/admin/AdminPipeline";
+import AdminIA from "@/pages/admin/AdminIA";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
@@ -155,6 +156,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/automatisations" element={<AdminAutomatisations />} />
         <Route path="/admin/notes" element={<AdminNotes />} />
         <Route path="/admin/pipeline" element={<AdminPipeline />} />
+        <Route path="/admin/ia" element={<AdminIA />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
 
         {/* Client routes */}
