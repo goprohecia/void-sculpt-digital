@@ -2,8 +2,9 @@ import { useState, useMemo } from "react";
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent } from "lucide-react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent, BarChart3 } from "lucide-react";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { SECTORS } from "@/contexts/DemoPlanContext";
 
 type Period = "6m" | "12m" | "annee";
 
