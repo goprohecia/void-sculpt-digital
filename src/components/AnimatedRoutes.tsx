@@ -19,6 +19,17 @@ import Coiffure from "@/pages/secteurs/Coiffure";
 import Cabinets from "@/pages/secteurs/Cabinets";
 import Evenementiel from "@/pages/secteurs/Evenementiel";
 import Nettoyage from "@/pages/secteurs/Nettoyage";
+import Developpeur from "@/pages/secteurs/Developpeur";
+import Designer from "@/pages/secteurs/Designer";
+import Photographe from "@/pages/secteurs/Photographe";
+import CommunityManager from "@/pages/secteurs/CommunityManager";
+import Reparateur from "@/pages/secteurs/Reparateur";
+import Consultant from "@/pages/secteurs/Consultant";
+import CoachSportif from "@/pages/secteurs/CoachSportif";
+import Formateur from "@/pages/secteurs/Formateur";
+import Boutique from "@/pages/secteurs/Boutique";
+import Traiteur from "@/pages/secteurs/Traiteur";
+import DjAnimateur from "@/pages/secteurs/DjAnimateur";
 
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
