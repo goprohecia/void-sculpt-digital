@@ -3,42 +3,29 @@ import { FAQ } from "@/components/FAQ";
 import {
   HeroPremium,
   ProofStrip,
+  ConceptSection,
   OffresSection,
   ServicesSection,
   RealisationsSection,
   MethodeSection,
-  PrincipesSection,
+  CiblesSection,
+  ArgumentsSection,
   CTAFinal,
 } from "@/components/sections";
 
 const Index = () => {
   return (
     <Layout>
-      {/* A. Hero */}
       <HeroPremium />
-
-      {/* B. Proof Strip */}
       <ProofStrip />
-
-      {/* C. Secteurs d'activité */}
+      <ConceptSection />
       <ServicesSection />
-
-      {/* D. Fonctionnalités / Modules */}
       <RealisationsSection />
-
-      {/* E. Offres / Pricing */}
       <OffresSection />
-
-      {/* F. Comment ça marche */}
+      <CiblesSection />
       <MethodeSection />
-
-      {/* G. Pourquoi MBA */}
-      <PrincipesSection />
-
-      {/* H. FAQ */}
+      <ArgumentsSection />
       <FAQ />
-
-      {/* I. CTA Final */}
       <CTAFinal />
     </Layout>
   );

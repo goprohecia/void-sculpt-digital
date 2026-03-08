@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Star, Zap, Shield, Users, Globe, FileSignature, CreditCard, Headphones } from "lucide-react";
+import { Check, ArrowRight, Star, Zap, Shield, Users, Globe, FileSignature, CreditCard, Headphones, CalendarDays, RefreshCw } from "lucide-react";
 import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
 
 type Tier = "starter" | "business" | "enterprise";
@@ -14,6 +14,7 @@ interface Pack {
   priceMonthly: number;
   priceAnnual: number;
   modulesLimit: string;
+  engagement: string;
   features: string[];
   recommended?: boolean;
 }
@@ -25,8 +26,9 @@ const packs: Pack[] = [
     tagline: "L'essentiel pour démarrer",
     description: "Lancez votre gestion avec les fondamentaux.",
     priceMonthly: 150,
-    priceAnnual: 1500, // 10 months = 2 free
+    priceAnnual: 1260,
     modulesLimit: "3 modules au choix",
+    engagement: "Sans engagement",
     features: [
       "3 modules activables au choix",
       "Espace admin + client + salarié",
@@ -41,8 +43,9 @@ const packs: Pack[] = [
     tagline: "La puissance pour scaler",
     description: "Plus de modules, plus de contrôle.",
     priceMonthly: 250,
-    priceAnnual: 2500,
+    priceAnnual: 2100,
     modulesLimit: "6 modules au choix",
+    engagement: "Sans engagement",
     features: [
       "6 modules activables au choix",
       "Tout le plan Starter inclus",
@@ -59,8 +62,9 @@ const packs: Pack[] = [
     tagline: "Votre CRM, votre marque",
     description: "Personnalisation totale, accès illimité.",
     priceMonthly: 400,
-    priceAnnual: 4000,
+    priceAnnual: 3360,
     modulesLimit: "Tous les modules",
+    engagement: "6 mois minimum",
     features: [
       "Accès illimité à tous les modules",
       "Tout le plan Business inclus",
@@ -95,12 +99,14 @@ const tierStyles = {
 };
 
 const includedForAll = [
-  { icon: Globe, label: "Sous-domaine personnalisé" },
+  { icon: Globe, label: "Sous-domaine personnalisé (ex: monentreprise.mba.com)" },
   { icon: Users, label: "Multi-utilisateurs illimités" },
   { icon: FileSignature, label: "Signature électronique" },
   { icon: CreditCard, label: "Stripe Connect" },
   { icon: Shield, label: "Hébergement sécurisé" },
   { icon: Headphones, label: "Support réactif" },
+  { icon: CalendarDays, label: "Prise de RDV en ligne" },
+  { icon: RefreshCw, label: "Mises à jour incluses" },
 ];
 
 export function OffresSection() {
@@ -203,6 +209,7 @@ export function OffresSection() {
                           <Zap className="h-3.5 w-3.5 text-neon-violet" />
                           {pack.modulesLimit}
                         </p>
+                        <p className="text-xs text-muted-foreground/70 mt-0.5">{pack.engagement}</p>
                       </div>
 
                       {/* Features */}

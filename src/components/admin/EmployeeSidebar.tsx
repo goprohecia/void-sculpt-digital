@@ -7,6 +7,12 @@ import {
   UserCircle,
   LogOut,
   Package,
+  Users,
+  Receipt,
+  Bell,
+  Mail,
+  LifeBuoy,
+  BarChart3,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,10 +39,17 @@ export function EmployeeSidebar() {
 
   const allNavItems = [
     { title: "Tableau de bord", url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
+    { title: "Clients", url: "/employee/clients", icon: Users, moduleKey: "clients" },
     { title: "Dossiers assignés", url: "/employee/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
     { title: "Calendrier", url: "/employee/calendrier", icon: CalendarDays, moduleKey: "calendrier" },
     { title: "Messagerie", url: "/employee/messagerie", icon: MessageSquare, moduleKey: "messagerie" },
+    { title: "Facturation", url: "/employee/facturation", icon: Receipt, moduleKey: "facturation" },
+    { title: "Relances", url: "/employee/relances", icon: Bell, moduleKey: "relances" },
+    { title: "Emails", url: "/employee/emails", icon: Mail, moduleKey: "emails" },
+    { title: "Rendez-vous", url: "/employee/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
+    { title: "Support", url: "/employee/support", icon: LifeBuoy, moduleKey: "support" },
     { title: "Stock", url: "/employee/stock", icon: Package, moduleKey: "stock" },
+    { title: "Analyse", url: "/employee/analyse", icon: BarChart3, moduleKey: "analyse" },
     { title: "Mon profil", url: "/employee/profil", icon: UserCircle, moduleKey: "profil" },
   ];
 

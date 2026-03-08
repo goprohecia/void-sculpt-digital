@@ -1,8 +1,11 @@
 export { HeroPremium } from "./HeroPremium";
 export { ProofStrip } from "./ProofStrip";
+export { ConceptSection } from "./ConceptSection";
 export { OffresSection } from "./OffresSection";
 export { ServicesSection } from "./ServicesSection";
 export { RealisationsSection } from "./RealisationsSection";
 export { MethodeSection } from "./MethodeSection";
 export { PrincipesSection } from "./PrincipesSection";
+export { CiblesSection } from "./CiblesSection";
+export { ArgumentsSection } from "./ArgumentsSection";
 export { CTAFinal } from "./CTAFinal";

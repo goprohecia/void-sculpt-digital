@@ -35,10 +35,17 @@ export const ALL_CLIENT_MODULES = [
 
 export const ALL_EMPLOYEE_MODULES = [
   { key: "overview", label: "Tableau de bord" },
+  { key: "clients", label: "Clients" },
   { key: "dossiers", label: "Dossiers assignés" },
   { key: "calendrier", label: "Calendrier" },
   { key: "messagerie", label: "Messagerie" },
+  { key: "facturation", label: "Facturation" },
+  { key: "relances", label: "Relances" },
+  { key: "emails", label: "Emails" },
+  { key: "rendez-vous", label: "Rendez-vous" },
+  { key: "support", label: "Support" },
   { key: "stock", label: "Stock" },
+  { key: "analyse", label: "Analyse" },
   { key: "profil", label: "Mon profil" },
 ] as const;
 
@@ -56,14 +63,12 @@ export function useAppSettings() {
   const { isDemo } = useIsDemo();
   const queryClient = useQueryClient();
 
-  // Keep a ref for demo overrides so they persist across renders
   const demoOverrides = useRef<Partial<SettingsData>>({});
 
   const { data: settings, isLoading } = useQuery({
     queryKey: ["app-settings"],
     queryFn: async (): Promise<SettingsData> => {
       if (isDemo) {
-        // Merge defaults with any demo overrides
         return {
           enabled_modules: (demoOverrides.current.enabled_modules ?? DEFAULT_ADMIN) as string[],
           client_visible_modules: (demoOverrides.current.client_visible_modules ?? DEFAULT_CLIENT) as string[],
@@ -89,7 +94,6 @@ export function useAppSettings() {
   const updateSetting = useMutation({
     mutationFn: async ({ key, value }: { key: string; value: string[] }) => {
       if (isDemo) {
-        // Persist in ref for demo mode so re-fetches keep the value
         demoOverrides.current = { ...demoOverrides.current, [key]: value };
         return;
       }

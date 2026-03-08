@@ -59,11 +59,18 @@ import ClientRendezVous from "@/pages/client/ClientRendezVous";
 
 // Employee pages
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
+import EmployeeClients from "@/pages/employee/EmployeeClients";
 import EmployeeDossiers from "@/pages/employee/EmployeeDossiers";
 import EmployeeCalendrier from "@/pages/employee/EmployeeCalendrier";
 import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
-import EmployeeProfile from "@/pages/employee/EmployeeProfile";
+import EmployeeFacturation from "@/pages/employee/EmployeeFacturation";
+import EmployeeRelances from "@/pages/employee/EmployeeRelances";
+import EmployeeEmails from "@/pages/employee/EmployeeEmails";
+import EmployeeRendezVous from "@/pages/employee/EmployeeRendezVous";
+import EmployeeSupport from "@/pages/employee/EmployeeSupport";
 import EmployeeStock from "@/pages/employee/EmployeeStock";
+import EmployeeAnalyse from "@/pages/employee/EmployeeAnalyse";
+import EmployeeProfile from "@/pages/employee/EmployeeProfile";
 
 export function AnimatedRoutes() {
   const location = useLocation();
@@ -128,10 +135,17 @@ export function AnimatedRoutes() {
 
         {/* Employee routes */}
         <Route path="/employee" element={<EmployeeDashboard />} />
+        <Route path="/employee/clients" element={<EmployeeClients />} />
         <Route path="/employee/dossiers" element={<EmployeeDossiers />} />
         <Route path="/employee/calendrier" element={<EmployeeCalendrier />} />
         <Route path="/employee/messagerie" element={<EmployeeMessaging />} />
+        <Route path="/employee/facturation" element={<EmployeeFacturation />} />
+        <Route path="/employee/relances" element={<EmployeeRelances />} />
+        <Route path="/employee/emails" element={<EmployeeEmails />} />
+        <Route path="/employee/rendez-vous" element={<EmployeeRendezVous />} />
+        <Route path="/employee/support" element={<EmployeeSupport />} />
         <Route path="/employee/stock" element={<EmployeeStock />} />
+        <Route path="/employee/analyse" element={<EmployeeAnalyse />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
 
         {/* Legacy redirects */}
