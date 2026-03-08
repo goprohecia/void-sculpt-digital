@@ -290,7 +290,80 @@ export default function SuperAdminDashboard() {
           </Card>
         </div>
 
-        {/* Dernières entreprises */}
+        {/* Analytiques par secteur */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Top secteurs par MRR */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                Top secteurs par MRR
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {(() => {
+                const sectorMrr = MOCK_ENTERPRISES.reduce((acc, e) => {
+                  const s = SECTORS.find(s => s.key === e.sector);
+                  const label = s ? `${s.icon} ${s.label}` : e.sector;
+                  acc[label] = (acc[label] || 0) + e.mrr;
+                  return acc;
+                }, {} as Record<string, number>);
+                const data = Object.entries(sectorMrr)
+                  .map(([name, mrr]) => ({ name, mrr }))
+                  .sort((a, b) => b.mrr - a.mrr)
+                  .slice(0, 8);
+                return (
+                  <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={data} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                      <XAxis type="number" tick={{ fontSize: 11 }} className="fill-muted-foreground" tickFormatter={(v) => `${v}€`} />
+                      <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} className="fill-muted-foreground" width={130} />
+                      <Tooltip formatter={(v: number) => [`${v}€`, "MRR"]} />
+                      <Bar dataKey="mrr" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                );
+              })()}
+            </CardContent>
+          </Card>
+
+          {/* Répartition secteurs par plan (stacked) */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-neon-blue" />
+                Secteurs par plan
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {(() => {
+                const sectorPlan: Record<string, { name: string; starter: number; business: number; enterprise: number }> = {};
+                MOCK_ENTERPRISES.forEach((e) => {
+                  const s = SECTORS.find(s => s.key === e.sector);
+                  const label = s ? s.label : e.sector;
+                  if (!sectorPlan[label]) sectorPlan[label] = { name: label, starter: 0, business: 0, enterprise: 0 };
+                  sectorPlan[label][e.plan as "starter" | "business" | "enterprise"] += 1;
+                });
+                const data = Object.values(sectorPlan).sort((a, b) => (b.starter + b.business + b.enterprise) - (a.starter + a.business + a.enterprise)).slice(0, 8);
+                return (
+                  <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={data} margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                      <XAxis dataKey="name" tick={{ fontSize: 10 }} className="fill-muted-foreground" angle={-30} textAnchor="end" height={60} />
+                      <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" allowDecimals={false} />
+                      <Tooltip />
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
+                      <Bar dataKey="starter" stackId="a" fill="hsl(var(--muted-foreground))" name="Starter" radius={[0, 0, 0, 0]} />
+                      <Bar dataKey="business" stackId="a" fill="hsl(217, 91%, 60%)" name="Business" radius={[0, 0, 0, 0]} />
+                      <Bar dataKey="enterprise" stackId="a" fill="hsl(45, 93%, 58%)" name="Enterprise" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                );
+              })()}
+            </CardContent>
+          </Card>
+        </div>
+
         <Card className="glass-card border-white/10">
           <CardHeader>
             <CardTitle className="text-lg">Dernières entreprises</CardTitle>
