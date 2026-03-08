@@ -63,6 +63,12 @@ import AdminNotes from "@/pages/admin/AdminNotes";
 import AdminPipeline from "@/pages/admin/AdminPipeline";
 import AdminIA from "@/pages/admin/AdminIA";
 
+// Super Admin pages
+import SuperAdminDashboard from "@/pages/superadmin/SuperAdminDashboard";
+import SuperAdminEntreprises from "@/pages/superadmin/SuperAdminEntreprises";
+import SuperAdminAbonnements from "@/pages/superadmin/SuperAdminAbonnements";
+import SuperAdminStats from "@/pages/superadmin/SuperAdminStats";
+
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
 import ClientDossiers from "@/pages/client/ClientDossiers";
