@@ -35,7 +35,6 @@ serve(async (req) => {
         "Content-Type": "application/json",
         "anthropic-version": "2023-06-01",
       };
-      // Anthropic uses a different format - system is separate
       const systemMsg = allMessages.find(m => m.role === "system")?.content || "";
       const userMessages = allMessages.filter(m => m.role !== "system");
       body = {
@@ -43,6 +42,18 @@ serve(async (req) => {
         max_tokens: 4096,
         system: systemMsg,
         messages: userMessages,
+        stream: true,
+      };
+    } else if (provider === "gemini") {
+      // Google Gemini via OpenAI-compatible endpoint
+      url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
+      headers = {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      };
+      body = {
+        model: model || "gemini-2.5-flash",
+        messages: allMessages,
         stream: true,
       };
     } else {
