@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, MapPin, ArrowRight, Cookie } from "lucide-react";
-import { motion } from "framer-motion";
-import { Newsletter } from "@/components/Newsletter";
+import { ArrowRight, Cookie } from "lucide-react";
 
 export function Footer() {
   const openCookieSettings = () => {
@@ -23,21 +21,18 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Services */}
+          {/* Produit */}
           <div>
-            <h4 className="text-sm font-medium mb-6">Expertises</h4>
+            <h4 className="text-sm font-medium mb-6">Produit</h4>
             <ul className="space-y-3">
               {[
-                { to: "/services/web", label: "Sites Web" },
-                { to: "/services/mobile", label: "Apps Mobiles" },
-                { to: "/services/backoffice", label: "Backoffice" },
-                { to: "/services/360", label: "Écosystème 360°" }
-              ].map(link => (
+                { to: "/#fonctionnalites", label: "Fonctionnalités" },
+                { to: "/#secteurs", label: "Secteurs" },
+                { to: "/#offres", label: "Offres" },
+                { to: "/#methode", label: "Comment ça marche" },
+              ].map((link) => (
                 <li key={link.to}>
-                  <Link 
-                    to={link.to} 
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -45,20 +40,17 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Studio */}
+          {/* Ressources */}
           <div>
-            <h4 className="text-sm font-medium mb-6">Studio</h4>
+            <h4 className="text-sm font-medium mb-6">Ressources</h4>
             <ul className="space-y-3">
               {[
-                { to: "/studio", label: "Notre vision" },
-                { to: "/portfolio", label: "Portfolio" },
-                { to: "/contact", label: "Contact" }
-              ].map(link => (
+                { to: "/contact", label: "Contact" },
+                { to: "/client/login", label: "Connexion" },
+                { to: "/client/signup", label: "Créer un compte" },
+              ].map((link) => (
                 <li key={link.to}>
-                  <Link 
-                    to={link.to} 
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -71,14 +63,10 @@ export function Footer() {
             <h4 className="text-sm font-medium mb-6">Contact</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
-                <a 
-                  href="mailto:studio@impartialgames.com" 
-                  className="hover:text-foreground transition-colors"
-                >
-                  studio@impartialgames.com
+                <a href="mailto:contact@mybusinessassistant.fr" className="hover:text-foreground transition-colors">
+                  contact@mybusinessassistant.fr
                 </a>
               </li>
-              <li>Delaware, États-Unis</li>
             </ul>
             <Link
               to="/contact"
@@ -92,29 +80,20 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 max-w-6xl mx-auto">
-          <p className="text-sm text-muted-foreground">
-            © 2025 MY BUSINESS ASSISTANT. Tous droits réservés.
-          </p>
+          <p className="text-sm text-muted-foreground">© 2025 MY BUSINESS ASSISTANT. Tous droits réservés.</p>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
             {[
               { to: "/mentions-legales", label: "Mentions légales" },
               { to: "/politique-confidentialite", label: "Confidentialité" },
               { to: "/cgu", label: "CGU" },
               { to: "/cgv", label: "CGV" },
-              { to: "/cookies", label: "Cookies" }
-            ].map(link => (
-              <Link 
-                key={link.to} 
-                to={link.to} 
-                className="hover:text-foreground transition-colors"
-              >
+              { to: "/cookies", label: "Cookies" },
+            ].map((link) => (
+              <Link key={link.to} to={link.to} className="hover:text-foreground transition-colors">
                 {link.label}
               </Link>
             ))}
-            <button 
-              onClick={openCookieSettings} 
-              className="hover:text-foreground transition-colors flex items-center gap-1"
-            >
+            <button onClick={openCookieSettings} className="hover:text-foreground transition-colors flex items-center gap-1">
               <Cookie className="h-3 w-3" />
               Préférences
             </button>

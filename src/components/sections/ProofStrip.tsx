@@ -1,31 +1,18 @@
 import { motion } from "framer-motion";
-import { Zap, Clock, Palette, Code2 } from "lucide-react";
+import { Layers, Puzzle, Paintbrush, Headphones } from "lucide-react";
 import { ScrollReveal } from "@/components/animations";
 
 const proofItems = [
-  {
-    icon: Palette,
-    label: "Design premium",
-  },
-  {
-    icon: Zap,
-    label: "Performance & SEO",
-  },
-  {
-    icon: Clock,
-    label: "Délais cadrés",
-  },
-  {
-    icon: Code2,
-    label: "Stack moderne",
-  },
+  { icon: Layers, label: "Multi-sectoriel" },
+  { icon: Puzzle, label: "Modulaire" },
+  { icon: Paintbrush, label: "White Label" },
+  { icon: Headphones, label: "Support réactif" },
 ];
 
 export function ProofStrip() {
   return (
     <section className="py-8 md:py-12 relative border-y border-white/5">
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-neon-violet/5 to-transparent" />
-      
       <div className="container mx-auto px-4 relative z-10">
         <ScrollReveal variant="fadeIn">
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 lg:gap-16">
