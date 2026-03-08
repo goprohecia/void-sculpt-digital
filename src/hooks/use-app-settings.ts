@@ -25,6 +25,7 @@ export const ALL_ADMIN_MODULES = [
   { key: "automatisations", label: "Automatisations" },
   { key: "notes", label: "Notes" },
   { key: "pipeline", label: "Pipeline CRM" },
+  { key: "ia", label: "Intelligence Artificielle" },
   { key: "parametres", label: "Paramètres" },
 ] as const;
 
