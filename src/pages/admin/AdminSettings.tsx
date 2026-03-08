@@ -354,6 +354,22 @@ export default function AdminSettings() {
     bic: "",
   });
 
+  const [whiteLabel, setWhiteLabel] = useState({
+    brandName: "My Business Assistant",
+    logoUrl: "",
+    faviconUrl: "",
+    primaryColor: "#6366f1",
+    accentColor: "#8b5cf6",
+    bgColor: "#0a0a0f",
+    customDomain: "",
+    senderName: "My Business Assistant",
+    senderEmail: "noreply@mondomaine.com",
+    loginTitle: "Bienvenue sur votre espace",
+    loginSubtitle: "Connectez-vous pour accéder à votre tableau de bord",
+    footerText: "© 2026 My Business Assistant. Tous droits réservés.",
+    hidePoweredBy: true,
+    customCss: "",
+  });
   const [notifs, setNotifs] = useState({
     emailRelance: true,
     emailPaiement: true,
