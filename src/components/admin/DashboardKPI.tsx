@@ -24,7 +24,12 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
   const colors = colorMap[iconColor];
 
   return (
-    <div className={cn("glass-card p-4 sm:p-6 relative overflow-hidden", className)}>
+    <motion.div
+      initial={{ opacity: 0, y: 16, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={cn("glass-card p-4 sm:p-6 relative overflow-hidden", className)}
+    >
       <div className="flex items-start justify-between">
         <div className="space-y-1.5 sm:space-y-2">
           <p className="text-xs sm:text-sm text-muted-foreground">{title}</p>
@@ -38,10 +43,15 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
             </p>
           )}
         </div>
-        <div className={cn("rounded-xl p-2.5 sm:p-3", colors.bg)}>
+        <motion.div
+          initial={{ scale: 0, rotate: -45 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 0.2, duration: 0.35, type: "spring", stiffness: 200 }}
+          className={cn("rounded-xl p-2.5 sm:p-3", colors.bg)}
+        >
           <Icon className={cn("h-5 w-5 sm:h-6 sm:w-6", colors.text)} />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
