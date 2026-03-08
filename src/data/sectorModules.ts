@@ -114,6 +114,207 @@ const COIFFURE_OVERRIDES: SectorModulesConfig = {
   relances: { label: "Relances clients", description: "Clients inactifs et rappels de visite" },
 };
 
+const BOUTIQUE_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Commandes", description: "Suivi des commandes clients et fournisseurs" },
+  taches: { label: "Tâches boutique", description: "Organisation quotidienne de la boutique" },
+  stock: { label: "Inventaire", description: "Gestion des produits en rayon et en réserve" },
+  documents: { label: "Bons & Factures", description: "Bons de livraison, factures fournisseurs" },
+  pipeline: { label: "Pipeline ventes", description: "Suivi des ventes et opportunités" },
+  analyse: { label: "Dashboard Boutique", description: "KPIs : CA, panier moyen, rotation stock" },
+  "rendez-vous": { label: "RDV fournisseurs", description: "Rendez-vous avec fournisseurs et représentants" },
+  notes: { label: "Notes produits", description: "Fiches produits et tendances" },
+  support: { label: "SAV", description: "Service après-vente et retours" },
+  relances: { label: "Relances clients", description: "Fidélisation et relances promotionnelles" },
+  emails: { label: "Emails & Promos", description: "Newsletters et promotions saisonnières" },
+};
+
+const CABINETS_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Affaires", description: "Suivi des affaires et dossiers juridiques" },
+  taches: { label: "Échéances", description: "Délais légaux, audiences et deadlines" },
+  stock: { label: "Stock", hidden: true },
+  documents: { label: "Pièces juridiques", description: "Conclusions, contrats, actes notariés" },
+  pipeline: { label: "Pipeline affaires", description: "Prospects et nouvelles affaires" },
+  analyse: { label: "Dashboard Cabinet", description: "KPIs : affaires gagnées, honoraires, taux de réussite" },
+  "rendez-vous": { label: "Consultations", description: "Rendez-vous clients et audiences" },
+  notes: { label: "Notes juridiques", description: "Recherches juridiques et jurisprudence" },
+  support: { label: "Litiges", description: "Réclamations et contentieux" },
+  employees: { label: "Collaborateurs", description: "Avocats, associés et assistants" },
+  temps: { label: "Heures facturables", description: "Suivi du temps par affaire et collaborateur" },
+};
+
+const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Campagnes", description: "Campagnes social media et stratégies digitales" },
+  taches: { label: "Planning éditorial", description: "Calendrier de publications et contenus" },
+  stock: { label: "Stock", hidden: true },
+  documents: { label: "Contenus & Visuels", description: "Assets graphiques, vidéos et templates" },
+  pipeline: { label: "Pipeline prospects", description: "Prospects et nouveaux contrats" },
+  analyse: { label: "Dashboard CM", description: "KPIs : engagement, reach, croissance abonnés" },
+  "rendez-vous": { label: "Appels clients", description: "Points stratégiques et briefs clients" },
+  notes: { label: "Notes créatives", description: "Idées de contenus et veille concurrentielle" },
+  support: { label: "Support client", description: "Demandes et ajustements de stratégie" },
+  temps: { label: "Temps par client", description: "Suivi du temps passé par compte client" },
+  emails: { label: "Emails & Rapports", description: "Reportings mensuels et communications" },
+};
+
+const CONSULTANT_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Missions", description: "Suivi des missions de conseil en cours" },
+  taches: { label: "Livrables & Tâches", description: "Tâches et jalons par mission" },
+  stock: { label: "Stock", hidden: true },
+  documents: { label: "Rapports & Études", description: "Livrables, études de marché, audits" },
+  pipeline: { label: "Pipeline missions", description: "Propositions commerciales et appels d'offres" },
+  analyse: { label: "Dashboard Consultant", description: "KPIs : TJM, taux d'occupation, CA par mission" },
+  "rendez-vous": { label: "Réunions", description: "Réunions clients et comités de pilotage" },
+  notes: { label: "Notes de mission", description: "Comptes-rendus et recommandations" },
+  support: { label: "Support client", description: "Suivi post-mission et questions" },
+  temps: { label: "Temps par mission", description: "Suivi horaire et facturation au temps passé" },
+  employees: { label: "Équipe conseil", description: "Consultants et analystes" },
+};
+
+const DESIGNER_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Projets créatifs", description: "Projets de design (branding, UI/UX, print)" },
+  taches: { label: "Sprints créatifs", description: "Itérations et livrables créatifs" },
+  stock: { label: "Stock", hidden: true },
+  documents: { label: "Maquettes & Assets", description: "Fichiers sources, exports et guidelines" },
+  pipeline: { label: "Pipeline créatif", description: "Demandes et propositions créatives" },
+  analyse: { label: "Dashboard Design", description: "KPIs : projets livrés, satisfaction client" },
+  "rendez-vous": { label: "Présentations", description: "Présentations clients et revues créatives" },
+  notes: { label: "Inspirations", description: "Mood boards, références et veille design" },
+  support: { label: "Retours clients", description: "Demandes de modifications et itérations" },
+  temps: { label: "Temps par projet", description: "Suivi horaire par projet créatif" },
+};
+
+const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Événements", description: "Soirées, mariages, festivals et animations" },
+  taches: { label: "Préparation technique", description: "Check-lists techniques et logistique" },
+  stock: { label: "Matériel sono", description: "Enceintes, platines, éclairages et câbles" },
+  documents: { label: "Playlists & Riders", description: "Playlists, fiches techniques et riders" },
+  pipeline: { label: "Pipeline bookings", description: "Réservations et demandes de prestation" },
+  analyse: { label: "Dashboard DJ", description: "KPIs : événements réalisés, CA, satisfaction" },
+  "rendez-vous": { label: "Réservations", description: "Créneaux de prestation et repérages" },
+  notes: { label: "Notes événement", description: "Préférences musicales et ambiance souhaitée" },
+  support: { label: "Réclamations", description: "Retours et ajustements post-événement" },
+  facturation: { label: "Cachets & Factures", description: "Facturation des prestations et cachets" },
+};
+
+const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Événements", description: "Organisation d'événements (congrès, galas, séminaires)" },
+  taches: { label: "Planning événement", description: "Rétroplanning et coordination des prestataires" },
+  stock: { label: "Matériel & Déco", description: "Mobilier, décoration et matériel événementiel" },
+  documents: { label: "Documents événement", description: "Contrats prestataires, plans de salle, briefs" },
+  pipeline: { label: "Pipeline événements", description: "Demandes d'événements et devis en cours" },
+  analyse: { label: "Dashboard Événementiel", description: "KPIs : événements livrés, budget vs réel, NPS" },
+  "rendez-vous": { label: "RDV prestataires", description: "Rendez-vous avec prestataires et clients" },
+  notes: { label: "Notes organisation", description: "Notes logistiques et retours d'expérience" },
+  support: { label: "Réclamations", description: "Gestion des imprévus et réclamations" },
+  employees: { label: "Équipe événement", description: "Coordinateurs, régisseurs et hôtesses" },
+};
+
+const FORMATEUR_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Formations", description: "Programmes de formation et sessions" },
+  taches: { label: "Modules & Cours", description: "Préparation des modules et supports de cours" },
+  stock: { label: "Supports pédagogiques", description: "Manuels, kits et matériel de formation" },
+  documents: { label: "Ressources pédagogiques", description: "Supports PDF, vidéos et exercices" },
+  pipeline: { label: "Pipeline inscriptions", description: "Inscriptions et demandes de formation" },
+  analyse: { label: "Dashboard Formateur", description: "KPIs : apprenants formés, taux de complétion, évaluations" },
+  "rendez-vous": { label: "Sessions", description: "Sessions de formation planifiées" },
+  notes: { label: "Notes formateur", description: "Observations pédagogiques et améliorations" },
+  support: { label: "Support apprenant", description: "Questions et accompagnement post-formation" },
+  temps: { label: "Heures de formation", description: "Suivi du temps par session et module" },
+  clients: { label: "Apprenants", description: "Stagiaires et organismes de formation" },
+};
+
+const GARAGES_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Réparations", description: "Ordres de réparation et interventions" },
+  taches: { label: "Ordres de réparation", description: "Tâches mécaniques et diagnostics" },
+  stock: { label: "Pièces détachées", description: "Stock de pièces et consommables auto" },
+  documents: { label: "Fiches techniques", description: "Carnets d'entretien et rapports de contrôle" },
+  pipeline: { label: "Pipeline devis", description: "Devis en attente et réparations à planifier" },
+  analyse: { label: "Dashboard Garage", description: "KPIs : interventions/jour, panier moyen, rotation pièces" },
+  "rendez-vous": { label: "RDV atelier", description: "Créneaux de dépôt et restitution véhicule" },
+  notes: { label: "Notes mécanicien", description: "Observations techniques et historique véhicule" },
+  support: { label: "Garanties", description: "Garanties pièces et main d'œuvre" },
+  clients: { label: "Clients & Véhicules", description: "Fiches clients avec parc automobile" },
+};
+
+const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Biens", description: "Portefeuille de biens à la vente et location" },
+  taches: { label: "Visites & Tâches", description: "Organisation des visites et tâches administratives" },
+  stock: { label: "Stock", hidden: true },
+  documents: { label: "Mandats & Actes", description: "Mandats, compromis et actes notariés" },
+  pipeline: { label: "Pipeline mandats", description: "Estimations et mandats en négociation" },
+  analyse: { label: "Dashboard Immobilier", description: "KPIs : biens vendus, délai moyen, commissions" },
+  "rendez-vous": { label: "Visites", description: "Visites de biens et rendez-vous notaire" },
+  notes: { label: "Notes terrain", description: "Observations sur les biens et le quartier" },
+  support: { label: "Litiges", description: "Réclamations et litiges acquéreurs/vendeurs" },
+  clients: { label: "Acquéreurs & Vendeurs", description: "Fichier clients acheteurs et vendeurs" },
+  relances: { label: "Relances mandats", description: "Suivi des mandats arrivant à échéance" },
+};
+
+const MARIAGE_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Mariages", description: "Organisation complète de chaque mariage" },
+  taches: { label: "Planning mariage", description: "Rétroplanning et check-lists par mariage" },
+  stock: { label: "Fournitures & Déco", description: "Décoration, fleurs et accessoires" },
+  documents: { label: "Contrats & Documents", description: "Contrats prestataires et devis validés" },
+  pipeline: { label: "Pipeline couples", description: "Demandes de devis et couples en prospection" },
+  analyse: { label: "Dashboard Mariage", description: "KPIs : mariages réalisés, budget moyen, satisfaction" },
+  "rendez-vous": { label: "RDV couple", description: "Rendez-vous avec les futurs mariés" },
+  notes: { label: "Notes organisation", description: "Souhaits des mariés et détails logistiques" },
+  support: { label: "Réclamations", description: "Ajustements et retours post-événement" },
+  clients: { label: "Couples", description: "Futurs mariés et familles" },
+};
+
+const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Chantiers nettoyage", description: "Sites et contrats de nettoyage" },
+  taches: { label: "Planning interventions", description: "Tournées et planning des équipes" },
+  stock: { label: "Produits", description: "Produits d'entretien et consommables" },
+  documents: { label: "Fiches intervention", description: "Fiches de passage et cahiers des charges" },
+  pipeline: { label: "Pipeline contrats", description: "Appels d'offres et nouveaux contrats" },
+  analyse: { label: "Dashboard Nettoyage", description: "KPIs : sites couverts, heures/site, marge" },
+  "rendez-vous": { label: "Interventions", description: "Planification des passages et contrôles qualité" },
+  notes: { label: "Notes terrain", description: "Observations et incidents sur site" },
+  support: { label: "Réclamations", description: "Réclamations clients et non-conformités" },
+  employees: { label: "Agents", description: "Équipes de nettoyage et responsables de site" },
+};
+
+const REPARATEUR_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Réparations", description: "Suivi des réparations en cours" },
+  taches: { label: "Ordres de réparation", description: "Diagnostic, réparation et tests" },
+  stock: { label: "Pièces & Composants", description: "Stock de pièces de rechange et composants" },
+  documents: { label: "Fiches techniques", description: "Fiches de diagnostic et rapports d'intervention" },
+  pipeline: { label: "Pipeline demandes", description: "Demandes de réparation entrantes" },
+  analyse: { label: "Dashboard Réparateur", description: "KPIs : réparations/jour, taux de réussite, délai moyen" },
+  "rendez-vous": { label: "RDV atelier", description: "Créneaux de dépôt et récupération" },
+  notes: { label: "Notes techniques", description: "Observations et solutions appliquées" },
+  support: { label: "Garanties", description: "Garanties sur les réparations effectuées" },
+};
+
+const TRAITEUR_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Prestations", description: "Événements traiteur et commandes" },
+  taches: { label: "Préparation & Menus", description: "Préparation culinaire et élaboration des menus" },
+  stock: { label: "Ingrédients & Stock", description: "Ingrédients, boissons et consommables" },
+  documents: { label: "Menus & Contrats", description: "Propositions de menus et contrats clients" },
+  pipeline: { label: "Pipeline événements", description: "Demandes de devis et réservations" },
+  analyse: { label: "Dashboard Traiteur", description: "KPIs : événements livrés, coût matière, marge" },
+  "rendez-vous": { label: "RDV dégustation", description: "Dégustations et rendez-vous de planification" },
+  notes: { label: "Notes cuisine", description: "Recettes, allergies et préférences clients" },
+  support: { label: "Réclamations", description: "Retours qualité et ajustements" },
+  employees: { label: "Brigade", description: "Cuisiniers, serveurs et logistique" },
+};
+
+const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Prestations", description: "Gestion des logements et prestations" },
+  taches: { label: "Tâches conciergerie", description: "Ménage, check-in/out, maintenance" },
+  stock: { label: "Fournitures", description: "Linge, produits d'accueil et consommables" },
+  documents: { label: "Documents propriétaires", description: "Contrats de gestion et inventaires" },
+  pipeline: { label: "Pipeline prospects", description: "Nouveaux propriétaires et biens à gérer" },
+  analyse: { label: "Dashboard Conciergerie", description: "KPIs : taux d'occupation, revenus, satisfaction voyageurs" },
+  "rendez-vous": { label: "RDV propriétaires", description: "Rendez-vous propriétaires et états des lieux" },
+  notes: { label: "Notes logements", description: "Spécificités des logements et consignes" },
+  support: { label: "Réclamations", description: "Réclamations voyageurs et propriétaires" },
+  clients: { label: "Propriétaires", description: "Propriétaires de biens gérés" },
+  relances: { label: "Relances propriétaires", description: "Renouvellements de contrats de gestion" },
+};
+
 // ── Master map — add new sectors here ──
 export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   developpeur: DEVELOPPEUR_OVERRIDES,
@@ -121,6 +322,21 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   "coach-sportif": COACH_SPORTIF_OVERRIDES,
   btp: BTP_OVERRIDES,
   coiffure: COIFFURE_OVERRIDES,
+  boutique: BOUTIQUE_OVERRIDES,
+  cabinets: CABINETS_OVERRIDES,
+  "community-manager": COMMUNITY_MANAGER_OVERRIDES,
+  consultant: CONSULTANT_OVERRIDES,
+  designer: DESIGNER_OVERRIDES,
+  "dj-animateur": DJ_ANIMATEUR_OVERRIDES,
+  evenementiel: EVENEMENTIEL_OVERRIDES,
+  formateur: FORMATEUR_OVERRIDES,
+  garages: GARAGES_OVERRIDES,
+  immobilier: IMMOBILIER_OVERRIDES,
+  mariage: MARIAGE_OVERRIDES,
+  nettoyage: NETTOYAGE_OVERRIDES,
+  reparateur: REPARATEUR_OVERRIDES,
+  traiteur: TRAITEUR_OVERRIDES,
+  conciergerie: CONCIERGERIE_OVERRIDES,
 };
 
 // ── Helpers ──
