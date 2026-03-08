@@ -42,6 +42,8 @@ export default function SuperAdminFormules() {
   });
   const [localSectorRecs, setLocalSectorRecs] = useState<Record<SectorKey, string[]>>({ ...sectorRecommendations });
   const [expandedSector, setExpandedSector] = useState<SectorKey | null>(null);
+  const [localOverrides, setLocalOverrides] = useState<Record<string, SectorModulesConfig>>({ ...sectorModuleOverrides });
+  const [expandedOverrideSector, setExpandedOverrideSector] = useState<SectorKey | null>(null);
 
   const plans: SubscriptionPlan[] = ["starter", "business", "enterprise"];
 
