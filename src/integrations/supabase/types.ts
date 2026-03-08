@@ -1414,6 +1414,7 @@ export type Database = {
           id: string
           modules_limit: number | null
           plan: Database["public"]["Enums"]["subscription_plan"]
+          sector: string | null
           status: string
           updated_at: string
           user_id: string
@@ -1425,6 +1426,7 @@ export type Database = {
           id?: string
           modules_limit?: number | null
           plan?: Database["public"]["Enums"]["subscription_plan"]
+          sector?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -1436,6 +1438,7 @@ export type Database = {
           id?: string
           modules_limit?: number | null
           plan?: Database["public"]["Enums"]["subscription_plan"]
+          sector?: string | null
           status?: string
           updated_at?: string
           user_id?: string

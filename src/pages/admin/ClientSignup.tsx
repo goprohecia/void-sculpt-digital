@@ -5,9 +5,9 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { UserPlus, Eye, EyeOff, ArrowLeft, ArrowRight, CheckCircle, Check } from "lucide-react";
+import { UserPlus, Eye, EyeOff, ArrowLeft, ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
-import { useDemoPlan, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 
 const MODULE_LABELS: Record<string, string> = {
@@ -21,9 +21,12 @@ const MODULE_LABELS: Record<string, string> = {
 const ALWAYS_INCLUDED = ["overview", "parametres"];
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
 
+const STEP_LABELS = ["Formule", "Secteur", "Modules", "Compte"];
+
 export default function ClientSignup() {
-  const [step, setStep] = useState<"plan" | "modules" | "form">("plan");
+  const [step, setStep] = useState<"plan" | "sector" | "modules" | "form">("plan");
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
+  const [selectedSector, setSelectedSector] = useState<SectorKey | null>(null);
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [nom, setNom] = useState("");
   const [telephone, setTelephone] = useState("");
@@ -37,7 +40,7 @@ export default function ClientSignup() {
   const [showCompleteProfile, setShowCompleteProfile] = useState(false);
   const [googleUserId, setGoogleUserId] = useState("");
   const navigate = useNavigate();
-  const { planModules, planPrices } = useDemoPlan();
+  const { planModules, planPrices, sectorRecommendations } = useDemoPlan();
 
   useEffect(() => {
     const checkSession = async () => {
@@ -56,11 +59,6 @@ export default function ClientSignup() {
     checkSession();
   }, [navigate]);
 
-  const getAvailableModules = (plan: SubscriptionPlan): string[] => {
-    const modules = planModules[plan];
-    return modules === "all" ? SELECTABLE_MODULES : modules;
-  };
-
   const getModuleLimit = (plan: SubscriptionPlan): number | null => {
     const modules = planModules[plan];
     return modules === "all" ? null : modules.length;
@@ -68,12 +66,27 @@ export default function ClientSignup() {
 
   const handleSelectPlan = (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
-    if (plan === "enterprise") {
+    setSelectedSector(null);
+    setSelectedModules([]);
+    setStep("sector");
+  };
+
+  const handleSelectSector = (sector: SectorKey) => {
+    setSelectedSector(sector);
+    if (!selectedPlan) return;
+
+    const recommendations = sectorRecommendations[sector] || [];
+    const limit = getModuleLimit(selectedPlan);
+
+    if (selectedPlan === "enterprise") {
+      // Enterprise: pre-select all recommended, go to modules for optional deselection
       setSelectedModules(SELECTABLE_MODULES);
-      setStep("form");
+      setStep("modules");
     } else {
-      const available = getAvailableModules(plan);
-      setSelectedModules(available);
+      // Starter/Business: pre-select the top N recommended modules
+      const count = limit ?? recommendations.length;
+      const preSelected = recommendations.slice(0, count);
+      setSelectedModules(preSelected);
       setStep("modules");
     }
   };
@@ -99,7 +112,7 @@ export default function ClientSignup() {
     setLoading(true);
     try {
       const { data, error: fnError } = await supabase.functions.invoke("send-signup-confirmation", {
-        body: { email, password, nom: nom.trim(), telephone: telephone.trim(), plan: selectedPlan, modules: selectedModules },
+        body: { email, password, nom: nom.trim(), telephone: telephone.trim(), plan: selectedPlan, modules: selectedModules, sector: selectedSector },
       });
       setLoading(false);
       if (fnError) { setError("Erreur lors de la création du compte"); }
@@ -118,6 +131,8 @@ export default function ClientSignup() {
     });
     if (error) setError("Erreur lors de la connexion avec Google");
   };
+
+  const currentStepIndex = ["plan", "sector", "modules", "form"].indexOf(step);
 
   if (success) {
     return (
@@ -146,13 +161,23 @@ export default function ClientSignup() {
         {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="text-xl font-bold">
-            {step === "plan" ? "Choisissez votre formule" : step === "modules" ? "Sélectionnez vos modules" : "Créer votre compte"}
+            {step === "plan" ? "Choisissez votre formule" :
+             step === "sector" ? "Quel est votre secteur d'activité ?" :
+             step === "modules" ? "Sélectionnez vos modules" :
+             "Créer votre compte"}
           </h1>
           <p className="text-sm text-muted-foreground">My Business Assistant</p>
           {/* Step indicator */}
           <div className="flex items-center justify-center gap-2 pt-2">
-            {["plan", "modules", "form"].map((s, i) => (
-              <div key={s} className={`h-1.5 rounded-full transition-all ${s === step ? "w-8 bg-primary" : "w-4 bg-muted"}`} />
+            {STEP_LABELS.map((label, i) => (
+              <div key={label} className="flex items-center gap-1">
+                <div className={`h-1.5 rounded-full transition-all ${i === currentStepIndex ? "w-8 bg-primary" : i < currentStepIndex ? "w-6 bg-primary/50" : "w-4 bg-muted"}`} />
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground pt-1">
+            {STEP_LABELS.map((label, i) => (
+              <span key={label} className={i === currentStepIndex ? "text-primary font-medium" : ""}>{label}</span>
             ))}
           </div>
         </div>
@@ -204,11 +229,42 @@ export default function ClientSignup() {
           </div>
         )}
 
-        {/* Step 2: Module selection */}
-        {step === "modules" && selectedPlan && (
+        {/* Step 2: Sector selection */}
+        {step === "sector" && (
           <div className="glass-card p-6 space-y-4">
             <div className="flex items-center justify-between">
               <button onClick={() => setStep("plan")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+                <ArrowLeft className="h-3 w-3" /> Retour
+              </button>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium uppercase">
+                {selectedPlan}
+              </span>
+            </div>
+
+            <p className="text-sm text-muted-foreground text-center">
+              Nous vous recommanderons les modules les plus adaptés à votre activité.
+            </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {SECTORS.map((s) => (
+                <button
+                  key={s.key}
+                  onClick={() => handleSelectSector(s.key)}
+                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-transparent hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer text-center"
+                >
+                  <span className="text-2xl">{s.icon}</span>
+                  <span className="text-xs font-medium">{s.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Module selection */}
+        {step === "modules" && selectedPlan && (
+          <div className="glass-card p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <button onClick={() => setStep("sector")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
                 <ArrowLeft className="h-3 w-3" /> Retour
               </button>
               <span className="text-xs text-muted-foreground">
@@ -216,27 +272,38 @@ export default function ClientSignup() {
               </span>
             </div>
 
+            {selectedSector && sectorRecommendations[selectedSector] && (
+              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-primary/5 border border-primary/10">
+                <Sparkles className="h-4 w-4 text-primary shrink-0" />
+                <p className="text-xs text-muted-foreground">
+                  Modules pré-sélectionnés selon votre secteur <strong className="text-foreground">{SECTORS.find(s => s.key === selectedSector)?.label}</strong>. Vous pouvez ajuster.
+                </p>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {SELECTABLE_MODULES.map((key) => {
-                const available = getAvailableModules(selectedPlan);
-                const isAvailable = available.includes(key);
                 const isSelected = selectedModules.includes(key);
                 const limit = getModuleLimit(selectedPlan);
-                const disabled = !isAvailable || (!isSelected && limit !== null && selectedModules.length >= limit);
+                const disabled = !isSelected && limit !== null && selectedModules.length >= limit;
+                const isRecommended = selectedSector ? (sectorRecommendations[selectedSector] || []).includes(key) : false;
 
                 return (
                   <label
                     key={key}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-colors border ${
                       isSelected ? "border-primary/30 bg-primary/5" : "border-transparent hover:bg-muted/30"
-                    } ${!isAvailable ? "opacity-30 cursor-not-allowed" : ""} ${disabled && !isSelected ? "opacity-40 cursor-not-allowed" : ""}`}
+                    } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
                   >
                     <Checkbox
                       checked={isSelected}
-                      disabled={disabled && !isSelected}
-                      onCheckedChange={() => isAvailable && toggleModule(key)}
+                      disabled={disabled}
+                      onCheckedChange={() => toggleModule(key)}
                     />
                     <span className="text-sm">{MODULE_LABELS[key] || key}</span>
+                    {isRecommended && !isSelected && (
+                      <Sparkles className="h-3 w-3 text-primary/50 ml-auto" />
+                    )}
                   </label>
                 );
               })}
@@ -248,16 +315,23 @@ export default function ClientSignup() {
           </div>
         )}
 
-        {/* Step 3: Account form */}
+        {/* Step 4: Account form */}
         {step === "form" && (
           <div className="glass-card p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <button onClick={() => selectedPlan === "enterprise" ? setStep("plan") : setStep("modules")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <button onClick={() => setStep("modules")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
                 <ArrowLeft className="h-3 w-3" /> Retour
               </button>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium uppercase">
-                {selectedPlan}
-              </span>
+              <div className="flex items-center gap-2">
+                {selectedSector && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                    {SECTORS.find(s => s.key === selectedSector)?.label}
+                  </span>
+                )}
+                <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium uppercase">
+                  {selectedPlan}
+                </span>
+              </div>
             </div>
 
             {/* Google */}

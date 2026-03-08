@@ -1,63 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan : Recommandations de modules par secteur d'activité
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Concept
+## Modifications
 
-Ajouter une etape "Secteur d'activite" dans le flow d'inscription (`ClientSignup.tsx`) entre le choix du plan et la selection des modules. En fonction du secteur choisi, les modules sont pre-selectionnes avec les plus pertinents pour ce secteur. Le Super Admin peut aussi configurer ces recommandations.
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### 1. Definir le mapping secteur → modules recommandes
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-**Fichier : `src/contexts/DemoPlanContext.tsx`** (extension)
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-Ajouter une constante `SECTOR_MODULE_RECOMMENDATIONS` qui mappe chaque secteur a une liste ordonnee de modules par priorite. Les 3 premiers = recommandation Starter, les 8 premiers = recommandation Business, tous = Enterprise.
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-Secteurs (20, alignes sur les pages existantes) :
-- Conciergerie, BTP, Boutique, Cabinets, Coach sportif, Coiffure, Community Manager, Consultant, Designer, Developpeur, DJ/Animateur, Evenementiel, Formateur, Garages, Immobilier, Mariage, Nettoyage, Photographe, Reparateur, Traiteur
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-Chaque secteur a deja des `modules` recommandes dans ses pages secteur (ex: Conciergerie = Dossiers, Clients, Facturation, Messagerie, Support, Rendez-vous). On reutilise ces donnees pour construire la recommandation.
+## Details techniques
 
-Stocker aussi dans le contexte un state `sectorRecommendations` editable par le Super Admin.
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-### 2. Modifier le flow d'inscription
-
-**Fichier : `src/pages/admin/ClientSignup.tsx`**
-
-- Ajouter une etape "sector" entre "plan" et "modules" : `"plan" | "sector" | "modules" | "form"`
-- Step indicator passe a 4 etapes
-- Apres choix du plan → afficher une grille de secteurs (icones + labels)
-- Apres choix du secteur :
-  - **Starter** : pre-selectionner les 3 modules les plus importants pour ce secteur (limite a la limite du plan)
-  - **Business** : pre-selectionner les 6-8 modules les plus importants
-  - **Enterprise** : tous les modules disponibles, aller directement au form ou permettre deselection
-- L'utilisateur peut toujours modifier sa selection avant de continuer
-- Le secteur est envoye avec le formulaire (`body: { ..., sector: selectedSector }`)
-
-### 3. Super Admin : gestion des recommandations par secteur
-
-**Fichier : `src/pages/superadmin/SuperAdminFormules.tsx`** (extension)
-
-Ajouter une section sous les formules : "Recommandations par secteur"
-- Liste des 20 secteurs
-- Pour chaque secteur : liste ordonnee des modules recommandes (drag ou checkboxes avec ordre)
-- Les N premiers modules = recommandation Starter (N = limite starter), les M premiers = Business
-- Bouton sauvegarder qui met a jour le contexte
-
-### 4. Stocker le secteur dans le profil/subscription
-
-**Migration DB** : Ajouter une colonne `sector` (text, nullable) a la table `subscriptions` pour persister le secteur choisi par le client.
-
-**Edge function `send-signup-confirmation`** : passer le secteur dans les metadata utilisateur.
-
----
-
-### Fichiers impactes
-
-| Action | Fichier |
-|--------|---------|
-| Modifier | `src/contexts/DemoPlanContext.tsx` — ajouter `SECTOR_MODULE_RECOMMENDATIONS` + state editable |
-| Modifier | `src/pages/admin/ClientSignup.tsx` — ajouter etape secteur + pre-selection modules |
-| Modifier | `src/pages/superadmin/SuperAdminFormules.tsx` — section gestion recommandations secteur |
-| Migration | Ajouter colonne `sector` a `subscriptions` |
-| Modifier | `src/pages/superadmin/SuperAdminEntreprises.tsx` — afficher colonne secteur |
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
