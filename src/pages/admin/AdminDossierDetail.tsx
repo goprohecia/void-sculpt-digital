@@ -95,6 +95,7 @@ export default function AdminDossierDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getDossierById, updateDossierStatut, updateDossierPreviewUrl, marquerRdvEffectue } = useDossiers();
+  const { isEnterprise } = useSubscription();
   const { getFacturesByDossier } = useFactures();
   const { getDevisByDossier } = useDevis();
   const { getPreviewVisitsByDossier, addPreviewVisit } = usePreviewVisits();
