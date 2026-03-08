@@ -294,7 +294,7 @@ export default function ClientSignup() {
                       disabled={disabled}
                       onCheckedChange={() => toggleModule(key)}
                     />
-                    <span className="text-sm">{MODULE_LABELS[key] || key}</span>
+                    <span className="text-sm">{getSectorModuleLabel(key, selectedSector)}</span>
                     {isRecommended && !isSelected && (
                       <Sparkles className="h-3 w-3 text-primary/50 ml-auto" />
                     )}
