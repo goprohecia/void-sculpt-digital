@@ -209,6 +209,7 @@ export function OffresSection() {
                           <Zap className="h-3.5 w-3.5 text-neon-violet" />
                           {pack.modulesLimit}
                         </p>
+                        <p className="text-xs text-muted-foreground/70 mt-0.5">{pack.engagement}</p>
                       </div>
 
                       {/* Features */}

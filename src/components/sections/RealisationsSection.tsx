@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
-import { Users, FolderOpen, Receipt, MessageSquare, LifeBuoy, Package, BarChart3 } from "lucide-react";
+import { LayoutDashboard, Users, UserCheck, FolderOpen, Receipt, MessageSquare, LifeBuoy, Package, BarChart3, CalendarDays, Bell, Mail } from "lucide-react";
 import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground } from "@/components/animations";
 
 const modules = [
+  { icon: LayoutDashboard, title: "Vue d'ensemble", description: "Dashboard centralisé avec KPIs et vue globale de votre activité.", color: "text-white" },
   { icon: Users, title: "Gestion clients", description: "Fiches clients complètes, tags, segmentation et historique.", color: "text-neon-violet" },
+  { icon: UserCheck, title: "Salariés", description: "Gestion des équipes, droits d'accès et assignation aux dossiers.", color: "text-indigo-400" },
   { icon: FolderOpen, title: "Dossiers", description: "Suivi des projets, échéances, assignation aux salariés.", color: "text-blue-400" },
   { icon: Receipt, title: "Facturation", description: "Devis, factures, relances automatiques et signature électronique.", color: "text-emerald-400" },
   { icon: MessageSquare, title: "Messagerie", description: "Communication centralisée entre admin, clients et équipes.", color: "text-amber-400" },
+  { icon: CalendarDays, title: "Rendez-vous", description: "Prise de rendez-vous en ligne, synchronisation calendrier.", color: "text-sky-400" },
+  { icon: Bell, title: "Relances", description: "Relances automatiques par email, suivi des échéances de paiement.", color: "text-orange-400" },
+  { icon: Mail, title: "Emails", description: "Templates personnalisables, historique d'envois et logs.", color: "text-pink-400" },
   { icon: LifeBuoy, title: "Support", description: "Tickets de support avec suivi des priorités et résolutions.", color: "text-rose-400" },
   { icon: Package, title: "Stock", description: "Gestion des produits, fournisseurs, mouvements et alertes.", color: "text-cyan-400" },
   { icon: BarChart3, title: "Analyse", description: "Tableaux de bord, KPIs et rapports de performance.", color: "text-purple-400" },
