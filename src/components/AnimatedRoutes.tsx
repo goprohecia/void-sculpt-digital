@@ -57,6 +57,7 @@ export function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         {/* Redirect root to login */}
         <Route path="/" element={<Navigate to="/client/login" replace />} />
+        <Route path="/fonctionnalites" element={<Fonctionnalites />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
