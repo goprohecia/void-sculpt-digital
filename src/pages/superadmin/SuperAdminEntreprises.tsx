@@ -102,7 +102,6 @@ export default function SuperAdminEntreprises() {
                   {e.modules.length > 6 && (
                     <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">+{e.modules.length - 6}</span>
                   )}
-                  </div>
                 </div>
               </CardContent>
             </Card>
