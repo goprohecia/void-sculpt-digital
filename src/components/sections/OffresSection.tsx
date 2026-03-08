@@ -99,12 +99,14 @@ const tierStyles = {
 };
 
 const includedForAll = [
-  { icon: Globe, label: "Sous-domaine personnalisé" },
+  { icon: Globe, label: "Sous-domaine personnalisé (ex: monentreprise.mba.com)" },
   { icon: Users, label: "Multi-utilisateurs illimités" },
   { icon: FileSignature, label: "Signature électronique" },
   { icon: CreditCard, label: "Stripe Connect" },
   { icon: Shield, label: "Hébergement sécurisé" },
   { icon: Headphones, label: "Support réactif" },
+  { icon: CalendarDays, label: "Prise de RDV en ligne" },
+  { icon: RefreshCw, label: "Mises à jour incluses" },
 ];
 
 export function OffresSection() {
