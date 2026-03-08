@@ -1,12 +1,23 @@
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Building2, TrendingUp, Users, CreditCard } from "lucide-react";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 const MOCK_KPIS = [
   { label: "Entreprises actives", value: "47", icon: Building2, change: "+5 ce mois", color: "text-primary" },
   { label: "MRR", value: "14 350€", icon: TrendingUp, change: "+12%", color: "text-emerald-400" },
   { label: "Utilisateurs totaux", value: "312", icon: Users, change: "+23", color: "text-neon-blue" },
   { label: "Taux de churn", value: "2.1%", icon: CreditCard, change: "-0.3%", color: "text-amber-400" },
+];
+
+const MONTHLY_DATA = [
+  { mois: "Oct", inscrits: 5, churn: 1, mrr: 10200 },
+  { mois: "Nov", inscrits: 7, churn: 0, mrr: 11450 },
+  { mois: "Déc", inscrits: 4, churn: 2, mrr: 11850 },
+  { mois: "Jan", inscrits: 8, churn: 1, mrr: 12800 },
+  { mois: "Fév", inscrits: 6, churn: 1, mrr: 13500 },
+  { mois: "Mar", inscrits: 9, churn: 0, mrr: 14350 },
 ];
 
 const MOCK_ENTERPRISES = [
@@ -22,6 +33,15 @@ const planColors: Record<string, string> = {
   starter: "bg-muted text-muted-foreground",
   business: "bg-neon-blue/10 text-neon-blue",
   enterprise: "bg-amber-500/10 text-amber-400",
+};
+
+const mrrChartConfig = {
+  mrr: { label: "MRR (€)", color: "hsl(var(--primary))" },
+};
+
+const inscritsChartConfig = {
+  inscrits: { label: "Inscriptions", color: "hsl(142, 71%, 45%)" },
+  churn: { label: "Churns", color: "hsl(var(--destructive))" },
 };
 
 export default function SuperAdminDashboard() {
@@ -47,6 +67,50 @@ export default function SuperAdminDashboard() {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Évolution du MRR</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={mrrChartConfig} className="h-[220px] w-full">
+                <AreaChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="mrrGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                  <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Area type="monotone" dataKey="mrr" stroke="hsl(var(--primary))" fill="url(#mrrGradient)" strokeWidth={2} />
+                </AreaChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Inscriptions vs Churns</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={inscritsChartConfig} className="h-[220px] w-full">
+                <BarChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                  <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="inscrits" fill="hsl(142, 71%, 45%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="churn" fill="hsl(var(--destructive))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Répartition par plan */}

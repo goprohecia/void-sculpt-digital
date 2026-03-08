@@ -35,7 +35,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, PLAN_MODULES } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -81,7 +81,7 @@ export function AdminSidebar() {
   const { tickets } = useTickets();
   const { enabledModules } = useAppSettings();
   const { spaces } = useCustomSpaces();
-  const { isEnterprise, modulesLimit } = useSubscription();
+  const { isEnterprise, plan } = useSubscription();
   const { config: wl } = useWhiteLabel();
 
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
@@ -112,16 +112,15 @@ export function AdminSidebar() {
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // Filter by enabled modules, then apply plan limit (overview + parametres always included)
+  // Filter by enabled modules, then apply plan-specific module list
   const enabledItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
   const alwaysVisible = ["overview", "parametres"];
-  const navItems = modulesLimit === null
+  const planModules = PLAN_MODULES[plan];
+  const navItems = planModules === "all"
     ? enabledItems
-    : enabledItems.filter((item) => {
-        if (alwaysVisible.includes(item.moduleKey)) return true;
-        const idx = enabledItems.filter(i => !alwaysVisible.includes(i.moduleKey)).indexOf(item);
-        return idx < modulesLimit;
-      });
+    : enabledItems.filter((item) =>
+        alwaysVisible.includes(item.moduleKey) || planModules.includes(item.moduleKey)
+      );
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
