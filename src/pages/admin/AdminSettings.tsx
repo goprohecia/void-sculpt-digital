@@ -330,6 +330,32 @@ export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
   const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
+  const { config: wlConfig, updateConfig: updateWhiteLabel } = useWhiteLabel();
+  const [whiteLabel, setWhiteLabel] = useState({
+    brandName: "",
+    brandShort: "",
+    logoUrl: "",
+    faviconUrl: "",
+    primaryColor: "",
+    accentColor: "",
+    bgColor: "",
+    customDomain: "",
+    senderName: "",
+    senderEmail: "",
+    loginTitle: "",
+    loginSubtitle: "",
+    footerText: "",
+    hidePoweredBy: true,
+    customCss: "",
+  });
+  const [wlInitialized, setWlInitialized] = useState(false);
+
+  // Sync from hook config once loaded
+  if (!wlInitialized && wlConfig.brandName) {
+    setWhiteLabel({ ...wlConfig });
+    setWlInitialized(true);
+  }
+
   const [profile, setProfile] = useState({
     nom: user?.nom || "Admin",
     email: "admin@mba.demo",
