@@ -115,12 +115,19 @@ export default function AdminDossiers() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <FolderOpen className="h-6 w-6 text-primary" />
-              Dossiers & Demandes
-            </h1>
-            <p className="text-muted-foreground text-sm">{dossiers.length} dossiers · {demandes.length} demandes</p>
+          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <FolderOpen className="h-6 w-6 text-primary" />
+                Dossiers & Demandes
+              </h1>
+              <p className="text-muted-foreground text-sm">{dossiers.length} dossiers · {demandes.length} demandes</p>
+            </div>
+            <AIContextButton
+              label="Résumé IA"
+              context={`dossier - ${dossiers.length} dossiers actifs, ${demandes.length} demandes. Statuts: ${dossiers.filter(d => d.statut === "en_cours").length} en cours, ${dossiers.filter(d => d.statut === "termine").length} terminés, ${dossiers.filter(d => d.statut === "en_attente").length} en attente.`}
+              prompt="Fais un résumé synthétique de l'état des dossiers et demandes. Identifie les points d'attention, les priorités et les prochaines actions recommandées."
+            />
           </motion.div>
 
           <Tabs defaultValue="dossiers">
