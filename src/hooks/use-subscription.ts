@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
-import { useRef } from "react";
+import { useState, useCallback } from "react";
 
 export type SubscriptionPlan = "starter" | "business" | "enterprise";
 
@@ -9,13 +9,19 @@ export interface SubscriptionData {
   plan: SubscriptionPlan;
   status: string;
   modulesLimit: number | null;
-  customModules: Record<string, string>; // key -> custom label
+  customModules: Record<string, string>;
 }
 
-const PLAN_LIMITS: Record<SubscriptionPlan, number | null> = {
+export const PLAN_LIMITS: Record<SubscriptionPlan, number | null> = {
   starter: 3,
   business: 6,
-  enterprise: null, // unlimited
+  enterprise: null,
+};
+
+export const PLAN_INFO: Record<SubscriptionPlan, { label: string; price: number; color: string }> = {
+  starter: { label: "Starter", price: 150, color: "text-muted-foreground" },
+  business: { label: "Business", price: 250, color: "text-neon-blue" },
+  enterprise: { label: "Enterprise", price: 400, color: "text-amber-400" },
 };
 
 export function useSubscription() {
