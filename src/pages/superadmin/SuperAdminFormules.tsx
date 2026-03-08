@@ -297,6 +297,7 @@ export default function SuperAdminFormules() {
               );
             })}
           </CardContent>
+        </Card>
 
         {/* Sector Module Overrides */}
         <Card className="glass-card border-white/10">
