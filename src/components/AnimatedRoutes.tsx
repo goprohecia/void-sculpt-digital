@@ -68,6 +68,7 @@ import SuperAdminDashboard from "@/pages/superadmin/SuperAdminDashboard";
 import SuperAdminEntreprises from "@/pages/superadmin/SuperAdminEntreprises";
 import SuperAdminAbonnements from "@/pages/superadmin/SuperAdminAbonnements";
 import SuperAdminStats from "@/pages/superadmin/SuperAdminStats";
+import SuperAdminFormules from "@/pages/superadmin/SuperAdminFormules";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
