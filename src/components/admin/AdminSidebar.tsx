@@ -152,6 +152,7 @@ export function AdminSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         )}
+      </SidebarContent>
 
       <SidebarFooter className="p-4">
         <SidebarSeparator className="mb-3" />
