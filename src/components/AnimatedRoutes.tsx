@@ -147,6 +147,14 @@ export function AnimatedRoutes() {
         <Route path="/admin/employees" element={<AdminEmployees />} />
         <Route path="/admin/stock" element={<AdminStock />} />
         <Route path="/admin/analyse" element={<AdminAnalytics />} />
+        <Route path="/admin/taches" element={<AdminTaches />} />
+        <Route path="/admin/agenda" element={<AdminAgenda />} />
+        <Route path="/admin/rapports" element={<AdminRapports />} />
+        <Route path="/admin/documents" element={<AdminDocuments />} />
+        <Route path="/admin/temps" element={<AdminTemps />} />
+        <Route path="/admin/automatisations" element={<AdminAutomatisations />} />
+        <Route path="/admin/notes" element={<AdminNotes />} />
+        <Route path="/admin/pipeline" element={<AdminPipeline />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
 
         {/* Client routes */}
