@@ -9,13 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
 import { useTags } from "@/hooks/use-produits";
+import { useSubscription } from "@/hooks/use-subscription";
+import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
+import { Badge } from "@/components/ui/badge";
 
 const TAG_COLORS = [
   "#6366f1", "#f43f5e", "#10b981", "#f59e0b", "#3b82f6",
@@ -176,6 +179,7 @@ function TagsManager() {
 export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
+  const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
   const [profile, setProfile] = useState({
     nom: user?.nom || "Admin",
     email: "admin@mba.demo",
@@ -444,24 +448,68 @@ export default function AdminSettings() {
               {/* MODULES TAB */}
               <TabsContent value="modules">
                 <div className="space-y-6">
+                  {/* Plan indicator */}
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Crown className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">
+                              Plan actuel : <span className="text-primary capitalize">{plan}</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {modulesLimit ? `${enabledModules.filter(k => k !== "overview" && k !== "parametres").length}/${modulesLimit} modules activés` : "Modules illimités"}
+                            </p>
+                          </div>
+                        </div>
+                        {!isEnterprise && (
+                          <Badge variant="outline" className="gap-1.5 text-primary border-primary/30">
+                            <Sparkles className="h-3 w-3" />
+                            Upgrade disponible
+                          </Badge>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   {/* Admin modules */}
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-base flex items-center gap-2">
                         <Puzzle className="h-4 w-4" /> Modules admin actifs
                       </CardTitle>
-                      <CardDescription>Choisissez les modules visibles dans votre navigation admin.</CardDescription>
+                      <CardDescription>
+                        Choisissez les modules visibles dans votre navigation admin.
+                        {modulesLimit && (
+                          <span className="ml-1 font-medium text-primary">
+                            ({enabledModules.filter(k => k !== "overview" && k !== "parametres").length}/{modulesLimit} utilisés)
+                          </span>
+                        )}
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {ALL_ADMIN_MODULES.map((mod) => {
                         const isAlwaysOn = mod.key === "overview" || mod.key === "parametres";
                         const isOn = enabledModules.includes(mod.key);
+                        const activeCount = enabledModules.filter(k => k !== "overview" && k !== "parametres").length;
+                        const atLimit = modulesLimit !== null && activeCount >= modulesLimit && !isOn && !isAlwaysOn;
+
                         return (
                           <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                            <p className="text-sm font-medium">{mod.label}</p>
+                            <div className="flex items-center gap-2">
+                              <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{mod.label}</p>
+                              {atLimit && (
+                                <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
+                                  Upgrade
+                                </Badge>
+                              )}
+                            </div>
                             <Switch
                               checked={isOn}
-                              disabled={isAlwaysOn}
+                              disabled={isAlwaysOn || atLimit}
                               onCheckedChange={(v) => {
                                 const next = v
                                   ? [...enabledModules, mod.key]
@@ -473,6 +521,15 @@ export default function AdminSettings() {
                           </div>
                         );
                       })}
+
+                      {modulesLimit !== null && enabledModules.filter(k => k !== "overview" && k !== "parametres").length >= modulesLimit && (
+                        <UpgradeBanner
+                          currentPlan={plan}
+                          requiredPlan={plan === "starter" ? "business" : "enterprise"}
+                          feature="Plus de modules"
+                          className="mt-4"
+                        />
+                      )}
                     </CardContent>
                   </Card>
 
@@ -529,6 +586,31 @@ export default function AdminSettings() {
                       })}
                     </CardContent>
                   </Card>
+
+                  {/* Custom Spaces - Enterprise only */}
+                  {canCustomizeSpaces ? (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Sparkles className="h-4 w-4 text-amber-400" /> Espaces personnalisés
+                        </CardTitle>
+                        <CardDescription>
+                          Créez des espaces sur mesure au-delà d'Admin, Salarié et Client.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground text-center py-6">
+                          Fonctionnalité bientôt disponible — contactez-nous pour un setup anticipé.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <UpgradeBanner
+                      currentPlan={plan}
+                      requiredPlan="enterprise"
+                      feature="Espaces personnalisés & renommage de modules"
+                    />
+                  )}
                 </div>
               </TabsContent>
 
