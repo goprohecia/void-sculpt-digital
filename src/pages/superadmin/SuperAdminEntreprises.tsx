@@ -3,7 +3,7 @@ import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Building2 } from "lucide-react";
+import { Search, Building2, Filter } from "lucide-react";
 import { SECTORS } from "@/contexts/DemoPlanContext";
 
 const MOCK_ENTERPRISES = [
