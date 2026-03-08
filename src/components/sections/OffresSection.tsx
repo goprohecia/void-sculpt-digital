@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Star, Zap, Shield, Users, Globe, FileSignature, CreditCard, Headphones } from "lucide-react";
+import { Check, ArrowRight, Star, Zap, Shield, Users, Globe, FileSignature, CreditCard, Headphones, CalendarDays, RefreshCw } from "lucide-react";
 import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
 
 type Tier = "starter" | "business" | "enterprise";
