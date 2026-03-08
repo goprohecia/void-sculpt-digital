@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
-export type DemoRole = "admin" | "client" | "employee";
+export type DemoRole = "admin" | "client" | "employee" | "superadmin";
 
 interface DemoUser {
   email: string;
@@ -28,6 +28,10 @@ const DEMO_ACCOUNTS: Record<string, { password: string; user: DemoUser }> = {
   "employee@mba.demo": {
     password: "demo2026",
     user: { email: "employee@mba.demo", nom: "Sophie Martin", role: "employee" },
+  },
+  "superadmin@mba.demo": {
+    password: "demo2026",
+    user: { email: "superadmin@mba.demo", nom: "Fondateur MBA", role: "superadmin" },
   },
 };
 
