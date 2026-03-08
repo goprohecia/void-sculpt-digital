@@ -1,6 +1,6 @@
 import { type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, animate } from "framer-motion";
 import { useEffect, useState } from "react";
 
 interface DashboardKPIProps {
