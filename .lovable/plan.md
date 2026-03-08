@@ -1,35 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan: Ajouter les overrides sectoriels pour les 15 secteurs restants
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Fichier modifié
-`src/data/sectorModules.ts` — Ajout de 15 constantes d'overrides + enregistrement dans `SECTOR_MODULE_OVERRIDES`.
+## Modifications
 
-### Secteurs et vocabulaire métier
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-| Secteur | Dossiers | Tâches | Stock | Documents | RDV | Notes | Pipeline | Support |
-|---------|----------|--------|-------|-----------|-----|-------|----------|---------|
-| **Boutique** | Commandes | Tâches boutique | Inventaire | Bons & Factures | RDV fournisseurs | Notes produits | Pipeline ventes | SAV |
-| **Cabinets** | Affaires | Échéances | *hidden* | Pièces juridiques | Consultations | Notes juridiques | Pipeline affaires | Litiges |
-| **Community Manager** | Campagnes | Planning éditorial | *hidden* | Contenus & Visuels | Appels clients | Notes créatives | Pipeline prospects | Support client |
-| **Consultant** | Missions | Livrables & Tâches | *hidden* | Rapports & Études | Réunions | Notes de mission | Pipeline missions | Support client |
-| **Designer** | Projets créatifs | Sprints créatifs | *hidden* | Maquettes & Assets | Présentations | Inspirations | Pipeline créatif | Retours clients |
-| **DJ/Animateur** | Événements | Préparation technique | Matériel sono | Playlists & Riders | Réservations | Notes événement | Pipeline bookings | Réclamations |
-| **Événementiel** | Événements | Planning événement | Matériel & Déco | Documents événement | RDV prestataires | Notes organisation | Pipeline événements | Réclamations |
-| **Formateur** | Formations | Modules & Cours | Supports pédagogiques | Ressources pédagogiques | Sessions | Notes formateur | Pipeline inscriptions | Support apprenant |
-| **Garages** | Réparations | Ordres de réparation | Pièces détachées | Fiches techniques | RDV atelier | Notes mécanicien | Pipeline devis | Garanties |
-| **Immobilier** | Biens | Visites & Tâches | *hidden* | Mandats & Actes | Visites | Notes terrain | Pipeline mandats | Litiges |
-| **Mariage** | Mariages | Planning mariage | Fournitures & Déco | Contrats & Documents | RDV couple | Notes organisation | Pipeline couples | Réclamations |
-| **Nettoyage** | Chantiers nettoyage | Planning interventions | Produits | Fiches intervention | Interventions | Notes terrain | Pipeline contrats | Réclamations |
-| **Réparateur** | Réparations | Ordres de réparation | Pièces & Composants | Fiches techniques | RDV atelier | Notes techniques | Pipeline demandes | Garanties |
-| **Traiteur** | Prestations | Préparation & Menus | Ingrédients & Stock | Menus & Contrats | RDV dégustation | Notes cuisine | Pipeline événements | Réclamations |
-| **Conciergerie** | Prestations | Tâches conciergerie | Fournitures | Documents propriétaires | RDV propriétaires | Notes logements | Pipeline prospects | Réclamations |
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-### Implémentation
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-1. Ajouter 15 constantes (`BOUTIQUE_OVERRIDES`, `CABINETS_OVERRIDES`, etc.) après les overrides existants (ligne 115), chacune avec ~10-12 modules overridés, incluant labels et descriptions métier.
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-2. Enregistrer les 15 secteurs dans `SECTOR_MODULE_OVERRIDES` (lignes 118-124).
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-Aucun autre fichier ne nécessite de modification — le contexte `DemoPlanContext` et le sidebar consomment déjà dynamiquement la map.
+## Details techniques
 
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
+
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
