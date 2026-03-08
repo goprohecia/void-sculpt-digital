@@ -89,6 +89,7 @@ export function AdminSidebar() {
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
+  const navItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
   const principalItems = navItems.filter((item) => principalKeys.includes(item.moduleKey));
   const commercialItems = navItems.filter((item) => commercialKeys.includes(item.moduleKey));
   const outilsItems = navItems.filter((item) => outilsKeys.includes(item.moduleKey));
@@ -116,6 +117,18 @@ export function AdminSidebar() {
       </SidebarMenuItem>
     ));
 
+  const groupLabel = "text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70";
+
+  const renderGroup = (label: string, items: typeof navItems) =>
+    items.length > 0 ? (
+      <SidebarGroup>
+        <SidebarGroupLabel className={groupLabel}>{label}</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>{renderItems(items)}</SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    ) : null;
+
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-5 pb-4">
@@ -132,27 +145,10 @@ export function AdminSidebar() {
       <SidebarSeparator />
 
       <SidebarContent>
-        {mainItems.length > 0 && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70">
-              Menu principal
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>{renderItems(mainItems)}</SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
-
-        {toolItems.length > 0 && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70">
-              Outils
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>{renderItems(toolItems)}</SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
+        {renderGroup("Principal", principalItems)}
+        {renderGroup("Commercial", commercialItems)}
+        {renderGroup("Outils", outilsItems)}
+        {renderGroup("Gestion", gestionItems)}
 
         {/* Custom Spaces - Enterprise only */}
         {isEnterprise && spaces.length > 0 && (
