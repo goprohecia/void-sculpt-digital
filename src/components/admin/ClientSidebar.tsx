@@ -18,6 +18,7 @@ import { useTickets } from "@/hooks/use-tickets";
 import { useClientId } from "@/hooks/use-client-id";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
+import { useWhiteLabel } from "@/hooks/use-white-label";
 import {
   Sidebar,
   SidebarContent,
