@@ -27,8 +27,13 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
     <motion.div
       initial={{ opacity: 0, y: 16, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={cn("glass-card p-4 sm:p-6 relative overflow-hidden", className)}
+      className={cn(
+        "glass-card p-4 sm:p-6 relative overflow-hidden cursor-default",
+        "hover:shadow-[0_8px_30px_hsl(var(--primary)/0.15)] hover:border-primary/30 transition-[box-shadow,border-color] duration-300",
+        className
+      )}
     >
       <div className="flex items-start justify-between">
         <div className="space-y-1.5 sm:space-y-2">
