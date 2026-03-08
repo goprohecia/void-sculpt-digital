@@ -396,6 +396,11 @@ export default function AdminSettings() {
 
   const handleSave = (section: string) => {
     setSaving(true);
+    // Persist white label for WL sections
+    const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé"];
+    if (wlSections.includes(section)) {
+      updateWhiteLabel(whiteLabel);
+    }
     setTimeout(() => {
       setSaving(false);
       toast.success(`${section} mis à jour avec succès`);
