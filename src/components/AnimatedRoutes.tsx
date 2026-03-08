@@ -135,10 +135,17 @@ export function AnimatedRoutes() {
 
         {/* Employee routes */}
         <Route path="/employee" element={<EmployeeDashboard />} />
+        <Route path="/employee/clients" element={<EmployeeClients />} />
         <Route path="/employee/dossiers" element={<EmployeeDossiers />} />
         <Route path="/employee/calendrier" element={<EmployeeCalendrier />} />
         <Route path="/employee/messagerie" element={<EmployeeMessaging />} />
+        <Route path="/employee/facturation" element={<EmployeeFacturation />} />
+        <Route path="/employee/relances" element={<EmployeeRelances />} />
+        <Route path="/employee/emails" element={<EmployeeEmails />} />
+        <Route path="/employee/rendez-vous" element={<EmployeeRendezVous />} />
+        <Route path="/employee/support" element={<EmployeeSupport />} />
         <Route path="/employee/stock" element={<EmployeeStock />} />
+        <Route path="/employee/analyse" element={<EmployeeAnalyse />} />
         <Route path="/employee/profil" element={<EmployeeProfile />} />
 
         {/* Legacy redirects */}
