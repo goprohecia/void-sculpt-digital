@@ -811,6 +811,21 @@ export default function AdminSettings() {
                 </div>
               </TabsContent>
 
+              {/* TIMELINE TAB */}
+              <TabsContent value="timeline">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
+                    </CardTitle>
+                    <CardDescription>Personnalisez les étapes de suivi de vos projets (Enterprise uniquement).</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <TimelineTemplateEditor />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
               {/* WHITE LABEL TAB */}
               <TabsContent value="whitelabel">
                 {isEnterprise ? (
