@@ -81,6 +81,11 @@ export function AnimatedRoutes() {
         <Route path="/secteurs/immobilier" element={<Immobilier />} />
         <Route path="/secteurs/garages" element={<Garages />} />
         <Route path="/secteurs/btp" element={<BTP />} />
+        <Route path="/secteurs/mariage" element={<Mariage />} />
+        <Route path="/secteurs/coiffure" element={<Coiffure />} />
+        <Route path="/secteurs/cabinets" element={<Cabinets />} />
+        <Route path="/secteurs/evenementiel" element={<Evenementiel />} />
+        <Route path="/secteurs/nettoyage" element={<Nettoyage />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
