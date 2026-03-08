@@ -50,7 +50,7 @@ import {
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
-const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "parametres"];
+const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
 export function AdminSidebar() {
   const location = useLocation();
