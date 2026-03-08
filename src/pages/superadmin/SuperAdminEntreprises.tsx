@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Building2 } from "lucide-react";
+import { SECTORS } from "@/contexts/DemoPlanContext";
 
 const MOCK_ENTERPRISES = [
   { id: "1", nom: "TechVision SAS", email: "contact@techvision.fr", plan: "enterprise", users: 12, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "emails", "rendez-vous", "stock", "analyse", "pipeline", "ia"], mrr: 400, statut: "actif", date: "2025-09-15", sector: "developpeur" },
