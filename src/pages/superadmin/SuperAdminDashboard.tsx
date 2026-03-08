@@ -1,23 +1,22 @@
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Building2, TrendingUp, Users, CreditCard } from "lucide-react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-
-const MOCK_KPIS = [
-  { label: "Entreprises actives", value: "47", icon: Building2, change: "+5 ce mois", color: "text-primary" },
-  { label: "MRR", value: "14 350€", icon: TrendingUp, change: "+12%", color: "text-emerald-400" },
-  { label: "Utilisateurs totaux", value: "312", icon: Users, change: "+23", color: "text-neon-blue" },
-  { label: "Taux de churn", value: "2.1%", icon: CreditCard, change: "-0.3%", color: "text-amber-400" },
-];
+import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent } from "lucide-react";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend } from "recharts";
 
 const MONTHLY_DATA = [
-  { mois: "Oct", inscrits: 5, churn: 1, mrr: 10200 },
-  { mois: "Nov", inscrits: 7, churn: 0, mrr: 11450 },
-  { mois: "Déc", inscrits: 4, churn: 2, mrr: 11850 },
-  { mois: "Jan", inscrits: 8, churn: 1, mrr: 12800 },
-  { mois: "Fév", inscrits: 6, churn: 1, mrr: 13500 },
-  { mois: "Mar", inscrits: 9, churn: 0, mrr: 14350 },
+  { mois: "Oct", inscrits: 5, churn: 1, mrr: 10200, arr: 122400, churnRate: 2.8, revenue: 10200, depenses: 4100 },
+  { mois: "Nov", inscrits: 7, churn: 0, mrr: 11450, arr: 137400, churnRate: 2.4, revenue: 11450, depenses: 4300 },
+  { mois: "Déc", inscrits: 4, churn: 2, mrr: 11850, arr: 142200, churnRate: 3.1, revenue: 11850, depenses: 4500 },
+  { mois: "Jan", inscrits: 8, churn: 1, mrr: 12800, arr: 153600, churnRate: 2.5, revenue: 12800, depenses: 4700 },
+  { mois: "Fév", inscrits: 6, churn: 1, mrr: 13500, arr: 162000, churnRate: 2.3, revenue: 13500, depenses: 4900 },
+  { mois: "Mar", inscrits: 9, churn: 0, mrr: 14350, arr: 172200, churnRate: 2.1, revenue: 14350, depenses: 5100 },
+];
+
+const PLAN_DISTRIBUTION = [
+  { name: "Starter", value: 18, fill: "hsl(var(--muted-foreground))" },
+  { name: "Business", value: 17, fill: "hsl(var(--neon-blue, 217 91% 60%))" },
+  { name: "Enterprise", value: 12, fill: "hsl(45, 93%, 58%)" },
 ];
 
 const MOCK_ENTERPRISES = [
@@ -35,8 +34,32 @@ const planColors: Record<string, string> = {
   enterprise: "bg-amber-500/10 text-amber-400",
 };
 
+const MOCK_KPIS = [
+  { label: "MRR", value: "14 350€", icon: DollarSign, change: "+6.3%", positive: true, color: "text-primary" },
+  { label: "ARR", value: "172 200€", icon: TrendingUp, change: "+6.3%", positive: true, color: "text-emerald-400" },
+  { label: "Taux de churn", value: "2.1%", icon: ArrowDownRight, change: "-0.2%", positive: true, color: "text-amber-400" },
+  { label: "Entreprises actives", value: "47", icon: Building2, change: "+5", positive: true, color: "text-neon-blue" },
+  { label: "Utilisateurs totaux", value: "312", icon: Users, change: "+23", positive: true, color: "text-primary" },
+  { label: "ARPU", value: "305€", icon: CreditCard, change: "+4%", positive: true, color: "text-emerald-400" },
+  { label: "Net Revenue", value: "9 250€", icon: Percent, change: "+8%", positive: true, color: "text-amber-400" },
+  { label: "LTV moyen", value: "7 320€", icon: DollarSign, change: "+12%", positive: true, color: "text-neon-blue" },
+];
+
 const mrrChartConfig = {
   mrr: { label: "MRR (€)", color: "hsl(var(--primary))" },
+};
+
+const arrChartConfig = {
+  arr: { label: "ARR (€)", color: "hsl(142, 71%, 45%)" },
+};
+
+const churnChartConfig = {
+  churnRate: { label: "Churn (%)", color: "hsl(45, 93%, 58%)" },
+};
+
+const revenueChartConfig = {
+  revenue: { label: "Revenus (€)", color: "hsl(var(--primary))" },
+  depenses: { label: "Dépenses (€)", color: "hsl(var(--destructive))" },
 };
 
 const inscritsChartConfig = {
@@ -50,30 +73,37 @@ export default function SuperAdminDashboard() {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Dashboard MBA</h1>
-          <p className="text-muted-foreground text-sm">Vue d'ensemble de l'activité globale</p>
+          <p className="text-muted-foreground text-sm">Vue d'ensemble de l'activité globale et des revenus</p>
         </div>
 
-        {/* KPIs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* KPIs - 2 rows of 4 */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {MOCK_KPIS.map((kpi) => (
             <Card key={kpi.label} className="glass-card border-white/10">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <kpi.icon className={`h-5 w-5 ${kpi.color}`} />
-                  <span className="text-xs text-emerald-400">{kpi.change}</span>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <kpi.icon className={`h-4 w-4 ${kpi.color}`} />
+                  <span className={`text-[10px] font-medium flex items-center gap-0.5 ${kpi.positive ? "text-emerald-400" : "text-destructive"}`}>
+                    {kpi.positive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                    {kpi.change}
+                  </span>
                 </div>
-                <p className="text-2xl font-bold">{kpi.value}</p>
-                <p className="text-xs text-muted-foreground mt-1">{kpi.label}</p>
+                <p className="text-xl font-bold">{kpi.value}</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{kpi.label}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* Charts */}
+        {/* Revenue charts row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* MRR Evolution */}
           <Card className="glass-card border-white/10">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Évolution du MRR</CardTitle>
+              <CardTitle className="text-base flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-primary" />
+                Évolution du MRR
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <ChartContainer config={mrrChartConfig} className="h-[220px] w-full">
@@ -94,7 +124,83 @@ export default function SuperAdminDashboard() {
             </CardContent>
           </Card>
 
+          {/* ARR Evolution */}
           <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-emerald-400" />
+                Évolution de l'ARR
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={arrChartConfig} className="h-[220px] w-full">
+                <AreaChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="arrGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(142, 71%, 45%)" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="hsl(142, 71%, 45%)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                  <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Area type="monotone" dataKey="arr" stroke="hsl(142, 71%, 45%)" fill="url(#arrGradient)" strokeWidth={2} />
+                </AreaChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Churn + Revenue vs Expenses */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Churn Rate */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <ArrowDownRight className="h-4 w-4 text-amber-400" />
+                Taux de churn mensuel
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={churnChartConfig} className="h-[220px] w-full">
+                <LineChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                  <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" tickFormatter={(v) => `${v}%`} domain={[0, 5]} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line type="monotone" dataKey="churnRate" stroke="hsl(45, 93%, 58%)" strokeWidth={2} dot={{ r: 4, fill: "hsl(45, 93%, 58%)" }} />
+                </LineChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+
+          {/* Revenus vs Dépenses */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Percent className="h-4 w-4 text-primary" />
+                Revenus vs Dépenses
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer config={revenueChartConfig} className="h-[220px] w-full">
+                <BarChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                  <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
+                  <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="depenses" fill="hsl(var(--destructive))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Inscriptions vs Churns + Plan distribution */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <Card className="glass-card border-white/10 lg:col-span-2">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Inscriptions vs Churns</CardTitle>
             </CardHeader>
@@ -111,28 +217,37 @@ export default function SuperAdminDashboard() {
               </ChartContainer>
             </CardContent>
           </Card>
+
+          {/* Plan distribution */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Répartition par plan</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center justify-center">
+              <ResponsiveContainer width="100%" height={180}>
+                <PieChart>
+                  <Pie data={PLAN_DISTRIBUTION} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={4} dataKey="value">
+                    {PLAN_DISTRIBUTION.map((entry, idx) => (
+                      <Cell key={idx} fill={entry.fill} />
+                    ))}
+                  </Pie>
+                  <ChartTooltip />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="flex gap-4 mt-2">
+                {PLAN_DISTRIBUTION.map((p) => (
+                  <div key={p.name} className="flex items-center gap-1.5 text-xs">
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: p.fill }} />
+                    <span className="text-muted-foreground">{p.name}</span>
+                    <span className="font-medium">{p.value}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Répartition par plan */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {(["starter", "business", "enterprise"] as const).map((plan) => {
-            const count = MOCK_ENTERPRISES.filter((e) => e.plan === plan).length;
-            const labels = { starter: "Starter", business: "Business", enterprise: "Enterprise" };
-            return (
-              <Card key={plan} className="glass-card border-white/10">
-                <CardContent className="p-5 text-center">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${planColors[plan]}`}>
-                    {labels[plan]}
-                  </span>
-                  <p className="text-3xl font-bold mt-3">{count}</p>
-                  <p className="text-xs text-muted-foreground">entreprises</p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Liste des entreprises */}
+        {/* Dernières entreprises */}
         <Card className="glass-card border-white/10">
           <CardHeader>
             <CardTitle className="text-lg">Dernières entreprises</CardTitle>
