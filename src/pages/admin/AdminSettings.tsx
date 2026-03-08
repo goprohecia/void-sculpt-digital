@@ -34,6 +34,14 @@ const AVAILABLE_MODULES_FOR_SPACES = [
   { key: "support", label: "Support" },
   { key: "stock", label: "Stock" },
   { key: "analyse", label: "Analyse" },
+  { key: "taches", label: "Tâches" },
+  { key: "agenda", label: "Agenda" },
+  { key: "rapports", label: "Rapports" },
+  { key: "documents", label: "Documents" },
+  { key: "temps", label: "Suivi du temps" },
+  { key: "automatisations", label: "Automatisations" },
+  { key: "notes", label: "Notes" },
+  { key: "pipeline", label: "Pipeline CRM" },
   { key: "profil", label: "Profil" },
 ];
 
