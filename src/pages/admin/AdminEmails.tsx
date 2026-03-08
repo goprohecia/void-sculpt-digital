@@ -100,13 +100,12 @@ export default function AdminEmails() {
               <h1 className="text-2xl font-bold flex items-center gap-2"><Mail className="h-6 w-6 text-primary" /> Emails</h1>
               <p className="text-muted-foreground text-sm">{emailLogs.length} email{emailLogs.length !== 1 ? "s" : ""} · {templates.length} template{templates.length !== 1 ? "s" : ""}</p>
             </div>
-            <AIContextButton
-              label="Suggestion d'email"
-              context={`email - ${emailLogs.length} emails envoyés, ${templates.length} templates disponibles. Derniers types: ${emailLogs.slice(0, 5).map(e => e.type).join(", ")}.`}
-              prompt="Suggère un email professionnel à envoyer basé sur le contexte actuel. Propose un objet accrocheur et un contenu structuré adapté au contexte business."
-            />
-          </motion.div>
             <div className="flex gap-2 self-start">
+              <AIContextButton
+                label="Suggestion d'email"
+                context={`email - ${emailLogs.length} emails envoyés, ${templates.length} templates disponibles. Derniers types: ${emailLogs.slice(0, 5).map(e => e.type).join(", ")}.`}
+                prompt="Suggère un email professionnel à envoyer basé sur le contexte actuel. Propose un objet accrocheur et un contenu structuré adapté au contexte business."
+              />
               <Button onClick={() => setComposeOpen(true)} size="sm" className="gap-1"><Plus className="h-4 w-4" /> Composer</Button>
               <Button onClick={handleExportCsv} variant="outline" size="sm" className="gap-1"><Download className="h-4 w-4" /> CSV</Button>
             </div>
