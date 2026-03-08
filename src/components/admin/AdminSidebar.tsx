@@ -114,8 +114,10 @@ export function AdminSidebar() {
     { title: getModuleLabel("parametres"), url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // Filter by enabled modules, then apply plan-specific module list (from context)
-  const enabledItems = allNavItems.filter((item) => enabledModules.includes(item.moduleKey));
+  // Filter by enabled modules, sector visibility, then plan-specific module list
+  const enabledItems = allNavItems
+    .filter((item) => enabledModules.includes(item.moduleKey))
+    .filter((item) => !isModuleHidden(item.moduleKey));
   const alwaysVisible = ["overview", "parametres"];
   const planModules = currentPlanModules[plan];
   const navItems = planModules === "all"

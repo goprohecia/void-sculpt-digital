@@ -8,15 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, Eye, EyeOff, ArrowLeft, ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
+import { getModuleLabel as getSectorModuleLabel, isModuleHidden } from "@/data/sectorModules";
+import { GENERIC_MODULE_LABELS } from "@/data/sectorModules";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
-
-const MODULE_LABELS: Record<string, string> = {
-  clients: "Clients", employees: "Salariés", dossiers: "Dossiers", pipeline: "Pipeline CRM",
-  facturation: "Facturation", relances: "Relances", stock: "Stock", messagerie: "Messagerie",
-  emails: "Emails", "rendez-vous": "Rendez-vous", agenda: "Agenda", taches: "Tâches",
-  support: "Support", notes: "Notes", analyse: "Analyse", rapports: "Rapports",
-  documents: "Documents", temps: "Suivi du temps", automatisations: "Automatisations", ia: "Intelligence IA",
-};
 
 const ALWAYS_INCLUDED = ["overview", "parametres"];
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
