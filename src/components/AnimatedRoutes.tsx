@@ -7,6 +7,7 @@ import Index from "@/pages/Index";
 import Contact from "@/pages/Contact";
 import Fonctionnalites from "@/pages/Fonctionnalites";
 import NotFound from "@/pages/NotFound";
+import DemoTour from "@/pages/DemoTour";
 
 // Sector pages
 import Conciergerie from "@/pages/secteurs/Conciergerie";
@@ -75,6 +76,7 @@ export function AnimatedRoutes() {
         <Route path="/" element={<Index />} />
         <Route path="/fonctionnalites" element={<Fonctionnalites />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/demo" element={<DemoTour />} />
 
         {/* Sectors */}
         <Route path="/secteurs/conciergerie" element={<Conciergerie />} />

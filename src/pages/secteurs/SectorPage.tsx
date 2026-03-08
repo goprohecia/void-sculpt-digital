@@ -20,51 +20,68 @@ interface SectorPageProps {
   sectorLabel: string;
   title: ReactNode;
   subtitle: string;
+  heroImage: string;
   useCases: UseCase[];
   modules: RecommendedModule[];
-  accentColor?: string;
 }
 
-export default function SectorPage({ sectorLabel, title, subtitle, useCases, modules, accentColor = "violet" }: SectorPageProps) {
+export default function SectorPage({ sectorLabel, title, subtitle, heroImage, useCases, modules }: SectorPageProps) {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative min-h-[55svh] flex items-center justify-center overflow-hidden pt-24">
+      <section className="relative min-h-[55svh] flex items-center overflow-hidden pt-24">
         <div className="absolute inset-0 bg-gradient-to-b from-violet-500/5 via-transparent to-transparent" />
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            className="max-w-3xl mx-auto text-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-          >
-            <motion.p
-              className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2 }}
             >
-              {sectorLabel}
-            </motion.p>
+              <motion.p
+                className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                {sectorLabel}
+              </motion.p>
 
-            <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-light mb-8 tracking-tight leading-[1.1]"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              {title}
-            </motion.h1>
+              <motion.h1
+                className="text-3xl sm:text-4xl md:text-5xl font-light mb-6 tracking-tight leading-[1.1]"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                {title}
+              </motion.h1>
 
-            <motion.p
-              className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              <motion.p
+                className="text-lg text-muted-foreground leading-relaxed font-light"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+              >
+                {subtitle}
+              </motion.p>
+            </motion.div>
+
+            <motion.div
+              className="relative"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.4 }}
             >
-              {subtitle}
-            </motion.p>
-          </motion.div>
+              <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <img
+                  src={heroImage}
+                  alt={sectorLabel}
+                  className="w-full h-[340px] object-cover"
+                />
+              </div>
+              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-violet-500/20 via-transparent to-violet-500/10 -z-10 blur-sm" />
+            </motion.div>
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </section>
