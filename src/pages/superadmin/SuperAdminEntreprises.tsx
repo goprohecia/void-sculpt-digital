@@ -26,11 +26,13 @@ const planColors: Record<string, string> = {
 export default function SuperAdminEntreprises() {
   const [search, setSearch] = useState("");
   const [filterPlan, setFilterPlan] = useState("all");
+  const [filterSector, setFilterSector] = useState("all");
 
   const filtered = MOCK_ENTERPRISES.filter((e) => {
     const matchSearch = e.nom.toLowerCase().includes(search.toLowerCase()) || e.email.toLowerCase().includes(search.toLowerCase());
     const matchPlan = filterPlan === "all" || e.plan === filterPlan;
-    return matchSearch && matchPlan;
+    const matchSector = filterSector === "all" || e.sector === filterSector;
+    return matchSearch && matchPlan && matchSector;
   });
 
   return (
