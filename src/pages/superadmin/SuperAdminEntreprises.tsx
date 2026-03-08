@@ -86,13 +86,22 @@ export default function SuperAdminEntreprises() {
                       <p className="text-[10px] text-muted-foreground">utilisateurs</p>
                     </div>
                     <div className="text-center">
-                      <p className="font-semibold">{e.modules}</p>
+                      <p className="font-semibold">{e.modules.length}</p>
                       <p className="text-[10px] text-muted-foreground">modules</p>
                     </div>
                     <div className="text-center">
                       <p className="font-semibold">{e.mrr}€</p>
                       <p className="text-[10px] text-muted-foreground">MRR</p>
                     </div>
+                  </div>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {e.modules.slice(0, 6).map((m) => (
+                    <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground capitalize">{m}</span>
+                  ))}
+                  {e.modules.length > 6 && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">+{e.modules.length - 6}</span>
+                  )}
                   </div>
                 </div>
               </CardContent>
