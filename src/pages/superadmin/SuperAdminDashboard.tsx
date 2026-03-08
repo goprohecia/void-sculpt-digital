@@ -1,10 +1,19 @@
+import { useState, useMemo } from "react";
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent } from "lucide-react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend } from "recharts";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
-const MONTHLY_DATA = [
+type Period = "6m" | "12m" | "annee";
+
+const ALL_MONTHLY_DATA = [
+  { mois: "Avr", inscrits: 3, churn: 1, mrr: 6800, arr: 81600, churnRate: 3.5, revenue: 6800, depenses: 2800 },
+  { mois: "Mai", inscrits: 4, churn: 0, mrr: 7500, arr: 90000, churnRate: 3.2, revenue: 7500, depenses: 3000 },
+  { mois: "Juin", inscrits: 5, churn: 1, mrr: 8200, arr: 98400, churnRate: 3.0, revenue: 8200, depenses: 3200 },
+  { mois: "Juil", inscrits: 3, churn: 0, mrr: 8800, arr: 105600, churnRate: 2.9, revenue: 8800, depenses: 3400 },
+  { mois: "Août", inscrits: 6, churn: 2, mrr: 9200, arr: 110400, churnRate: 3.3, revenue: 9200, depenses: 3600 },
+  { mois: "Sep", inscrits: 4, churn: 1, mrr: 9700, arr: 116400, churnRate: 3.0, revenue: 9700, depenses: 3800 },
   { mois: "Oct", inscrits: 5, churn: 1, mrr: 10200, arr: 122400, churnRate: 2.8, revenue: 10200, depenses: 4100 },
   { mois: "Nov", inscrits: 7, churn: 0, mrr: 11450, arr: 137400, churnRate: 2.4, revenue: 11450, depenses: 4300 },
   { mois: "Déc", inscrits: 4, churn: 2, mrr: 11850, arr: 142200, churnRate: 3.1, revenue: 11850, depenses: 4500 },
@@ -45,38 +54,62 @@ const MOCK_KPIS = [
   { label: "LTV moyen", value: "7 320€", icon: DollarSign, change: "+12%", positive: true, color: "text-neon-blue" },
 ];
 
-const mrrChartConfig = {
-  mrr: { label: "MRR (€)", color: "hsl(var(--primary))" },
-};
+const mrrChartConfig = { mrr: { label: "MRR (€)", color: "hsl(var(--primary))" } };
+const arrChartConfig = { arr: { label: "ARR (€)", color: "hsl(142, 71%, 45%)" } };
+const churnChartConfig = { churnRate: { label: "Churn (%)", color: "hsl(45, 93%, 58%)" } };
+const revenueChartConfig = { revenue: { label: "Revenus (€)", color: "hsl(var(--primary))" }, depenses: { label: "Dépenses (€)", color: "hsl(var(--destructive))" } };
+const inscritsChartConfig = { inscrits: { label: "Inscriptions", color: "hsl(142, 71%, 45%)" }, churn: { label: "Churns", color: "hsl(var(--destructive))" } };
 
-const arrChartConfig = {
-  arr: { label: "ARR (€)", color: "hsl(142, 71%, 45%)" },
-};
+const PERIOD_OPTIONS: { value: Period; label: string }[] = [
+  { value: "6m", label: "6 mois" },
+  { value: "12m", label: "12 mois" },
+  { value: "annee", label: "Année" },
+];
 
-const churnChartConfig = {
-  churnRate: { label: "Churn (%)", color: "hsl(45, 93%, 58%)" },
-};
-
-const revenueChartConfig = {
-  revenue: { label: "Revenus (€)", color: "hsl(var(--primary))" },
-  depenses: { label: "Dépenses (€)", color: "hsl(var(--destructive))" },
-};
-
-const inscritsChartConfig = {
-  inscrits: { label: "Inscriptions", color: "hsl(142, 71%, 45%)" },
-  churn: { label: "Churns", color: "hsl(var(--destructive))" },
-};
+function PeriodFilter({ value, onChange }: { value: Period; onChange: (p: Period) => void }) {
+  return (
+    <div className="flex items-center gap-1 rounded-lg bg-muted/30 p-0.5">
+      {PERIOD_OPTIONS.map((opt) => (
+        <button
+          key={opt.value}
+          onClick={() => onChange(opt.value)}
+          className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+            value === opt.value
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function SuperAdminDashboard() {
+  const [period, setPeriod] = useState<Period>("6m");
+
+  const filteredData = useMemo(() => {
+    switch (period) {
+      case "6m": return ALL_MONTHLY_DATA.slice(-6);
+      case "12m": return ALL_MONTHLY_DATA;
+      case "annee": return ALL_MONTHLY_DATA; // same data, would be calendar year in production
+      default: return ALL_MONTHLY_DATA.slice(-6);
+    }
+  }, [period]);
+
   return (
     <SuperAdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold">Dashboard MBA</h1>
-          <p className="text-muted-foreground text-sm">Vue d'ensemble de l'activité globale et des revenus</p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-bold">Dashboard MBA</h1>
+            <p className="text-muted-foreground text-sm">Vue d'ensemble de l'activité globale et des revenus</p>
+          </div>
+          <PeriodFilter value={period} onChange={setPeriod} />
         </div>
 
-        {/* KPIs - 2 rows of 4 */}
+        {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {MOCK_KPIS.map((kpi) => (
             <Card key={kpi.label} className="glass-card border-white/10">
@@ -95,9 +128,8 @@ export default function SuperAdminDashboard() {
           ))}
         </div>
 
-        {/* Revenue charts row */}
+        {/* MRR + ARR */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* MRR Evolution */}
           <Card className="glass-card border-white/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-base flex items-center gap-2">
@@ -107,7 +139,7 @@ export default function SuperAdminDashboard() {
             </CardHeader>
             <CardContent>
               <ChartContainer config={mrrChartConfig} className="h-[220px] w-full">
-                <AreaChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                <AreaChart data={filteredData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="mrrGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4} />
@@ -124,7 +156,6 @@ export default function SuperAdminDashboard() {
             </CardContent>
           </Card>
 
-          {/* ARR Evolution */}
           <Card className="glass-card border-white/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-base flex items-center gap-2">
@@ -134,7 +165,7 @@ export default function SuperAdminDashboard() {
             </CardHeader>
             <CardContent>
               <ChartContainer config={arrChartConfig} className="h-[220px] w-full">
-                <AreaChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                <AreaChart data={filteredData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="arrGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(142, 71%, 45%)" stopOpacity={0.4} />
@@ -154,7 +185,6 @@ export default function SuperAdminDashboard() {
 
         {/* Churn + Revenue vs Expenses */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Churn Rate */}
           <Card className="glass-card border-white/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-base flex items-center gap-2">
@@ -164,7 +194,7 @@ export default function SuperAdminDashboard() {
             </CardHeader>
             <CardContent>
               <ChartContainer config={churnChartConfig} className="h-[220px] w-full">
-                <LineChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                <LineChart data={filteredData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                   <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
                   <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" tickFormatter={(v) => `${v}%`} domain={[0, 5]} />
@@ -175,7 +205,6 @@ export default function SuperAdminDashboard() {
             </CardContent>
           </Card>
 
-          {/* Revenus vs Dépenses */}
           <Card className="glass-card border-white/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-base flex items-center gap-2">
@@ -185,7 +214,7 @@ export default function SuperAdminDashboard() {
             </CardHeader>
             <CardContent>
               <ChartContainer config={revenueChartConfig} className="h-[220px] w-full">
-                <BarChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                <BarChart data={filteredData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                   <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
                   <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
@@ -198,7 +227,7 @@ export default function SuperAdminDashboard() {
           </Card>
         </div>
 
-        {/* Inscriptions vs Churns + Plan distribution */}
+        {/* Inscriptions + Pie */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <Card className="glass-card border-white/10 lg:col-span-2">
             <CardHeader className="pb-2">
@@ -206,7 +235,7 @@ export default function SuperAdminDashboard() {
             </CardHeader>
             <CardContent>
               <ChartContainer config={inscritsChartConfig} className="h-[220px] w-full">
-                <BarChart data={MONTHLY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                <BarChart data={filteredData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                   <XAxis dataKey="mois" tick={{ fontSize: 12 }} className="fill-muted-foreground" />
                   <YAxis tick={{ fontSize: 12 }} className="fill-muted-foreground" />
@@ -218,7 +247,6 @@ export default function SuperAdminDashboard() {
             </CardContent>
           </Card>
 
-          {/* Plan distribution */}
           <Card className="glass-card border-white/10">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Répartition par plan</CardTitle>
