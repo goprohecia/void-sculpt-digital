@@ -69,10 +69,26 @@ const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
   emails: { label: "Emails & Relances", description: "Communications automatisées avec les clients" },
 };
 
+const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Programmes", description: "Programmes d'entraînement personnalisés par client" },
+  taches: { label: "Séances & Exercices", description: "Planification des séances et exercices" },
+  documents: { label: "Suivi corporel", description: "Bilans corporels, mensurations, photos avant/après" },
+  pipeline: { label: "Pipeline Clients", description: "Prospects et conversion en abonnements" },
+  analyse: { label: "Dashboard Coach", description: "KPIs : clients actifs, séances réalisées, rétention" },
+  temps: { label: "Durée séances", description: "Temps passé par client et par séance" },
+  "rendez-vous": { label: "Planning séances", description: "Créneaux d'entraînement individuels et collectifs" },
+  notes: { label: "Notes coaching", description: "Observations, objectifs et progression des clients" },
+  stock: { label: "Équipement", description: "Matériel sportif et compléments" },
+  support: { label: "Suivi client", description: "Questions nutrition, récupération et bien-être" },
+  emails: { label: "Emails & Motivation", description: "Rappels de séances et messages de motivation" },
+  relances: { label: "Relances abonnement", description: "Renouvellements et réengagement clients" },
+};
+
 // ── Master map — add new sectors here ──
 export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   developpeur: DEVELOPPEUR_OVERRIDES,
   photographe: PHOTOGRAPHE_OVERRIDES,
+  "coach-sportif": COACH_SPORTIF_OVERRIDES,
 };
 
 // ── Helpers ──
