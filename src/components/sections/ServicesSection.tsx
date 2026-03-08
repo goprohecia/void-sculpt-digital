@@ -1,62 +1,75 @@
 import { motion } from "framer-motion";
-import { Home, Building2, Wrench, HardHat, Heart, Scissors, Scale, PartyPopper, SprayCan } from "lucide-react";
+import {
+  Code, Palette, Camera, Users, Smartphone,
+  Briefcase, Dumbbell, Building2, Home, GraduationCap,
+  ShoppingBag, PartyPopper, Heart, UtensilsCrossed, Music,
+  Wrench, HardHat, Scissors, Scale, SprayCan,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { ScrollReveal, StaggerContainer, staggerItemVariants } from "@/components/animations";
 
-const sectors = [
+interface Sector {
+  icon: any;
+  title: string;
+  description: string;
+  href?: string;
+}
+
+interface SectorGroup {
+  category: string;
+  color: string;
+  bg: string;
+  sectors: Sector[];
+}
+
+const sectorGroups: SectorGroup[] = [
   {
-    icon: Home,
-    title: "Conciergerie & Gestion locative",
-    description: "Gérez vos biens, vos locataires et vos interventions depuis un seul outil.",
-    href: "/secteurs/conciergerie",
+    category: "Tech & Digital",
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+    sectors: [
+      { icon: Code, title: "Développeur freelance", description: "Gestion de projets, clients et facturation pour développeurs indépendants." },
+      { icon: Palette, title: "Designer / Motion", description: "Suivi créatif, briefs clients et livrables organisés." },
+      { icon: Camera, title: "Photographe / Vidéaste", description: "Bookings, galeries clients, devis et contrats." },
+      { icon: Users, title: "Community Manager", description: "Gestion multi-clients, plannings et reporting." },
+      { icon: Smartphone, title: "Réparateur de téléphones", description: "Suivi réparations, stock pièces et facturation." },
+    ],
   },
   {
-    icon: Building2,
-    title: "Agences immobilières",
-    description: "Suivi des mandats, dossiers clients et facturation centralisés.",
-    href: "/secteurs/immobilier",
+    category: "Services & Conseil",
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+    sectors: [
+      { icon: Briefcase, title: "Consultant (marketing, RH)", description: "Missions, propositions commerciales et suivi client." },
+      { icon: Dumbbell, title: "Coach sportif / Personal trainer", description: "Planning séances, fiches clients et paiements." },
+      { icon: Building2, title: "Agent immobilier indépendant", description: "Mandats, visites, dossiers acquéreurs et facturation.", href: "/secteurs/immobilier" },
+      { icon: Home, title: "Conciergerie Airbnb", description: "Gestion des biens, check-in/out, interventions et revenus.", href: "/secteurs/conciergerie" },
+      { icon: GraduationCap, title: "Formateur indépendant", description: "Sessions, inscriptions, conventions et facturation." },
+    ],
   },
   {
-    icon: Wrench,
-    title: "Garages & Carrosseries",
-    description: "Gestion des véhicules, devis, pièces détachées et suivi d'atelier.",
-    href: "/secteurs/garages",
+    category: "Commerce & Événementiel",
+    color: "text-amber-400",
+    bg: "bg-amber-500/10",
+    sectors: [
+      { icon: ShoppingBag, title: "Gérant de boutique", description: "Stock, ventes, fiches clients et caisse." },
+      { icon: PartyPopper, title: "Organisateur d'événements", description: "Projets, prestataires, planning et budgets.", href: "/secteurs/evenementiel" },
+      { icon: Heart, title: "Wedding planner", description: "Couples, prestataires, planning jour J et devis.", href: "/secteurs/mariage" },
+      { icon: UtensilsCrossed, title: "Traiteur indépendant", description: "Commandes, menus, stock ingrédients et livraisons." },
+      { icon: Music, title: "DJ / Animateur", description: "Bookings, contrats, calendrier et facturation." },
+    ],
   },
   {
-    icon: HardHat,
-    title: "BTP & Artisans",
-    description: "Chantiers, devis, factures et gestion des équipes sur le terrain.",
-    href: "/secteurs/btp",
-  },
-  {
-    icon: Heart,
-    title: "Boutiques de mariage",
-    description: "Fiches mariées, stock robes, essayages et facturation avec acomptes.",
-    href: "/secteurs/mariage",
-  },
-  {
-    icon: Scissors,
-    title: "Salons & Instituts de beauté",
-    description: "Rendez-vous, fiches clients, stock produits et encaissements.",
-    href: "/secteurs/coiffure",
-  },
-  {
-    icon: Scale,
-    title: "Cabinets comptables & juridiques",
-    description: "Dossiers clients, échéances légales et facturation récurrente.",
-    href: "/secteurs/cabinets",
-  },
-  {
-    icon: PartyPopper,
-    title: "Agences événementielles",
-    description: "Projets événementiels, prestataires, planning et facturation.",
-    href: "/secteurs/evenementiel",
-  },
-  {
-    icon: SprayCan,
-    title: "Nettoyage & Propreté",
-    description: "Contrats récurrents, planning interventions et stock produits.",
-    href: "/secteurs/nettoyage",
+    category: "Autres secteurs",
+    color: "text-violet-400",
+    bg: "bg-violet-500/10",
+    sectors: [
+      { icon: Wrench, title: "Garages & Carrosseries", description: "Véhicules, devis, pièces détachées et suivi d'atelier.", href: "/secteurs/garages" },
+      { icon: HardHat, title: "BTP & Artisans", description: "Chantiers, devis, factures et gestion d'équipes.", href: "/secteurs/btp" },
+      { icon: Scissors, title: "Salons & Instituts de beauté", description: "Rendez-vous, fiches clients et stock produits.", href: "/secteurs/coiffure" },
+      { icon: Scale, title: "Cabinets comptables & juridiques", description: "Dossiers, échéances légales et facturation récurrente.", href: "/secteurs/cabinets" },
+      { icon: SprayCan, title: "Nettoyage & Propreté", description: "Contrats récurrents, planning et stock produits.", href: "/secteurs/nettoyage" },
+    ],
   },
 ];
 
@@ -66,9 +79,7 @@ export function ServicesSection() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <ScrollReveal variant="fadeInUp">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">
-              Secteurs
-            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">Secteurs</p>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
             <h2 className="text-3xl md:text-4xl font-light mb-6">
@@ -78,27 +89,51 @@ export function ServicesSection() {
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>
             <p className="text-muted-foreground font-light">
-              MBA s'adapte aux besoins spécifiques de chaque métier de services.
+              MBA s'adapte aux besoins spécifiques de chaque métier. Ils gèrent tous leur business avec 4-5 outils différents — MBA centralise tout en un seul endroit.
             </p>
           </ScrollReveal>
         </div>
 
-        <StaggerContainer
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
-          staggerDelay={0.06}
-        >
-          {sectors.map((sector) => (
-            <motion.div key={sector.title} variants={staggerItemVariants}>
-              <Link to={sector.href} className="group block h-full p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
-                <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <sector.icon className="h-5 w-5 text-violet-400" />
+        <div className="space-y-16 max-w-6xl mx-auto">
+          {sectorGroups.map((group, gi) => (
+            <div key={group.category}>
+              <ScrollReveal variant="fadeInUp" delay={gi * 0.1}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className={`h-1 w-8 rounded-full ${group.bg.replace("/10", "/50")}`} />
+                  <h3 className={`text-lg font-semibold ${group.color}`}>{group.category}</h3>
                 </div>
-                <h3 className="text-lg font-medium mb-2">{sector.title}</h3>
-                <p className="text-sm text-muted-foreground">{sector.description}</p>
-              </Link>
-            </motion.div>
+              </ScrollReveal>
+
+              <StaggerContainer
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4"
+                staggerDelay={0.05}
+                delayStart={gi * 0.1}
+              >
+                {group.sectors.map((sector) => {
+                  const content = (
+                    <div className="group h-full p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
+                      <div className={`w-10 h-10 rounded-xl ${group.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                        <sector.icon className={`h-4 w-4 ${group.color}`} />
+                      </div>
+                      <h4 className="text-sm font-medium mb-1.5">{sector.title}</h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{sector.description}</p>
+                    </div>
+                  );
+
+                  return (
+                    <motion.div key={sector.title} variants={staggerItemVariants}>
+                      {sector.href ? (
+                        <Link to={sector.href} className="block h-full">{content}</Link>
+                      ) : (
+                        content
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </StaggerContainer>
+            </div>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
     </section>
   );
