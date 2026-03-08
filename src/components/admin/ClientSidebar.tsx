@@ -75,14 +75,18 @@ export function ClientSidebar() {
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader className="p-4">
         <Link to="/client" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-[hsl(200,100%,50%)]/20 flex items-center justify-center">
-            <span className="text-[hsl(200,100%,60%)] font-bold text-sm">
-              {clientInitials}
-            </span>
-          </div>
+          {wl.logoUrl ? (
+            <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
+          ) : (
+            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
+              <span className="text-primary font-bold text-sm">
+                {clientInitials}
+              </span>
+            </div>
+          )}
           <div>
             <p className="text-sm font-semibold">{clientName}</p>
-            <p className="text-xs text-muted-foreground">Espace client</p>
+            <p className="text-xs text-muted-foreground">Espace client · {wl.brandShort}</p>
           </div>
         </Link>
       </SidebarHeader>
