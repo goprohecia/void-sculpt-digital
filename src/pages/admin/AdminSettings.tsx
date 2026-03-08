@@ -787,6 +787,272 @@ export default function AdminSettings() {
                 </div>
               </TabsContent>
 
+              {/* WHITE LABEL TAB */}
+              <TabsContent value="whitelabel">
+                {isEnterprise ? (
+                  <div className="space-y-6">
+                    {/* Branding */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Image className="h-4 w-4" /> Identité visuelle
+                        </CardTitle>
+                        <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-brand">Nom de la marque</Label>
+                            <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
+                            <p className="text-xs text-muted-foreground">Remplace "MBA" partout dans l'interface.</p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-footer">Texte du footer</Label>
+                            <Input id="wl-footer" value={whiteLabel.footerText} onChange={(e) => setWhiteLabel((s) => ({ ...s, footerText: e.target.value }))} />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-logo" className="flex items-center gap-1.5"><Upload className="h-3.5 w-3.5" /> URL du logo</Label>
+                            <Input id="wl-logo" placeholder="https://example.com/logo.png" value={whiteLabel.logoUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, logoUrl: e.target.value }))} />
+                            <p className="text-xs text-muted-foreground">Logo affiché dans le header et la page de connexion.</p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-favicon" className="flex items-center gap-1.5"><Image className="h-3.5 w-3.5" /> URL du favicon</Label>
+                            <Input id="wl-favicon" placeholder="https://example.com/favicon.ico" value={whiteLabel.faviconUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, faviconUrl: e.target.value }))} />
+                          </div>
+                        </div>
+
+                        {/* Preview */}
+                        {whiteLabel.logoUrl && (
+                          <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
+                            <p className="text-xs text-muted-foreground mb-2">Aperçu du logo :</p>
+                            <img src={whiteLabel.logoUrl} alt="Logo preview" className="h-12 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
+                          <div>
+                            <p className="text-sm font-medium">Masquer "Powered by MBA"</p>
+                            <p className="text-xs text-muted-foreground">Supprime toute mention MBA de l'interface.</p>
+                          </div>
+                          <Switch checked={whiteLabel.hidePoweredBy} onCheckedChange={(v) => setWhiteLabel((s) => ({ ...s, hidePoweredBy: v }))} />
+                        </div>
+
+                        <div className="flex justify-end pt-2">
+                          <Button onClick={() => handleSave("Identité visuelle")} disabled={saving} className="gap-2">
+                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                            Enregistrer
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Colors */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Palette className="h-4 w-4" /> Couleurs personnalisées
+                        </CardTitle>
+                        <CardDescription>Définissez la palette de couleurs de votre plateforme.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div className="space-y-2">
+                            <Label>Couleur primaire</Label>
+                            <div className="flex items-center gap-3">
+                              <input type="color" value={whiteLabel.primaryColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, primaryColor: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
+                              <Input value={whiteLabel.primaryColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, primaryColor: e.target.value }))} className="font-mono text-sm" />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Couleur d'accent</Label>
+                            <div className="flex items-center gap-3">
+                              <input type="color" value={whiteLabel.accentColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, accentColor: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
+                              <Input value={whiteLabel.accentColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, accentColor: e.target.value }))} className="font-mono text-sm" />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Fond principal</Label>
+                            <div className="flex items-center gap-3">
+                              <input type="color" value={whiteLabel.bgColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, bgColor: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
+                              <Input value={whiteLabel.bgColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, bgColor: e.target.value }))} className="font-mono text-sm" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Color preview */}
+                        <div className="p-4 rounded-xl border border-border/30 space-y-3">
+                          <p className="text-xs text-muted-foreground font-medium">Aperçu</p>
+                          <div className="flex gap-3 items-center">
+                            <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.primaryColor }} />
+                            <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.accentColor }} />
+                            <div className="h-12 w-12 rounded-lg border border-border" style={{ backgroundColor: whiteLabel.bgColor }} />
+                            <div className="flex-1 h-12 rounded-lg flex items-center px-4 text-sm font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
+                              {whiteLabel.brandName || "Bouton primaire"}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end pt-2">
+                          <Button onClick={() => handleSave("Couleurs")} disabled={saving} className="gap-2">
+                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                            Enregistrer
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Custom domain */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Globe className="h-4 w-4" /> Domaine personnalisé
+                        </CardTitle>
+                        <CardDescription>Utilisez votre propre nom de domaine pour accéder à la plateforme.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-5">
+                        <div className="space-y-2">
+                          <Label htmlFor="wl-domain">Nom de domaine</Label>
+                          <Input id="wl-domain" placeholder="app.monentreprise.com" value={whiteLabel.customDomain} onChange={(e) => setWhiteLabel((s) => ({ ...s, customDomain: e.target.value }))} />
+                          <p className="text-xs text-muted-foreground">Configurez un enregistrement CNAME pointant vers notre plateforme.</p>
+                        </div>
+
+                        {whiteLabel.customDomain && (
+                          <div className="p-4 rounded-lg bg-muted/20 border border-border/30 space-y-2">
+                            <p className="text-xs font-medium text-muted-foreground">Configuration DNS requise :</p>
+                            <div className="font-mono text-xs bg-background/50 rounded-md p-3 space-y-1">
+                              <p><span className="text-primary">Type:</span> CNAME</p>
+                              <p><span className="text-primary">Nom:</span> {whiteLabel.customDomain.split('.')[0]}</p>
+                              <p><span className="text-primary">Valeur:</span> app.mba-platform.com</p>
+                            </div>
+                            <Badge variant="outline" className="text-amber-500 border-amber-500/30">En attente de vérification</Badge>
+                          </div>
+                        )}
+
+                        <div className="flex justify-end pt-2">
+                          <Button onClick={() => handleSave("Domaine")} disabled={saving} className="gap-2">
+                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                            Enregistrer
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Email customization */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Mail className="h-4 w-4" /> Emails personnalisés
+                        </CardTitle>
+                        <CardDescription>Personnalisez l'expéditeur et l'apparence des emails envoyés par la plateforme.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-sender-name">Nom de l'expéditeur</Label>
+                            <Input id="wl-sender-name" value={whiteLabel.senderName} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderName: e.target.value }))} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-sender-email">Email de l'expéditeur</Label>
+                            <Input id="wl-sender-email" type="email" value={whiteLabel.senderEmail} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderEmail: e.target.value }))} />
+                            <p className="text-xs text-muted-foreground">Nécessite la vérification du domaine.</p>
+                          </div>
+                        </div>
+                        <div className="flex justify-end pt-2">
+                          <Button onClick={() => handleSave("Emails")} disabled={saving} className="gap-2">
+                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                            Enregistrer
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Login page */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Type className="h-4 w-4" /> Page de connexion
+                        </CardTitle>
+                        <CardDescription>Personnalisez les textes affichés sur la page de connexion de vos clients et salariés.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-5">
+                        <div className="grid grid-cols-1 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-login-title">Titre de la page</Label>
+                            <Input id="wl-login-title" value={whiteLabel.loginTitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginTitle: e.target.value }))} />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="wl-login-sub">Sous-titre</Label>
+                            <Input id="wl-login-sub" value={whiteLabel.loginSubtitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginSubtitle: e.target.value }))} />
+                          </div>
+                        </div>
+
+                        {/* Login preview */}
+                        <div className="p-6 rounded-xl border border-border/30 text-center space-y-3" style={{ backgroundColor: whiteLabel.bgColor }}>
+                          <p className="text-xs text-muted-foreground font-medium mb-4">Aperçu page de connexion</p>
+                          {whiteLabel.logoUrl ? (
+                            <img src={whiteLabel.logoUrl} alt="Logo" className="h-10 mx-auto object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                          ) : (
+                            <div className="h-10 w-10 rounded-lg mx-auto flex items-center justify-center text-sm font-bold" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
+                              {whiteLabel.brandName?.charAt(0) || "M"}
+                            </div>
+                          )}
+                          <p className="text-base font-semibold" style={{ color: "#fff" }}>{whiteLabel.loginTitle}</p>
+                          <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{whiteLabel.loginSubtitle}</p>
+                          <div className="max-w-xs mx-auto space-y-2 mt-2">
+                            <div className="h-9 rounded-md bg-white/10 border border-white/10" />
+                            <div className="h-9 rounded-md bg-white/10 border border-white/10" />
+                            <div className="h-9 rounded-md flex items-center justify-center text-xs font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
+                              Se connecter
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end pt-2">
+                          <Button onClick={() => handleSave("Page de connexion")} disabled={saving} className="gap-2">
+                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                            Enregistrer
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Custom CSS */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-base flex items-center gap-2">
+                          <Settings className="h-4 w-4" /> CSS personnalisé (avancé)
+                        </CardTitle>
+                        <CardDescription>Injectez du CSS personnalisé pour un contrôle total sur l'apparence.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <Textarea
+                          rows={8}
+                          placeholder={`:root {\n  --primary: 240 5.9% 50%;\n  --radius: 0.75rem;\n}`}
+                          value={whiteLabel.customCss}
+                          onChange={(e) => setWhiteLabel((s) => ({ ...s, customCss: e.target.value }))}
+                          className="font-mono text-xs"
+                        />
+                        <div className="flex justify-end pt-2">
+                          <Button onClick={() => handleSave("CSS personnalisé")} disabled={saving} className="gap-2">
+                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                            Appliquer
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ) : (
+                  <UpgradeBanner
+                    currentPlan={plan}
+                    requiredPlan="enterprise"
+                    feature="White Label & Personnalisation complète"
+                  />
+                )}
+              </TabsContent>
+
               {/* NOTIFICATIONS TAB */}
               <TabsContent value="notifications">
                 <Card>
