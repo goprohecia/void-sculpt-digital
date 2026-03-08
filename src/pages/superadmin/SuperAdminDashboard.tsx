@@ -2,8 +2,9 @@ import { useState, useMemo } from "react";
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent } from "lucide-react";
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent, BarChart3 } from "lucide-react";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { SECTORS } from "@/contexts/DemoPlanContext";
 
 type Period = "6m" | "12m" | "annee";
 
@@ -29,12 +30,26 @@ const PLAN_DISTRIBUTION = [
 ];
 
 const MOCK_ENTERPRISES = [
-  { nom: "TechVision SAS", plan: "enterprise", users: 12, mrr: 400, statut: "actif", date: "2025-09-15" },
-  { nom: "Studio Créatif", plan: "business", users: 5, mrr: 250, statut: "actif", date: "2025-11-02" },
-  { nom: "BTP Renov", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-01-10" },
-  { nom: "Immo+", plan: "business", users: 8, mrr: 250, statut: "actif", date: "2025-10-20" },
-  { nom: "CleanPro", plan: "enterprise", users: 15, mrr: 400, statut: "actif", date: "2025-08-05" },
-  { nom: "DigitalCraft", plan: "starter", users: 1, mrr: 150, statut: "essai", date: "2026-02-28" },
+  { nom: "TechVision SAS", plan: "enterprise", users: 12, mrr: 400, statut: "actif", date: "2025-09-15", sector: "developpeur" },
+  { nom: "Studio Créatif", plan: "business", users: 5, mrr: 250, statut: "actif", date: "2025-11-02", sector: "designer" },
+  { nom: "BTP Renov", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-01-10", sector: "btp" },
+  { nom: "Immo+", plan: "business", users: 8, mrr: 250, statut: "actif", date: "2025-10-20", sector: "immobilier" },
+  { nom: "CleanPro", plan: "enterprise", users: 15, mrr: 400, statut: "actif", date: "2025-08-05", sector: "nettoyage" },
+  { nom: "DigitalCraft", plan: "starter", users: 1, mrr: 150, statut: "essai", date: "2026-02-28", sector: "community-manager" },
+  { nom: "EventPro", plan: "business", users: 4, mrr: 250, statut: "actif", date: "2026-01-15", sector: "evenementiel" },
+  { nom: "CoachFit", plan: "starter", users: 1, mrr: 150, statut: "actif", date: "2026-02-01", sector: "coach-sportif" },
+  { nom: "SnapStudio", plan: "business", users: 3, mrr: 250, statut: "actif", date: "2025-12-10", sector: "photographe" },
+  { nom: "GarageExpert", plan: "enterprise", users: 10, mrr: 400, statut: "actif", date: "2025-07-20", sector: "garages" },
+  { nom: "FormaPlus", plan: "business", users: 2, mrr: 250, statut: "actif", date: "2025-11-15", sector: "formateur" },
+  { nom: "ConciergeVIP", plan: "starter", users: 1, mrr: 150, statut: "actif", date: "2026-01-20", sector: "conciergerie" },
+  { nom: "ConsultPro", plan: "business", users: 3, mrr: 250, statut: "actif", date: "2025-10-05", sector: "consultant" },
+  { nom: "WedDream", plan: "enterprise", users: 6, mrr: 400, statut: "actif", date: "2025-09-01", sector: "mariage" },
+  { nom: "TraiteurSaveur", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-02-15", sector: "traiteur" },
+  { nom: "RepairMobile", plan: "starter", users: 1, mrr: 150, statut: "actif", date: "2026-03-01", sector: "reparateur" },
+  { nom: "DJ Max", plan: "business", users: 1, mrr: 250, statut: "actif", date: "2025-12-20", sector: "dj-animateur" },
+  { nom: "SalonGlam", plan: "business", users: 4, mrr: 250, statut: "actif", date: "2025-11-25", sector: "coiffure" },
+  { nom: "CabinetDroit", plan: "enterprise", users: 7, mrr: 400, statut: "actif", date: "2025-08-15", sector: "cabinets" },
+  { nom: "ShopTrend", plan: "starter", users: 2, mrr: 150, statut: "actif", date: "2026-01-05", sector: "boutique" },
 ];
 
 const planColors: Record<string, string> = {
@@ -275,7 +290,80 @@ export default function SuperAdminDashboard() {
           </Card>
         </div>
 
-        {/* Dernières entreprises */}
+        {/* Analytiques par secteur */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Top secteurs par MRR */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-primary" />
+                Top secteurs par MRR
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {(() => {
+                const sectorMrr = MOCK_ENTERPRISES.reduce((acc, e) => {
+                  const s = SECTORS.find(s => s.key === e.sector);
+                  const label = s ? `${s.icon} ${s.label}` : e.sector;
+                  acc[label] = (acc[label] || 0) + e.mrr;
+                  return acc;
+                }, {} as Record<string, number>);
+                const data = Object.entries(sectorMrr)
+                  .map(([name, mrr]) => ({ name, mrr }))
+                  .sort((a, b) => b.mrr - a.mrr)
+                  .slice(0, 8);
+                return (
+                  <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={data} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                      <XAxis type="number" tick={{ fontSize: 11 }} className="fill-muted-foreground" tickFormatter={(v) => `${v}€`} />
+                      <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} className="fill-muted-foreground" width={130} />
+                      <Tooltip formatter={(v: number) => [`${v}€`, "MRR"]} />
+                      <Bar dataKey="mrr" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                );
+              })()}
+            </CardContent>
+          </Card>
+
+          {/* Répartition secteurs par plan (stacked) */}
+          <Card className="glass-card border-white/10">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Building2 className="h-4 w-4 text-neon-blue" />
+                Secteurs par plan
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {(() => {
+                const sectorPlan: Record<string, { name: string; starter: number; business: number; enterprise: number }> = {};
+                MOCK_ENTERPRISES.forEach((e) => {
+                  const s = SECTORS.find(s => s.key === e.sector);
+                  const label = s ? s.label : e.sector;
+                  if (!sectorPlan[label]) sectorPlan[label] = { name: label, starter: 0, business: 0, enterprise: 0 };
+                  sectorPlan[label][e.plan as "starter" | "business" | "enterprise"] += 1;
+                });
+                const data = Object.values(sectorPlan).sort((a, b) => (b.starter + b.business + b.enterprise) - (a.starter + a.business + a.enterprise)).slice(0, 8);
+                return (
+                  <ResponsiveContainer width="100%" height={260}>
+                    <BarChart data={data} margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
+                      <XAxis dataKey="name" tick={{ fontSize: 10 }} className="fill-muted-foreground" angle={-30} textAnchor="end" height={60} />
+                      <YAxis tick={{ fontSize: 11 }} className="fill-muted-foreground" allowDecimals={false} />
+                      <Tooltip />
+                      <Legend wrapperStyle={{ fontSize: 11 }} />
+                      <Bar dataKey="starter" stackId="a" fill="hsl(var(--muted-foreground))" name="Starter" radius={[0, 0, 0, 0]} />
+                      <Bar dataKey="business" stackId="a" fill="hsl(217, 91%, 60%)" name="Business" radius={[0, 0, 0, 0]} />
+                      <Bar dataKey="enterprise" stackId="a" fill="hsl(45, 93%, 58%)" name="Enterprise" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                );
+              })()}
+            </CardContent>
+          </Card>
+        </div>
+
         <Card className="glass-card border-white/10">
           <CardHeader>
             <CardTitle className="text-lg">Dernières entreprises</CardTitle>
@@ -286,6 +374,7 @@ export default function SuperAdminDashboard() {
                 <thead>
                   <tr className="border-b border-border">
                     <th className="text-left py-2 font-medium text-muted-foreground">Entreprise</th>
+                    <th className="text-left py-2 font-medium text-muted-foreground">Secteur</th>
                     <th className="text-left py-2 font-medium text-muted-foreground">Plan</th>
                     <th className="text-center py-2 font-medium text-muted-foreground">Utilisateurs</th>
                     <th className="text-right py-2 font-medium text-muted-foreground">MRR</th>
@@ -293,9 +382,12 @@ export default function SuperAdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {MOCK_ENTERPRISES.map((e, i) => (
+                  {MOCK_ENTERPRISES.slice(0, 8).map((e, i) => {
+                    const sector = SECTORS.find(s => s.key === e.sector);
+                    return (
                     <tr key={i} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                       <td className="py-3 font-medium">{e.nom}</td>
+                      <td className="py-3 text-xs text-muted-foreground">{sector ? `${sector.icon} ${sector.label}` : "—"}</td>
                       <td className="py-3">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${planColors[e.plan]}`}>
                           {e.plan}
@@ -309,7 +401,8 @@ export default function SuperAdminDashboard() {
                         </span>
                       </td>
                     </tr>
-                  ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

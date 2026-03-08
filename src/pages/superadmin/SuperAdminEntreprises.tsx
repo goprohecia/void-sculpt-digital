@@ -3,7 +3,7 @@ import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Building2 } from "lucide-react";
+import { Search, Building2, Filter } from "lucide-react";
 import { SECTORS } from "@/contexts/DemoPlanContext";
 
 const MOCK_ENTERPRISES = [
@@ -26,11 +26,13 @@ const planColors: Record<string, string> = {
 export default function SuperAdminEntreprises() {
   const [search, setSearch] = useState("");
   const [filterPlan, setFilterPlan] = useState("all");
+  const [filterSector, setFilterSector] = useState("all");
 
   const filtered = MOCK_ENTERPRISES.filter((e) => {
     const matchSearch = e.nom.toLowerCase().includes(search.toLowerCase()) || e.email.toLowerCase().includes(search.toLowerCase());
     const matchPlan = filterPlan === "all" || e.plan === filterPlan;
-    return matchSearch && matchPlan;
+    const matchSector = filterSector === "all" || e.sector === filterSector;
+    return matchSearch && matchPlan && matchSector;
   });
 
   return (
@@ -56,6 +58,19 @@ export default function SuperAdminEntreprises() {
               <SelectItem value="starter">Starter</SelectItem>
               <SelectItem value="business">Business</SelectItem>
               <SelectItem value="enterprise">Enterprise</SelectItem>
+            </SelectContent>
+          </Select>
+          <Select value={filterSector} onValueChange={setFilterSector}>
+            <SelectTrigger className="w-[220px] glass-input border-0">
+              <SelectValue placeholder="Tous les secteurs" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les secteurs</SelectItem>
+              {SECTORS.map((s) => (
+                <SelectItem key={s.key} value={s.key}>
+                  {s.icon} {s.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
