@@ -10,6 +10,7 @@ import { AnimatedRoutes } from "@/components/AnimatedRoutes";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { DemoAuthProvider } from "@/contexts/DemoAuthContext";
 import { DemoDataProvider } from "@/contexts/DemoDataContext";
+import { WhiteLabelProvider } from "@/hooks/use-white-label";
 
 const queryClient = new QueryClient();
 
