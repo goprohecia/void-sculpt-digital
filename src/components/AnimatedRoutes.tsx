@@ -13,6 +13,11 @@ import Conciergerie from "@/pages/secteurs/Conciergerie";
 import Immobilier from "@/pages/secteurs/Immobilier";
 import Garages from "@/pages/secteurs/Garages";
 import BTP from "@/pages/secteurs/BTP";
+import Mariage from "@/pages/secteurs/Mariage";
+import Coiffure from "@/pages/secteurs/Coiffure";
+import Cabinets from "@/pages/secteurs/Cabinets";
+import Evenementiel from "@/pages/secteurs/Evenementiel";
+import Nettoyage from "@/pages/secteurs/Nettoyage";
 
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
