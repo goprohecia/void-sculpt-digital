@@ -37,6 +37,7 @@ import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
