@@ -1,5 +1,12 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
+import {
+  SECTOR_MODULE_OVERRIDES,
+  getModuleLabel as _getModuleLabel,
+  getModuleDescription as _getModuleDescription,
+  isModuleHidden as _isModuleHidden,
+  type SectorModulesConfig,
+} from "@/data/sectorModules";
 
 // All available module keys in the system
 export const ALL_MODULE_KEYS = [
