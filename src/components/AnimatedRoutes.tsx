@@ -76,6 +76,7 @@ export function AnimatedRoutes() {
         <Route path="/" element={<Index />} />
         <Route path="/fonctionnalites" element={<Fonctionnalites />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/demo" element={<DemoTour />} />
 
         {/* Sectors */}
         <Route path="/secteurs/conciergerie" element={<Conciergerie />} />
