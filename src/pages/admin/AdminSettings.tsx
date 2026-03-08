@@ -179,6 +179,7 @@ function TagsManager() {
 export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
+  const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
   const [profile, setProfile] = useState({
     nom: user?.nom || "Admin",
     email: "admin@mba.demo",
