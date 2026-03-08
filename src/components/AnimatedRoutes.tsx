@@ -202,6 +202,7 @@ export function AnimatedRoutes() {
         <Route path="/superadmin/abonnements" element={<SuperAdminAbonnements />} />
         <Route path="/superadmin/formules" element={<SuperAdminFormules />} />
         <Route path="/superadmin/stats" element={<SuperAdminStats />} />
+        <Route path="/superadmin/secteurs" element={<SuperAdminSecteurs />} />
 
         {/* Legacy redirects */}
         <Route path="/services/*" element={<Navigate to="/" replace />} />
