@@ -108,9 +108,26 @@ export function DemoPlanProvider({ children }: { children: ReactNode }) {
   const [planModules, setPlanModules] = useState<Record<SubscriptionPlan, string[] | "all">>(DEFAULT_PLAN_MODULES);
   const [planPrices, setPlanPrices] = useState<Record<SubscriptionPlan, number>>(DEFAULT_PLAN_PRICES);
   const [sectorRecommendations, setSectorRecommendations] = useState<Record<SectorKey, string[]>>(DEFAULT_SECTOR_RECOMMENDATIONS);
+  const [sectorModuleOverrides, setSectorModuleOverrides] = useState<Record<string, SectorModulesConfig>>(SECTOR_MODULE_OVERRIDES);
+  const [demoSector, setDemoSector] = useState<SectorKey | null>("developpeur");
+
+  // Helpers that use the current demo sector
+  const getModuleLabel = (moduleKey: string) => _getModuleLabel(moduleKey, demoSector);
+  const isModuleHiddenFn = (moduleKey: string) => _isModuleHidden(moduleKey, demoSector);
+  const getModuleDescriptionFn = (moduleKey: string) => _getModuleDescription(moduleKey, demoSector);
 
   return (
-    <DemoPlanContext.Provider value={{ demoPlan, setDemoPlan, planModules, setPlanModules, planPrices, setPlanPrices, sectorRecommendations, setSectorRecommendations }}>
+    <DemoPlanContext.Provider value={{
+      demoPlan, setDemoPlan,
+      planModules, setPlanModules,
+      planPrices, setPlanPrices,
+      sectorRecommendations, setSectorRecommendations,
+      sectorModuleOverrides, setSectorModuleOverrides,
+      demoSector, setDemoSector,
+      getModuleLabel,
+      isModuleHidden: isModuleHiddenFn,
+      getModuleDescription: getModuleDescriptionFn,
+    }}>
       {children}
     </DemoPlanContext.Provider>
   );
