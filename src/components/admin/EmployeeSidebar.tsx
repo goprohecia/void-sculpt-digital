@@ -37,6 +37,7 @@ export function EmployeeSidebar() {
   const navigate = useNavigate();
   const { user, logout } = useDemoAuth();
   const { employeeVisibleModules } = useAppSettings();
+  const { config: wl } = useWhiteLabel();
 
   const allNavItems = [
     { title: "Tableau de bord", url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
