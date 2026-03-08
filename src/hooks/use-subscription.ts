@@ -27,13 +27,13 @@ export const PLAN_INFO: Record<SubscriptionPlan, { label: string; price: number;
 export function useSubscription() {
   const { isDemo } = useIsDemo();
   const queryClient = useQueryClient();
-  const demoOverride = useRef<SubscriptionPlan>("enterprise");
+  const [demoPlan, setDemoPlan] = useState<SubscriptionPlan>("enterprise");
 
   const { data: subscription, isLoading } = useQuery({
-    queryKey: ["subscription"],
+    queryKey: ["subscription", isDemo ? demoPlan : "real"],
     queryFn: async (): Promise<SubscriptionData> => {
       if (isDemo) {
-        const plan = demoOverride.current;
+        const plan = demoPlan;
         return {
           plan,
           status: "active",
