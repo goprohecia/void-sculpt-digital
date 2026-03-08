@@ -297,6 +297,73 @@ export default function SuperAdminFormules() {
               );
             })}
           </CardContent>
+
+        {/* Sector Module Overrides */}
+        <Card className="glass-card border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Puzzle className="h-5 w-5 text-primary" />
+              Modules par secteur
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Personnalisez les labels et la visibilité des modules pour chaque secteur d'activité.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {SECTORS.map((sector) => {
+              const isExpanded = expandedOverrideSector === sector.key;
+              const overrides = localOverrides[sector.key] || {};
+              const overrideCount = Object.keys(overrides).filter((k) => overrides[k]?.label !== MODULE_LABELS[k] || overrides[k]?.hidden).length;
+
+              return (
+                <div key={sector.key} className="border border-border/50 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => setExpandedOverrideSector(isExpanded ? null : sector.key)}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/20 transition-colors text-left"
+                  >
+                    {isExpanded ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+                    <span className="text-lg">{sector.icon}</span>
+                    <span className="text-sm font-medium flex-1">{sector.label}</span>
+                    {overrideCount > 0 && (
+                      <Badge variant="secondary" className="text-[10px]">{overrideCount} personnalisé{overrideCount > 1 ? "s" : ""}</Badge>
+                    )}
+                  </button>
+
+                  {isExpanded && (
+                    <div className="px-4 pb-4 space-y-2">
+                      <div className="grid grid-cols-[1fr_1fr_auto] gap-2 text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1">
+                        <span>Module générique</span>
+                        <span>Label secteur</span>
+                        <span>Visible</span>
+                      </div>
+                      {SELECTABLE_MODULES.map((key) => {
+                        const override = overrides[key];
+                        const isHidden = override?.hidden === true;
+                        const customLabel = override?.label || "";
+                        const genericLabel = MODULE_LABELS[key] || key;
+
+                        return (
+                          <div key={key} className={`grid grid-cols-[1fr_1fr_auto] gap-2 items-center px-1 py-1.5 rounded-md ${isHidden ? "opacity-50" : ""}`}>
+                            <span className="text-sm text-muted-foreground">{genericLabel}</span>
+                            <Input
+                              value={customLabel}
+                              onChange={(e) => updateOverrideLabel(sector.key, key, e.target.value)}
+                              placeholder={genericLabel}
+                              className="glass-input border-0 h-8 text-sm"
+                            />
+                            <Switch
+                              checked={!isHidden}
+                              onCheckedChange={() => toggleOverrideHidden(sector.key, key)}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </CardContent>
         </Card>
       </div>
     </SuperAdminLayout>
