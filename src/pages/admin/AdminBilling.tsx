@@ -13,6 +13,7 @@ import { useIsDemo } from "@/hooks/useIsDemo";
 import { supabase } from "@/integrations/supabase/client";
 import type { FactureStatus, Facture, Devis } from "@/data/mockData";
 import { Receipt, Euro, AlertTriangle, Plus, Download, Eye, Send, Clock } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
