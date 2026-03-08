@@ -1,9 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
 import {
   SECTOR_MODULE_OVERRIDES,
-  getModuleLabel as _getModuleLabel,
-  getModuleDescription as _getModuleDescription,
-  isModuleHidden as _isModuleHidden,
+  GENERIC_MODULE_LABELS,
   type SectorModulesConfig,
 } from "@/data/sectorModules";
 
