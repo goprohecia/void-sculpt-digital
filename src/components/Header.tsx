@@ -6,7 +6,7 @@ import logoHero from "@/assets/logo-hero.png";
 import { MagneticButton } from "@/components/animations";
 
 const navItems = [
-  { name: "Fonctionnalités", href: "/#fonctionnalites" },
+  { name: "Fonctionnalités", href: "/fonctionnalites" },
   { name: "Secteurs", href: "/#secteurs" },
   { name: "Offres", href: "/#offres" },
   { name: "Contact", href: "/contact" },

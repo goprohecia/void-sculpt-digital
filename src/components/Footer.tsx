@@ -26,7 +26,7 @@ export function Footer() {
             <h4 className="text-sm font-medium mb-6">Produit</h4>
             <ul className="space-y-3">
               {[
-                { to: "/#fonctionnalites", label: "Fonctionnalités" },
+                { to: "/fonctionnalites", label: "Fonctionnalités" },
                 { to: "/#secteurs", label: "Secteurs" },
                 { to: "/#offres", label: "Offres" },
                 { to: "/#methode", label: "Comment ça marche" },
