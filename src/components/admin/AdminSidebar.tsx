@@ -175,6 +175,20 @@ export function AdminSidebar() {
         </Link>
       </SidebarHeader>
 
+      {/* Sector selector */}
+      <div className="px-3 pb-2">
+        <select
+          value={demoSector || ""}
+          onChange={(e) => setDemoSector(e.target.value ? (e.target.value as SectorKey) : null)}
+          className="w-full h-8 rounded-md bg-muted/50 border border-border/50 px-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring truncate"
+        >
+          <option value="">— Générique —</option>
+          {SECTORS.map((s) => (
+            <option key={s.key} value={s.key}>{s.icon} {s.label}</option>
+          ))}
+        </select>
+      </div>
+
       <SidebarSeparator />
 
       <SidebarContent>
