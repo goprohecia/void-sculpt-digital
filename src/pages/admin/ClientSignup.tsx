@@ -209,7 +209,7 @@ export default function ClientSignup() {
                     {modules !== "all" && (
                       <div className="flex flex-wrap gap-1">
                         {modules.map((m) => (
-                          <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground capitalize">{MODULE_LABELS[m] || m}</span>
+                          <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground capitalize">{GENERIC_MODULE_LABELS[m] || m}</span>
                         ))}
                       </div>
                     )}
