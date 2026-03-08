@@ -24,6 +24,12 @@ export const PLAN_INFO: Record<SubscriptionPlan, { label: string; price: number;
   enterprise: { label: "Enterprise", price: 400, color: "text-amber-400" },
 };
 
+export const PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = {
+  starter: ["clients", "dossiers", "facturation"],
+  business: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "emails", "rendez-vous"],
+  enterprise: "all",
+};
+
 export function useSubscription() {
   const { isDemo } = useIsDemo();
   const queryClient = useQueryClient();
