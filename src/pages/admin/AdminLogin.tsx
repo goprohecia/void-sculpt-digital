@@ -23,7 +23,7 @@ export default function AdminLogin() {
   // Check if returning from Google OAuth with incomplete profile
   useEffect(() => {
     if (isAuthenticated) {
-      const dest = user?.role === "employee" ? "/employee" : user?.role === "client" ? "/client" : "/admin";
+      const dest = user?.role === "superadmin" ? "/superadmin" : user?.role === "employee" ? "/employee" : user?.role === "client" ? "/client" : "/admin";
       navigate(dest, { replace: true });
       return;
     }
