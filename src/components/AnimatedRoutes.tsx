@@ -45,6 +45,7 @@ import EmployeeMessaging from "@/pages/employee/EmployeeMessaging";
 import EmployeeProfile from "@/pages/employee/EmployeeProfile";
 import EmployeeStock from "@/pages/employee/EmployeeStock";
 
+import Fonctionnalites from "@/pages/Fonctionnalites";
 import NotFound from "@/pages/NotFound";
 
 export function AnimatedRoutes() {
