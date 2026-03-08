@@ -1,42 +1,84 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+# Plan — Corrections vitrine MBA : routing, FAQ, nettoyage legacy, secteurs
 
-## Modifications
+## 1. Fix route `/` → Site vitrine
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+**`AnimatedRoutes.tsx`** : Remplacer `<Navigate to="/client/login" />` par `<Index />` (import de `src/pages/Index.tsx`). Ajouter route `/contact` vers `Contact.tsx`. Supprimer les routes legacy (`/services/*`, `/portfolio/*`, `/studio`).
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+## 2. FAQ MBA
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+**`FAQ.tsx`** : Remplacer les 6 questions Impartial par des questions CRM SaaS :
+- "Qu'est-ce que MBA ?" — Plateforme CRM modulaire multi-sectorielle
+- "Combien de modules puis-je activer ?" — Starter 3, Business 6, Enterprise illimité
+- "Puis-je changer d'offre ?" — Upgrade/downgrade à tout moment
+- "Comment se passe l'onboarding ?" — Inscription, choix des modules, invitation équipe
+- "Mes données sont-elles sécurisées ?" — Hébergement cloud, chiffrement, RLS
+- "Puis-je personnaliser les espaces ?" — Enterprise only, espaces et modules sur mesure
+- Mettre à jour le CTA vers `/contact?subject=Question%20MBA`
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+## 3. Page Contact → Demande de démo MBA
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+**`Contact.tsx`** :
+- Remplacer "Parlons de votre projet" par "Demandez votre démo MBA"
+- Remplacer le champ "Sujet" par un select : Demande de démo / Question sur les offres / Support / Autre
+- Remplacer l'email `studio@impartialgames.com` par `contact@mybusinessassistant.com`
+- Supprimer la section Newsletter (pas pertinente pour un SaaS)
+- Garder le Calendly
 
-## Details techniques
+## 4. Nettoyage routes legacy
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+**`AnimatedRoutes.tsx`** : Supprimer les imports et routes pour les pages obsolètes. Ajouter des redirections `<Navigate>` pour `/services/*` et `/portfolio/*` vers `/` pour éviter les 404.
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+## 5. Pages secteurs dédiées (4 nouvelles pages)
+
+Créer 4 pages dans `src/pages/secteurs/` :
+
+### A. `Conciergerie.tsx`
+- Hero : "MBA pour la Conciergerie & Gestion locative"
+- Cas d'usage : Gestion des biens, suivi locataires, interventions, facturation propriétaires
+- Modules recommandés : Dossiers, Clients, Facturation, Messagerie, Support
+- CTA : Demander une démo
+
+### B. `Immobilier.tsx`
+- Hero : "MBA pour les Agences immobilières"
+- Cas d'usage : Suivi mandats, dossiers acquéreurs/vendeurs, signature électronique, relances
+- Modules recommandés : Clients, Dossiers, Devis, Facturation, Analyse
+
+### C. `Garages.tsx`
+- Hero : "MBA pour les Garages & Carrosseries"
+- Cas d'usage : Gestion véhicules, devis réparations, stock pièces, suivi atelier
+- Modules recommandés : Stock, Dossiers, Devis, Facturation, Clients
+
+### D. `BTP.tsx`
+- Hero : "MBA pour le BTP & Artisans"
+- Cas d'usage : Gestion chantiers, devis/factures, équipes terrain, stock matériaux
+- Modules recommandés : Dossiers, Stock, Facturation, Calendrier, Messagerie
+
+**Structure commune** : Layout + Hero + 3-4 blocs cas d'usage avec icônes + section modules recommandés + CTA démo. Composant réutilisable `SectorPage` pour éviter la duplication.
+
+### Routes
+Ajouter dans `AnimatedRoutes.tsx` :
+- `/secteurs/conciergerie`
+- `/secteurs/immobilier`
+- `/secteurs/garages`
+- `/secteurs/btp`
+
+### Navigation
+**`ServicesSection.tsx`** : Transformer les cartes secteurs en liens cliquables vers les pages dédiées.
+**`Header.tsx`** : Le lien "Secteurs" pointe déjà vers `/#secteurs`, OK.
+
+## 6. Fichiers impactés
+
+| Fichier | Action |
+|---|---|
+| `AnimatedRoutes.tsx` | Fix route `/`, ajouter `/contact`, `/secteurs/*`, redirections legacy |
+| `FAQ.tsx` | Réécrire contenu MBA |
+| `Contact.tsx` | Rebrand démo MBA |
+| `src/pages/secteurs/SectorPage.tsx` | **Créer** — Composant réutilisable |
+| `src/pages/secteurs/Conciergerie.tsx` | **Créer** |
+| `src/pages/secteurs/Immobilier.tsx` | **Créer** |
+| `src/pages/secteurs/Garages.tsx` | **Créer** |
+| `src/pages/secteurs/BTP.tsx` | **Créer** |
+| `ServicesSection.tsx` | Ajouter liens vers pages secteurs |
+
