@@ -276,7 +276,7 @@ export default function ClientSignup() {
             )}
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {SELECTABLE_MODULES.map((key) => {
+              {SELECTABLE_MODULES.filter((k) => !isModuleHidden(k, selectedSector)).map((key) => {
                 const isSelected = selectedModules.includes(key);
                 const limit = getModuleLimit(selectedPlan);
                 const disabled = !isSelected && limit !== null && selectedModules.length >= limit;
