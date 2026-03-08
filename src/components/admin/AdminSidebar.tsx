@@ -87,6 +87,7 @@ export function AdminSidebar() {
     { title: "Suivi du temps", url: "/admin/temps", icon: Timer, moduleKey: "temps" },
     { title: "Automatisations", url: "/admin/automatisations", icon: Zap, moduleKey: "automatisations" },
     { title: "Notes", url: "/admin/notes", icon: StickyNote, moduleKey: "notes" },
+    { title: "Intelligence IA", url: "/admin/ia", icon: Bot, moduleKey: "ia" },
     { title: "Paramètres", url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
