@@ -5,33 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { useDemoPlan, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
-import { Save, Layers, Check } from "lucide-react";
+import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
+import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 
 const MODULE_LABELS: Record<string, string> = {
-  overview: "Vue d'ensemble",
-  clients: "Clients",
-  employees: "Salariés",
-  dossiers: "Dossiers",
-  pipeline: "Pipeline CRM",
-  facturation: "Facturation",
-  relances: "Relances",
-  stock: "Stock",
-  messagerie: "Messagerie",
-  emails: "Emails",
-  "rendez-vous": "Rendez-vous",
-  agenda: "Agenda",
-  taches: "Tâches",
-  support: "Support",
-  notes: "Notes",
-  analyse: "Analyse",
-  rapports: "Rapports",
-  documents: "Documents",
-  temps: "Suivi du temps",
-  automatisations: "Automatisations",
-  ia: "Intelligence IA",
+  overview: "Vue d'ensemble", clients: "Clients", employees: "Salariés", dossiers: "Dossiers",
+  pipeline: "Pipeline CRM", facturation: "Facturation", relances: "Relances", stock: "Stock",
+  messagerie: "Messagerie", emails: "Emails", "rendez-vous": "Rendez-vous", agenda: "Agenda",
+  taches: "Tâches", support: "Support", notes: "Notes", analyse: "Analyse", rapports: "Rapports",
+  documents: "Documents", temps: "Suivi du temps", automatisations: "Automatisations", ia: "Intelligence IA",
   parametres: "Paramètres",
 };
 
@@ -47,16 +31,13 @@ const PLAN_ACCENT: Record<SubscriptionPlan, string> = {
   enterprise: "text-amber-400",
 };
 
-// Always-visible modules that don't count toward limit
 const ALWAYS_INCLUDED = ["overview", "parametres"];
-// Selectable modules (excluding always-included)
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
 
 export default function SuperAdminFormules() {
-  const { planModules, setPlanModules, planPrices, setPlanPrices } = useDemoPlan();
+  const { planModules, setPlanModules, planPrices, setPlanPrices, sectorRecommendations, setSectorRecommendations } = useDemoPlan();
   const { toast } = useToast();
 
-  // Local editable state
   const [localModules, setLocalModules] = useState<Record<SubscriptionPlan, string[] | "all">>({ ...planModules });
   const [localPrices, setLocalPrices] = useState<Record<SubscriptionPlan, number>>({ ...planPrices });
   const [localLimits, setLocalLimits] = useState<Record<SubscriptionPlan, number | null>>({
@@ -64,6 +45,8 @@ export default function SuperAdminFormules() {
     business: planModules.business === "all" ? null : (planModules.business as string[]).length,
     enterprise: null,
   });
+  const [localSectorRecs, setLocalSectorRecs] = useState<Record<SectorKey, string[]>>({ ...sectorRecommendations });
+  const [expandedSector, setExpandedSector] = useState<SectorKey | null>(null);
 
   const plans: SubscriptionPlan[] = ["starter", "business", "enterprise"];
 
@@ -73,7 +56,7 @@ export default function SuperAdminFormules() {
   };
 
   const toggleModule = (plan: SubscriptionPlan, moduleKey: string) => {
-    if (plan === "enterprise") return; // enterprise = all
+    if (plan === "enterprise") return;
     const current = getModulesArray(plan);
     const limit = localLimits[plan];
     if (current.includes(moduleKey)) {
@@ -84,11 +67,34 @@ export default function SuperAdminFormules() {
     }
   };
 
+  const toggleSectorModule = (sector: SectorKey, moduleKey: string) => {
+    const current = localSectorRecs[sector] || [];
+    if (current.includes(moduleKey)) {
+      setLocalSectorRecs((prev) => ({ ...prev, [sector]: current.filter((k) => k !== moduleKey) }));
+    } else {
+      setLocalSectorRecs((prev) => ({ ...prev, [sector]: [...current, moduleKey] }));
+    }
+  };
+
+  const moveSectorModule = (sector: SectorKey, moduleKey: string, direction: "up" | "down") => {
+    const current = [...(localSectorRecs[sector] || [])];
+    const idx = current.indexOf(moduleKey);
+    if (idx < 0) return;
+    const newIdx = direction === "up" ? idx - 1 : idx + 1;
+    if (newIdx < 0 || newIdx >= current.length) return;
+    [current[idx], current[newIdx]] = [current[newIdx], current[idx]];
+    setLocalSectorRecs((prev) => ({ ...prev, [sector]: current }));
+  };
+
   const handleSave = () => {
     setPlanModules(localModules);
     setPlanPrices(localPrices);
+    setSectorRecommendations(localSectorRecs);
     toast({ title: "Formules mises à jour", description: "Les changements ont été appliqués avec succès." });
   };
+
+  const starterLimit = localLimits.starter ?? 3;
+  const businessLimit = localLimits.business ?? 8;
 
   return (
     <SuperAdminLayout>
@@ -99,7 +105,7 @@ export default function SuperAdminFormules() {
               <Layers className="h-6 w-6 text-primary" />
               Gestion des formules
             </h1>
-            <p className="text-muted-foreground text-sm">Configurez les plans MBA, les prix et les modules inclus</p>
+            <p className="text-muted-foreground text-sm">Configurez les plans MBA, les prix, modules et recommandations secteur</p>
           </div>
           <Button onClick={handleSave} className="gap-2">
             <Save className="h-4 w-4" />
@@ -107,6 +113,7 @@ export default function SuperAdminFormules() {
           </Button>
         </div>
 
+        {/* Plan cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {plans.map((plan) => {
             const isEnterprise = plan === "enterprise";
@@ -124,7 +131,6 @@ export default function SuperAdminFormules() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Prix */}
                   <div className="space-y-1.5">
                     <label className="text-xs font-medium text-muted-foreground">Prix mensuel (€)</label>
                     <Input
@@ -135,7 +141,6 @@ export default function SuperAdminFormules() {
                     />
                   </div>
 
-                  {/* Limite modules */}
                   {!isEnterprise && (
                     <div className="space-y-1.5">
                       <label className="text-xs font-medium text-muted-foreground">Limite de modules</label>
@@ -153,7 +158,6 @@ export default function SuperAdminFormules() {
                     </div>
                   )}
 
-                  {/* Modules */}
                   <div className="space-y-1.5">
                     <label className="text-xs font-medium text-muted-foreground">
                       Modules inclus {isEnterprise && "(tous)"}
@@ -182,7 +186,6 @@ export default function SuperAdminFormules() {
                     </div>
                   </div>
 
-                  {/* Always included info */}
                   <div className="pt-2 border-t border-border/50">
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Toujours inclus</p>
                     <div className="flex gap-1.5 flex-wrap">
@@ -198,6 +201,84 @@ export default function SuperAdminFormules() {
             );
           })}
         </div>
+
+        {/* Sector recommendations */}
+        <Card className="glass-card border-white/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              Recommandations par secteur
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Ordonnez les modules par priorité pour chaque secteur. Les {starterLimit} premiers = Starter, les {businessLimit} premiers = Business.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {SECTORS.map((sector) => {
+              const isExpanded = expandedSector === sector.key;
+              const recs = localSectorRecs[sector.key] || [];
+
+              return (
+                <div key={sector.key} className="border border-border/50 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => setExpandedSector(isExpanded ? null : sector.key)}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/20 transition-colors text-left"
+                  >
+                    {isExpanded ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+                    <span className="text-lg">{sector.icon}</span>
+                    <span className="text-sm font-medium flex-1">{sector.label}</span>
+                    <span className="text-xs text-muted-foreground">{recs.length} modules</span>
+                  </button>
+
+                  {isExpanded && (
+                    <div className="px-4 pb-4 space-y-3">
+                      <p className="text-[10px] text-muted-foreground">
+                        Les modules sont triés par priorité. Position 1–{starterLimit} = <span className="text-muted-foreground font-medium">Starter</span>, 1–{businessLimit} = <span className="text-neon-blue font-medium">Business</span>, tous = <span className="text-amber-400 font-medium">Enterprise</span>.
+                      </p>
+
+                      {/* Selected modules in order */}
+                      <div className="space-y-1">
+                        {recs.map((key, idx) => (
+                          <div
+                            key={key}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm ${
+                              idx < starterLimit ? "bg-muted/30" : idx < businessLimit ? "bg-neon-blue/5" : "bg-amber-400/5"
+                            }`}
+                          >
+                            <span className="w-5 text-xs text-muted-foreground font-mono">{idx + 1}</span>
+                            <span className="flex-1">{MODULE_LABELS[key] || key}</span>
+                            <button onClick={() => moveSectorModule(sector.key, key, "up")} disabled={idx === 0} className="p-0.5 hover:text-primary disabled:opacity-20">
+                              <ArrowUp className="h-3 w-3" />
+                            </button>
+                            <button onClick={() => moveSectorModule(sector.key, key, "down")} disabled={idx === recs.length - 1} className="p-0.5 hover:text-primary disabled:opacity-20">
+                              <ArrowDown className="h-3 w-3" />
+                            </button>
+                            <button onClick={() => toggleSectorModule(sector.key, key)} className="text-xs text-destructive hover:underline ml-1">✕</button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Add modules */}
+                      {SELECTABLE_MODULES.filter((k) => !recs.includes(k)).length > 0 && (
+                        <div className="flex flex-wrap gap-1 pt-2 border-t border-border/30">
+                          {SELECTABLE_MODULES.filter((k) => !recs.includes(k)).map((key) => (
+                            <button
+                              key={key}
+                              onClick={() => toggleSectorModule(sector.key, key)}
+                              className="text-[10px] px-2 py-1 rounded bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                            >
+                              + {MODULE_LABELS[key] || key}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
       </div>
     </SuperAdminLayout>
   );

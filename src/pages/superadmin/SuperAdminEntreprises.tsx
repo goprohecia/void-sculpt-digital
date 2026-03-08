@@ -6,14 +6,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Building2 } from "lucide-react";
 
 const MOCK_ENTERPRISES = [
-  { id: "1", nom: "TechVision SAS", email: "contact@techvision.fr", plan: "enterprise", users: 12, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "emails", "rendez-vous", "stock", "analyse", "pipeline", "ia"], mrr: 400, statut: "actif", date: "2025-09-15" },
-  { id: "2", nom: "Studio Créatif", email: "hello@studiocrea.com", plan: "business", users: 5, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support"], mrr: 250, statut: "actif", date: "2025-11-02" },
-  { id: "3", nom: "BTP Renov", email: "info@btprenov.fr", plan: "starter", users: 2, modules: ["clients", "dossiers", "facturation"], mrr: 150, statut: "actif", date: "2026-01-10" },
-  { id: "4", nom: "Immo+", email: "contact@immoplus.fr", plan: "business", users: 8, modules: ["clients", "dossiers", "facturation", "messagerie", "emails", "rendez-vous"], mrr: 250, statut: "actif", date: "2025-10-20" },
-  { id: "5", nom: "CleanPro", email: "admin@cleanpro.fr", plan: "enterprise", users: 15, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "stock", "analyse", "taches", "automatisations"], mrr: 400, statut: "actif", date: "2025-08-05" },
-  { id: "6", nom: "DigitalCraft", email: "team@digitalcraft.io", plan: "starter", users: 1, modules: ["clients", "dossiers", "facturation"], mrr: 150, statut: "essai", date: "2026-02-28" },
-  { id: "7", nom: "EventPro", email: "contact@eventpro.fr", plan: "business", users: 4, modules: ["clients", "dossiers", "facturation", "messagerie", "support"], mrr: 250, statut: "actif", date: "2026-01-15" },
-  { id: "8", nom: "CoachFit", email: "hello@coachfit.com", plan: "starter", users: 1, modules: ["clients", "dossiers", "facturation"], mrr: 150, statut: "actif", date: "2026-02-01" },
+  { id: "1", nom: "TechVision SAS", email: "contact@techvision.fr", plan: "enterprise", users: 12, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "emails", "rendez-vous", "stock", "analyse", "pipeline", "ia"], mrr: 400, statut: "actif", date: "2025-09-15", sector: "developpeur" },
+  { id: "2", nom: "Studio Créatif", email: "hello@studiocrea.com", plan: "business", users: 5, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support"], mrr: 250, statut: "actif", date: "2025-11-02", sector: "designer" },
+  { id: "3", nom: "BTP Renov", email: "info@btprenov.fr", plan: "starter", users: 2, modules: ["clients", "dossiers", "facturation"], mrr: 150, statut: "actif", date: "2026-01-10", sector: "btp" },
+  { id: "4", nom: "Immo+", email: "contact@immoplus.fr", plan: "business", users: 8, modules: ["clients", "dossiers", "facturation", "messagerie", "emails", "rendez-vous"], mrr: 250, statut: "actif", date: "2025-10-20", sector: "immobilier" },
+  { id: "5", nom: "CleanPro", email: "admin@cleanpro.fr", plan: "enterprise", users: 15, modules: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "stock", "analyse", "taches", "automatisations"], mrr: 400, statut: "actif", date: "2025-08-05", sector: "nettoyage" },
+  { id: "6", nom: "DigitalCraft", email: "team@digitalcraft.io", plan: "starter", users: 1, modules: ["clients", "dossiers", "facturation"], mrr: 150, statut: "essai", date: "2026-02-28", sector: "community-manager" },
+  { id: "7", nom: "EventPro", email: "contact@eventpro.fr", plan: "business", users: 4, modules: ["clients", "dossiers", "facturation", "messagerie", "support"], mrr: 250, statut: "actif", date: "2026-01-15", sector: "evenementiel" },
+  { id: "8", nom: "CoachFit", email: "hello@coachfit.com", plan: "starter", users: 1, modules: ["clients", "dossiers", "facturation"], mrr: 150, statut: "actif", date: "2026-02-01", sector: "coach-sportif" },
 ];
 
 const planColors: Record<string, string> = {
