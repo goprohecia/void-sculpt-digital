@@ -1,42 +1,59 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Module 05 — Règles d'annulation et remboursement d'acompte
 
-## Modifications
+### Audit
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+| Élément | Statut |
+|---|---|
+| Section "Politique d'annulation" dans BookingSettingsTab | **Manquant** |
+| Bloc conditions + checkbox sur BookingStepRecap | **Manquant** — texte statique "vous acceptez les CGV" existe mais sans checkbox ni conditions réelles |
+| Bouton "Annuler la réservation" côté admin | **Manquant** |
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+### Plan d'implémentation
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+#### 1. Ajouter la config annulation dans `BookingSettingsTab.tsx`
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+Nouvelle Card "Politique d'annulation" après la card Acompte :
+- Input numérique "Délai d'annulation" + Select heures/jours
+- 3 RadioGroup options : Remboursement total / Partiel (+ input %) / Aucun
+- Textarea "Message affiché au client" pré-rempli dynamiquement selon la politique choisie
+- Aperçu en temps réel du bloc tel que vu par le client (card preview)
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+#### 2. Ajouter la config annulation dans `MOCK_CONFIG` de `BookingPage.tsx`
 
-## Details techniques
+```typescript
+annulation: {
+  delai: 24,
+  unite: "heures" as const,
+  politique: "total" as const,
+  pourcentagePartiel: 50,
+  messageClient: "Annulation gratuite jusqu'à 24h avant le rendez-vous. Remboursement intégral de l'acompte.",
+}
+```
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+#### 3. Modifier `BookingStepRecap.tsx` — Bloc conditions + checkbox
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+- Ajouter props `cancellationMessage: string`
+- Remplacer le texte statique par un vrai bloc "Conditions d'annulation" avec le message admin
+- Ajouter une checkbox "J'ai lu et j'accepte les conditions d'annulation" avec `useState`
+- Bouton "Payer l'acompte" `disabled` tant que checkbox non cochée (visuellement grisé)
+
+#### 4. Modifier `AdminDossierDetail.tsx` — Bouton annulation + modale
+
+- Ajouter un bouton "Annuler la réservation" dans la vue dossier (visible si dossier pas déjà annulé)
+- AlertDialog de confirmation affichant :
+  - Le montant de l'acompte payé
+  - Le montant remboursé calculé selon la politique (total/partiel/aucun)
+  - Message de confirmation
+- Au clic "Confirmer" : passer le statut du dossier à `"annule"` + toast
+
+### Fichiers à modifier
+
+| Fichier | Modification |
+|---|---|
+| `src/components/admin/BookingSettingsTab.tsx` | Nouvelle card politique d'annulation avec radio, input, textarea, aperçu |
+| `src/components/booking/BookingStepRecap.tsx` | Bloc conditions + checkbox obligatoire + bouton disabled |
+| `src/pages/public/BookingPage.tsx` | Ajouter config annulation au MOCK_CONFIG, passer le message au Recap |
+| `src/pages/admin/AdminDossierDetail.tsx` | Bouton "Annuler la réservation" + AlertDialog avec calcul remboursement |
+
