@@ -323,8 +323,8 @@ export default function AdminEmails() {
       </div>
     ) : null;
 
-  // Type selector with custom type creation
-  const TypeSelector = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
+  // Type selector rendered inline (not as a component to avoid focus loss)
+  const renderTypeSelector = (value: string, onChange: (v: string) => void) => (
     <div className="space-y-2">
       <Label>Type</Label>
       <Select value={value} onValueChange={onChange}>
@@ -496,7 +496,7 @@ export default function AdminEmails() {
               <div className="space-y-2"><Label>Nom *</Label><Input value={tplForm.nom} onChange={(e) => setTplForm((f) => ({ ...f, nom: e.target.value }))} /></div>
               <div className="space-y-2"><Label>Sujet *</Label><Input value={tplForm.sujet} onChange={(e) => setTplForm((f) => ({ ...f, sujet: e.target.value }))} placeholder="Ex: Relance facture {{factureRef}}" /></div>
 
-              <TypeSelector value={tplForm.type} onChange={(v) => setTplForm((f) => ({ ...f, type: v }))} />
+              {renderTypeSelector(tplForm.type, (v) => setTplForm((f) => ({ ...f, type: v })))}
 
               {/* Context field for template AI */}
               <div className="space-y-2">
