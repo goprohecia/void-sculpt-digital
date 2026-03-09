@@ -38,6 +38,7 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
   automatisations: "Automatisations",
   ia: "Intelligence IA",
   parametres: "Paramètres",
+  fournisseurs: "Fournisseurs",
 };
 
 // ── Sector-specific overrides ──
@@ -207,6 +208,7 @@ const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Notes organisation", description: "Notes logistiques et retours d'expérience" },
   support: { label: "Réclamations", description: "Gestion des imprévus et réclamations" },
   employees: { label: "Équipe événement", description: "Coordinateurs, régisseurs et hôtesses" },
+  fournisseurs: { label: "Prestataires", description: "Traiteurs, DJ, photographes, lieux et services" },
 };
 
 const FORMATEUR_OVERRIDES: SectorModulesConfig = {

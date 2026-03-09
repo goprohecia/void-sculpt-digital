@@ -30,6 +30,7 @@ import {
   Wrench,
   ClipboardList,
   ChevronDown,
+  Truck,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
@@ -58,7 +59,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
-const commercialKeys = ["pipeline", "facturation", "relances", "stock"];
+const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
@@ -103,6 +104,7 @@ export function AdminSidebar() {
     { title: getModuleLabel("emails"), url: "/admin/emails", icon: Mail, moduleKey: "emails" },
     { title: getModuleLabel("support"), url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
     { title: getModuleLabel("stock"), url: "/admin/stock", icon: Package, moduleKey: "stock" },
+    { title: getModuleLabel("fournisseurs"), url: "/admin/fournisseurs", icon: Truck, moduleKey: "fournisseurs" },
     { title: getModuleLabel("analyse"), url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
     { title: getModuleLabel("taches"), url: "/admin/taches", icon: CheckSquare, moduleKey: "taches" },
     { title: getModuleLabel("agenda"), url: "/admin/agenda", icon: Calendar, moduleKey: "agenda" },

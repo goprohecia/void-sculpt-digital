@@ -62,6 +62,7 @@ import AdminAutomatisations from "@/pages/admin/AdminAutomatisations";
 import AdminNotes from "@/pages/admin/AdminNotes";
 import AdminPipeline from "@/pages/admin/AdminPipeline";
 import AdminIA from "@/pages/admin/AdminIA";
+import AdminFournisseurs from "@/pages/admin/AdminFournisseurs";
 
 // Super Admin pages
 import SuperAdminDashboard from "@/pages/superadmin/SuperAdminDashboard";
@@ -165,6 +166,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/notes" element={<AdminNotes />} />
         <Route path="/admin/pipeline" element={<AdminPipeline />} />
         <Route path="/admin/ia" element={<AdminIA />} />
+        <Route path="/admin/fournisseurs" element={<AdminFournisseurs />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
 
         {/* Client routes */}
