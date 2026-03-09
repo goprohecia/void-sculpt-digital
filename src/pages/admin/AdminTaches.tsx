@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -57,7 +59,6 @@ const PRIORITE_BADGE: Record<string, string> = {
 };
 
 const ASSIGNEES = ["Admin", "Sophie M.", "Marc L.", "Julie R.", "Thomas D."];
-const DOSSIERS = ["DOS-2026-042", "DOS-2026-038", "DOS-2026-035", "DOS-2026-041", "DOS-2026-040"];
 
 const emptyForm = (): Omit<Task, "id"> => ({
   titre: "",
@@ -75,6 +76,18 @@ export default function AdminTaches() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [form, setForm] = useState<Omit<Task, "id">>(emptyForm());
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+
+  const { data: dossiers = [] } = useQuery({
+    queryKey: ["dossiers-for-tasks"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("dossiers")
+        .select("reference, client_nom")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      return data || [];
+    },
+  });
 
   const openCreate = () => {
     setEditingTask(null);
@@ -165,7 +178,12 @@ export default function AdminTaches() {
                             {task.priorite}
                           </Badge>
                           <span className="text-[10px] text-muted-foreground">{task.assignee}</span>
-                          {task.dossier && <span className="text-[10px] text-primary/60">{task.dossier}</span>}
+                          {task.dossier && (
+                            <span className="text-[10px] text-primary/60">
+                              {task.dossier}
+                              {(() => { const d = dossiers.find(dos => dos.reference === task.dossier); return d ? ` — ${d.client_nom}` : ""; })()}
+                            </span>
+                          )}
                           {task.dateEcheance && (
                             <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
                               <CalendarIcon className="h-2.5 w-2.5" />
@@ -261,8 +279,10 @@ export default function AdminTaches() {
                   <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="_none">Aucun</SelectItem>
-                    {DOSSIERS.map((d) => (
-                      <SelectItem key={d} value={d}>{d}</SelectItem>
+                    {dossiers.map((d) => (
+                      <SelectItem key={d.reference} value={d.reference}>
+                        {d.reference} — {d.client_nom}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
