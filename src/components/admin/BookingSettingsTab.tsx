@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,8 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { CalendarDays, Copy, Link, Plus, Trash2, Save, CheckCircle, Eye, ShieldAlert } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { CalendarDays, Copy, Link, Plus, Trash2, Save, CheckCircle, Eye, ShieldAlert, Download, FileDown, Crown, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { QRCodeCanvas } from "qrcode.react";
+import { jsPDF } from "jspdf";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
 interface FormField {
   id: string;
@@ -38,6 +42,16 @@ export function BookingSettingsTab() {
   const [annulationPourcentage, setAnnulationPourcentage] = useState(50);
   const [annulationMessage, setAnnulationMessage] = useState("");
 
+  // QR code state
+  const qrRef = useRef<HTMLCanvasElement>(null);
+  const { demoPlan } = useDemoPlan();
+  const [logoEnabled, setLogoEnabled] = useState(false);
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+  const isEnterprise = demoPlan === "enterprise";
+
+  const bookingUrl = `https://mybusinessassistant.com/rdv/${slug}`;
+  const bookingUrlDisplay = `mybusinessassistant.com/rdv/${slug}`;
+
   const defaultMessage = useMemo(() => {
     const delaiText = `${annulationDelai} ${annulationUnite === "heures" ? "heure(s)" : "jour(s)"}`;
     if (annulationPolitique === "total") {
@@ -51,11 +65,55 @@ export function BookingSettingsTab() {
 
   const displayedMessage = annulationMessage || defaultMessage;
 
-  const bookingUrl = `mybusinessassistant.com/rdv/${slug}`;
-
   const copyLink = () => {
-    navigator.clipboard.writeText(`https://${bookingUrl}`);
+    navigator.clipboard.writeText(bookingUrl);
     toast.success("Lien copié dans le presse-papier");
+  };
+
+  const downloadQrPng = () => {
+    const canvas = qrRef.current;
+    if (!canvas) return;
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `qr-${slug}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("QR code PNG téléchargé");
+    });
+  };
+
+  const downloadQrPdf = () => {
+    const canvas = qrRef.current;
+    if (!canvas) return;
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const qrSize = 80;
+    const x = (pageWidth - qrSize) / 2;
+    pdf.setFontSize(20);
+    pdf.text("Réservez en ligne", pageWidth / 2, 40, { align: "center" });
+    pdf.setFontSize(12);
+    pdf.text(bookingUrlDisplay, pageWidth / 2, 50, { align: "center" });
+    pdf.addImage(imgData, "PNG", x, 60, qrSize, qrSize);
+    pdf.setFontSize(10);
+    pdf.text("Scannez ce QR code pour prendre rendez-vous", pageWidth / 2, 60 + qrSize + 10, { align: "center" });
+    pdf.save(`qr-${slug}.pdf`);
+    toast.success("QR code PDF téléchargé");
+  };
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Veuillez sélectionner une image (PNG ou JPG)");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setLogoSrc(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
   const addField = () => {
@@ -85,17 +143,21 @@ export function BookingSettingsTab() {
     }, 500);
   };
 
+  const qrImageSettings = logoEnabled && logoSrc && isEnterprise
+    ? { src: logoSrc, height: 56, width: 56, excavate: true }
+    : undefined;
+
   return (
     <div className="space-y-6">
-      {/* Slug & Link */}
+      {/* Slug & Link & QR */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <Link className="h-4 w-4" /> Lien de réservation
           </CardTitle>
-          <CardDescription>Partagez ce lien avec vos clients pour qu'ils prennent rendez-vous en ligne.</CardDescription>
+          <CardDescription>Partagez ce lien ou le QR code avec vos clients pour qu'ils prennent rendez-vous en ligne.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="booking-slug">Slug du lien</Label>
             <Input
@@ -107,10 +169,92 @@ export function BookingSettingsTab() {
           </div>
           <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50 border">
             <CalendarDays className="h-4 w-4 text-primary shrink-0" />
-            <span className="text-sm font-mono truncate flex-1">{bookingUrl}</span>
+            <span className="text-sm font-mono truncate flex-1">{bookingUrlDisplay}</span>
             <Button variant="outline" size="sm" onClick={copyLink} className="gap-1.5 shrink-0">
               <Copy className="h-3.5 w-3.5" /> Copier
             </Button>
+          </div>
+
+          <Separator />
+
+          {/* QR Code */}
+          <div className="space-y-4">
+            <p className="text-sm font-medium">QR Code</p>
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="bg-white p-4 rounded-xl border shadow-sm">
+                <QRCodeCanvas
+                  ref={qrRef as any}
+                  value={bookingUrl}
+                  size={280}
+                  bgColor="#FFFFFF"
+                  fgColor="#000000"
+                  level="H"
+                  imageSettings={qrImageSettings}
+                />
+              </div>
+              <div className="flex flex-col gap-3 flex-1">
+                <Button variant="outline" onClick={downloadQrPng} className="gap-2 justify-start">
+                  <Download className="h-4 w-4" /> Télécharger PNG
+                </Button>
+                <Button variant="outline" onClick={downloadQrPdf} className="gap-2 justify-start">
+                  <FileDown className="h-4 w-4" /> Télécharger PDF
+                </Button>
+
+                <Separator className="my-1" />
+
+                {/* Logo overlay — Enterprise */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Label htmlFor="logo-toggle" className="cursor-pointer text-sm">Afficher mon logo au centre</Label>
+                      {!isEnterprise && (
+                        <Badge variant="secondary" className="text-xs gap-1">
+                          <Crown className="h-3 w-3" /> Enterprise
+                        </Badge>
+                      )}
+                    </div>
+                    <Switch
+                      id="logo-toggle"
+                      checked={logoEnabled && isEnterprise}
+                      onCheckedChange={setLogoEnabled}
+                      disabled={!isEnterprise}
+                    />
+                  </div>
+
+                  {!isEnterprise && (
+                    <p className="text-xs text-muted-foreground">
+                      Personnalisez votre QR code avec votre logo.{" "}
+                      <button className="text-primary underline hover:no-underline font-medium">
+                        Passer à l'offre Enterprise →
+                      </button>
+                    </p>
+                  )}
+
+                  {isEnterprise && logoEnabled && (
+                    <div className="space-y-2">
+                      <Label htmlFor="logo-upload" className="text-xs text-muted-foreground">Logo (PNG ou JPG)</Label>
+                      <div className="flex items-center gap-3">
+                        <Button variant="outline" size="sm" asChild className="gap-1.5">
+                          <label htmlFor="logo-upload" className="cursor-pointer">
+                            <Upload className="h-3.5 w-3.5" /> Choisir un fichier
+                            <input
+                              id="logo-upload"
+                              type="file"
+                              accept="image/png,image/jpeg"
+                              className="sr-only"
+                              onChange={handleLogoUpload}
+                            />
+                          </label>
+                        </Button>
+                        {logoSrc && (
+                          <img src={logoSrc} alt="Logo" className="h-8 w-8 rounded object-contain border" />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
