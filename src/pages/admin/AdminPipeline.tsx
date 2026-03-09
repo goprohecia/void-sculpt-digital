@@ -9,8 +9,18 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Target, Users, TrendingUp, Euro, Plus, GripVertical, Trash2 } from "lucide-react";
+import { Target, Users, TrendingUp, Euro, Plus, GripVertical, Trash2, History, ArrowRight, Pencil, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+interface HistoryEntry {
+  id: string;
+  dealId: string;
+  date: string;
+  action: string;
+  detail: string;
+}
 
 interface Deal {
   id: string;
@@ -46,6 +56,16 @@ const DEMO_DEALS: Deal[] = [
 
 export default function AdminPipeline() {
   const [deals, setDeals] = useState(DEMO_DEALS);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => {
+    // Seed with creation entries for demo deals
+    return DEMO_DEALS.map((d) => ({
+      id: `h-init-${d.id}`,
+      dealId: d.id,
+      date: d.dateCreation.split("/").reverse().join("-") + "T10:00:00",
+      action: "Création",
+      detail: `Opportunité créée — ${d.entreprise}, ${d.montant.toLocaleString("fr-FR")}€`,
+    }));
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [draggedDeal, setDraggedDeal] = useState<string | null>(null);
   const [dragOverEtape, setDragOverEtape] = useState<string | null>(null);
@@ -54,6 +74,15 @@ export default function AdminPipeline() {
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const dragStartPos = useRef<{ x: number; y: number } | null>(null);
   const didDrag = useRef(false);
+
+  const addHistory = (dealId: string, action: string, detail: string) => {
+    setHistory((prev) => [
+      { id: `h-${Date.now()}-${Math.random()}`, dealId, date: new Date().toISOString(), action, detail },
+      ...prev,
+    ]);
+  };
+
+  const getDealHistory = (dealId: string) => history.filter((h) => h.dealId === dealId);
   const [newDeal, setNewDeal] = useState({
     nom: "",
     entreprise: "",
@@ -91,18 +120,23 @@ export default function AdminPipeline() {
     const dealId = e.dataTransfer.getData("text/plain");
     
     if (dealId && targetEtape) {
+      const deal = deals.find((d) => d.id === dealId);
+      if (deal && deal.etape !== targetEtape) {
+        const fromLabel = ETAPES.find((et) => et.key === deal.etape)?.label;
+        const toLabel = ETAPES.find((et) => et.key === targetEtape)?.label;
+        addHistory(dealId, "Étape modifiée", `${fromLabel} → ${toLabel}`);
+      }
       setDeals((prev) =>
-        prev.map((deal) => {
-          if (deal.id === dealId && deal.etape !== targetEtape) {
+        prev.map((d) => {
+          if (d.id === dealId && d.etape !== targetEtape) {
             const etapeLabel = ETAPES.find((et) => et.key === targetEtape)?.label;
-            toast.success(`"${deal.nom}" déplacé vers ${etapeLabel}`);
-            // Update probabilité based on stage
-            let newProba = deal.probabilite;
+            toast.success(`"${d.nom}" déplacé vers ${etapeLabel}`);
+            let newProba = d.probabilite;
             if (targetEtape === "gagne") newProba = 100;
             else if (targetEtape === "perdu") newProba = 0;
-            return { ...deal, etape: targetEtape, probabilite: newProba };
+            return { ...d, etape: targetEtape, probabilite: newProba };
           }
-          return deal;
+          return d;
         })
       );
     }
@@ -136,6 +170,23 @@ export default function AdminPipeline() {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
     }
+    // Build change description
+    const changes: string[] = [];
+    if (editForm.nom.trim() !== editDeal.nom) changes.push(`Nom: "${editDeal.nom}" → "${editForm.nom.trim()}"`);
+    if (editForm.entreprise.trim() !== editDeal.entreprise) changes.push(`Entreprise: "${editDeal.entreprise}" → "${editForm.entreprise.trim()}"`);
+    if (parseFloat(editForm.montant) !== editDeal.montant) changes.push(`Montant: ${editDeal.montant.toLocaleString("fr-FR")}€ → ${parseFloat(editForm.montant).toLocaleString("fr-FR")}€`);
+    if (parseInt(editForm.probabilite) !== editDeal.probabilite) changes.push(`Probabilité: ${editDeal.probabilite}% → ${editForm.probabilite}%`);
+    if (editForm.etape !== editDeal.etape) {
+      const fromLabel = ETAPES.find((et) => et.key === editDeal.etape)?.label;
+      const toLabel = ETAPES.find((et) => et.key === editForm.etape)?.label;
+      changes.push(`Étape: ${fromLabel} → ${toLabel}`);
+    }
+    if (editForm.contact.trim() !== editDeal.contact) changes.push(`Contact: "${editDeal.contact}" → "${editForm.contact.trim() || "Non renseigné"}"`);
+
+    if (changes.length > 0) {
+      addHistory(editDeal.id, "Modification", changes.join(" | "));
+    }
+
     setDeals((prev) =>
       prev.map((d) =>
         d.id === editDeal.id
@@ -174,6 +225,7 @@ export default function AdminPipeline() {
     };
 
     setDeals((prev) => [deal, ...prev]);
+    addHistory(deal.id, "Création", `Opportunité créée — ${deal.entreprise}, ${deal.montant.toLocaleString("fr-FR")}€`);
     setDialogOpen(false);
     setNewDeal({ nom: "", entreprise: "", montant: "", probabilite: "25", etape: "prospect", contact: "" });
     toast.success(`Opportunité "${deal.nom}" créée`);
@@ -406,62 +458,97 @@ export default function AdminPipeline() {
 
         {/* Dialog modifier opportunité */}
         <Dialog open={!!editDeal} onOpenChange={(open) => { if (!open) setEditDeal(null); }}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-lg max-h-[85vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>Modifier l'opportunité</DialogTitle>
-              <DialogDescription>Modifiez les informations ou supprimez cette opportunité.</DialogDescription>
+              <DialogDescription>Modifiez les informations ou consultez l'historique.</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 pt-2">
-              <div className="space-y-2">
-                <Label>Nom du projet *</Label>
-                <Input value={editForm.nom} onChange={(e) => setEditForm((p) => ({ ...p, nom: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Entreprise / Client *</Label>
-                <Input value={editForm.entreprise} onChange={(e) => setEditForm((p) => ({ ...p, entreprise: e.target.value }))} />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
+            <Tabs defaultValue="edit" className="flex-1 flex flex-col min-h-0">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="edit" className="gap-1.5"><Pencil className="h-3.5 w-3.5" /> Modifier</TabsTrigger>
+                <TabsTrigger value="history" className="gap-1.5"><History className="h-3.5 w-3.5" /> Historique</TabsTrigger>
+              </TabsList>
+              <TabsContent value="edit" className="space-y-4 pt-2 flex-1">
                 <div className="space-y-2">
-                  <Label>Montant (€) *</Label>
-                  <Input type="number" value={editForm.montant} onChange={(e) => setEditForm((p) => ({ ...p, montant: e.target.value }))} />
+                  <Label>Nom du projet *</Label>
+                  <Input value={editForm.nom} onChange={(e) => setEditForm((p) => ({ ...p, nom: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Probabilité (%)</Label>
-                  <Select value={editForm.probabilite} onValueChange={(v) => setEditForm((p) => ({ ...p, probabilite: v }))}>
+                  <Label>Entreprise / Client *</Label>
+                  <Input value={editForm.entreprise} onChange={(e) => setEditForm((p) => ({ ...p, entreprise: e.target.value }))} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label>Montant (€) *</Label>
+                    <Input type="number" value={editForm.montant} onChange={(e) => setEditForm((p) => ({ ...p, montant: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Probabilité (%)</Label>
+                    <Select value={editForm.probabilite} onValueChange={(v) => setEditForm((p) => ({ ...p, probabilite: v }))}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {[0, 10, 25, 40, 50, 60, 70, 80, 90, 95, 100].map((p) => (
+                          <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Étape</Label>
+                  <Select value={editForm.etape} onValueChange={(v) => setEditForm((p) => ({ ...p, etape: v }))}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {[0, 10, 25, 40, 50, 60, 70, 80, 90, 95, 100].map((p) => (
-                        <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                      {ETAPES.map((e) => (
+                        <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Étape</Label>
-                <Select value={editForm.etape} onValueChange={(v) => setEditForm((p) => ({ ...p, etape: v }))}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {ETAPES.map((e) => (
-                      <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Contact</Label>
-                <Input value={editForm.contact} onChange={(e) => setEditForm((p) => ({ ...p, contact: e.target.value }))} />
-              </div>
-              <DialogFooter className="flex !justify-between pt-2">
-                <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => editDeal && setDeleteConfirmId(editDeal.id)}>
-                  <Trash2 className="h-3.5 w-3.5" /> Supprimer
-                </Button>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setEditDeal(null)}>Annuler</Button>
-                  <Button onClick={handleUpdateDeal}>Enregistrer</Button>
+                <div className="space-y-2">
+                  <Label>Contact</Label>
+                  <Input value={editForm.contact} onChange={(e) => setEditForm((p) => ({ ...p, contact: e.target.value }))} />
                 </div>
-              </DialogFooter>
-            </div>
+                <DialogFooter className="flex !justify-between pt-2">
+                  <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => editDeal && setDeleteConfirmId(editDeal.id)}>
+                    <Trash2 className="h-3.5 w-3.5" /> Supprimer
+                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setEditDeal(null)}>Annuler</Button>
+                    <Button onClick={handleUpdateDeal}>Enregistrer</Button>
+                  </div>
+                </DialogFooter>
+              </TabsContent>
+              <TabsContent value="history" className="flex-1 min-h-0">
+                <ScrollArea className="h-[300px] pr-3">
+                  {editDeal && getDealHistory(editDeal.id).length > 0 ? (
+                    <div className="space-y-3">
+                      {getDealHistory(editDeal.id).map((entry) => (
+                        <div key={entry.id} className="flex gap-3 text-sm border-l-2 border-primary/30 pl-3 py-1">
+                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                            {entry.action === "Création" && <Plus className="h-3 w-3 text-primary" />}
+                            {entry.action === "Modification" && <Pencil className="h-3 w-3 text-primary" />}
+                            {entry.action === "Étape modifiée" && <ArrowRight className="h-3 w-3 text-primary" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-medium">{entry.action}</span>
+                              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {new Date(entry.date).toLocaleDateString("fr-FR")} à {new Date(entry.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                              </span>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5">{entry.detail}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-8">Aucun historique disponible</p>
+                  )}
+                </ScrollArea>
+              </TabsContent>
+            </Tabs>
           </DialogContent>
         </Dialog>
 
