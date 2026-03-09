@@ -93,9 +93,15 @@ export default function AdminTaches() {
         .select("reference, client_nom")
         .order("created_at", { ascending: false })
         .limit(50);
-      return data || [];
+      return (data && data.length > 0) ? data : DEMO_DOSSIERS;
     },
   });
+
+  // Helper to get client name for a dossier reference
+  const getDossierLabel = (ref: string) => {
+    const d = dossiers.find(dos => dos.reference === ref);
+    return d ? `${ref} — ${d.client_nom}` : ref;
+  };
 
   const openCreate = () => {
     setEditingTask(null);
