@@ -1,41 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan: Harmonisation visuelle du back-office — Palette verte cohérente
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Problèmes identifiés
-- Les KPIs utilisent 4 couleurs différentes (emerald, blue, violet, amber) — manque de cohérence
-- Les tendances en `emerald-400` sont trop pâles sur fond blanc
-- Les actions rapides utilisent blue/violet/emerald/amber au lieu d'une palette unifiée
-- Les points d'activité et événements calendrier utilisent des couleurs disparates
-- Les valeurs numériques manquent de contraste (text `text-xl` trop petit, couleurs trop claires)
+## Modifications
 
-### Changements
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-#### 1. `src/components/admin/DashboardKPI.tsx`
-- Remplacer le `colorMap` par des **variations de vert** : vert foncé, vert moyen, vert clair, vert-menthe
-- Augmenter la taille des valeurs (`text-2xl sm:text-3xl`)
-- Trend : utiliser `text-emerald-600` au lieu de `text-emerald-400` pour lisibilité sur blanc
-- Ajouter la couleur du texte de valeur en vert foncé pour le KPI principal
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-#### 2. `src/pages/admin/AdminDashboard.tsx`
-- **KPIs** : passer tous les `iconColor` en variations de vert (`emerald` pour tous, ou utiliser un nouveau système de nuances)
-- **Quick actions** : harmoniser les 4 icônes avec des teintes vertes (vert foncé, vert moyen, vert clair, menthe)
-- **Dossiers récents** : icône section en vert au lieu de `blue-400`
-- **Emails** : icône en vert au lieu de `violet-400`
-- **Activité récente** : remplacer les couleurs de points (blue, green, yellow, violet, red) par des nuances de vert
-- **Répartition clients** : garder vert pour clients, utiliser un vert très clair/gris-vert pour prospects au lieu d'amber
-- **Calendrier** : dots en 3 nuances de vert (foncé, moyen, clair) au lieu de blue/amber/rose
-- **Messages non lus** : déjà en primary (vert), OK
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-#### 3. `src/components/admin/StatusBadge.tsx`
-- Remplacer les couleurs blue par des **teintes vertes** : `en_cours` → vert moyen, `envoyee` → vert clair, `normale` → vert, `en_revue` → vert clair, `a_venir` → vert menthe
-- Garder rouge pour les statuts négatifs (annulé, en retard, refusé, urgente)
-- Garder amber uniquement pour "en attente" / "haute" (avertissement)
-- Le vert `termine/payee/accepte` reste tel quel
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-#### 4. `src/components/admin/AdminSidebar.tsx`
-- Icônes de section (FolderOpen, etc.) : s'assurer qu'elles utilisent `text-primary` (vert) au lieu de couleurs variées
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-### Aucune modification fonctionnelle
-Purement esthétique — même données, même logique, même routes.
+## Details techniques
 
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
+
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.

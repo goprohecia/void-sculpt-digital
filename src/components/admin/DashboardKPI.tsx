@@ -8,16 +8,15 @@ interface DashboardKPIProps {
   value: string | number;
   icon: LucideIcon;
   trend?: { value: number; label: string };
-  iconColor?: "emerald" | "blue" | "violet" | "amber" | "rose" | "primary";
+  iconColor?: "emerald" | "green" | "teal" | "mint" | "primary";
   className?: string;
 }
 
 const colorMap = {
-  emerald: { bg: "bg-emerald-100", text: "text-emerald-600" },
-  blue: { bg: "bg-blue-100", text: "text-blue-600" },
-  violet: { bg: "bg-violet-100", text: "text-violet-600" },
-  amber: { bg: "bg-amber-100", text: "text-amber-600" },
-  rose: { bg: "bg-rose-100", text: "text-rose-600" },
+  emerald: { bg: "bg-emerald-100", text: "text-emerald-700" },
+  green: { bg: "bg-green-100", text: "text-green-700" },
+  teal: { bg: "bg-teal-100", text: "text-teal-700" },
+  mint: { bg: "bg-emerald-50", text: "text-emerald-600" },
   primary: { bg: "bg-primary/10", text: "text-primary" },
 };
 
@@ -68,14 +67,14 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
     >
       <div className="flex items-start justify-between">
         <div className="space-y-1.5 sm:space-y-2">
-          <p className="text-xs sm:text-sm text-muted-foreground">{title}</p>
-          <p className="text-xl sm:text-2xl font-bold tracking-tight">
+          <p className="text-xs sm:text-sm text-muted-foreground font-medium">{title}</p>
+          <p className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             <AnimatedValue value={value} />
           </p>
           {trend && (
             <p className={cn(
-              "text-xs font-medium",
-              trend.value >= 0 ? "text-emerald-400" : "text-rose-400"
+              "text-xs font-semibold",
+              trend.value >= 0 ? "text-emerald-600" : "text-rose-600"
             )}>
               {trend.value >= 0 ? "+" : ""}{trend.value}% {trend.label}
             </p>

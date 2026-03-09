@@ -54,13 +54,13 @@ export default function AdminDashboard() {
   const calendarEvents = useMemo<CalendarEvent[]>(() => {
     const events: CalendarEvent[] = [];
     dossiers.forEach((d) => {
-      if (d.dateEcheance) events.push({ date: d.dateEcheance, label: `${d.reference} — ${d.clientNom}`, type: "dossier", color: "hsl(200,100%,50%)" });
+      if (d.dateEcheance) events.push({ date: d.dateEcheance, label: `${d.reference} — ${d.clientNom}`, type: "dossier", color: "hsl(152,55%,35%)" });
     });
     factures.forEach((f) => {
-      if (f.dateEcheance) events.push({ date: f.dateEcheance, label: `${f.reference} — ${f.clientNom} (${f.montant.toLocaleString()} €)`, type: "facture", color: "hsl(45,93%,55%)" });
+      if (f.dateEcheance) events.push({ date: f.dateEcheance, label: `${f.reference} — ${f.clientNom} (${f.montant.toLocaleString()} €)`, type: "facture", color: "hsl(142,72%,50%)" });
     });
     relances.forEach((r) => {
-      if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(0,84%,60%)" });
+      if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(170,55%,45%)" });
     });
     return events;
   }, [dossiers, factures, relances]);
@@ -84,10 +84,10 @@ export default function AdminDashboard() {
   const pctProspects = totalClients > 0 ? 100 - pctClients : 0;
 
   const quickActions = [
-    { icon: Plus, label: "Nouveau dossier", to: "/admin/dossiers", color: "text-blue-400 bg-blue-500/15" },
-    { icon: Send, label: "Envoyer email", to: "/admin/emails", color: "text-violet-400 bg-violet-500/15" },
-    { icon: Calendar, label: "Planifier RDV", to: "/admin/rendez-vous", color: "text-emerald-400 bg-emerald-500/15" },
-    { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-amber-400 bg-amber-500/15" },
+    { icon: Plus, label: "Nouveau dossier", to: "/admin/dossiers", color: "text-emerald-700 bg-emerald-100" },
+    { icon: Send, label: "Envoyer email", to: "/admin/emails", color: "text-green-700 bg-green-100" },
+    { icon: Calendar, label: "Planifier RDV", to: "/admin/rendez-vous", color: "text-teal-700 bg-teal-100" },
+    { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-emerald-600 bg-emerald-50" },
   ];
 
   return (
@@ -118,13 +118,13 @@ export default function AdminDashboard() {
               <DashboardKPI title="Chiffre d'affaires" value={`${(caFevrier / 1000).toFixed(1)}k €`} icon={Euro} iconColor="emerald" trend={hasTrendData ? { value: 23.5, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Dossiers actifs" value={dossiersActifs} icon={FolderOpen} iconColor="blue" trend={hasTrendData ? { value: 12, label: "vs jan." } : undefined} />
+              <DashboardKPI title="Dossiers actifs" value={dossiersActifs} icon={FolderOpen} iconColor="green" trend={hasTrendData ? { value: 12, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux clients" value={nouveauxClients} icon={Users} iconColor="violet" trend={hasTrendData ? { value: 50, label: "vs jan." } : undefined} />
+              <DashboardKPI title="Nouveaux clients" value={nouveauxClients} icon={Users} iconColor="teal" trend={hasTrendData ? { value: 50, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Factures en attente" value={facturesEnAttente} icon={Receipt} iconColor="amber" />
+              <DashboardKPI title="Factures en attente" value={facturesEnAttente} icon={Receipt} iconColor="mint" />
             </motion.div>
           </motion.div>
 
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
                 <div className="glass-card p-5 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold flex items-center gap-2">
-                      <FolderOpen className="h-4 w-4 text-blue-400" />
+                      <FolderOpen className="h-4 w-4 text-primary" />
                       Dossiers récents
                     </h3>
                     <Link to="/admin/dossiers" className="text-xs text-primary hover:underline flex items-center gap-1">
@@ -181,9 +181,9 @@ export default function AdminDashboard() {
                     Calendrier des échéances
                   </h3>
                   <div className="flex items-center gap-3 text-[10px]">
-                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-blue-400" />Dossiers</span>
-                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-amber-400" />Factures</span>
-                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-rose-400" />Relances</span>
+                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-emerald-600" />Dossiers</span>
+                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-400" />Factures</span>
+                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-teal-400" />Relances</span>
                   </div>
                 </div>
 
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
                 <div className="glass-card p-5 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-violet-400" />
+                      <Mail className="h-4 w-4 text-primary" />
                       Derniers emails envoyés
                     </h3>
                     <span className="text-xs text-muted-foreground">{emailLogs.length} email{emailLogs.length > 1 ? "s" : ""}</span>
@@ -266,7 +266,7 @@ export default function AdminDashboard() {
               {/* Actions rapides */}
               <div className="glass-card p-5">
                 <h3 className="text-sm font-semibold flex items-center gap-2 mb-4">
-                  <Zap className="h-4 w-4 text-amber-400" />
+                  <Zap className="h-4 w-4 text-primary" />
                   Actions rapides
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -288,7 +288,7 @@ export default function AdminDashboard() {
               {/* Tendance CA (sparkline) */}
               <div className="glass-card p-5">
                 <h3 className="text-sm font-semibold flex items-center gap-2 mb-1">
-                  <TrendingUp className="h-4 w-4 text-emerald-400" />
+                  <TrendingUp className="h-4 w-4 text-primary" />
                   Tendance CA
                 </h3>
                 <p className="text-xs text-muted-foreground mb-3">Janvier – Juin 2026</p>
@@ -328,18 +328,18 @@ export default function AdminDashboard() {
                     </div>
                     <span className="text-xs font-semibold text-emerald-400">{pctClients}%</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-xl bg-amber-500/10 p-3">
-                    <UserPlus className="h-5 w-5 text-amber-400" />
+                  <div className="flex items-center gap-2 rounded-xl bg-teal-500/10 p-3">
+                    <UserPlus className="h-5 w-5 text-teal-600" />
                     <div className="flex-1">
-                      <p className="text-lg font-bold text-amber-400">{nbProspects}</p>
+                      <p className="text-lg font-bold text-teal-600">{nbProspects}</p>
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prospects</p>
                     </div>
-                    <span className="text-xs font-semibold text-amber-400">{pctProspects}%</span>
+                    <span className="text-xs font-semibold text-teal-600">{pctProspects}%</span>
                   </div>
                   {totalClients > 0 && (
                     <div className="h-2 rounded-full bg-muted/30 overflow-hidden flex">
                       <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${pctClients}%` }} />
-                      <div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${pctProspects}%` }} />
+                      <div className="h-full bg-teal-400 transition-all duration-500" style={{ width: `${pctProspects}%` }} />
                     </div>
                   )}
                 </div>
@@ -349,7 +349,7 @@ export default function AdminDashboard() {
               <div className="glass-card p-5">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-semibold flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-blue-400" />
+                    <Activity className="h-4 w-4 text-primary" />
                     Activité récente
                   </h3>
                   <span className="text-xs text-muted-foreground">{activites.length}</span>
@@ -359,11 +359,11 @@ export default function AdminDashboard() {
                     {activites.slice(0, 6).map((a) => (
                       <div key={a.id} className="flex items-start gap-3 text-xs">
                         <div className="mt-1.5 h-1.5 w-1.5 rounded-full shrink-0" style={{
-                          backgroundColor: a.type === "dossier" ? "hsl(200,100%,50%)" :
-                            a.type === "client" ? "hsl(155,100%,45%)" :
-                            a.type === "facture" ? "hsl(45,93%,55%)" :
-                            a.type === "message" ? "hsl(265,85%,60%)" :
-                            "hsl(0,84%,60%)"
+                          backgroundColor: a.type === "dossier" ? "hsl(152,55%,35%)" :
+                            a.type === "client" ? "hsl(145,63%,42%)" :
+                            a.type === "facture" ? "hsl(142,72%,50%)" :
+                            a.type === "message" ? "hsl(170,55%,45%)" :
+                            "hsl(160,40%,55%)"
                         }} />
                         <div className="flex-1 min-w-0">
                           <p className="text-foreground truncate leading-tight">{a.description}</p>
