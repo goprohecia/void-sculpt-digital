@@ -15,6 +15,8 @@ function mapRow(row: any): Facture {
     statut: row.statut as FactureStatus,
     dateEmission: row.date_emission?.split("T")[0] ?? "",
     dateEcheance: row.date_echeance?.split("T")[0] ?? "",
+    serviceCategoryId: row.service_category_id ?? undefined,
+    description: row.description ?? "",
   };
 }
 
