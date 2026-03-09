@@ -403,6 +403,85 @@ export default function AdminPipeline() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Dialog modifier opportunité */}
+        <Dialog open={!!editDeal} onOpenChange={(open) => { if (!open) setEditDeal(null); }}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Modifier l'opportunité</DialogTitle>
+              <DialogDescription>Modifiez les informations ou supprimez cette opportunité.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 pt-2">
+              <div className="space-y-2">
+                <Label>Nom du projet *</Label>
+                <Input value={editForm.nom} onChange={(e) => setEditForm((p) => ({ ...p, nom: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <Label>Entreprise / Client *</Label>
+                <Input value={editForm.entreprise} onChange={(e) => setEditForm((p) => ({ ...p, entreprise: e.target.value }))} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Montant (€) *</Label>
+                  <Input type="number" value={editForm.montant} onChange={(e) => setEditForm((p) => ({ ...p, montant: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Probabilité (%)</Label>
+                  <Select value={editForm.probabilite} onValueChange={(v) => setEditForm((p) => ({ ...p, probabilite: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {[0, 10, 25, 40, 50, 60, 70, 80, 90, 95, 100].map((p) => (
+                        <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Étape</Label>
+                <Select value={editForm.etape} onValueChange={(v) => setEditForm((p) => ({ ...p, etape: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {ETAPES.map((e) => (
+                      <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Contact</Label>
+                <Input value={editForm.contact} onChange={(e) => setEditForm((p) => ({ ...p, contact: e.target.value }))} />
+              </div>
+              <DialogFooter className="flex !justify-between pt-2">
+                <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => editDeal && setDeleteConfirmId(editDeal.id)}>
+                  <Trash2 className="h-3.5 w-3.5" /> Supprimer
+                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => setEditDeal(null)}>Annuler</Button>
+                  <Button onClick={handleUpdateDeal}>Enregistrer</Button>
+                </div>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Confirmation suppression */}
+        <AlertDialog open={!!deleteConfirmId} onOpenChange={(open) => { if (!open) setDeleteConfirmId(null); }}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Supprimer cette opportunité ?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Cette action est irréversible. L'opportunité sera définitivement supprimée du pipeline.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteDeal} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Supprimer
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </AdminPageTransition>
     </AdminLayout>
   );
