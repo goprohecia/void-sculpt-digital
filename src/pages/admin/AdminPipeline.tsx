@@ -120,18 +120,23 @@ export default function AdminPipeline() {
     const dealId = e.dataTransfer.getData("text/plain");
     
     if (dealId && targetEtape) {
+      const deal = deals.find((d) => d.id === dealId);
+      if (deal && deal.etape !== targetEtape) {
+        const fromLabel = ETAPES.find((et) => et.key === deal.etape)?.label;
+        const toLabel = ETAPES.find((et) => et.key === targetEtape)?.label;
+        addHistory(dealId, "Étape modifiée", `${fromLabel} → ${toLabel}`);
+      }
       setDeals((prev) =>
-        prev.map((deal) => {
-          if (deal.id === dealId && deal.etape !== targetEtape) {
+        prev.map((d) => {
+          if (d.id === dealId && d.etape !== targetEtape) {
             const etapeLabel = ETAPES.find((et) => et.key === targetEtape)?.label;
-            toast.success(`"${deal.nom}" déplacé vers ${etapeLabel}`);
-            // Update probabilité based on stage
-            let newProba = deal.probabilite;
+            toast.success(`"${d.nom}" déplacé vers ${etapeLabel}`);
+            let newProba = d.probabilite;
             if (targetEtape === "gagne") newProba = 100;
             else if (targetEtape === "perdu") newProba = 0;
-            return { ...deal, etape: targetEtape, probabilite: newProba };
+            return { ...d, etape: targetEtape, probabilite: newProba };
           }
-          return deal;
+          return d;
         })
       );
     }
