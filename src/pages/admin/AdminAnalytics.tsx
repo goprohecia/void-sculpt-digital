@@ -173,7 +173,7 @@ export default function AdminAnalytics() {
       });
       return result;
     });
-  }, [categorize, moisMap, donneesMensuelles, allDossiers]);
+  }, [categorize, moisMap, donneesMensuelles, allDossiers, CATS]);
 
   // Totals per category across all months
   const ventesTotaux = useMemo(() => {
