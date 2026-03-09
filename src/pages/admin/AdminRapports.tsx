@@ -1,19 +1,24 @@
 import { useState } from "react";
+import { format as fmtDate } from "date-fns";
+import { fr } from "date-fns/locale";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BarChart3, Download, FileText, TrendingUp, Users, Receipt, FolderOpen, Calendar } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { BarChart3, Download, FileText, TrendingUp, Users, Receipt, FolderOpen, Calendar as CalendarIcon, CalendarDays } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const RAPPORTS = [
   { id: "ca", titre: "Chiffre d'affaires", description: "CA mensuel, trimestriel et annuel avec évolution", icon: TrendingUp, categorie: "Finance" },
   { id: "clients", titre: "Activité clients", description: "Nouveaux clients, segments, taux de rétention", icon: Users, categorie: "Commercial" },
   { id: "factures", titre: "État des factures", description: "Factures émises, payées, en retard, montants", icon: Receipt, categorie: "Finance" },
   { id: "dossiers", titre: "Suivi des dossiers", description: "Dossiers par statut, durée moyenne, rentabilité", icon: FolderOpen, categorie: "Opérations" },
-  { id: "temps", titre: "Temps passé", description: "Temps par client, dossier, salarié et rentabilité horaire", icon: Calendar, categorie: "Opérations" },
+  { id: "temps", titre: "Temps passé", description: "Temps par client, dossier, salarié et rentabilité horaire", icon: CalendarIcon, categorie: "Opérations" },
   { id: "performance", titre: "Performance équipe", description: "Productivité, dossiers traités, objectifs atteints", icon: BarChart3, categorie: "RH" },
 ];
 
@@ -27,6 +32,15 @@ const HISTORIQUE = [
 export default function AdminRapports() {
   const [periode, setPeriode] = useState("mois");
   const [format, setFormat] = useState("pdf");
+  const [customDate, setCustomDate] = useState<Date | undefined>();
+  const [rangeFrom, setRangeFrom] = useState<Date | undefined>();
+  const [rangeTo, setRangeTo] = useState<Date | undefined>();
+
+  const periodeLabel = () => {
+    if (periode === "date" && customDate) return fmtDate(customDate, "dd/MM/yyyy");
+    if (periode === "intervalle" && rangeFrom && rangeTo) return `${fmtDate(rangeFrom, "dd/MM")} → ${fmtDate(rangeTo, "dd/MM/yyyy")}`;
+    return undefined;
+  };
 
   const handleGenerate = (rapportId: string) => {
     toast.success(`Rapport "${RAPPORTS.find((r) => r.id === rapportId)?.titre}" généré en ${format.toUpperCase()}`);
@@ -44,15 +58,58 @@ export default function AdminRapports() {
               <p className="text-muted-foreground text-sm">Générez des rapports personnalisés en PDF ou CSV</p>
             </div>
             <div className="flex gap-2">
-              <Select value={periode} onValueChange={setPeriode}>
-                <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+              <Select value={periode} onValueChange={(v) => { setPeriode(v); }}>
+                <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="semaine">Cette semaine</SelectItem>
                   <SelectItem value="mois">Ce mois</SelectItem>
                   <SelectItem value="trimestre">Ce trimestre</SelectItem>
                   <SelectItem value="annee">Cette année</SelectItem>
+                  <SelectItem value="date">Date précise</SelectItem>
+                  <SelectItem value="intervalle">Intervalle personnalisé</SelectItem>
                 </SelectContent>
               </Select>
+
+              {periode === "date" && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className={cn("w-44 justify-start text-left font-normal", !customDate && "text-muted-foreground")}>
+                      <CalendarDays className="mr-2 h-4 w-4" />
+                      {customDate ? fmtDate(customDate, "dd/MM/yyyy") : "Choisir une date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar mode="single" selected={customDate} onSelect={setCustomDate} initialFocus className={cn("p-3 pointer-events-auto")} />
+                  </PopoverContent>
+                </Popover>
+              )}
+
+              {periode === "intervalle" && (
+                <>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className={cn("w-36 justify-start text-left font-normal", !rangeFrom && "text-muted-foreground")}>
+                        <CalendarDays className="mr-2 h-4 w-4" />
+                        {rangeFrom ? fmtDate(rangeFrom, "dd/MM/yyyy") : "Du"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={rangeFrom} onSelect={setRangeFrom} initialFocus className={cn("p-3 pointer-events-auto")} />
+                    </PopoverContent>
+                  </Popover>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className={cn("w-36 justify-start text-left font-normal", !rangeTo && "text-muted-foreground")}>
+                        <CalendarDays className="mr-2 h-4 w-4" />
+                        {rangeTo ? fmtDate(rangeTo, "dd/MM/yyyy") : "Au"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={rangeTo} onSelect={setRangeTo} disabled={(d) => rangeFrom ? d < rangeFrom : false} initialFocus className={cn("p-3 pointer-events-auto")} />
+                    </PopoverContent>
+                  </Popover>
+                </>
+              )}
               <Select value={format} onValueChange={setFormat}>
                 <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
                 <SelectContent>
