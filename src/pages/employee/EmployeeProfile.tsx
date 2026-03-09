@@ -16,7 +16,7 @@ export default function EmployeeProfile() {
 
   const [notifInApp, setNotifInApp] = useState(true);
   const [notifSms, setNotifSms] = useState(false);
-  const [telephone, setTelephone] = useState(user?.telephone || "");
+  const [telephone, setTelephone] = useState("");
 
   const handleSavePrefs = () => {
     toast.success("Préférences de notifications enregistrées");
