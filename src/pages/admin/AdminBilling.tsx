@@ -39,6 +39,7 @@ export default function AdminBilling() {
   const { getDossiersByClient } = useDossiers();
   const { sendLogs, addSendLog } = useSendLogs();
   const { isDemo } = useIsDemo();
+  const { categories: serviceCategories } = useServiceCategories();
 
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
