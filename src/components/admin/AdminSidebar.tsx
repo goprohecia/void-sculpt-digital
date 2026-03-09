@@ -104,6 +104,7 @@ export function AdminSidebar() {
     { title: getModuleLabel("emails"), url: "/admin/emails", icon: Mail, moduleKey: "emails" },
     { title: getModuleLabel("support"), url: "/admin/support", icon: LifeBuoy, badge: openTickets, moduleKey: "support" },
     { title: getModuleLabel("stock"), url: "/admin/stock", icon: Package, moduleKey: "stock" },
+    { title: getModuleLabel("fournisseurs"), url: "/admin/fournisseurs", icon: Truck, moduleKey: "fournisseurs" },
     { title: getModuleLabel("analyse"), url: "/admin/analyse", icon: BarChart3, moduleKey: "analyse" },
     { title: getModuleLabel("taches"), url: "/admin/taches", icon: CheckSquare, moduleKey: "taches" },
     { title: getModuleLabel("agenda"), url: "/admin/agenda", icon: Calendar, moduleKey: "agenda" },

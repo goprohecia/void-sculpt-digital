@@ -166,6 +166,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/notes" element={<AdminNotes />} />
         <Route path="/admin/pipeline" element={<AdminPipeline />} />
         <Route path="/admin/ia" element={<AdminIA />} />
+        <Route path="/admin/fournisseurs" element={<AdminFournisseurs />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
 
         {/* Client routes */}
