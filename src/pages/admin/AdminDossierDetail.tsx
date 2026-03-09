@@ -115,7 +115,28 @@ export default function AdminDossierDetail() {
   const assignEnabled = isAssignationEnabled(demoSector);
 
   const [assignModalOpen, setAssignModalOpen] = useState(false);
+  const [assignModalMode, setAssignModalMode] = useState<"full" | "add">("full");
   const [cdcViewOpen, setCdcViewOpen] = useState(false);
+
+  const handleAssign = (assignments: DossierAssignment[]) => {
+    assignDossier(dossier?.id ?? "", assignments);
+    assignments.forEach((a, i) => {
+      const member = MOCK_TEAM_MEMBERS.find((m) => m.id === a.employeeId);
+      const roleBadge = a.role === "responsable" ? "Responsable" : "Renfort";
+      addNotification({
+        id: `notif_assign_${Date.now()}_${i}`,
+        type: "assignation",
+        titre: "Nouveau dossier assigné",
+        description: `${dossier?.reference ?? ""} — Vous êtes ${roleBadge}`,
+        date: new Date().toISOString(),
+        lu: false,
+        lien: `/admin/dossiers/${dossier?.id}`,
+        destinataire: "employee",
+        employeeId: a.employeeId,
+        canal: "both",
+      });
+    });
+  };
 
   // Cancellation policy mock
   const cancellationPolicy = {
