@@ -1,94 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Module 06 — Gestion des disponibilités par pro
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Audit
+## Modifications
 
-| Élément | Statut |
-|---|---|
-| Page "Mes disponibilités" espace Pro | **Manquant** — `EmployeeCalendrier` est vide (placeholder) |
-| Onglets horaires / exceptions / congés | **Manquant** |
-| Vue calendrier globale équipe (Admin) | **Manquant** — `AdminAgenda` existe mais sans vue équipe ni disponibilités |
-| Filtrage créneaux booking par disponibilités | **Manquant** — `generateSlots()` est aléatoire |
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### Plan d'implémentation
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-#### 1. Données mock (`mockData.ts`)
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-Ajouter les types et données :
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-```typescript
-export interface PlageHoraire {
-  debut: string; // "09:00"
-  fin: string;   // "12:00"
-}
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-export interface DisponibilitesHebdo {
-  [jour: number]: PlageHoraire[]; // 0=Lun..6=Dim
-}
+## Details techniques
 
-export interface ExceptionDispo {
-  id: string;
-  date: string; // "2026-03-15"
-  disponible: boolean;
-  plages?: PlageHoraire[];
-}
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-export interface Conge {
-  id: string;
-  debut: string; // "2026-04-01"
-  fin: string;   // "2026-04-10"
-}
-
-export interface ProDisponibilites {
-  employeeId: string;
-  horaires: DisponibilitesHebdo;
-  exceptions: ExceptionDispo[];
-  conges: Conge[];
-}
-```
-
-Ajouter `MOCK_DISPONIBILITES: ProDisponibilites[]` avec des données pour les 4 team members. Ajouter une couleur par membre (`couleur` dans `TeamMember`).
-
-#### 2. Page "Mes disponibilités" — Refonte `EmployeeCalendrier.tsx`
-
-Transformer la page vide en page complète avec `Tabs` (3 onglets) :
-
-- **Onglet "Horaires habituels"** : Grille Lun–Dim, chaque jour affiche ses plages avec boutons Ajouter/Supprimer. Inputs time pour début/fin.
-- **Onglet "Exceptions"** : DatePicker + plages horaires + toggle Disponible/Indisponible. Liste des exceptions sous forme de tags avec bouton supprimer.
-- **Onglet "Congés"** : Deux DatePickers (début → fin) + bouton Ajouter. Liste des périodes avec bouton Supprimer.
-
-État local via `useState`, initialisé depuis les données mock du pro connecté.
-
-#### 3. Vue calendrier globale équipe — Modifier `AdminAgenda.tsx`
-
-Ajouter une section "Disponibilités équipe" au-dessous ou via un toggle :
-- Grille semaine avec une ligne par pro, couleur distincte par membre
-- Plages disponibles affichées en barres colorées
-- Congés affichés en bandes barrées
-- Clic sur un pro → Sheet/Dialog avec ses disponibilités modifiables (réutilisation des composants de l'onglet pro)
-
-#### 4. Filtrage des créneaux booking — Modifier `BookingStepSlot.tsx` / `BookingPage.tsx`
-
-Modifier `generateSlots()` pour accepter un paramètre `disponibilites: ProDisponibilites[]` :
-- Un créneau n'est `"disponible"` que si au moins un pro est disponible à cette heure (selon horaires hebdo)
-- Si tous les pros sont en congé ce jour → `"indisponible"`
-- Si une exception "indisponible" couvre ce créneau → `"indisponible"`
-- Conserver la logique aléatoire pour `"verrouille"` / `"reserve"` en simulation
-
-### Fichiers à créer
-
-| Fichier | Description |
-|---|---|
-| *(aucun nouveau fichier)* | — |
-
-### Fichiers à modifier
-
-| Fichier | Modification |
-|---|---|
-| `src/data/mockData.ts` | Ajouter types disponibilités + `MOCK_DISPONIBILITES` + couleur sur `TeamMember` |
-| `src/pages/employee/EmployeeCalendrier.tsx` | Refonte complète : 3 onglets horaires/exceptions/congés |
-| `src/pages/admin/AdminAgenda.tsx` | Ajouter vue calendrier globale équipe avec couleurs et panneau détail |
-| `src/components/booking/BookingStepSlot.tsx` | Modifier `generateSlots()` pour filtrer selon disponibilités |
-| `src/pages/public/BookingPage.tsx` | Importer et passer les disponibilités mock à `generateSlots()` |
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.

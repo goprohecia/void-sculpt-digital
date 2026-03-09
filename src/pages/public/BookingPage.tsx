@@ -7,6 +7,7 @@ import { BookingStepRecap } from "@/components/booking/BookingStepRecap";
 import { BookingStepConfirmation } from "@/components/booking/BookingStepConfirmation";
 import { BookingCountdown } from "@/components/booking/BookingCountdown";
 import { toast } from "@/hooks/use-toast";
+import { MOCK_DISPONIBILITES } from "@/data/mockData";
 
 const LOCK_DURATION_MS = 10 * 60 * 1000;
 
@@ -36,7 +37,7 @@ export default function BookingPage() {
   const skipForm = !config.formulaireEnabled;
 
   const [step, setStep] = useState(1);
-  const [slots, setSlots] = useState<TimeSlot[]>(() => generateSlots());
+  const [slots, setSlots] = useState<TimeSlot[]>(() => generateSlots(MOCK_DISPONIBILITES));
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [lockExpiry, setLockExpiry] = useState<number | null>(null);

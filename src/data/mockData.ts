@@ -43,6 +43,37 @@ export interface TeamMember {
   prenom: string;
   poste: string;
   statut: "disponible" | "indisponible";
+  couleur: string;
+}
+
+// ---- DISPONIBILITÉS ----
+export interface PlageHoraire {
+  debut: string;
+  fin: string;
+}
+
+export interface DisponibilitesHebdo {
+  [jour: number]: PlageHoraire[];
+}
+
+export interface ExceptionDispo {
+  id: string;
+  date: string;
+  disponible: boolean;
+  plages?: PlageHoraire[];
+}
+
+export interface Conge {
+  id: string;
+  debut: string;
+  fin: string;
+}
+
+export interface ProDisponibilites {
+  employeeId: string;
+  horaires: DisponibilitesHebdo;
+  exceptions: ExceptionDispo[];
+  conges: Conge[];
 }
 
 export interface Dossier {
@@ -509,10 +540,50 @@ export const statsFactures = {
 
 // ---- TEAM MEMBERS (mock) ----
 export const MOCK_TEAM_MEMBERS: TeamMember[] = [
-  { id: "demo-emp-1", nom: "Durand", prenom: "Alexandre", poste: "Développeur Full-Stack", statut: "disponible" },
-  { id: "demo-emp-2", nom: "Leclerc", prenom: "Camille", poste: "Designer UI/UX", statut: "disponible" },
-  { id: "demo-emp-3", nom: "Morel", prenom: "Hugo", poste: "Chef de projet", statut: "disponible" },
-  { id: "demo-emp-4", nom: "Fournier", prenom: "Sarah", poste: "Développeuse Mobile", statut: "indisponible" },
+  { id: "demo-emp-1", nom: "Durand", prenom: "Alexandre", poste: "Développeur Full-Stack", statut: "disponible", couleur: "#6366f1" },
+  { id: "demo-emp-2", nom: "Leclerc", prenom: "Camille", poste: "Designer UI/UX", statut: "disponible", couleur: "#f59e0b" },
+  { id: "demo-emp-3", nom: "Morel", prenom: "Hugo", poste: "Chef de projet", statut: "disponible", couleur: "#10b981" },
+  { id: "demo-emp-4", nom: "Fournier", prenom: "Sarah", poste: "Développeuse Mobile", statut: "indisponible", couleur: "#ef4444" },
+];
+
+const defaultHoraires: DisponibilitesHebdo = {
+  0: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }],
+  1: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }],
+  2: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }],
+  3: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }],
+  4: [{ debut: "09:00", fin: "12:00" }, { debut: "14:00", fin: "17:00" }],
+  5: [],
+  6: [],
+};
+
+export const MOCK_DISPONIBILITES: ProDisponibilites[] = [
+  {
+    employeeId: "demo-emp-1",
+    horaires: { ...defaultHoraires, 2: [{ debut: "10:00", fin: "12:00" }, { debut: "14:00", fin: "18:00" }] },
+    exceptions: [
+      { id: "exc-1", date: "2026-03-18", disponible: false },
+      { id: "exc-2", date: "2026-03-21", disponible: true, plages: [{ debut: "09:00", fin: "13:00" }] },
+    ],
+    conges: [{ id: "cong-1", debut: "2026-04-06", fin: "2026-04-10" }],
+  },
+  {
+    employeeId: "demo-emp-2",
+    horaires: defaultHoraires,
+    exceptions: [],
+    conges: [{ id: "cong-2", debut: "2026-03-23", fin: "2026-03-27" }],
+  },
+  {
+    employeeId: "demo-emp-3",
+    horaires: { ...defaultHoraires, 4: [{ debut: "09:00", fin: "12:00" }] },
+    exceptions: [{ id: "exc-3", date: "2026-03-14", disponible: true, plages: [{ debut: "10:00", fin: "16:00" }] }],
+    conges: [],
+  },
+  {
+    employeeId: "demo-emp-4",
+    horaires: { ...defaultHoraires, 5: [{ debut: "09:00", fin: "12:00" }] },
+    exceptions: [],
+    conges: [{ id: "cong-3", debut: "2026-03-09", fin: "2026-04-01" }],
+  },
 ];
 
 // ---- INITIAL ASSIGNMENTS (mock) ----
