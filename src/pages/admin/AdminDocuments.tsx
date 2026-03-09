@@ -67,6 +67,14 @@ export default function AdminDocuments() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Rename dialog
+  const [renameDoc, setRenameDoc] = useState<Doc | null>(null);
+  const [renameName, setRenameName] = useState("");
+
+  // Move dialog
+  const [moveDoc, setMoveDoc] = useState<Doc | null>(null);
+  const [moveDossier, setMoveDossier] = useState("");
+
   const allDossiers = ["Tous", ...dossiers];
 
   const filtered = docs.filter((d) => {
