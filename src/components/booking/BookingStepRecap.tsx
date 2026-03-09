@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { CalendarDays, CreditCard } from "lucide-react";
+import { CalendarDays, CreditCard, ShieldAlert } from "lucide-react";
 import type { TimeSlot } from "./BookingStepSlot";
 import type { BookingFormField } from "./BookingStepForm";
 
@@ -15,6 +17,7 @@ interface BookingStepRecapProps {
   acompteType: "fixe" | "pourcentage";
   acompteMontant: number;
   prixPrestation: number;
+  cancellationMessage: string;
   onConfirm: () => void;
   onBack: () => void;
 }
