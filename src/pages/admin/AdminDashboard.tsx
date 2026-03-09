@@ -266,7 +266,7 @@ export default function AdminDashboard() {
               {/* Actions rapides */}
               <div className="glass-card p-5">
                 <h3 className="text-sm font-semibold flex items-center gap-2 mb-4">
-                  <Zap className="h-4 w-4 text-amber-400" />
+                  <Zap className="h-4 w-4 text-primary" />
                   Actions rapides
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
