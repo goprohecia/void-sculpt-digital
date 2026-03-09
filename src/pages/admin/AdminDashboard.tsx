@@ -54,13 +54,13 @@ export default function AdminDashboard() {
   const calendarEvents = useMemo<CalendarEvent[]>(() => {
     const events: CalendarEvent[] = [];
     dossiers.forEach((d) => {
-      if (d.dateEcheance) events.push({ date: d.dateEcheance, label: `${d.reference} — ${d.clientNom}`, type: "dossier", color: "hsl(200,100%,50%)" });
+      if (d.dateEcheance) events.push({ date: d.dateEcheance, label: `${d.reference} — ${d.clientNom}`, type: "dossier", color: "hsl(152,55%,35%)" });
     });
     factures.forEach((f) => {
-      if (f.dateEcheance) events.push({ date: f.dateEcheance, label: `${f.reference} — ${f.clientNom} (${f.montant.toLocaleString()} €)`, type: "facture", color: "hsl(45,93%,55%)" });
+      if (f.dateEcheance) events.push({ date: f.dateEcheance, label: `${f.reference} — ${f.clientNom} (${f.montant.toLocaleString()} €)`, type: "facture", color: "hsl(142,72%,50%)" });
     });
     relances.forEach((r) => {
-      if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(0,84%,60%)" });
+      if (r.dateProchaine) events.push({ date: r.dateProchaine, label: `Relance ${r.factureRef} — ${r.clientNom}`, type: "relance", color: "hsl(170,55%,45%)" });
     });
     return events;
   }, [dossiers, factures, relances]);
