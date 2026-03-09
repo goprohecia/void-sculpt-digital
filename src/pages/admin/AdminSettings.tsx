@@ -27,25 +27,10 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const AVAILABLE_MODULES_FOR_SPACES = [
-  { key: "overview", label: "Vue d'ensemble" },
-  { key: "dossiers", label: "Dossiers" },
-  { key: "calendrier", label: "Calendrier" },
-  { key: "messagerie", label: "Messagerie" },
-  { key: "facturation", label: "Facturation" },
-  { key: "relances", label: "Relances" },
-  { key: "support", label: "Support" },
-  { key: "stock", label: "Stock" },
-  { key: "analyse", label: "Analyse" },
-  { key: "taches", label: "Tâches" },
-  { key: "agenda", label: "Agenda" },
-  { key: "rapports", label: "Rapports" },
-  { key: "documents", label: "Documents" },
-  { key: "temps", label: "Suivi du temps" },
-  { key: "automatisations", label: "Automatisations" },
-  { key: "notes", label: "Notes" },
-  { key: "pipeline", label: "Pipeline CRM" },
-  { key: "profil", label: "Profil" },
+const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
+  "overview", "dossiers", "calendrier", "messagerie", "facturation",
+  "relances", "support", "stock", "analyse", "taches", "agenda",
+  "rapports", "documents", "temps", "automatisations", "notes", "pipeline", "profil",
 ];
 
 function CustomSpacesManager() {
