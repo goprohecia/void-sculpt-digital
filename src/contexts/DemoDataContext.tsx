@@ -235,6 +235,11 @@ interface DemoDataContextType {
   validateCahier: (demandeId: string) => void;
   rejectCahier: (demandeId: string, motif: string) => void;
   marquerRdvEffectue: (dossierId: string) => void;
+  // Assignment system
+  assignments: Record<string, DossierAssignment[]>;
+  assignDossier: (dossierId: string, newAssignments: DossierAssignment[]) => void;
+  getAssignmentsByDossier: (dossierId: string) => DossierAssignment[];
+  getDossiersByEmployee: (employeeId: string) => { dossier: Dossier; role: DossierAssignment["role"] }[];
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
