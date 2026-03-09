@@ -374,14 +374,31 @@ export default function AdminSettings() {
   });
 
   const [company, setCompany] = useState({
-    nom: "My Business Assistant",
-    siret: "123 456 789 00012",
-    adresse: "42 avenue des Champs-Élysées",
-    codePostal: "75008",
-    ville: "Paris",
-    emailContact: "contact@mba.app",
-    telephone: "01 23 45 67 89",
+    nom: "",
+    siret: "",
+    adresse: "",
+    codePostal: "",
+    ville: "",
+    emailContact: "",
+    telephone: "",
   });
+
+  // Load business_name from app_settings on mount
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from("app_settings")
+        .select("key, value")
+        .in("key", ["business_name"]);
+      if (data) {
+        const row = (data as any[]).find((r: any) => r.key === "business_name");
+        if (row?.value) {
+          const name = typeof row.value === "string" ? row.value : String(row.value);
+          setCompany((c) => ({ ...c, nom: name }));
+        }
+      }
+    })();
+  }, []);
 
   const [invoiceSettings, setInvoiceSettings] = useState({
     logoUrl: "",
