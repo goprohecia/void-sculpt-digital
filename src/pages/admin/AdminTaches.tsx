@@ -59,7 +59,6 @@ const PRIORITE_BADGE: Record<string, string> = {
 };
 
 const ASSIGNEES = ["Admin", "Sophie M.", "Marc L.", "Julie R.", "Thomas D."];
-const DOSSIERS = ["DOS-2026-042", "DOS-2026-038", "DOS-2026-035", "DOS-2026-041", "DOS-2026-040"];
 
 const emptyForm = (): Omit<Task, "id"> => ({
   titre: "",
