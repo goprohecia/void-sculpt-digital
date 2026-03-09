@@ -14,6 +14,14 @@ import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+interface HistoryEntry {
+  id: string;
+  dealId: string;
+  date: string;
+  action: string;
+  detail: string;
+}
+
 interface Deal {
   id: string;
   nom: string;
