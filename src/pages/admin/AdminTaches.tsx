@@ -60,6 +60,14 @@ const PRIORITE_BADGE: Record<string, string> = {
 
 const ASSIGNEES = ["Admin", "Sophie M.", "Marc L.", "Julie R.", "Thomas D."];
 
+const DEMO_DOSSIERS = [
+  { reference: "DOS-2026-042", client_nom: "Martin SARL" },
+  { reference: "DOS-2026-038", client_nom: "Dupont Pierre" },
+  { reference: "DOS-2026-035", client_nom: "Lefèvre & Associés" },
+  { reference: "DOS-2026-041", client_nom: "Garcia Maria" },
+  { reference: "DOS-2026-040", client_nom: "Tech Solutions SAS" },
+];
+
 const emptyForm = (): Omit<Task, "id"> => ({
   titre: "",
   description: "",
