@@ -111,6 +111,7 @@ export default function BookingPage() {
             acompteType={config.acompteType}
             acompteMontant={config.acompteMontant}
             prixPrestation={config.prixPrestation}
+            cancellationMessage={config.annulation.messageClient}
             onConfirm={handleConfirm}
             onBack={() => setStep(1)}
           />
