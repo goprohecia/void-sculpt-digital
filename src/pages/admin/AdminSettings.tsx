@@ -910,7 +910,7 @@ export default function AdminSettings() {
                         return (
                           <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                             <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{mod.label}</p>
+                              <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
                               {atLimit && (
                                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
                                   Upgrade
