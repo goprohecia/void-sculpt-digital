@@ -19,6 +19,7 @@ import { exportCsv } from "@/lib/exportCsv";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { useObjectifs } from "@/hooks/use-objectifs";
+import { useServiceCategories } from "@/hooks/use-service-categories";
 import {
   ResponsiveContainer,
   LineChart,
