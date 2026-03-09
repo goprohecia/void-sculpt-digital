@@ -301,22 +301,30 @@ export default function AdminBilling() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/50 bg-muted/20">
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
-                        <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredFactures.map((f) => (
-                        <tr key={f.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                          <td className="py-3 px-4 font-mono text-xs">{f.reference}</td>
-                          <td className="py-3 px-4">{f.clientNom}</td>
-                          <td className="py-3 px-4 text-right font-medium">{f.montant.toLocaleString()} €</td>
-                          <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
-                          <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Service</th>
+                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
+                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
+                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       {filteredFactures.map((f) => {
+                         const serviceCat = serviceCategories.find((sc) => sc.id === f.serviceCategoryId);
+                         return (
+                         <tr key={f.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                           <td className="py-3 px-4 font-mono text-xs">{f.reference}</td>
+                           <td className="py-3 px-4">{f.clientNom}</td>
+                           <td className="py-3 px-4 hidden lg:table-cell">
+                             {serviceCat ? (
+                               <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: `${serviceCat.couleur}20`, color: serviceCat.couleur }}>{serviceCat.nom}</span>
+                             ) : <span className="text-muted-foreground text-xs">—</span>}
+                           </td>
+                           <td className="py-3 px-4 text-right font-medium">{f.montant.toLocaleString()} €</td>
+                           <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
+                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex items-center justify-center gap-1">
                               <button onClick={() => handlePreviewFacture(f)} className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-primary hover:text-primary/80" title="Aperçu">
