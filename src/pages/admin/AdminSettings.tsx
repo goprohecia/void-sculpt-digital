@@ -22,33 +22,20 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { useWhiteLabel } from "@/hooks/use-white-label";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const AVAILABLE_MODULES_FOR_SPACES = [
-  { key: "overview", label: "Vue d'ensemble" },
-  { key: "dossiers", label: "Dossiers" },
-  { key: "calendrier", label: "Calendrier" },
-  { key: "messagerie", label: "Messagerie" },
-  { key: "facturation", label: "Facturation" },
-  { key: "relances", label: "Relances" },
-  { key: "support", label: "Support" },
-  { key: "stock", label: "Stock" },
-  { key: "analyse", label: "Analyse" },
-  { key: "taches", label: "Tâches" },
-  { key: "agenda", label: "Agenda" },
-  { key: "rapports", label: "Rapports" },
-  { key: "documents", label: "Documents" },
-  { key: "temps", label: "Suivi du temps" },
-  { key: "automatisations", label: "Automatisations" },
-  { key: "notes", label: "Notes" },
-  { key: "pipeline", label: "Pipeline CRM" },
-  { key: "profil", label: "Profil" },
+const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
+  "overview", "dossiers", "calendrier", "messagerie", "facturation",
+  "relances", "support", "stock", "analyse", "taches", "agenda",
+  "rapports", "documents", "temps", "automatisations", "notes", "pipeline", "profil",
 ];
 
 function CustomSpacesManager() {
   const { spaces, createSpace, updateSpace, deleteSpace } = useCustomSpaces();
+  const { getModuleLabel } = useDemoPlan();
   const [newName, setNewName] = useState("");
   const [newBaseRole, setNewBaseRole] = useState<"employee" | "client">("employee");
   const [newModules, setNewModules] = useState<string[]>(["overview"]);
@@ -102,10 +89,10 @@ function CustomSpacesManager() {
           <div className="space-y-2">
             <Label>Modules activés</Label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {AVAILABLE_MODULES_FOR_SPACES.map((mod) => (
-                <label key={mod.key} className="flex items-center gap-2 text-sm cursor-pointer">
-                  <Checkbox checked={newModules.includes(mod.key)} onCheckedChange={() => toggleModule(mod.key)} />
-                  {mod.label}
+              {AVAILABLE_MODULE_KEYS_FOR_SPACES.map((key) => (
+                <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+                  <Checkbox checked={newModules.includes(key)} onCheckedChange={() => toggleModule(key)} />
+                  {getModuleLabel(key)}
                 </label>
               ))}
             </div>
@@ -532,6 +519,7 @@ function ServiceCategoriesManager() {
 export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
+  const { getModuleLabel } = useDemoPlan();
   const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
   const { config: wlConfig, updateConfig: updateWhiteLabel } = useWhiteLabel();
   const [whiteLabel, setWhiteLabel] = useState({
@@ -923,7 +911,7 @@ export default function AdminSettings() {
                         return (
                           <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                             <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{mod.label}</p>
+                              <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
                               {atLimit && (
                                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
                                   Upgrade
@@ -938,7 +926,7 @@ export default function AdminSettings() {
                                   ? [...enabledModules, mod.key]
                                   : enabledModules.filter((k) => k !== mod.key);
                                 updateSetting.mutate({ key: "enabled_modules", value: next });
-                                toast.success(`Module "${mod.label}" ${v ? "activé" : "désactivé"}`);
+                                toast.success(`Module "${getModuleLabel(mod.key)}" ${v ? "activé" : "désactivé"}`);
                               }}
                             />
                           </div>
@@ -969,7 +957,7 @@ export default function AdminSettings() {
                         return (
                           <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                             <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{mod.label}</p>
+                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
                               {!adminHasIt && (
                                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
                                   Désactivé côté admin
@@ -1008,7 +996,7 @@ export default function AdminSettings() {
                         return (
                           <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                             <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{mod.label}</p>
+                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
                               {!adminHasIt && (
                                 <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
                                   Désactivé côté admin
