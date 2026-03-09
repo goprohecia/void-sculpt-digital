@@ -328,18 +328,18 @@ export default function AdminDashboard() {
                     </div>
                     <span className="text-xs font-semibold text-emerald-400">{pctClients}%</span>
                   </div>
-                  <div className="flex items-center gap-2 rounded-xl bg-amber-500/10 p-3">
-                    <UserPlus className="h-5 w-5 text-amber-400" />
+                  <div className="flex items-center gap-2 rounded-xl bg-teal-500/10 p-3">
+                    <UserPlus className="h-5 w-5 text-teal-600" />
                     <div className="flex-1">
-                      <p className="text-lg font-bold text-amber-400">{nbProspects}</p>
+                      <p className="text-lg font-bold text-teal-600">{nbProspects}</p>
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prospects</p>
                     </div>
-                    <span className="text-xs font-semibold text-amber-400">{pctProspects}%</span>
+                    <span className="text-xs font-semibold text-teal-600">{pctProspects}%</span>
                   </div>
                   {totalClients > 0 && (
                     <div className="h-2 rounded-full bg-muted/30 overflow-hidden flex">
                       <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${pctClients}%` }} />
-                      <div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${pctProspects}%` }} />
+                      <div className="h-full bg-teal-400 transition-all duration-500" style={{ width: `${pctProspects}%` }} />
                     </div>
                   )}
                 </div>
