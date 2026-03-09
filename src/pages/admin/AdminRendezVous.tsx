@@ -214,10 +214,10 @@ export default function AdminRendezVous() {
             </div>
             <div className="space-y-2">
               <Label>Employé assigné</Label>
-              <Select value={evtForm.employee_id} onValueChange={(v) => setEvtForm((f) => ({ ...f, employee_id: v }))}>
+              <Select value={evtForm.employee_id || "__none__"} onValueChange={(v) => setEvtForm((f) => ({ ...f, employee_id: v === "__none__" ? "" : v }))}>
                 <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Aucun</SelectItem>
+                  <SelectItem value="__none__">Aucun</SelectItem>
                   {employees.map((emp: any) => <SelectItem key={emp.id} value={emp.id}>{emp.prenom} {emp.nom}</SelectItem>)}
                 </SelectContent>
               </Select>
