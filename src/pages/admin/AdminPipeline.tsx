@@ -170,6 +170,23 @@ export default function AdminPipeline() {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
     }
+    // Build change description
+    const changes: string[] = [];
+    if (editForm.nom.trim() !== editDeal.nom) changes.push(`Nom: "${editDeal.nom}" → "${editForm.nom.trim()}"`);
+    if (editForm.entreprise.trim() !== editDeal.entreprise) changes.push(`Entreprise: "${editDeal.entreprise}" → "${editForm.entreprise.trim()}"`);
+    if (parseFloat(editForm.montant) !== editDeal.montant) changes.push(`Montant: ${editDeal.montant.toLocaleString("fr-FR")}€ → ${parseFloat(editForm.montant).toLocaleString("fr-FR")}€`);
+    if (parseInt(editForm.probabilite) !== editDeal.probabilite) changes.push(`Probabilité: ${editDeal.probabilite}% → ${editForm.probabilite}%`);
+    if (editForm.etape !== editDeal.etape) {
+      const fromLabel = ETAPES.find((et) => et.key === editDeal.etape)?.label;
+      const toLabel = ETAPES.find((et) => et.key === editForm.etape)?.label;
+      changes.push(`Étape: ${fromLabel} → ${toLabel}`);
+    }
+    if (editForm.contact.trim() !== editDeal.contact) changes.push(`Contact: "${editDeal.contact}" → "${editForm.contact.trim() || "Non renseigné"}"`);
+
+    if (changes.length > 0) {
+      addHistory(editDeal.id, "Modification", changes.join(" | "));
+    }
+
     setDeals((prev) =>
       prev.map((d) =>
         d.id === editDeal.id
