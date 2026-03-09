@@ -581,6 +581,7 @@ export default function AdminClients() {
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Entreprise <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.entreprise} onChange={(e) => setNewClient({ ...newClient, entreprise: e.target.value })} className="h-9" />
+              </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Segment</label>
                 <div className="flex gap-2">
