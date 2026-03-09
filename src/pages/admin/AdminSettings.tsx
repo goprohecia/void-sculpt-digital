@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
 import { useTags } from "@/hooks/use-produits";
+import { useServiceCategories, type ServiceCategory } from "@/hooks/use-service-categories";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
