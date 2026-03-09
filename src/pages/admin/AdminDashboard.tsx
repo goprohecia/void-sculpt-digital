@@ -12,10 +12,12 @@ import { useFactures } from "@/hooks/use-factures";
 import { useRelances } from "@/hooks/use-relances";
 import { useConversations } from "@/hooks/use-conversations";
 import { useIsDemo } from "@/hooks/useIsDemo";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import {
   Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight,
   CalendarDays, ChevronLeft, ChevronRight, Mail, UserCheck, UserPlus,
-  Plus, Send, Calendar, StickyNote, Zap, TrendingUp, Activity
+  Plus, Send, Calendar, StickyNote, Zap, TrendingUp, Activity, Gauge
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -38,6 +40,7 @@ export default function AdminDashboard() {
   const { factures } = useFactures();
   const { relances } = useRelances();
   const { conversations } = useConversations();
+  const { getDossiersByEmployee } = useDemoData();
 
   const donneesMensuelles = isDemo ? mockDonneesMensuelles : [];
   const activites = isDemo ? mockActivites : [];
@@ -342,6 +345,38 @@ export default function AdminDashboard() {
                       <div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${pctProspects}%` }} />
                     </div>
                   )}
+                </div>
+              </div>
+
+              {/* Charge de l'équipe */}
+              <div className="glass-card p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-semibold flex items-center gap-2">
+                    <Gauge className="h-4 w-4 text-primary" />
+                    Charge de l'équipe
+                  </h3>
+                </div>
+                <div className="space-y-3">
+                  {MOCK_TEAM_MEMBERS.map((member) => {
+                    const active = isDemo ? getDossiersByEmployee(member.id).filter((d) => d.dossier.statut === "en_cours").length : 0;
+                    const hasLimit = member.capaciteMax != null && member.capaciteMax > 0;
+                    const pctCharge = hasLimit ? Math.round((active / member.capaciteMax!) * 100) : 0;
+                    const isOver = hasLimit && pctCharge >= 100;
+                    return (
+                      <div key={member.id} className={`flex items-center gap-3 text-xs ${isOver ? "text-destructive" : ""}`}>
+                        <div className="w-24 truncate font-medium">{member.prenom} {member.nom[0]}.</div>
+                        <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${isOver ? "bg-destructive" : pctCharge >= 70 ? "bg-orange-500" : "bg-green-500"}`}
+                            style={{ width: `${Math.min(pctCharge, 100)}%` }}
+                          />
+                        </div>
+                        <span className="w-16 text-right text-muted-foreground whitespace-nowrap">
+                          {active}{hasLimit ? ` / ${member.capaciteMax}` : ""}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 

@@ -44,6 +44,7 @@ export interface TeamMember {
   poste: string;
   statut: "disponible" | "indisponible";
   couleur: string;
+  capaciteMax?: number | null;
 }
 
 // ---- DISPONIBILITÉS ----
@@ -540,10 +541,10 @@ export const statsFactures = {
 
 // ---- TEAM MEMBERS (mock) ----
 export const MOCK_TEAM_MEMBERS: TeamMember[] = [
-  { id: "demo-emp-1", nom: "Durand", prenom: "Alexandre", poste: "Développeur Full-Stack", statut: "disponible", couleur: "#6366f1" },
-  { id: "demo-emp-2", nom: "Leclerc", prenom: "Camille", poste: "Designer UI/UX", statut: "disponible", couleur: "#f59e0b" },
-  { id: "demo-emp-3", nom: "Morel", prenom: "Hugo", poste: "Chef de projet", statut: "disponible", couleur: "#10b981" },
-  { id: "demo-emp-4", nom: "Fournier", prenom: "Sarah", poste: "Développeuse Mobile", statut: "indisponible", couleur: "#ef4444" },
+  { id: "demo-emp-1", nom: "Durand", prenom: "Alexandre", poste: "Développeur Full-Stack", statut: "disponible", couleur: "#6366f1", capaciteMax: 8 },
+  { id: "demo-emp-2", nom: "Leclerc", prenom: "Camille", poste: "Designer UI/UX", statut: "disponible", couleur: "#f59e0b", capaciteMax: 6 },
+  { id: "demo-emp-3", nom: "Morel", prenom: "Hugo", poste: "Chef de projet", statut: "disponible", couleur: "#10b981", capaciteMax: 10 },
+  { id: "demo-emp-4", nom: "Fournier", prenom: "Sarah", poste: "Développeuse Mobile", statut: "indisponible", couleur: "#ef4444", capaciteMax: 5 },
 ];
 
 const defaultHoraires: DisponibilitesHebdo = {
