@@ -194,8 +194,7 @@ export default function AdminTaches() {
                           <span className="text-[10px] text-muted-foreground">{task.assignee}</span>
                           {task.dossier && (
                             <span className="text-[10px] text-primary/60">
-                              {task.dossier}
-                              {(() => { const d = dossiers.find(dos => dos.reference === task.dossier); return d ? ` — ${d.client_nom}` : ""; })()}
+                              {getDossierLabel(task.dossier)}
                             </span>
                           )}
                           {task.dateEcheance && (
