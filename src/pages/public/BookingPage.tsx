@@ -7,6 +7,7 @@ import { BookingStepRecap } from "@/components/booking/BookingStepRecap";
 import { BookingStepConfirmation } from "@/components/booking/BookingStepConfirmation";
 import { BookingCountdown } from "@/components/booking/BookingCountdown";
 import { toast } from "@/hooks/use-toast";
+import { MOCK_DISPONIBILITES } from "@/data/mockData";
 
 const LOCK_DURATION_MS = 10 * 60 * 1000;
 
