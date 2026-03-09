@@ -38,6 +38,7 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
   automatisations: "Automatisations",
   ia: "Intelligence IA",
   parametres: "Paramètres",
+  fournisseurs: "Fournisseurs",
 };
 
 // ── Sector-specific overrides ──
