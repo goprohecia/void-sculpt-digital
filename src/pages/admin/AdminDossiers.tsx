@@ -222,6 +222,33 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                           <td className="py-3 px-4">{d.clientNom}</td>
                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.typePrestation}</td>
                           <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
+                          {assignEnabled && (
+                            <td className="py-3 px-4 text-center hidden lg:table-cell">
+                              {(() => {
+                                const assigns = getAssignmentsByDossier(d.id);
+                                if (assigns.length === 0) return <span className="text-xs text-muted-foreground">—</span>;
+                                const shown = assigns.slice(0, 3);
+                                const rest = assigns.length - 3;
+                                return (
+                                  <div className="flex items-center justify-center -space-x-2">
+                                    {shown.map((a) => {
+                                      const m = MOCK_TEAM_MEMBERS.find((t) => t.id === a.employeeId);
+                                      return m ? (
+                                        <Avatar key={a.employeeId} className="h-6 w-6 border-2 border-background">
+                                          <AvatarFallback className="text-[9px] font-semibold bg-primary/10 text-primary">
+                                            {m.prenom[0]}{m.nom[0]}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                      ) : null;
+                                    })}
+                                    {rest > 0 && (
+                                      <span className="text-[10px] text-muted-foreground ml-1">+{rest}</span>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+                            </td>
+                          )}
                           <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
                           <td className="py-3 px-4 text-center">
                             <Link to={`/admin/dossiers/${d.id}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline"><Eye className="h-3 w-3" /> Voir</Link>
