@@ -506,6 +506,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
       cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier, marquerRdvEffectue,
+      assignments, assignDossier, getAssignmentsByDossier, getDossiersByEmployee,
     }}>
       {children}
     </DemoDataContext.Provider>
