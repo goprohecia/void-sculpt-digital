@@ -1,42 +1,67 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan: Module 02 — Lien de réservation + Stripe (UI mockée)
 
-## Modifications
+### Métiers concernés
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+Ce module cible **tous les corps de métier avec prise de RDV** :
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+- Garage & Carrosserie
+- Salon de coiffure / Institut de beauté
+- Auto-école
+- Boutique de robes de mariée
+- Salle de sport / Coach sportif
+- Cabinet d'avocats / Cabinet comptable
+- Agent immobilier
+- Conciergerie Airbnb
+- Wedding planner
+- Photographe / Vidéaste
+- Formateur indépendant
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+On ajoutera une fonction `isBookingEnabled(sector)` similaire à `isAssignationEnabled`, avec une liste blanche des secteurs concernés. Les secteurs purement "projet" (développeur, designer, community manager, consultant) auront le booking désactivé.
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+---
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+### Constat actuel
 
-## Details techniques
+- Aucune route publique `/rdv/:slug`
+- Aucun onglet "Réservation" dans AdminSettings
+- Pas de données mock pour créneaux ou config booking
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+---
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+### Fichiers à créer
+
+| Fichier | Description |
+|---|---|
+| `src/pages/public/BookingPage.tsx` | Page publique `/rdv/:slug`, stepper 4 étapes |
+| `src/components/booking/BookingStepper.tsx` | Barre de progression visuelle |
+| `src/components/booking/BookingStepSlot.tsx` | Étape 1 — Grille hebdomadaire de créneaux |
+| `src/components/booking/BookingStepForm.tsx` | Étape 2 — Formulaire pré-RDV conditionnel |
+| `src/components/booking/BookingStepRecap.tsx` | Étape 3 — Récap + acompte + conditions |
+| `src/components/booking/BookingStepConfirmation.tsx` | Étape 4 — Confirmation simulée |
+
+### Fichiers à modifier
+
+| Fichier | Modification |
+|---|---|
+| `src/data/mockData.ts` | Ajouter `BookingConfig`, `TimeSlot`, `MOCK_BOOKING_CONFIG`, `MOCK_SLOTS` |
+| `src/data/sectorModules.ts` | Ajouter `isBookingEnabled(sector)` — désactivé pour dev/designer/CM/consultant |
+| `src/contexts/DemoDataContext.tsx` | Ajouter état `bookingConfig` + getters/setters |
+| `src/pages/admin/AdminSettings.tsx` | Ajouter 10e onglet "Réservation" (slug + copier, acompte fixe/%, toggle formulaire, champs custom) |
+| `src/components/AnimatedRoutes.tsx` | Ajouter route `/rdv/:slug` → `BookingPage` |
+
+---
+
+### Détail technique
+
+**1. Données mock** — `BookingConfig` (slug, acompteType fixe/%, montant, formulaireEnabled, champsFormulaire[]) + ~40 `TimeSlot` sur la semaine avec 3 statuts : disponible, indisponible, verrouillé.
+
+**2. Page publique** — Layout standalone (pas d'AdminLayout), stepper horizontal. L'étape 2 (formulaire) est skippée si `formulaireEnabled === false`. Le bouton "Payer l'acompte" à l'étape 3 affiche simplement l'écran de confirmation (pas de vrai Stripe).
+
+**3. Grille créneaux** — Navigation ← semaine → , 7 colonnes Lun-Dim, créneaux 9h-18h. Disponible = vert cliquable, Indisponible = grisé, Verrouillé = orange + cadenas.
+
+**4. Admin Settings > Réservation** — Slug + preview URL + copier, select fixe/pourcentage + input montant, switch formulaire + CRUD champs dynamiques.
+
+**5. Secteur config** — `isBookingEnabled()` retourne `true` pour garage, coiffure, mariage, coach-sportif, immobilier, conciergerie, photographe, formateur, cabinets, evenementiel, boutique, btp, nettoyage, traiteur, dj-animateur. Retourne `false` pour developpeur, designer, community-manager, consultant.
+
