@@ -167,6 +167,24 @@ export default function SuperAdminSecteurs() {
   const overriddenKeys = Object.keys(currentOverrides);
   const nonOverriddenKeys = ALL_MODULE_KEYS.filter((k) => !overriddenKeys.includes(k));
 
+  // Count how many sectors have the selected reset module
+  const resetAffectedCount = SECTORS.filter((s) => localOverrides[s.key]?.[resetModuleKey]).length;
+
+  const handleResetModule = () => {
+    setLocalOverrides((prev) => {
+      const copy: Record<string, SectorModulesConfig> = JSON.parse(JSON.stringify(prev));
+      SECTORS.forEach((s) => {
+        if (copy[s.key]) {
+          delete copy[s.key][resetModuleKey];
+          if (Object.keys(copy[s.key]).length === 0) delete copy[s.key];
+        }
+      });
+      return copy;
+    });
+    toast.success(`Overrides de "${GENERIC_MODULE_LABELS[resetModuleKey] || resetModuleKey}" supprimés sur ${resetAffectedCount} secteur(s)`);
+    setShowResetDialog(false);
+  };
+
   return (
     <SuperAdminLayout>
       <div className="space-y-6 max-w-5xl">
