@@ -15,6 +15,8 @@ function mapRow(row: any): Notification {
     lien: row.lien,
     destinataire: row.destinataire,
     clientId: row.client_id ?? undefined,
+    employeeId: row.employee_id ?? undefined,
+    canal: row.canal ?? undefined,
   };
 }
 

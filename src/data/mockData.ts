@@ -341,8 +341,9 @@ export const devis: Devis[] = [
 ];
 
 // ---- NOTIFICATIONS ----
-export type NotificationType = "dossier" | "facture" | "message" | "devis" | "ticket";
-export type NotificationDestinataire = "admin" | "client" | "all";
+export type NotificationType = "dossier" | "facture" | "message" | "devis" | "ticket" | "assignation";
+export type NotificationDestinataire = "admin" | "client" | "employee" | "all";
+export type NotificationCanal = "in-app" | "sms" | "both";
 
 export interface Notification {
   id: string;
@@ -354,6 +355,8 @@ export interface Notification {
   lien: string;
   destinataire: NotificationDestinataire;
   clientId?: string;
+  employeeId?: string;
+  canal?: NotificationCanal;
 }
 
 export const notifications: Notification[] = [

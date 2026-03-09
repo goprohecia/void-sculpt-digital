@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, FolderOpen, Receipt, MessageSquare, FileText, LifeBuoy, CheckCheck } from "lucide-react";
+import { Bell, FolderOpen, Receipt, MessageSquare, FileText, LifeBuoy, CheckCheck, UserPlus, Smartphone } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
@@ -13,6 +13,7 @@ const typeIcons: Record<string, { icon: typeof Bell; className: string }> = {
   message: { icon: MessageSquare, className: "text-[hsl(var(--primary))]" },
   devis: { icon: FileText, className: "text-[hsl(45,93%,60%)]" },
   ticket: { icon: LifeBuoy, className: "text-[hsl(var(--neon-red))]" },
+  assignation: { icon: UserPlus, className: "text-[hsl(280,100%,70%)]" },
 };
 
 interface NotificationPanelProps {
@@ -106,7 +107,14 @@ export function NotificationPanel({ notifications, onMarkAllRead, onMarkRead }: 
                           {!notif.lu && <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />}
                         </div>
                         <p className="text-xs text-muted-foreground truncate mt-0.5">{notif.description}</p>
-                        <p className="text-[10px] text-muted-foreground/70 mt-1">{formatDate(notif.date)}</p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <p className="text-[10px] text-muted-foreground/70">{formatDate(notif.date)}</p>
+                          {notif.canal && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] px-1 py-0 rounded bg-muted/60 text-muted-foreground">
+                              {notif.canal === "sms" ? <><Smartphone className="h-2.5 w-2.5" /> SMS</> : notif.canal === "both" ? <><Bell className="h-2.5 w-2.5" /><Smartphone className="h-2.5 w-2.5" /></> : <><Bell className="h-2.5 w-2.5" /> Push</>}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </motion.button>
                   );
