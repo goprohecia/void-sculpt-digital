@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
+import { Separator } from "@/components/ui/separator";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useFactures } from "@/hooks/use-factures";
 import { useDevis } from "@/hooks/use-devis";
