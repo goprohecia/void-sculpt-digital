@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { StickyNote, Plus, Search, User, FolderOpen, Trash2, Pin } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { StickyNote, Plus, Search, User, FolderOpen, Trash2, Pin, Filter } from "lucide-react";
 
 interface Note {
   id: string;
@@ -33,9 +34,18 @@ export default function AdminNotes() {
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [newNote, setNewNote] = useState({ titre: "", contenu: "" });
+  const [filterAuteur, setFilterAuteur] = useState("all");
+  const [filterClient, setFilterClient] = useState("all");
+  const [filterEpingle, setFilterEpingle] = useState("all");
+
+  const auteurs = useMemo(() => [...new Set(notes.map((n) => n.auteur))], [notes]);
+  const clients = useMemo(() => [...new Set(notes.filter((n) => n.client).map((n) => n.client!))], [notes]);
 
   const filtered = notes
     .filter((n) => !search || n.titre.toLowerCase().includes(search.toLowerCase()) || n.contenu.toLowerCase().includes(search.toLowerCase()) || n.client?.toLowerCase().includes(search.toLowerCase()))
+    .filter((n) => filterAuteur === "all" || n.auteur === filterAuteur)
+    .filter((n) => filterClient === "all" || n.client === filterClient)
+    .filter((n) => filterEpingle === "all" || (filterEpingle === "pinned" ? n.epingle : !n.epingle))
     .sort((a, b) => (a.epingle === b.epingle ? 0 : a.epingle ? -1 : 1));
 
   const addNote = () => {
@@ -55,6 +65,8 @@ export default function AdminNotes() {
   const deleteNote = (id: string) => {
     setNotes((prev) => prev.filter((n) => n.id !== id));
   };
+
+  const hasActiveFilters = filterAuteur !== "all" || filterClient !== "all" || filterEpingle !== "all";
 
   return (
     <AdminLayout>
@@ -76,6 +88,50 @@ export default function AdminNotes() {
                 <Plus className="h-4 w-4" /> Nouvelle note
               </Button>
             </div>
+          </div>
+
+          {/* Filters */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <Filter className="h-4 w-4" /> Filtres :
+            </div>
+            <Select value={filterAuteur} onValueChange={setFilterAuteur}>
+              <SelectTrigger className="w-40 h-8 text-xs">
+                <SelectValue placeholder="Auteur" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les auteurs</SelectItem>
+                {auteurs.map((a) => (
+                  <SelectItem key={a} value={a}>{a}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={filterClient} onValueChange={setFilterClient}>
+              <SelectTrigger className="w-40 h-8 text-xs">
+                <SelectValue placeholder="Client" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tous les clients</SelectItem>
+                {clients.map((c) => (
+                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={filterEpingle} onValueChange={setFilterEpingle}>
+              <SelectTrigger className="w-40 h-8 text-xs">
+                <SelectValue placeholder="Statut" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Toutes</SelectItem>
+                <SelectItem value="pinned">Épinglées</SelectItem>
+                <SelectItem value="unpinned">Non épinglées</SelectItem>
+              </SelectContent>
+            </Select>
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={() => { setFilterAuteur("all"); setFilterClient("all"); setFilterEpingle("all"); }}>
+                Réinitialiser
+              </Button>
+            )}
           </div>
 
           {showForm && (
@@ -124,6 +180,11 @@ export default function AdminNotes() {
                 </CardContent>
               </Card>
             ))}
+            {filtered.length === 0 && (
+              <div className="col-span-full text-center py-12 text-muted-foreground text-sm">
+                Aucune note ne correspond aux filtres sélectionnés.
+              </div>
+            )}
           </div>
         </div>
       </AdminPageTransition>
