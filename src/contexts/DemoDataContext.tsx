@@ -5,6 +5,8 @@ import {
   dossiers as initialDossiers,
   clients as initialClients,
   notifications as initialNotifications,
+  INITIAL_ASSIGNMENTS,
+  MOCK_TEAM_MEMBERS,
   type Client,
   type Facture,
   type FactureStatus,
@@ -12,6 +14,7 @@ import {
   type DevisStatus,
   type Dossier,
   type DossierStatus,
+  type DossierAssignment,
   type Notification,
 } from "@/data/mockData";
 
