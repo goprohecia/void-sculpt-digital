@@ -84,10 +84,10 @@ export default function AdminDashboard() {
   const pctProspects = totalClients > 0 ? 100 - pctClients : 0;
 
   const quickActions = [
-    { icon: Plus, label: "Nouveau dossier", to: "/admin/dossiers", color: "text-blue-400 bg-blue-500/15" },
-    { icon: Send, label: "Envoyer email", to: "/admin/emails", color: "text-violet-400 bg-violet-500/15" },
-    { icon: Calendar, label: "Planifier RDV", to: "/admin/rendez-vous", color: "text-emerald-400 bg-emerald-500/15" },
-    { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-amber-400 bg-amber-500/15" },
+    { icon: Plus, label: "Nouveau dossier", to: "/admin/dossiers", color: "text-emerald-700 bg-emerald-100" },
+    { icon: Send, label: "Envoyer email", to: "/admin/emails", color: "text-green-700 bg-green-100" },
+    { icon: Calendar, label: "Planifier RDV", to: "/admin/rendez-vous", color: "text-teal-700 bg-teal-100" },
+    { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-emerald-600 bg-emerald-50" },
   ];
 
   return (
