@@ -5,6 +5,8 @@ import {
   dossiers as initialDossiers,
   clients as initialClients,
   notifications as initialNotifications,
+  INITIAL_ASSIGNMENTS,
+  MOCK_TEAM_MEMBERS,
   type Client,
   type Facture,
   type FactureStatus,
@@ -12,6 +14,7 @@ import {
   type DevisStatus,
   type Dossier,
   type DossierStatus,
+  type DossierAssignment,
   type Notification,
 } from "@/data/mockData";
 
@@ -232,6 +235,11 @@ interface DemoDataContextType {
   validateCahier: (demandeId: string) => void;
   rejectCahier: (demandeId: string, motif: string) => void;
   marquerRdvEffectue: (dossierId: string) => void;
+  // Assignment system
+  assignments: Record<string, DossierAssignment[]>;
+  assignDossier: (dossierId: string, newAssignments: DossierAssignment[]) => void;
+  getAssignmentsByDossier: (dossierId: string) => DossierAssignment[];
+  getDossiersByEmployee: (employeeId: string) => { dossier: Dossier; role: DossierAssignment["role"] }[];
 }
 
 const DemoDataContext = createContext<DemoDataContextType | null>(null);
@@ -251,6 +259,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const [sendLogs, setSendLogs] = useState<SendLog[]>([]);
   const [previewVisits, setPreviewVisits] = useState<PreviewVisit[]>(generateMockVisits());
   const [cahiersDesCharges, setCahiersDesCharges] = useState<CahierDesCharges[]>([...initialCahiers]);
+  const [assignments, setAssignments] = useState<Record<string, DossierAssignment[]>>({ ...INITIAL_ASSIGNMENTS });
   const pushEmail = useCallback((type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => {
     const email: EmailLog = {
       id: `em_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -467,6 +476,26 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     }
   }, [dossiersState, pushNotif]);
 
+  const assignDossier = useCallback((dossierId: string, newAssignments: DossierAssignment[]) => {
+    setAssignments((prev) => ({ ...prev, [dossierId]: newAssignments }));
+  }, []);
+
+  const getAssignmentsByDossier = useCallback((dossierId: string): DossierAssignment[] => {
+    return assignments[dossierId] || [];
+  }, [assignments]);
+
+  const getDossiersByEmployee = useCallback((employeeId: string) => {
+    const result: { dossier: Dossier; role: DossierAssignment["role"] }[] = [];
+    for (const [dossierId, dossierAssignments] of Object.entries(assignments)) {
+      const assignment = dossierAssignments.find((a) => a.employeeId === employeeId);
+      if (assignment) {
+        const dossier = dossiersState.find((d) => d.id === dossierId);
+        if (dossier) result.push({ dossier, role: assignment.role });
+      }
+    }
+    return result;
+  }, [assignments, dossiersState]);
+
   return (
     <DemoDataContext.Provider value={{
       factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs, previewVisits,
@@ -477,6 +506,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
       cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier, marquerRdvEffectue,
+      assignments, assignDossier, getAssignmentsByDossier, getDossiersByEmployee,
     }}>
       {children}
     </DemoDataContext.Provider>

@@ -10,11 +10,17 @@ import { useDevis } from "@/hooks/use-devis";
 import { usePreviewVisits } from "@/hooks/use-preview-visits";
 import { useCahiers } from "@/hooks/use-cahiers";
 import { useDemandes } from "@/hooks/use-demandes";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles } from "lucide-react";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { isAssignationEnabled } from "@/data/sectorModules";
+import { MOCK_TEAM_MEMBERS, type DossierAssignment } from "@/data/mockData";
+import { AssignModal } from "@/components/admin/AssignModal";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles, Users, Crown, Shield } from "lucide-react";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
@@ -102,16 +108,22 @@ export default function AdminDossierDetail() {
   const { getPreviewVisitsByDossier, addPreviewVisit } = usePreviewVisits();
   const { getCahierByDemande, validateCahier, cahiersDesCharges } = useCahiers();
   const { demandes } = useDemandes();
+  const { getAssignmentsByDossier, assignDossier } = useDemoData();
+  const { demoSector } = useDemoPlan();
+  const assignEnabled = isAssignationEnabled(demoSector);
+
+  const [assignModalOpen, setAssignModalOpen] = useState(false);
+  const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
   const previewVisits = id ? getPreviewVisitsByDossier(id) : [];
+  const currentAssignments = id ? getAssignmentsByDossier(id) : [];
 
   // Find cahier by dossier's demandeId
   const cahier = dossier?.demandeId ? getCahierByDemande(dossier.demandeId) : undefined;
   const demandeTitre = cahier ? demandes.find((d) => d.id === cahier.demandeId)?.titre : undefined;
-  const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
   if (!dossier) {
     return <AdminLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></AdminLayout>;
@@ -182,6 +194,66 @@ export default function AdminDossierDetail() {
             <div><p className="text-muted-foreground text-xs sm:text-sm">Échéance</p><p>{dossier.dateEcheance ? new Date(dossier.dateEcheance).toLocaleDateString("fr-FR") : "—"}</p></div>
             <div><p className="text-muted-foreground text-xs sm:text-sm">Client</p><p>{dossier.clientNom}</p></div>
           </motion.div>
+
+          {/* Équipe assignée */}
+          {assignEnabled && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Users className="h-4 w-4 text-primary" />
+                  Équipe assignée
+                </h2>
+                <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setAssignModalOpen(true)}>
+                  <Users className="h-3.5 w-3.5" />
+                  {currentAssignments.length > 0 ? "Modifier l'assignation" : "Assigner"}
+                </Button>
+              </div>
+              {currentAssignments.length > 0 ? (
+                <div className="flex flex-wrap gap-3">
+                  {currentAssignments.map((a) => {
+                    const member = MOCK_TEAM_MEMBERS.find((m) => m.id === a.employeeId);
+                    if (!member) return null;
+                    return (
+                      <div key={a.employeeId} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 border border-border/30">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback className="text-xs font-semibold bg-primary/10 text-primary">
+                            {member.prenom[0]}{member.nom[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-xs font-medium">{member.prenom} {member.nom}</p>
+                          <p className="text-[10px] text-muted-foreground">{member.poste}</p>
+                        </div>
+                        {a.role === "responsable" ? (
+                          <Badge className="text-[10px] px-1.5 py-0 bg-amber-500/20 text-amber-400 border-amber-500/30 gap-1">
+                            <Crown className="h-2.5 w-2.5" /> Responsable
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 gap-1">
+                            <Shield className="h-2.5 w-2.5" /> Renfort
+                          </Badge>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">Aucun membre assigné à ce dossier</p>
+              )}
+            </motion.div>
+          )}
+
+          {assignEnabled && (
+            <AssignModal
+              open={assignModalOpen}
+              onOpenChange={setAssignModalOpen}
+              currentAssignments={currentAssignments}
+              onAssign={(newAssignments) => {
+                assignDossier(dossier.id, newAssignments);
+                toast.success(`${newAssignments.length} membre(s) assigné(s)`);
+              }}
+            />
+          )}
 
           {/* Timeline */}
           {dossier.statut !== "annule" && (

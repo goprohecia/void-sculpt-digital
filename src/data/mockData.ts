@@ -29,6 +29,22 @@ export interface Client {
   nombreDossiers: number;
 }
 
+export type AssignmentRole = "responsable" | "renfort";
+
+export interface DossierAssignment {
+  employeeId: string;
+  role: AssignmentRole;
+  dateAssignation: string;
+}
+
+export interface TeamMember {
+  id: string;
+  nom: string;
+  prenom: string;
+  poste: string;
+  statut: "disponible" | "indisponible";
+}
+
 export interface Dossier {
   id: string;
   reference: string;
@@ -42,6 +58,7 @@ export interface Dossier {
   previewUrl?: string;
   demandeId?: string;
   rdvEffectue?: boolean;
+  assignments?: DossierAssignment[];
 }
 
 export interface Facture {
@@ -485,4 +502,31 @@ export const statsFactures = {
   payees: factures.filter((f) => f.statut === "payee").reduce((acc, f) => acc + f.montant, 0),
   enAttente: factures.filter((f) => f.statut === "en_attente").reduce((acc, f) => acc + f.montant, 0),
   enRetard: factures.filter((f) => f.statut === "en_retard").reduce((acc, f) => acc + f.montant, 0),
+};
+
+// ---- TEAM MEMBERS (mock) ----
+export const MOCK_TEAM_MEMBERS: TeamMember[] = [
+  { id: "demo-emp-1", nom: "Durand", prenom: "Alexandre", poste: "Développeur Full-Stack", statut: "disponible" },
+  { id: "demo-emp-2", nom: "Leclerc", prenom: "Camille", poste: "Designer UI/UX", statut: "disponible" },
+  { id: "demo-emp-3", nom: "Morel", prenom: "Hugo", poste: "Chef de projet", statut: "disponible" },
+  { id: "demo-emp-4", nom: "Fournier", prenom: "Sarah", poste: "Développeuse Mobile", statut: "indisponible" },
+];
+
+// ---- INITIAL ASSIGNMENTS (mock) ----
+export const INITIAL_ASSIGNMENTS: Record<string, DossierAssignment[]> = {
+  d1: [
+    { employeeId: "demo-emp-1", role: "responsable", dateAssignation: "2026-01-06" },
+    { employeeId: "demo-emp-2", role: "renfort", dateAssignation: "2026-01-06" },
+  ],
+  d4: [
+    { employeeId: "demo-emp-3", role: "responsable", dateAssignation: "2026-01-13" },
+  ],
+  d6: [
+    { employeeId: "demo-emp-1", role: "responsable", dateAssignation: "2025-12-11" },
+    { employeeId: "demo-emp-3", role: "renfort", dateAssignation: "2025-12-11" },
+    { employeeId: "demo-emp-2", role: "renfort", dateAssignation: "2025-12-15" },
+  ],
+  d12: [
+    { employeeId: "demo-emp-4", role: "responsable", dateAssignation: "2026-01-16" },
+  ],
 };
