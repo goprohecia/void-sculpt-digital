@@ -340,6 +340,19 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   reparateur: REPARATEUR_OVERRIDES,
   traiteur: TRAITEUR_OVERRIDES,
   conciergerie: CONCIERGERIE_OVERRIDES,
+  "auto-ecole": {
+    dossiers: { label: "Élèves", description: "Fiches élèves, progression et heures de conduite" },
+    taches: { label: "Leçons & Examens", description: "Planification des leçons et inscriptions aux examens" },
+    stock: { label: "Véhicules", description: "Flotte de véhicules, entretiens et affectations" },
+    employees: { label: "Moniteurs", description: "Gestion des moniteurs et leurs plannings" },
+    "rendez-vous": { label: "Planning conduite", description: "Créneaux de leçons de conduite" },
+    documents: { label: "Documents admin", description: "Contrats, CERFA, attestations et conventions" },
+    analyse: { label: "Dashboard Auto-École", description: "KPIs : taux de réussite, heures planifiées, CA" },
+    notes: { label: "Notes moniteur", description: "Observations et évaluations des élèves" },
+    pipeline: { label: "Pipeline Inscriptions", description: "Prospects et conversions en inscriptions" },
+    relances: { label: "Relances paiements", description: "Suivi des paiements échelonnés et relances" },
+    support: { label: "Support élèves", description: "Questions et assistance des élèves" },
+  } as SectorModulesConfig,
 };
 
 // ── Helpers ──
@@ -392,11 +405,12 @@ const ASSIGNATION_SECTORS = [
   "immobilier",     // Agence Immobilière
   "coach-sportif",  // Salle de Sport
   "cabinets",       // Expert-Comptable / Cabinet d'Avocats
-  "boutique",       // Magasin / Auto-École
+  "boutique",       // Magasin
+  "auto-ecole",     // Auto-École
 ];
 
 export function isAssignationEnabled(sectorKey?: string | null): boolean {
-  if (!sectorKey) return true; // default: enabled (hors contexte secteur)
+  if (!sectorKey) return true;
   return ASSIGNATION_SECTORS.includes(sectorKey);
 }
 

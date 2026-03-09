@@ -3,7 +3,7 @@ import {
   Code, Palette, Camera, Users, Smartphone,
   Briefcase, Dumbbell, Building2, Home, GraduationCap,
   ShoppingBag, PartyPopper, Heart, UtensilsCrossed, Music,
-  Wrench, HardHat, Scissors, Scale, SprayCan,
+  Wrench, HardHat, Scissors, Scale, SprayCan, Car,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ScrollReveal, StaggerContainer, staggerItemVariants } from "@/components/animations";
@@ -68,6 +68,7 @@ const sectorGroups: SectorGroup[] = [
       { icon: HardHat, title: "BTP & Artisans", description: "Chantiers, devis, factures et gestion d'équipes.", href: "/secteurs/btp" },
       { icon: Scissors, title: "Salons & Instituts de beauté", description: "Rendez-vous, fiches clients et stock produits.", href: "/secteurs/coiffure" },
       { icon: Scale, title: "Cabinets comptables & juridiques", description: "Dossiers, échéances légales et facturation récurrente.", href: "/secteurs/cabinets" },
+      { icon: Car, title: "Auto-École", description: "Élèves, planning conduite, examens et moniteurs.", href: "/secteurs/auto-ecole" },
       { icon: SprayCan, title: "Nettoyage & Propreté", description: "Contrats récurrents, planning et stock produits.", href: "/secteurs/nettoyage" },
     ],
   },

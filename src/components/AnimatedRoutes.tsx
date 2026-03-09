@@ -30,6 +30,7 @@ import Formateur from "@/pages/secteurs/Formateur";
 import Boutique from "@/pages/secteurs/Boutique";
 import Traiteur from "@/pages/secteurs/Traiteur";
 import DjAnimateur from "@/pages/secteurs/DjAnimateur";
+import AutoEcole from "@/pages/secteurs/AutoEcole";
 
 // Public pages (booking)
 import BookingPage from "@/pages/public/BookingPage";
@@ -138,6 +139,7 @@ export function AnimatedRoutes() {
         <Route path="/secteurs/boutique" element={<Boutique />} />
         <Route path="/secteurs/traiteur" element={<Traiteur />} />
         <Route path="/secteurs/dj-animateur" element={<DjAnimateur />} />
+        <Route path="/secteurs/auto-ecole" element={<AutoEcole />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />

@@ -32,6 +32,7 @@ export const DEFAULT_PLAN_PRICES: Record<SubscriptionPlan, number> = {
 
 // ── Sectors aligned with landing page sector pages ──
 export const SECTORS = [
+  { key: "auto-ecole", label: "Auto-École", icon: "🚗" },
   { key: "conciergerie", label: "Conciergerie", icon: "🏠" },
   { key: "btp", label: "BTP", icon: "🏗️" },
   { key: "boutique", label: "Boutique", icon: "🛍️" },
@@ -58,6 +59,7 @@ export type SectorKey = (typeof SECTORS)[number]["key"];
 
 // Ordered list of recommended modules per sector (most important first)
 export const DEFAULT_SECTOR_RECOMMENDATIONS: Record<SectorKey, string[]> = {
+  "auto-ecole": ["clients", "rendez-vous", "dossiers", "facturation", "stock", "relances", "analyse", "employees"],
   conciergerie: ["dossiers", "clients", "facturation", "messagerie", "support", "rendez-vous", "relances", "taches"],
   btp: ["dossiers", "clients", "facturation", "stock", "relances", "taches", "documents", "temps"],
   boutique: ["stock", "clients", "facturation", "relances", "analyse", "emails", "pipeline", "support"],
