@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Target, Users, TrendingUp, Euro, Plus, GripVertical } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Target, Users, TrendingUp, Euro, Plus, GripVertical, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Deal {
@@ -48,6 +49,11 @@ export default function AdminPipeline() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [draggedDeal, setDraggedDeal] = useState<string | null>(null);
   const [dragOverEtape, setDragOverEtape] = useState<string | null>(null);
+  const [editDeal, setEditDeal] = useState<Deal | null>(null);
+  const [editForm, setEditForm] = useState({ nom: "", entreprise: "", montant: "", probabilite: "25", etape: "prospect", contact: "" });
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const dragStartPos = useRef<{ x: number; y: number } | null>(null);
+  const didDrag = useRef(false);
   const [newDeal, setNewDeal] = useState({
     nom: "",
     entreprise: "",
@@ -64,6 +70,7 @@ export default function AdminPipeline() {
   const totalPondere = activeDeals.reduce((sum, d) => sum + (d.montant * d.probabilite) / 100, 0);
 
   const handleDragStart = (e: React.DragEvent, dealId: string) => {
+    didDrag.current = true;
     setDraggedDeal(dealId);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", dealId);
@@ -107,6 +114,46 @@ export default function AdminPipeline() {
   const handleDragEnd = () => {
     setDraggedDeal(null);
     setDragOverEtape(null);
+    // Reset drag flag after a tick so click handler can check it
+    setTimeout(() => { didDrag.current = false; }, 100);
+  };
+
+  const openEditDeal = (deal: Deal) => {
+    if (didDrag.current) return;
+    setEditDeal(deal);
+    setEditForm({
+      nom: deal.nom,
+      entreprise: deal.entreprise,
+      montant: String(deal.montant),
+      probabilite: String(deal.probabilite),
+      etape: deal.etape,
+      contact: deal.contact,
+    });
+  };
+
+  const handleUpdateDeal = () => {
+    if (!editDeal || !editForm.nom.trim() || !editForm.entreprise.trim() || !editForm.montant) {
+      toast.error("Veuillez remplir tous les champs obligatoires");
+      return;
+    }
+    setDeals((prev) =>
+      prev.map((d) =>
+        d.id === editDeal.id
+          ? { ...d, nom: editForm.nom.trim(), entreprise: editForm.entreprise.trim(), montant: parseFloat(editForm.montant), probabilite: parseInt(editForm.probabilite), etape: editForm.etape, contact: editForm.contact.trim() || "Non renseigné" }
+          : d
+      )
+    );
+    toast.success(`Opportunité "${editForm.nom}" mise à jour`);
+    setEditDeal(null);
+  };
+
+  const handleDeleteDeal = () => {
+    if (!deleteConfirmId) return;
+    const deal = deals.find((d) => d.id === deleteConfirmId);
+    setDeals((prev) => prev.filter((d) => d.id !== deleteConfirmId));
+    toast.success(`Opportunité "${deal?.nom}" supprimée`);
+    setDeleteConfirmId(null);
+    setEditDeal(null);
   };
 
   const handleCreateDeal = () => {
@@ -137,8 +184,9 @@ export default function AdminPipeline() {
       draggable
       onDragStart={(e) => handleDragStart(e, deal.id)}
       onDragEnd={handleDragEnd}
+      onClick={() => openEditDeal(deal)}
       className={`p-3 rounded-lg bg-background border border-border/50 space-y-1.5 transition-all cursor-grab active:cursor-grabbing group ${
-        draggedDeal === deal.id ? "opacity-50 scale-95 border-primary" : "hover:border-primary/30"
+        draggedDeal === deal.id ? "opacity-50 scale-95 border-primary" : "hover:border-primary/30 hover:shadow-md"
       }`}
     >
       <div className="flex items-start gap-2">
@@ -355,6 +403,85 @@ export default function AdminPipeline() {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Dialog modifier opportunité */}
+        <Dialog open={!!editDeal} onOpenChange={(open) => { if (!open) setEditDeal(null); }}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Modifier l'opportunité</DialogTitle>
+              <DialogDescription>Modifiez les informations ou supprimez cette opportunité.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 pt-2">
+              <div className="space-y-2">
+                <Label>Nom du projet *</Label>
+                <Input value={editForm.nom} onChange={(e) => setEditForm((p) => ({ ...p, nom: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <Label>Entreprise / Client *</Label>
+                <Input value={editForm.entreprise} onChange={(e) => setEditForm((p) => ({ ...p, entreprise: e.target.value }))} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Montant (€) *</Label>
+                  <Input type="number" value={editForm.montant} onChange={(e) => setEditForm((p) => ({ ...p, montant: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Probabilité (%)</Label>
+                  <Select value={editForm.probabilite} onValueChange={(v) => setEditForm((p) => ({ ...p, probabilite: v }))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {[0, 10, 25, 40, 50, 60, 70, 80, 90, 95, 100].map((p) => (
+                        <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Étape</Label>
+                <Select value={editForm.etape} onValueChange={(v) => setEditForm((p) => ({ ...p, etape: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {ETAPES.map((e) => (
+                      <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Contact</Label>
+                <Input value={editForm.contact} onChange={(e) => setEditForm((p) => ({ ...p, contact: e.target.value }))} />
+              </div>
+              <DialogFooter className="flex !justify-between pt-2">
+                <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => editDeal && setDeleteConfirmId(editDeal.id)}>
+                  <Trash2 className="h-3.5 w-3.5" /> Supprimer
+                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => setEditDeal(null)}>Annuler</Button>
+                  <Button onClick={handleUpdateDeal}>Enregistrer</Button>
+                </div>
+              </DialogFooter>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Confirmation suppression */}
+        <AlertDialog open={!!deleteConfirmId} onOpenChange={(open) => { if (!open) setDeleteConfirmId(null); }}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Supprimer cette opportunité ?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Cette action est irréversible. L'opportunité sera définitivement supprimée du pipeline.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteDeal} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Supprimer
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </AdminPageTransition>
     </AdminLayout>
   );
