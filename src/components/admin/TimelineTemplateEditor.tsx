@@ -12,7 +12,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { staggerItem } from "@/components/admin/AdminPageTransition";
 import { useDemoPlan, SECTORS } from "@/contexts/DemoPlanContext";
-import { getPresetsForSector, getAllSectorPresets, type TimelinePreset } from "@/data/sectorTimelines";
+import { getPresetsForSector, getAllSectorPresets, getAllCategories, PRESET_CATEGORY_LABELS, type TimelinePreset, type PresetCategory } from "@/data/sectorTimelines";
 
 export function TimelineTemplateEditor() {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
