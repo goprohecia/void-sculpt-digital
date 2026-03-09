@@ -56,6 +56,7 @@ export default function AdminEmployees() {
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [form, setForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
   const [inviteForm, setInviteForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
+  const [capaciteMax, setCapaciteMax] = useState("");
 
   const { data: employees = [] } = useQuery<Employee[]>({
     queryKey: ["employees"],
