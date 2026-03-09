@@ -14,6 +14,7 @@ interface EmployeeLayoutProps {
 
 export function EmployeeLayout({ children }: EmployeeLayoutProps) {
   const { isAuthenticated: isDemoAuth, user: demoUser } = useDemoAuth();
+  const { getNotificationsByEmployee, markNotificationRead, markAllNotificationsRead } = useDemoData();
   const [supabaseUser, setSupabaseUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
