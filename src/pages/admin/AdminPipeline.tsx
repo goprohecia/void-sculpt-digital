@@ -56,6 +56,16 @@ const DEMO_DEALS: Deal[] = [
 
 export default function AdminPipeline() {
   const [deals, setDeals] = useState(DEMO_DEALS);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => {
+    // Seed with creation entries for demo deals
+    return DEMO_DEALS.map((d) => ({
+      id: `h-init-${d.id}`,
+      dealId: d.id,
+      date: d.dateCreation.split("/").reverse().join("-") + "T10:00:00",
+      action: "Création",
+      detail: `Opportunité créée — ${d.entreprise}, ${d.montant.toLocaleString("fr-FR")}€`,
+    }));
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [draggedDeal, setDraggedDeal] = useState<string | null>(null);
   const [dragOverEtape, setDragOverEtape] = useState<string | null>(null);
@@ -64,6 +74,15 @@ export default function AdminPipeline() {
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const dragStartPos = useRef<{ x: number; y: number } | null>(null);
   const didDrag = useRef(false);
+
+  const addHistory = (dealId: string, action: string, detail: string) => {
+    setHistory((prev) => [
+      { id: `h-${Date.now()}-${Math.random()}`, dealId, date: new Date().toISOString(), action, detail },
+      ...prev,
+    ]);
+  };
+
+  const getDealHistory = (dealId: string) => history.filter((h) => h.dealId === dealId);
   const [newDeal, setNewDeal] = useState({
     nom: "",
     entreprise: "",
