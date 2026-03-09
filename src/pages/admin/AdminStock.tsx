@@ -11,7 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Package, Plus, Search, AlertTriangle, ArrowDownUp, Truck, Tags, FolderPlus, Trash2 } from "lucide-react";
+import { Package, Plus, Search, AlertTriangle, ArrowDownUp, Truck, Tags, FolderPlus, Trash2, Upload } from "lucide-react";
+import { StockImportDialog } from "@/components/admin/StockImportDialog";
 import { useProduits, useCategories, useFournisseurs, useStockMouvements, useBonsCommande } from "@/hooks/use-produits";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -30,6 +31,7 @@ export default function AdminStock() {
   const [openCat, setOpenCat] = useState(false);
   const [openFourn, setOpenFourn] = useState(false);
   const [openBC, setOpenBC] = useState(false);
+  const [openImport, setOpenImport] = useState(false);
 
   const [prodForm, setProdForm] = useState({ reference: "", nom: "", description: "", categorie_id: "", fournisseur_id: "", prix_achat: 0, prix_vente: 0, quantite_stock: 0, seuil_alerte: 5, unite: "unité", sku: "" });
   const [mvtForm, setMvtForm] = useState({ produit_id: "", type: "entree", quantite: 1, motif: "" });
@@ -72,6 +74,7 @@ export default function AdminStock() {
               <p className="text-muted-foreground text-sm">{produits.length} produits · {alertes.length} alertes stock</p>
             </div>
             <div className="flex gap-2 flex-wrap">
+              <Button size="sm" variant="outline" onClick={() => setOpenImport(true)} className="gap-1"><Upload className="h-3.5 w-3.5" /> Importer</Button>
               <Button size="sm" variant="outline" onClick={() => setOpenCat(true)} className="gap-1"><Tags className="h-3.5 w-3.5" /> Catégorie</Button>
               <Button size="sm" variant="outline" onClick={() => setOpenFourn(true)} className="gap-1"><Truck className="h-3.5 w-3.5" /> Fournisseur</Button>
               <Button size="sm" variant="outline" onClick={() => setOpenBC(true)} className="gap-1"><FolderPlus className="h-3.5 w-3.5" /> Bon commande</Button>
@@ -373,6 +376,17 @@ export default function AdminStock() {
             </form>
           </DialogContent>
         </Dialog>
+
+        <StockImportDialog
+          open={openImport}
+          onOpenChange={setOpenImport}
+          addProduit={addProduit}
+          addCategory={addCategory}
+          addFournisseur={addFournisseur}
+          categories={categories}
+          fournisseurs={fournisseurs}
+          existingRefs={produits.map((p: any) => p.reference)}
+        />
       </AdminPageTransition>
     </AdminLayout>
   );
