@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { useDemoPlan, SECTORS, ALL_MODULE_KEYS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { GENERIC_MODULE_LABELS, type SectorModuleOverride, type SectorModulesConfig } from "@/data/sectorModules";
+import { BulkOverrideDialog } from "@/components/admin/BulkOverrideDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -100,6 +101,22 @@ export default function SuperAdminSecteurs() {
   const [localOverrides, setLocalOverrides] = useState<Record<string, SectorModulesConfig>>(() => JSON.parse(JSON.stringify(sectorModuleOverrides)));
   const [editingModule, setEditingModule] = useState<string | null>(null);
 
+  const handleBulkApply = (
+    sectors: string[],
+    moduleKey: string,
+    patch: { label?: string; description?: string; hidden?: boolean }
+  ) => {
+    setLocalOverrides((prev) => {
+      const copy: Record<string, SectorModulesConfig> = JSON.parse(JSON.stringify(prev));
+      sectors.forEach((sectorKey) => {
+        if (!copy[sectorKey]) copy[sectorKey] = {};
+        const existing = copy[sectorKey][moduleKey] || { label: GENERIC_MODULE_LABELS[moduleKey] || moduleKey };
+        copy[sectorKey][moduleKey] = { ...existing, ...patch };
+      });
+      return copy;
+    });
+  };
+
   const currentOverrides = localOverrides[selectedSector] || {};
   const sectorInfo = SECTORS.find((s) => s.key === selectedSector);
 
@@ -158,7 +175,8 @@ export default function SuperAdminSecteurs() {
               Personnalisez les labels, descriptions et visibilité des modules par secteur d'activité.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <BulkOverrideDialog localOverrides={localOverrides} onApply={handleBulkApply} />
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
