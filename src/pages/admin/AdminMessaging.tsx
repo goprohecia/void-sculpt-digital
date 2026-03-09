@@ -24,7 +24,7 @@ export default function AdminMessaging() {
   const { conversations } = useConversations();
   const { isDemo } = useIsDemo();
   const { clients } = useClients();
-  const { sector } = useDemoPlan();
+  const { getModuleLabel } = useDemoPlan();
   const queryClient = useQueryClient();
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
@@ -35,8 +35,8 @@ export default function AdminMessaging() {
   const [creating, setCreating] = useState(false);
 
   // Get sector-specific labels
-  const clientsLabel = getModuleLabel("clients", sector);
-  const employeesLabel = getModuleLabel("employees", sector);
+  const clientsLabel = getModuleLabel("clients");
+  const employeesLabel = getModuleLabel("employees");
 
   // Fetch employees for the "salaries" tab
   const { data: employees = [] } = useQuery<any[]>({
