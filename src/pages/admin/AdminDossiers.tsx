@@ -210,6 +210,7 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Prestation</th>
                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
+                        {assignEnabled && <th className="text-center py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Assigné à</th>}
                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
                       </tr>
