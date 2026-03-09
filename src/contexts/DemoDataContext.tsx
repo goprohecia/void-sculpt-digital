@@ -259,6 +259,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const [sendLogs, setSendLogs] = useState<SendLog[]>([]);
   const [previewVisits, setPreviewVisits] = useState<PreviewVisit[]>(generateMockVisits());
   const [cahiersDesCharges, setCahiersDesCharges] = useState<CahierDesCharges[]>([...initialCahiers]);
+  const [assignments, setAssignments] = useState<Record<string, DossierAssignment[]>>({ ...INITIAL_ASSIGNMENTS });
   const pushEmail = useCallback((type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => {
     const email: EmailLog = {
       id: `em_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
