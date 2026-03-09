@@ -505,7 +505,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       addDemande, updateDemandeStatut, addDevis, addFacture, addDossier, addNotification, pushEmail, addSendLog,
       getDemandesByClient, getDossiersByClient, getFacturesByClient, getDevisByClient,
       getFacturesByDossier, getDevisByDossier, getDossierById, getFactureById, getClientById,
-      getNotificationsAdmin, getNotificationsByClient, getPreviewVisitsByDossier, addPreviewVisit,
+      getNotificationsAdmin, getNotificationsByClient, getNotificationsByEmployee, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
       cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier, marquerRdvEffectue,
       assignments, assignDossier, getAssignmentsByDossier, getDossiersByEmployee,

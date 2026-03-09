@@ -250,7 +250,26 @@ export default function AdminDossierDetail() {
               currentAssignments={currentAssignments}
               onAssign={(newAssignments) => {
                 assignDossier(dossier.id, newAssignments);
-                toast.success(`${newAssignments.length} membre(s) assigné(s)`);
+                // Generate notifications for each assigned member
+                const MOCK_TEAM = (await import("@/data/mockData")).MOCK_TEAM_MEMBERS;
+                newAssignments.forEach((a, i) => {
+                  const member = MOCK_TEAM.find((m: any) => m.id === a.employeeId);
+                  const roleBadge = a.role === "responsable" ? "Responsable" : "Renfort";
+                  addNotification({
+                    id: `notif_assign_${Date.now()}_${i}`,
+                    type: "assignation",
+                    titre: "Nouveau dossier assigné",
+                    description: `${dossier.reference} — Vous êtes ${roleBadge}`,
+                    date: new Date().toISOString(),
+                    lu: false,
+                    lien: `/admin/dossiers/${dossier.id}`,
+                    destinataire: "employee",
+                    employeeId: a.employeeId,
+                    canal: "both",
+                  });
+                });
+                toast.success(`${newAssignments.length} membre(s) assigné(s) — Notifications envoyées (push + SMS)`);
+                toast.info(`📱 SMS de notification envoyé à ${newAssignments.length} membre(s)`);
               }}
             />
           )}
