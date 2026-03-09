@@ -85,6 +85,8 @@ export default function AdminBilling() {
   const [dTitre, setDTitre] = useState("");
   const [dMontant, setDMontant] = useState("");
   const [dValidite, setDValidite] = useState("");
+  const [dServiceCatId, setDServiceCatId] = useState("");
+  const [dDescription, setDDescription] = useState("");
 
   const filteredFactures = factures.filter((f) => filterStatut === "tous" || f.statut === filterStatut);
   const statsFactures = {
