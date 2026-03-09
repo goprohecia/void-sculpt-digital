@@ -196,6 +196,9 @@ export default function SuperAdminSecteurs() {
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
+            <Button variant="outline" size="sm" className="text-destructive border-destructive/30 hover:bg-destructive/10" onClick={() => setShowResetDialog(true)}>
+              <Trash2 className="h-4 w-4 mr-1" /> Réinitialiser un module
+            </Button>
             <BulkOverrideDialog localOverrides={localOverrides} onApply={handleBulkApply} />
             <Dialog>
               <DialogTrigger asChild>
