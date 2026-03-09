@@ -213,6 +213,12 @@ export default function AdminDocuments() {
                       </div>
                       <Badge variant="outline" className="text-[10px] shrink-0">{doc.dossier}</Badge>
                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Renommer" onClick={() => { setRenameDoc(doc); setRenameName(doc.nom); }}>
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Déplacer" onClick={() => { setMoveDoc(doc); setMoveDossier(dossiers.find((d) => d !== doc.dossier) || dossiers[0]); }}>
+                          <FolderInput className="h-3.5 w-3.5" />
+                        </Button>
                         <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => handleDownload(doc)}>
                           <Download className="h-3.5 w-3.5" />
                         </Button>
