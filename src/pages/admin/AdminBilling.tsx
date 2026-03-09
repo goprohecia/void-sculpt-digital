@@ -240,6 +240,13 @@ export default function AdminBilling() {
                         </Select>
                       </div>}
                       <div><label className="text-sm font-medium block mb-1">Titre *</label><Input value={dTitre} onChange={(e) => setDTitre(e.target.value)} /></div>
+                      <div><label className="text-sm font-medium block mb-1">Service / Type de prestation</label>
+                        <Select value={dServiceCatId} onValueChange={setDServiceCatId}>
+                          <SelectTrigger><SelectValue placeholder="Sélectionner un service" /></SelectTrigger>
+                          <SelectContent>{serviceCategories.map((sc) => <SelectItem key={sc.id} value={sc.id}>{sc.nom}</SelectItem>)}</SelectContent>
+                        </Select>
+                      </div>
+                      <div><label className="text-sm font-medium block mb-1">Description / Détail</label><Textarea value={dDescription} onChange={(e) => setDDescription(e.target.value)} placeholder="Détail de la prestation…" rows={3} /></div>
                       <div><label className="text-sm font-medium block mb-1">Montant (€) *</label><Input type="number" value={dMontant} onChange={(e) => setDMontant(e.target.value)} /></div>
                       <div><label className="text-sm font-medium block mb-1">Date de validité</label><Input type="date" value={dValidite} onChange={(e) => setDValidite(e.target.value)} /></div>
                       <Button onClick={handleAddDevis} className="w-full">Créer le devis</Button>
