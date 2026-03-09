@@ -606,12 +606,16 @@ export default function AdminAnalytics() {
                       <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 35 : 60} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: tickFontSize }} />
-                      <Bar dataKey="Site web" name="Site web" stackId="a" fill="hsl(265, 85%, 60%)" />
-                      <Bar dataKey="App mobile" name="App mobile" stackId="a" fill="hsl(200, 100%, 50%)" />
-                      <Bar dataKey="E-commerce" name="E-commerce" stackId="a" fill="hsl(155, 100%, 45%)" />
-                      <Bar dataKey="Back-office" name="Back-office" stackId="a" fill="hsl(45, 93%, 55%)" />
-                      <Bar dataKey="360" name="360" stackId="a" fill="hsl(330, 80%, 55%)" />
-                      <Bar dataKey="Autres" name="Autres" stackId="a" fill="hsl(250, 10%, 45%)" radius={[4, 4, 0, 0]} />
+                      {CATS.map((cat, i) => (
+                        <Bar
+                          key={cat}
+                          dataKey={cat}
+                          name={cat}
+                          stackId="a"
+                          fill={catColors[cat] || `hsl(${(i * 60) % 360}, 70%, 55%)`}
+                          radius={i === CATS.length - 1 ? [4, 4, 0, 0] : undefined}
+                        />
+                      ))}
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
