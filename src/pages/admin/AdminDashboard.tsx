@@ -250,7 +250,7 @@ export default function AdminDashboard() {
                 <div className="glass-card p-5 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-violet-400" />
+                      <Mail className="h-4 w-4 text-primary" />
                       Derniers emails envoyés
                     </h3>
                     <span className="text-xs text-muted-foreground">{emailLogs.length} email{emailLogs.length > 1 ? "s" : ""}</span>
