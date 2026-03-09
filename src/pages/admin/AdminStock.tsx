@@ -376,6 +376,17 @@ export default function AdminStock() {
             </form>
           </DialogContent>
         </Dialog>
+
+        <StockImportDialog
+          open={openImport}
+          onOpenChange={setOpenImport}
+          addProduit={addProduit}
+          addCategory={addCategory}
+          addFournisseur={addFournisseur}
+          categories={categories}
+          fournisseurs={fournisseurs}
+          existingRefs={produits.map((p: any) => p.reference)}
+        />
       </AdminPageTransition>
     </AdminLayout>
   );
