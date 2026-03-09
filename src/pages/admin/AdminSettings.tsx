@@ -519,6 +519,7 @@ function ServiceCategoriesManager() {
 export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
+  const { getModuleLabel } = useDemoPlan();
   const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
   const { config: wlConfig, updateConfig: updateWhiteLabel } = useWhiteLabel();
   const [whiteLabel, setWhiteLabel] = useState({
