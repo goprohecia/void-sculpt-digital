@@ -1319,6 +1319,11 @@ export default function AdminSettings() {
                 )}
               </TabsContent>
 
+              {/* RÉSERVATION TAB */}
+              <TabsContent value="reservation">
+                <BookingSettingsTab />
+              </TabsContent>
+
               {/* NOTIFICATIONS TAB */}
               <TabsContent value="notifications">
                 <Card>
