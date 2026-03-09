@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Check, Clock, ChevronDown, ChevronUp, Pencil, MessageSquare } from "lucide-react";
+import { Check, Clock, ChevronDown, ChevronUp, Pencil, MessageSquare, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { DEFAULT_TIMELINE_STEPS, useDossierTimeline, useTimelineTemplates } from "@/hooks/use-timeline";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { getDefaultStepNotification, type StepNotificationConfig } from "@/data/stepNotificationTemplates";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
 interface DossierTimelineProps {
   dossierId: string;
