@@ -92,6 +92,97 @@
     --sidebar-border: 250 15% 15%;
     --sidebar-ring: 215 85% 55%;
   }
+
+  /* ========================================
+     ADMIN LIGHT THEME (Donezo-inspired)
+     ======================================== */
+  .admin-light-theme {
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    --primary: 145 63% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 15% 15%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 145 63% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 145 63% 42%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 15% 15%;
+    --sidebar-primary: 145 63% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 145 63% 95%;
+    --sidebar-accent-foreground: 145 63% 30%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 145 63% 42%;
+
+    /* Override glass tokens for light */
+    --glass-bg: 0 0% 100%;
+    --glass-alpha: 1;
+    --glass-blur: 0px;
+    --glass-saturation: 1;
+    --glass-border-alpha: 1;
+    --glass-highlight-color: 0 0% 100%;
+    --glass-border: 220 13% 91%;
+    --glass-highlight: 0;
+    --glass-noise-opacity: 0;
+    --glass-shadow-diffuse: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --glass-shadow-sharp: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --glass-shadow-glow: 0 4px 12px 0 rgb(0 0 0 / 0.08);
+  }
+
+  /* Override glass-card hover in admin light theme */
+  .admin-light-theme .glass-card:hover {
+    --glass-alpha: 1;
+    --glass-border-alpha: 1;
+    --glass-highlight: 0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.08);
+  }
+
+  .admin-light-theme .glass-card {
+    background: hsl(var(--card));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06);
+    border-radius: var(--glass-radius);
+  }
+
+  .admin-light-theme .glass-card::before,
+  .admin-light-theme .glass-card::after,
+  .admin-light-theme .glass-base::before,
+  .admin-light-theme .glass-base::after,
+  .admin-light-theme .glass-noise::before {
+    display: none !important;
+  }
+
+  .admin-light-theme .glass-base {
+    background: hsl(var(--card));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--glass-radius);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06);
+  }
 }
 
 @layer base {
