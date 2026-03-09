@@ -148,6 +148,20 @@ export default function AdminDocuments() {
     toast.info(`Téléchargement de "${doc.nom}" (démo)`);
   };
 
+  const handleRename = () => {
+    if (!renameDoc || !renameName.trim()) return;
+    setDocs((prev) => prev.map((d) => d.id === renameDoc.id ? { ...d, nom: renameName.trim(), type: detectType(renameName.trim()) } : d));
+    toast.success(`Document renommé en "${renameName.trim()}"`);
+    setRenameDoc(null);
+  };
+
+  const handleMove = () => {
+    if (!moveDoc || !moveDossier) return;
+    setDocs((prev) => prev.map((d) => d.id === moveDoc.id ? { ...d, dossier: moveDossier } : d));
+    toast.success(`"${moveDoc.nom}" déplacé vers "${moveDossier}"`);
+    setMoveDoc(null);
+  };
+
   return (
     <AdminLayout>
       <AdminPageTransition>
