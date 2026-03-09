@@ -215,6 +215,110 @@ export function BookingSettingsTab() {
         </CardContent>
       </Card>
 
+      {/* Politique d'annulation */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <ShieldAlert className="h-4 w-4" /> Politique d'annulation
+          </CardTitle>
+          <CardDescription>Définissez les règles d'annulation et de remboursement de l'acompte.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Délai d'annulation</Label>
+              <Input
+                type="number"
+                min={1}
+                value={annulationDelai}
+                onChange={e => setAnnulationDelai(Number(e.target.value))}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Unité</Label>
+              <Select value={annulationUnite} onValueChange={v => setAnnulationUnite(v as "heures" | "jours")}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="heures">Heures</SelectItem>
+                  <SelectItem value="jours">Jours</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <Label>Politique de remboursement</Label>
+            <RadioGroup value={annulationPolitique} onValueChange={v => setAnnulationPolitique(v as "total" | "partiel" | "aucun")} className="space-y-2">
+              <div className="flex items-center gap-3 p-3 rounded-lg border bg-card">
+                <RadioGroupItem value="total" id="pol-total" />
+                <Label htmlFor="pol-total" className="cursor-pointer flex-1">
+                  <p className="text-sm font-medium">Remboursement total</p>
+                  <p className="text-xs text-muted-foreground">L'intégralité de l'acompte est remboursée</p>
+                </Label>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg border bg-card">
+                <RadioGroupItem value="partiel" id="pol-partiel" />
+                <Label htmlFor="pol-partiel" className="cursor-pointer flex-1">
+                  <p className="text-sm font-medium">Remboursement partiel</p>
+                  <p className="text-xs text-muted-foreground">Un pourcentage de l'acompte est remboursé</p>
+                </Label>
+                {annulationPolitique === "partiel" && (
+                  <div className="flex items-center gap-1.5">
+                    <Input
+                      type="number"
+                      min={1}
+                      max={99}
+                      value={annulationPourcentage}
+                      onChange={e => setAnnulationPourcentage(Number(e.target.value))}
+                      className="w-20"
+                    />
+                    <span className="text-sm text-muted-foreground">%</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg border bg-card">
+                <RadioGroupItem value="aucun" id="pol-aucun" />
+                <Label htmlFor="pol-aucun" className="cursor-pointer flex-1">
+                  <p className="text-sm font-medium">Aucun remboursement</p>
+                  <p className="text-xs text-muted-foreground">L'acompte n'est pas remboursable</p>
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <Label>Message affiché au client</Label>
+            <Textarea
+              value={annulationMessage}
+              onChange={e => setAnnulationMessage(e.target.value)}
+              placeholder={defaultMessage}
+              rows={3}
+            />
+            <p className="text-xs text-muted-foreground">Laissez vide pour utiliser le message généré automatiquement.</p>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Eye className="h-4 w-4 text-primary" />
+              Aperçu client
+            </div>
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+              <p className="text-sm font-medium mb-1 flex items-center gap-2">
+                <ShieldAlert className="h-4 w-4 text-primary" />
+                Conditions d'annulation
+              </p>
+              <p className="text-sm text-muted-foreground">{displayedMessage}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="flex justify-end">
         <Button onClick={handleSave} disabled={saving} className="gap-2">
           {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
