@@ -115,7 +115,7 @@ export function AIContextButton({ label, context, prompt, variant = "outline", s
 
     if (isDemo) {
       await new Promise(r => setTimeout(r, 1500));
-      const key = context.includes("dossier") ? "dossier" : context.includes("email") ? "email" : "analyse";
+      const key = context.includes("DOSSIER SPÉCIFIQUE") ? "dossier_single" : context.includes("RÉSUMÉ GLOBAL") ? "dossier_global" : context.includes("email") ? "email" : "analyse";
       setResult(DEMO_RESPONSES[key] || DEMO_RESPONSES.analyse);
       setLoading(false);
       return;
