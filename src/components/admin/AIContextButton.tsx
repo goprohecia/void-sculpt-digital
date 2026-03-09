@@ -17,24 +17,45 @@ interface AIContextButtonProps {
 }
 
 const DEMO_RESPONSES: Record<string, string> = {
-  dossier: `## Résumé du dossier
+  dossier_global: `## Résumé global du portefeuille
 
-**Statut général** : Le dossier progresse normalement avec un taux d'avancement estimé à 65%.
+**Vue d'ensemble** : 25 dossiers actifs représentant un CA de 125 500 €
 
-**Points clés :**
-- Cahier des charges validé par le client
-- Développement front-end terminé à 80%
-- Intégration API en cours
-- Tests unitaires planifiés pour la semaine prochaine
+### Répartition par statut
+- 🔵 **En cours** : 12 dossiers (48%) — 68 000 €
+- 🟡 **En attente** : 8 dossiers (32%) — 42 500 €
+- ✅ **Terminés** : 4 dossiers (16%) — 12 000 €
+- ❌ **Annulés** : 1 dossier (4%) — 3 000 €
 
-**Risques identifiés :**
-- Délai potentiel sur l'intégration du module de paiement
-- Clarification nécessaire sur les spécifications du tableau de bord
+### Points d'attention
+1. **Dossiers prioritaires** : 3 dossiers en attente depuis plus de 2 semaines
+2. **Gros montants** : DOS-2026-006 (25 000 €) et DOS-2026-009 (18 000 €) nécessitent un suivi rapproché
+3. **Clients récurrents** : Luxe & Mode a 4 dossiers actifs — opportunité de fidélisation
 
-**Prochaines étapes :**
-1. Finaliser le développement du back-office
-2. Lancer la phase de tests
-3. Planifier la recette client`,
+### Recommandations
+1. Relancer les dossiers en attente : DOS-2026-002, DOS-2026-009
+2. Planifier les rendez-vous manquants cette semaine
+3. Prioriser la validation des cahiers des charges en attente`,
+
+  dossier_single: `## Résumé du dossier
+
+**Statut actuel** : En cours — Avancement estimé à 65%
+
+### Progression
+- ✅ Demande reçue et traitée
+- ✅ Rendez-vous effectué
+- ✅ Cahier des charges validé
+- 🔄 Développement en cours
+- ⏳ Livraison à planifier
+
+### Analyse
+Ce dossier progresse normalement. Le client a validé le CDC et le développement suit son cours. Aucun risque majeur identifié.
+
+### Prochaines étapes recommandées
+1. Finaliser le développement front-end
+2. Envoyer une mise à jour au client cette semaine
+3. Planifier la date de livraison prévisionnelle
+4. Préparer les éléments de facturation`,
 
   email: `## Suggestion d'email
 
@@ -94,7 +115,7 @@ export function AIContextButton({ label, context, prompt, variant = "outline", s
 
     if (isDemo) {
       await new Promise(r => setTimeout(r, 1500));
-      const key = context.includes("dossier") ? "dossier" : context.includes("email") ? "email" : "analyse";
+      const key = context.includes("DOSSIER SPÉCIFIQUE") ? "dossier_single" : context.includes("RÉSUMÉ GLOBAL") ? "dossier_global" : context.includes("email") ? "email" : "analyse";
       setResult(DEMO_RESPONSES[key] || DEMO_RESPONSES.analyse);
       setLoading(false);
       return;

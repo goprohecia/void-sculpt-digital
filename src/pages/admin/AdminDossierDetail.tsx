@@ -10,7 +10,8 @@ import { useDevis } from "@/hooks/use-devis";
 import { usePreviewVisits } from "@/hooks/use-preview-visits";
 import { useCahiers } from "@/hooks/use-cahiers";
 import { useDemandes } from "@/hooks/use-demandes";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles } from "lucide-react";
+import { AIContextButton } from "@/components/admin/AIContextButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -144,6 +145,22 @@ export default function AdminDossierDetail() {
                 <p className="text-muted-foreground text-sm">{dossier.typePrestation} — {dossier.clientNom}</p>
               </div>
               <div className="flex items-center gap-3">
+                <AIContextButton
+                  label="Résumé IA"
+                  context={`DOSSIER SPÉCIFIQUE: ${dossier.reference}
+- Client: ${dossier.clientNom}
+- Prestation: ${dossier.typePrestation}
+- Montant: ${dossier.montant.toLocaleString()} €
+- Statut: ${dossier.statut}
+- Date création: ${new Date(dossier.dateCreation).toLocaleDateString("fr-FR")}
+- Échéance: ${dossier.dateEcheance ? new Date(dossier.dateEcheance).toLocaleDateString("fr-FR") : "Non définie"}
+- RDV effectué: ${rdvEffectue ? "Oui" : "Non"}
+- Cahier des charges: ${cdcComplete ? "Validé" : cdcRejected ? "Rejeté" : cdcSubmitted ? "En validation" : "À remplir"}
+- Factures liées: ${facturesDossier.length}
+- Devis liés: ${devisDossier.length}
+- Visites preview: ${previewVisits.length}`}
+                  prompt="Fais un résumé détaillé de ce dossier spécifique. Analyse son avancement, identifie les prochaines étapes à accomplir, les éventuels blocages et propose des recommandations pour faire avancer ce dossier."
+                />
                 <StatusBadge status={dossier.statut} />
                 <Select value={dossier.statut} onValueChange={handleStatutChange}>
                   <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>

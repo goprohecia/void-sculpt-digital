@@ -125,8 +125,18 @@ export default function AdminDossiers() {
             </div>
             <AIContextButton
               label="Résumé IA"
-              context={`dossier - ${dossiers.length} dossiers actifs, ${demandes.length} demandes. Statuts: ${dossiers.filter(d => d.statut === "en_cours").length} en cours, ${dossiers.filter(d => d.statut === "termine").length} terminés, ${dossiers.filter(d => d.statut === "en_attente").length} en attente.`}
-              prompt="Fais un résumé synthétique de l'état des dossiers et demandes. Identifie les points d'attention, les priorités et les prochaines actions recommandées."
+              context={`RÉSUMÉ GLOBAL DE TOUS LES DOSSIERS:
+- Total: ${dossiers.length} dossiers, ${demandes.length} demandes
+- En cours: ${dossiers.filter(d => d.statut === "en_cours").length} dossiers
+- Terminés: ${dossiers.filter(d => d.statut === "termine").length} dossiers
+- En attente: ${dossiers.filter(d => d.statut === "en_attente").length} dossiers
+- Annulés: ${dossiers.filter(d => d.statut === "annule").length} dossiers
+- CA total: ${dossiers.reduce((sum, d) => sum + d.montant, 0).toLocaleString()} €
+- CA en cours: ${dossiers.filter(d => d.statut === "en_cours").reduce((sum, d) => sum + d.montant, 0).toLocaleString()} €
+
+DÉTAIL DES DOSSIERS:
+${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} - ${d.montant.toLocaleString()}€ - ${d.statut}`).join('\n')}`}
+              prompt="Fais un résumé synthétique de l'ensemble des dossiers. Analyse les tendances, identifie les points d'attention (dossiers en attente depuis longtemps, gros montants), les priorités et les prochaines actions recommandées. Donne une vue globale de la santé du portefeuille."
             />
           </motion.div>
 
