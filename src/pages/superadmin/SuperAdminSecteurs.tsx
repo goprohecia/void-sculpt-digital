@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import {
@@ -19,7 +19,7 @@ import {
   LayoutDashboard, Users, FolderOpen, Target, Receipt, Bell,
   Package, MessageSquare, Mail, CalendarDays, Calendar,
   CheckSquare, LifeBuoy, StickyNote, BarChart3, FileText,
-  FolderClosed, Timer, Zap, Bot, Settings,
+  FolderClosed, Timer, Zap, Bot, Settings, Trash2,
 } from "lucide-react";
 
 // Icon map for sidebar preview

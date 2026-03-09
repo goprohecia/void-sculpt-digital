@@ -109,8 +109,8 @@ export default function AdminClients() {
   };
 
   const handleCreateClient = async () => {
-    if (!newClient.prenom || !newClient.nom || !newClient.email) {
-      toast.error("Prénom, nom et email sont obligatoires");
+    if (!newClient.prenom || !newClient.nom || !newClient.email || !newClient.telephone) {
+      toast.error("Prénom, nom, email et téléphone sont obligatoires");
       return;
     }
     try {
@@ -132,7 +132,7 @@ export default function AdminClients() {
           );
         }
       }
-      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé`);
+      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé — un email d'invitation a été envoyé`);
       setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
       setNewClientTagIds([]);
       setShowCreateDialog(false);
