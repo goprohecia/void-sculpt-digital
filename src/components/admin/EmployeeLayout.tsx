@@ -1,9 +1,11 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { useDemoData } from "@/contexts/DemoDataContext";
 import { supabase } from "@/integrations/supabase/client";
 import { EmployeeSidebar } from "./EmployeeSidebar";
 import { AdminPageTransition } from "./AdminPageTransition";
+import { NotificationPanel } from "./NotificationPanel";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 interface EmployeeLayoutProps {
