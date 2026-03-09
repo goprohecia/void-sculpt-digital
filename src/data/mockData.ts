@@ -54,6 +54,8 @@ export interface Facture {
   statut: FactureStatus;
   dateEmission: string;
   dateEcheance: string;
+  serviceCategoryId?: string;
+  description?: string;
 }
 
 export interface Relance {
