@@ -476,6 +476,26 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
     }
   }, [dossiersState, pushNotif]);
 
+  const assignDossier = useCallback((dossierId: string, newAssignments: DossierAssignment[]) => {
+    setAssignments((prev) => ({ ...prev, [dossierId]: newAssignments }));
+  }, []);
+
+  const getAssignmentsByDossier = useCallback((dossierId: string): DossierAssignment[] => {
+    return assignments[dossierId] || [];
+  }, [assignments]);
+
+  const getDossiersByEmployee = useCallback((employeeId: string) => {
+    const result: { dossier: Dossier; role: DossierAssignment["role"] }[] = [];
+    for (const [dossierId, dossierAssignments] of Object.entries(assignments)) {
+      const assignment = dossierAssignments.find((a) => a.employeeId === employeeId);
+      if (assignment) {
+        const dossier = dossiersState.find((d) => d.id === dossierId);
+        if (dossier) result.push({ dossier, role: assignment.role });
+      }
+    }
+    return result;
+  }, [assignments, dossiersState]);
+
   return (
     <DemoDataContext.Provider value={{
       factures, devis: devisState, dossiers: dossiersState, demandes, clients: clientsState, notifications: notifs, emailLogs, sendLogs, previewVisits,
