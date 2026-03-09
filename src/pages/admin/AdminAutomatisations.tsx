@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Zap, Bell, Mail, Clock, ArrowRight, Plus, CheckCircle, X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Zap, Bell, Mail, Clock, ArrowRight, Plus, CheckCircle, X, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Automation {
@@ -24,12 +25,135 @@ interface Automation {
   categorie: "relance" | "notification" | "statut" | "email";
 }
 
+// ── Predefined triggers ──
+const PREDEFINED_TRIGGERS: Record<string, { label: string; items: string[] }> = {
+  relance: {
+    label: "Relance",
+    items: [
+      "Facture impayée > 3 jours",
+      "Facture impayée > 7 jours",
+      "Facture impayée > 15 jours",
+      "Facture impayée > 30 jours",
+      "Facture impayée > 60 jours",
+      "Devis non signé > 5 jours",
+      "Devis non signé > 10 jours",
+      "Devis non signé > 30 jours",
+      "Acompte non reçu > 7 jours",
+    ],
+  },
+  notification: {
+    label: "Notification",
+    items: [
+      "Inscription client",
+      "Nouveau message reçu",
+      "Nouveau ticket support",
+      "Rendez-vous confirmé",
+      "Rendez-vous annulé",
+      "Dossier assigné à un employé",
+      "Commentaire ajouté sur un dossier",
+      "Stock en alerte (seuil atteint)",
+      "Nouvel avis / note client",
+      "Employé ajouté à l'équipe",
+    ],
+  },
+  statut: {
+    label: "Changement de statut",
+    items: [
+      "Statut dossier = Terminé",
+      "Statut dossier = En attente",
+      "Statut dossier = Annulé",
+      "Statut demande = Acceptée",
+      "Statut demande = Refusée",
+      "Date validité dépassée (devis)",
+      "Date d'échéance dépassée (facture)",
+      "Ticket résolu",
+      "Ticket sans réponse > 48h",
+      "Bon de commande livré",
+    ],
+  },
+  email: {
+    label: "Email",
+    items: [
+      "Premier dossier créé",
+      "RDV dans 24h",
+      "RDV dans 1h",
+      "Anniversaire du client",
+      "3 mois sans activité",
+      "6 mois sans activité",
+      "Facture payée",
+      "Devis signé",
+      "Nouveau devis envoyé",
+      "Nouvelle facture émise",
+      "Dossier en cours de livraison",
+      "Demande de feedback post-prestation",
+    ],
+  },
+};
+
+// ── Predefined actions ──
+const PREDEFINED_ACTIONS: Record<string, { label: string; items: string[] }> = {
+  relance: {
+    label: "Relance",
+    items: [
+      "Envoyer email de relance niveau 1",
+      "Envoyer email de relance niveau 2 (ferme)",
+      "Envoyer email de relance niveau 3 (mise en demeure)",
+      "Envoyer SMS de relance",
+      "Créer une tâche de suivi pour l'admin",
+      "Ajouter une note au dossier",
+      "Marquer le client comme 'À risque'",
+    ],
+  },
+  notification: {
+    label: "Notification",
+    items: [
+      "Notification push admin",
+      "Notification push + email admin",
+      "Notification push client",
+      "Notification push employé assigné",
+      "Notification Slack / webhook",
+      "Ajouter une entrée dans le journal d'activité",
+    ],
+  },
+  statut: {
+    label: "Changement de statut",
+    items: [
+      "Changer statut → Archivé",
+      "Changer statut → En attente",
+      "Changer statut → En cours",
+      "Créer facture brouillon",
+      "Créer facture et envoyer au client",
+      "Clôturer le dossier",
+      "Réouvrir le dossier",
+      "Générer un rapport de clôture",
+      "Archiver les documents liés",
+    ],
+  },
+  email: {
+    label: "Email",
+    items: [
+      "Email de bienvenue",
+      "Email de rappel au client",
+      "Email de confirmation",
+      "Email de remerciement",
+      "Email de satisfaction (enquête)",
+      "Email récapitulatif mensuel",
+      "Email promotionnel personnalisé",
+      "Email de réactivation",
+      "Email d'anniversaire avec offre",
+      "Email de suivi post-prestation",
+      "Envoyer le devis en PDF",
+      "Envoyer la facture en PDF",
+    ],
+  },
+};
+
 const DEMO_AUTOMATIONS: Automation[] = [
-  { id: "1", titre: "Relance automatique J+7", description: "Envoyer une relance email si la facture n'est pas payée après 7 jours", declencheur: "Facture impayée > 7 jours", action: "Envoyer email de relance", actif: true, executions: 23, derniereExec: "07/03/2026", categorie: "relance" },
-  { id: "2", titre: "Notification nouveau client", description: "Alerter l'admin quand un nouveau client s'inscrit", declencheur: "Inscription client", action: "Notification push + email", actif: true, executions: 8, derniereExec: "06/03/2026", categorie: "notification" },
-  { id: "3", titre: "Devis expiré → archivé", description: "Passer automatiquement les devis expirés en statut archivé", declencheur: "Date validité dépassée", action: "Changer statut → Archivé", actif: true, executions: 5, derniereExec: "05/03/2026", categorie: "statut" },
+  { id: "1", titre: "Relance automatique J+7", description: "Envoyer une relance email si la facture n'est pas payée après 7 jours", declencheur: "Facture impayée > 7 jours", action: "Envoyer email de relance niveau 1", actif: true, executions: 23, derniereExec: "07/03/2026", categorie: "relance" },
+  { id: "2", titre: "Notification nouveau client", description: "Alerter l'admin quand un nouveau client s'inscrit", declencheur: "Inscription client", action: "Notification push + email admin", actif: true, executions: 8, derniereExec: "06/03/2026", categorie: "notification" },
+  { id: "3", titre: "Devis expiré → archivé", description: "Passer automatiquement les devis expirés en statut archivé", declencheur: "Date validité dépassée (devis)", action: "Changer statut → Archivé", actif: true, executions: 5, derniereExec: "05/03/2026", categorie: "statut" },
   { id: "4", titre: "Rappel RDV J-1", description: "Envoyer un email de rappel au client 24h avant le rendez-vous", declencheur: "RDV dans 24h", action: "Email de rappel au client", actif: true, executions: 34, derniereExec: "07/03/2026", categorie: "email" },
-  { id: "5", titre: "Relance 2e niveau J+15", description: "Relance plus ferme si toujours impayé après 15 jours", declencheur: "Facture impayée > 15 jours", action: "Email relance niveau 2", actif: false, executions: 3, derniereExec: "01/03/2026", categorie: "relance" },
+  { id: "5", titre: "Relance 2e niveau J+15", description: "Relance plus ferme si toujours impayé après 15 jours", declencheur: "Facture impayée > 15 jours", action: "Envoyer email de relance niveau 2 (ferme)", actif: false, executions: 3, derniereExec: "01/03/2026", categorie: "relance" },
   { id: "6", titre: "Dossier terminé → facture", description: "Créer automatiquement une facture quand un dossier passe en 'Terminé'", declencheur: "Statut dossier = Terminé", action: "Créer facture brouillon", actif: false, executions: 0, categorie: "statut" },
   { id: "7", titre: "Bienvenue nouveau client", description: "Envoyer un email de bienvenue personnalisé", declencheur: "Premier dossier créé", action: "Email de bienvenue", actif: true, executions: 12, derniereExec: "04/03/2026", categorie: "email" },
 ];
@@ -49,37 +173,121 @@ const CATEGORIES = [
   { value: "email", label: "Email" },
 ];
 
+type RuleForm = { titre: string; description: string; declencheur: string; action: string; categorie: Automation["categorie"] };
+const EMPTY_FORM: RuleForm = { titre: "", description: "", declencheur: "", action: "", categorie: "email" };
+
+function RuleFormFields({ form, setForm, allTriggers, allActions }: {
+  form: RuleForm;
+  setForm: React.Dispatch<React.SetStateAction<RuleForm>>;
+  allTriggers: string[];
+  allActions: string[];
+}) {
+  const triggers = PREDEFINED_TRIGGERS[form.categorie]?.items ?? [];
+  const actions = PREDEFINED_ACTIONS[form.categorie]?.items ?? [];
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <Label>Titre</Label>
+          <Input placeholder="Ex: Relance J+7" value={form.titre} onChange={(e) => setForm((r) => ({ ...r, titre: e.target.value }))} />
+        </div>
+        <div className="space-y-1.5">
+          <Label>Catégorie</Label>
+          <Select value={form.categorie} onValueChange={(v) => setForm((r) => ({ ...r, categorie: v as Automation["categorie"], declencheur: "", action: "" }))}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        <Label>Description</Label>
+        <Textarea placeholder="Description de la règle..." rows={2} value={form.description} onChange={(e) => setForm((r) => ({ ...r, description: e.target.value }))} />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <Label>Déclencheur</Label>
+          <Select value={form.declencheur} onValueChange={(v) => setForm((r) => ({ ...r, declencheur: v }))}>
+            <SelectTrigger><SelectValue placeholder="Choisir un déclencheur…" /></SelectTrigger>
+            <SelectContent>
+              {triggers.map((t) => (
+                <SelectItem key={t} value={t}>{t}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1.5">
+          <Label>Action</Label>
+          <Select value={form.action} onValueChange={(v) => setForm((r) => ({ ...r, action: v }))}>
+            <SelectTrigger><SelectValue placeholder="Choisir une action…" /></SelectTrigger>
+            <SelectContent>
+              {actions.map((a) => (
+                <SelectItem key={a} value={a}>{a}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminAutomatisations() {
   const [automations, setAutomations] = useState(DEMO_AUTOMATIONS);
   const [showForm, setShowForm] = useState(false);
-  const [newRule, setNewRule] = useState({ titre: "", description: "", declencheur: "", action: "", categorie: "email" as Automation["categorie"] });
+  const [newRule, setNewRule] = useState<RuleForm>({ ...EMPTY_FORM });
+
+  // Edit state
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<RuleForm>({ ...EMPTY_FORM });
+
+  // Delete state
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const allTriggers = Object.values(PREDEFINED_TRIGGERS).flatMap((g) => g.items);
+  const allActions = Object.values(PREDEFINED_ACTIONS).flatMap((g) => g.items);
 
   const toggleAutomation = (id: string) => {
     setAutomations((prev) => prev.map((a) => (a.id === id ? { ...a, actif: !a.actif } : a)));
   };
 
   const handleCreate = () => {
-    if (!newRule.titre.trim() || !newRule.declencheur.trim() || !newRule.action.trim()) return;
+    if (!newRule.titre.trim() || !newRule.declencheur || !newRule.action) return;
     setAutomations((prev) => [
-      {
-        id: Date.now().toString(),
-        titre: newRule.titre,
-        description: newRule.description,
-        declencheur: newRule.declencheur,
-        action: newRule.action,
-        categorie: newRule.categorie,
-        actif: true,
-        executions: 0,
-      },
+      { id: Date.now().toString(), ...newRule, actif: true, executions: 0 },
       ...prev,
     ]);
-    setNewRule({ titre: "", description: "", declencheur: "", action: "", categorie: "email" });
+    setNewRule({ ...EMPTY_FORM });
     setShowForm(false);
     toast.success("Règle d'automatisation créée");
   };
 
+  const openEdit = (auto: Automation) => {
+    setEditId(auto.id);
+    setEditForm({ titre: auto.titre, description: auto.description, declencheur: auto.declencheur, action: auto.action, categorie: auto.categorie });
+  };
+
+  const handleEdit = () => {
+    if (!editId || !editForm.titre.trim() || !editForm.declencheur || !editForm.action) return;
+    setAutomations((prev) => prev.map((a) => (a.id === editId ? { ...a, ...editForm } : a)));
+    setEditId(null);
+    toast.success("Règle modifiée");
+  };
+
+  const handleDelete = () => {
+    if (!deleteId) return;
+    setAutomations((prev) => prev.filter((a) => a.id !== deleteId));
+    setDeleteId(null);
+    toast.success("Règle supprimée");
+  };
+
   const activeCount = automations.filter((a) => a.actif).length;
   const totalExecs = automations.reduce((sum, a) => sum + a.executions, 0);
+  const deleteAuto = automations.find((a) => a.id === deleteId);
 
   return (
     <AdminLayout>
@@ -101,39 +309,9 @@ export default function AdminAutomatisations() {
           {showForm && (
             <Card>
               <CardContent className="pt-4 space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label>Titre</Label>
-                    <Input placeholder="Ex: Relance J+7" value={newRule.titre} onChange={(e) => setNewRule((r) => ({ ...r, titre: e.target.value }))} />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label>Catégorie</Label>
-                    <Select value={newRule.categorie} onValueChange={(v) => setNewRule((r) => ({ ...r, categorie: v as Automation["categorie"] }))}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        {CATEGORIES.map((c) => (
-                          <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <div className="space-y-1.5">
-                  <Label>Description</Label>
-                  <Textarea placeholder="Description de la règle..." rows={2} value={newRule.description} onChange={(e) => setNewRule((r) => ({ ...r, description: e.target.value }))} />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label>Déclencheur</Label>
-                    <Input placeholder="Ex: Facture impayée > 7 jours" value={newRule.declencheur} onChange={(e) => setNewRule((r) => ({ ...r, declencheur: e.target.value }))} />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label>Action</Label>
-                    <Input placeholder="Ex: Envoyer email de relance" value={newRule.action} onChange={(e) => setNewRule((r) => ({ ...r, action: e.target.value }))} />
-                  </div>
-                </div>
+                <RuleFormFields form={newRule} setForm={setNewRule} allTriggers={allTriggers} allActions={allActions} />
                 <div className="flex justify-end">
-                  <Button onClick={handleCreate} disabled={!newRule.titre.trim() || !newRule.declencheur.trim() || !newRule.action.trim()} className="gap-1.5">
+                  <Button onClick={handleCreate} disabled={!newRule.titre.trim() || !newRule.declencheur || !newRule.action} className="gap-1.5">
                     <Plus className="h-4 w-4" /> Créer la règle
                   </Button>
                 </div>
@@ -167,7 +345,15 @@ export default function AdminAutomatisations() {
                           {auto.derniereExec && <span>· Dernière : {auto.derniereExec}</span>}
                         </div>
                       </div>
-                      <Switch checked={auto.actif} onCheckedChange={() => toggleAutomation(auto.id)} />
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(auto)}>
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => setDeleteId(auto.id)}>
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                        <Switch checked={auto.actif} onCheckedChange={() => toggleAutomation(auto.id)} />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -175,6 +361,37 @@ export default function AdminAutomatisations() {
             })}
           </div>
         </div>
+
+        {/* Edit dialog */}
+        <Dialog open={!!editId} onOpenChange={(o) => { if (!o) setEditId(null); }}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Modifier la règle</DialogTitle>
+              <DialogDescription>Modifiez les paramètres de cette automatisation.</DialogDescription>
+            </DialogHeader>
+            <RuleFormFields form={editForm} setForm={setEditForm} allTriggers={allTriggers} allActions={allActions} />
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditId(null)}>Annuler</Button>
+              <Button onClick={handleEdit} disabled={!editForm.titre.trim() || !editForm.declencheur || !editForm.action}>Enregistrer</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Delete confirm dialog */}
+        <Dialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Supprimer la règle</DialogTitle>
+              <DialogDescription>
+                Voulez-vous vraiment supprimer « {deleteAuto?.titre} » ? Cette action est irréversible.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDeleteId(null)}>Annuler</Button>
+              <Button variant="destructive" onClick={handleDelete}>Supprimer</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );
