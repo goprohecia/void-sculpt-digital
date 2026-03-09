@@ -22,10 +22,15 @@ type TabType = "clients" | "salaries";
 export default function AdminMessaging() {
   const { conversations } = useConversations();
   const { isDemo } = useIsDemo();
+  const { clients } = useClients();
+  const queryClient = useQueryClient();
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
   const [showList, setShowList] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>("clients");
+  const [showNewConv, setShowNewConv] = useState(false);
+  const [newConvForm, setNewConvForm] = useState({ clientId: "", sujet: "", message: "" });
+  const [creating, setCreating] = useState(false);
 
   // Fetch employees for the "salaries" tab
   const { data: employees = [] } = useQuery<any[]>({
@@ -48,13 +53,78 @@ export default function AdminMessaging() {
     setShowList(false);
   };
 
+  const handleCreateConversation = async () => {
+    if (!newConvForm.clientId || !newConvForm.sujet.trim() || !newConvForm.message.trim()) {
+      toast.error("Veuillez remplir tous les champs");
+      return;
+    }
+
+    if (isDemo) {
+      toast.success("Conversation créée (mode démo)");
+      setShowNewConv(false);
+      setNewConvForm({ clientId: "", sujet: "", message: "" });
+      return;
+    }
+
+    setCreating(true);
+    try {
+      const client = clients.find((c) => c.id === newConvForm.clientId);
+      const clientNom = client ? `${client.prenom} ${client.nom}` : "Client";
+
+      // Create conversation
+      const { data: conv, error: convError } = await supabase
+        .from("conversations")
+        .insert({
+          client_id: newConvForm.clientId,
+          client_nom: clientNom,
+          sujet: newConvForm.sujet.trim(),
+          non_lus: 0,
+          dernier_message: new Date().toISOString(),
+        })
+        .select()
+        .single();
+
+      if (convError) throw convError;
+
+      // Create first message
+      const { error: msgError } = await supabase
+        .from("messages")
+        .insert({
+          conversation_id: conv.id,
+          contenu: newConvForm.message.trim(),
+          role: "admin",
+          date: new Date().toISOString(),
+        });
+
+      if (msgError) throw msgError;
+
+      toast.success("Conversation créée");
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      setShowNewConv(false);
+      setNewConvForm({ clientId: "", sujet: "", message: "" });
+    } catch (err: any) {
+      toast.error(err.message || "Erreur lors de la création");
+    } finally {
+      setCreating(false);
+    }
+  };
+
   return (
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-4" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem}>
-            <h1 className="text-2xl font-bold flex items-center gap-2"><MessageSquare className="h-6 w-6 text-primary" /> Messagerie</h1>
-            <p className="text-muted-foreground text-sm">{conversations.length} conversations clients · {employees.length} salariés</p>
+          <motion.div variants={staggerItem} className="flex items-start justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2"><MessageSquare className="h-6 w-6 text-primary" /> Messagerie</h1>
+              <p className="text-muted-foreground text-sm">{conversations.length} conversations clients · {employees.length} salariés</p>
+            </div>
+            <button
+              onClick={() => setShowNewConv(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium"
+            >
+              <Plus className="h-4 w-4" />
+              Nouveau message
+            </button>
           </motion.div>
 
           {/* Tab selector */}
@@ -145,6 +215,64 @@ export default function AdminMessaging() {
             </motion.div>
           )}
         </motion.div>
+
+        {/* New conversation dialog */}
+        <Dialog open={showNewConv} onOpenChange={setShowNewConv}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Plus className="h-5 w-5 text-primary" />
+                Nouveau message
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 pt-2">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Client destinataire</label>
+                <Select value={newConvForm.clientId || "__none__"} onValueChange={(v) => setNewConvForm((f) => ({ ...f, clientId: v === "__none__" ? "" : v }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner un client" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">Sélectionner un client</SelectItem>
+                    {clients.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>{c.prenom} {c.nom} — {c.entreprise || c.email}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Sujet</label>
+                <Input
+                  value={newConvForm.sujet}
+                  onChange={(e) => setNewConvForm((f) => ({ ...f, sujet: e.target.value }))}
+                  placeholder="Ex: Suivi de votre projet"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Message</label>
+                <Textarea
+                  value={newConvForm.message}
+                  onChange={(e) => setNewConvForm((f) => ({ ...f, message: e.target.value }))}
+                  placeholder="Rédigez votre message..."
+                  rows={4}
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button onClick={() => setShowNewConv(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">
+                  Annuler
+                </button>
+                <button
+                  onClick={handleCreateConversation}
+                  disabled={creating || !newConvForm.clientId || !newConvForm.sujet.trim() || !newConvForm.message.trim()}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium disabled:opacity-50"
+                >
+                  <Send className="h-4 w-4" />
+                  {creating ? "Envoi..." : "Envoyer"}
+                </button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );
