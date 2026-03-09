@@ -12,10 +12,12 @@ import { useFactures } from "@/hooks/use-factures";
 import { useRelances } from "@/hooks/use-relances";
 import { useConversations } from "@/hooks/use-conversations";
 import { useIsDemo } from "@/hooks/useIsDemo";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import {
   Euro, FolderOpen, Users, Receipt, MessageSquare, ArrowRight,
   CalendarDays, ChevronLeft, ChevronRight, Mail, UserCheck, UserPlus,
-  Plus, Send, Calendar, StickyNote, Zap, TrendingUp, Activity
+  Plus, Send, Calendar, StickyNote, Zap, TrendingUp, Activity, Gauge
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
