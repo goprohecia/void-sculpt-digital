@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
+import { Separator } from "@/components/ui/separator";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useFactures } from "@/hooks/use-factures";
 import { useDevis } from "@/hooks/use-devis";
@@ -15,13 +16,14 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
 import { MOCK_TEAM_MEMBERS, type DossierAssignment } from "@/data/mockData";
 import { AssignModal } from "@/components/admin/AssignModal";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles, Users, Crown, Shield } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles, Users, Crown, Shield, Ban } from "lucide-react";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
@@ -115,6 +117,18 @@ export default function AdminDossierDetail() {
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
+  // Cancellation policy mock
+  const cancellationPolicy = {
+    politique: "total" as const,
+    pourcentagePartiel: 50,
+    acomptePaye: 30,
+  };
+  const montantRembourse = cancellationPolicy.politique === "total"
+    ? cancellationPolicy.acomptePaye
+    : cancellationPolicy.politique === "partiel"
+      ? Math.round(cancellationPolicy.acomptePaye * cancellationPolicy.pourcentagePartiel / 100)
+      : 0;
+
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
@@ -156,7 +170,53 @@ export default function AdminDossierDetail() {
                 </h1>
                 <p className="text-muted-foreground text-sm">{dossier.typePrestation} — {dossier.clientNom}</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
+                {dossier.statut !== "annule" && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm" className="gap-1.5">
+                        <Ban className="h-3.5 w-3.5" /> Annuler la réservation
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Annuler la réservation ?</AlertDialogTitle>
+                        <AlertDialogDescription className="space-y-3">
+                          <p>Vous êtes sur le point d'annuler le dossier <strong>{dossier.reference}</strong>.</p>
+                          <div className="rounded-lg border bg-muted/30 p-3 space-y-1.5 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Acompte payé</span>
+                              <span className="font-medium">{cancellationPolicy.acomptePaye} €</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Politique</span>
+                              <span className="font-medium capitalize">
+                                {cancellationPolicy.politique === "total" ? "Remboursement total" : cancellationPolicy.politique === "partiel" ? `Partiel (${cancellationPolicy.pourcentagePartiel}%)` : "Aucun remboursement"}
+                              </span>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between font-semibold">
+                              <span>Montant remboursé</span>
+                              <span className="text-primary">{montantRembourse} €</span>
+                            </div>
+                          </div>
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Annuler</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          onClick={() => {
+                            handleStatutChange("annule");
+                            toast.success(`Réservation annulée — Remboursement de ${montantRembourse} € initié`);
+                          }}
+                        >
+                          Confirmer l'annulation
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
                 <AIContextButton
                   label="Résumé IA"
                   context={`DOSSIER SPÉCIFIQUE: ${dossier.reference}

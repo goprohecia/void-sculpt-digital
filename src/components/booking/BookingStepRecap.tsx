@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { CalendarDays, CreditCard } from "lucide-react";
+import { CalendarDays, CreditCard, ShieldAlert } from "lucide-react";
 import type { TimeSlot } from "./BookingStepSlot";
 import type { BookingFormField } from "./BookingStepForm";
 
@@ -15,6 +17,7 @@ interface BookingStepRecapProps {
   acompteType: "fixe" | "pourcentage";
   acompteMontant: number;
   prixPrestation: number;
+  cancellationMessage: string;
   onConfirm: () => void;
   onBack: () => void;
 }
@@ -22,8 +25,10 @@ interface BookingStepRecapProps {
 export function BookingStepRecap({
   slot, formData, formFields, showForm,
   acompteType, acompteMontant, prixPrestation,
+  cancellationMessage,
   onConfirm, onBack,
 }: BookingStepRecapProps) {
+  const [accepted, setAccepted] = useState(false);
   const montantAcompte = acompteType === "fixe"
     ? acompteMontant
     : Math.round(prixPrestation * acompteMontant / 100);
@@ -79,13 +84,31 @@ export function BookingStepRecap({
         </CardContent>
       </Card>
 
-      <p className="text-xs text-muted-foreground text-center">
-        En cliquant sur "Payer l'acompte", vous acceptez les conditions générales de vente et la politique d'annulation.
-      </p>
+      {/* Cancellation conditions block */}
+      <Card className="border-primary/20 bg-primary/5">
+        <CardContent className="pt-5 space-y-3">
+          <p className="text-sm font-medium flex items-center gap-2">
+            <ShieldAlert className="h-4 w-4 text-primary" />
+            Conditions d'annulation
+          </p>
+          <p className="text-sm text-muted-foreground">{cancellationMessage}</p>
+          <Separator />
+          <label className="flex items-start gap-3 cursor-pointer">
+            <Checkbox
+              checked={accepted}
+              onCheckedChange={(v) => setAccepted(v === true)}
+              className="mt-0.5"
+            />
+            <span className="text-sm leading-snug">
+              J'ai lu et j'accepte les conditions d'annulation
+            </span>
+          </label>
+        </CardContent>
+      </Card>
 
       <div className="flex justify-between">
         <Button variant="outline" onClick={onBack}>Retour</Button>
-        <Button onClick={onConfirm} className="gap-2">
+        <Button onClick={onConfirm} disabled={!accepted} className="gap-2">
           <CreditCard className="h-4 w-4" />
           Payer l'acompte — {montantAcompte} €
         </Button>

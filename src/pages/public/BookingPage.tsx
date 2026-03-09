@@ -21,6 +21,13 @@ const MOCK_CONFIG = {
     { id: "motif", label: "Motif du rendez-vous", type: "text" as const, required: true },
     { id: "message", label: "Message complémentaire", type: "textarea" as const, required: false },
   ] as BookingFormField[],
+  annulation: {
+    delai: 24,
+    unite: "heures" as const,
+    politique: "total" as const,
+    pourcentagePartiel: 50,
+    messageClient: "Annulation gratuite jusqu'à 24h avant le rendez-vous. Remboursement intégral de l'acompte.",
+  },
 };
 
 export default function BookingPage() {
@@ -104,6 +111,7 @@ export default function BookingPage() {
             acompteType={config.acompteType}
             acompteMontant={config.acompteMontant}
             prixPrestation={config.prixPrestation}
+            cancellationMessage={config.annulation.messageClient}
             onConfirm={handleConfirm}
             onBack={() => setStep(1)}
           />
@@ -135,6 +143,7 @@ export default function BookingPage() {
           acompteType={config.acompteType}
           acompteMontant={config.acompteMontant}
           prixPrestation={config.prixPrestation}
+          cancellationMessage={config.annulation.messageClient}
           onConfirm={handleConfirm}
           onBack={() => setStep(2)}
         />
