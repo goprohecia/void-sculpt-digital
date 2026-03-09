@@ -274,8 +274,10 @@ export default function AdminTaches() {
                   <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="_none">Aucun</SelectItem>
-                    {DOSSIERS.map((d) => (
-                      <SelectItem key={d} value={d}>{d}</SelectItem>
+                    {dossiers.map((d) => (
+                      <SelectItem key={d.reference} value={d.reference}>
+                        {d.reference} — {d.client_nom}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
