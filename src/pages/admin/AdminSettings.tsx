@@ -562,6 +562,7 @@ export default function AdminSettings() {
                       <div className="space-y-2">
                         <Label htmlFor="co-nom">Raison sociale</Label>
                         <Input id="co-nom" value={company.nom} onChange={(e) => setCompany((c) => ({ ...c, nom: e.target.value }))} />
+                        <p className="text-xs text-muted-foreground">Ce nom sera utilisé dans les emails d'invitation envoyés à vos clients.</p>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="co-siret">SIRET</Label>
