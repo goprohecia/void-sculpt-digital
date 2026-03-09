@@ -108,7 +108,7 @@ export default function AdminDossierDetail() {
   const { getPreviewVisitsByDossier, addPreviewVisit } = usePreviewVisits();
   const { getCahierByDemande, validateCahier, cahiersDesCharges } = useCahiers();
   const { demandes } = useDemandes();
-  const { getAssignmentsByDossier, assignDossier } = useDemoData();
+  const { getAssignmentsByDossier, assignDossier, addNotification } = useDemoData();
   const { demoSector } = useDemoPlan();
   const assignEnabled = isAssignationEnabled(demoSector);
 
