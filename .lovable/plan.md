@@ -1,42 +1,44 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Module 08 — QR Code généré automatiquement
 
-## Modifications
+### Audit
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+| Élément | Statut |
+|---|---|
+| QR code dans BookingSettingsTab | **Manquant** |
+| Bouton "Copier le lien" | **OK** — déjà présent |
+| Téléchargement PNG / PDF | **Manquant** |
+| Personnalisation logo (plan Enterprise) | **Manquant** |
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+### Plan d'implémentation
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+#### 1. Installer `qrcode.react`
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+Ajouter la dépendance `qrcode.react` au projet.
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+#### 2. Modifier `BookingSettingsTab.tsx` — Ajouter la section QR code
 
-## Details techniques
+Dans la Card "Lien de réservation" existante (lignes 91–116), ajouter après le bloc copier :
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+- Composant `QRCodeCanvas` de `qrcode.react` — taille 280×280, fond blanc, modules noirs, `ref` sur le canvas
+- `useEffect` sur `slug` pour régénération automatique du QR
+- Bouton **"Télécharger PNG"** : `canvas.toBlob()` → `URL.createObjectURL()` → lien `<a>` auto-download
+- Bouton **"Télécharger PDF"** : via `jsPDF` (déjà installé) — page A4, QR centré, nom du business au-dessus
+- Section **personnalisation logo** :
+  - Lire le plan depuis `useDemoPlan()`
+  - Si `plan === "enterprise"` : Toggle "Afficher mon logo au centre" + input file upload avec preview. Le logo est passé via la prop `imageSettings` de `QRCodeCanvas`
+  - Si `plan !== "enterprise"` : Toggle visible mais disabled, avec Badge "Enterprise" et lien CTA "Passer à l'offre Enterprise"
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+### Fichiers à modifier
+
+| Fichier | Modification |
+|---|---|
+| `src/components/admin/BookingSettingsTab.tsx` | Ajouter QRCodeCanvas, boutons PNG/PDF, section logo Enterprise |
+
+### Dépendance à installer
+
+| Package | Usage |
+|---|---|
+| `qrcode.react` | Génération du QR code en canvas |
+
