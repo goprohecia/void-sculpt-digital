@@ -18,6 +18,7 @@ import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useWhiteLabel } from "@/hooks/use-white-label";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import {
   Sidebar,
   SidebarContent,
@@ -38,24 +39,27 @@ export function EmployeeSidebar() {
   const { user, logout } = useDemoAuth();
   const { employeeVisibleModules } = useAppSettings();
   const { config: wl } = useWhiteLabel();
+  const { getModuleLabel, isModuleHidden } = useDemoPlan();
 
   const allNavItems = [
-    { title: "Tableau de bord", url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
-    { title: "Clients", url: "/employee/clients", icon: Users, moduleKey: "clients" },
-    { title: "Dossiers assignés", url: "/employee/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
-    { title: "Calendrier", url: "/employee/calendrier", icon: CalendarDays, moduleKey: "calendrier" },
-    { title: "Messagerie", url: "/employee/messagerie", icon: MessageSquare, moduleKey: "messagerie" },
-    { title: "Facturation", url: "/employee/facturation", icon: Receipt, moduleKey: "facturation" },
-    { title: "Relances", url: "/employee/relances", icon: Bell, moduleKey: "relances" },
-    { title: "Emails", url: "/employee/emails", icon: Mail, moduleKey: "emails" },
-    { title: "Rendez-vous", url: "/employee/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
-    { title: "Support", url: "/employee/support", icon: LifeBuoy, moduleKey: "support" },
-    { title: "Stock", url: "/employee/stock", icon: Package, moduleKey: "stock" },
-    { title: "Analyse", url: "/employee/analyse", icon: BarChart3, moduleKey: "analyse" },
+    { title: getModuleLabel("overview"), url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
+    { title: getModuleLabel("clients"), url: "/employee/clients", icon: Users, moduleKey: "clients" },
+    { title: getModuleLabel("dossiers"), url: "/employee/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: getModuleLabel("agenda"), url: "/employee/calendrier", icon: CalendarDays, moduleKey: "agenda" },
+    { title: getModuleLabel("messagerie"), url: "/employee/messagerie", icon: MessageSquare, moduleKey: "messagerie" },
+    { title: getModuleLabel("facturation"), url: "/employee/facturation", icon: Receipt, moduleKey: "facturation" },
+    { title: getModuleLabel("relances"), url: "/employee/relances", icon: Bell, moduleKey: "relances" },
+    { title: getModuleLabel("emails"), url: "/employee/emails", icon: Mail, moduleKey: "emails" },
+    { title: getModuleLabel("rendez-vous"), url: "/employee/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
+    { title: getModuleLabel("support"), url: "/employee/support", icon: LifeBuoy, moduleKey: "support" },
+    { title: getModuleLabel("stock"), url: "/employee/stock", icon: Package, moduleKey: "stock" },
+    { title: getModuleLabel("analyse"), url: "/employee/analyse", icon: BarChart3, moduleKey: "analyse" },
     { title: "Mon profil", url: "/employee/profil", icon: UserCircle, moduleKey: "profil" },
   ];
 
-  const navItems = allNavItems.filter((item) => employeeVisibleModules.includes(item.moduleKey));
+  const navItems = allNavItems
+    .filter((item) => employeeVisibleModules.includes(item.moduleKey))
+    .filter((item) => !isModuleHidden(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/employee") return location.pathname === "/employee";
