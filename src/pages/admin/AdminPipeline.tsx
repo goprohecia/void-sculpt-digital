@@ -458,62 +458,97 @@ export default function AdminPipeline() {
 
         {/* Dialog modifier opportunité */}
         <Dialog open={!!editDeal} onOpenChange={(open) => { if (!open) setEditDeal(null); }}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-lg max-h-[85vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>Modifier l'opportunité</DialogTitle>
-              <DialogDescription>Modifiez les informations ou supprimez cette opportunité.</DialogDescription>
+              <DialogDescription>Modifiez les informations ou consultez l'historique.</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 pt-2">
-              <div className="space-y-2">
-                <Label>Nom du projet *</Label>
-                <Input value={editForm.nom} onChange={(e) => setEditForm((p) => ({ ...p, nom: e.target.value }))} />
-              </div>
-              <div className="space-y-2">
-                <Label>Entreprise / Client *</Label>
-                <Input value={editForm.entreprise} onChange={(e) => setEditForm((p) => ({ ...p, entreprise: e.target.value }))} />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
+            <Tabs defaultValue="edit" className="flex-1 flex flex-col min-h-0">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="edit" className="gap-1.5"><Pencil className="h-3.5 w-3.5" /> Modifier</TabsTrigger>
+                <TabsTrigger value="history" className="gap-1.5"><History className="h-3.5 w-3.5" /> Historique</TabsTrigger>
+              </TabsList>
+              <TabsContent value="edit" className="space-y-4 pt-2 flex-1">
                 <div className="space-y-2">
-                  <Label>Montant (€) *</Label>
-                  <Input type="number" value={editForm.montant} onChange={(e) => setEditForm((p) => ({ ...p, montant: e.target.value }))} />
+                  <Label>Nom du projet *</Label>
+                  <Input value={editForm.nom} onChange={(e) => setEditForm((p) => ({ ...p, nom: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Probabilité (%)</Label>
-                  <Select value={editForm.probabilite} onValueChange={(v) => setEditForm((p) => ({ ...p, probabilite: v }))}>
+                  <Label>Entreprise / Client *</Label>
+                  <Input value={editForm.entreprise} onChange={(e) => setEditForm((p) => ({ ...p, entreprise: e.target.value }))} />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label>Montant (€) *</Label>
+                    <Input type="number" value={editForm.montant} onChange={(e) => setEditForm((p) => ({ ...p, montant: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Probabilité (%)</Label>
+                    <Select value={editForm.probabilite} onValueChange={(v) => setEditForm((p) => ({ ...p, probabilite: v }))}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {[0, 10, 25, 40, 50, 60, 70, 80, 90, 95, 100].map((p) => (
+                          <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Étape</Label>
+                  <Select value={editForm.etape} onValueChange={(v) => setEditForm((p) => ({ ...p, etape: v }))}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {[0, 10, 25, 40, 50, 60, 70, 80, 90, 95, 100].map((p) => (
-                        <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                      {ETAPES.map((e) => (
+                        <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Étape</Label>
-                <Select value={editForm.etape} onValueChange={(v) => setEditForm((p) => ({ ...p, etape: v }))}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {ETAPES.map((e) => (
-                      <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Contact</Label>
-                <Input value={editForm.contact} onChange={(e) => setEditForm((p) => ({ ...p, contact: e.target.value }))} />
-              </div>
-              <DialogFooter className="flex !justify-between pt-2">
-                <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => editDeal && setDeleteConfirmId(editDeal.id)}>
-                  <Trash2 className="h-3.5 w-3.5" /> Supprimer
-                </Button>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setEditDeal(null)}>Annuler</Button>
-                  <Button onClick={handleUpdateDeal}>Enregistrer</Button>
+                <div className="space-y-2">
+                  <Label>Contact</Label>
+                  <Input value={editForm.contact} onChange={(e) => setEditForm((p) => ({ ...p, contact: e.target.value }))} />
                 </div>
-              </DialogFooter>
-            </div>
+                <DialogFooter className="flex !justify-between pt-2">
+                  <Button variant="destructive" size="sm" className="gap-1.5" onClick={() => editDeal && setDeleteConfirmId(editDeal.id)}>
+                    <Trash2 className="h-3.5 w-3.5" /> Supprimer
+                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => setEditDeal(null)}>Annuler</Button>
+                    <Button onClick={handleUpdateDeal}>Enregistrer</Button>
+                  </div>
+                </DialogFooter>
+              </TabsContent>
+              <TabsContent value="history" className="flex-1 min-h-0">
+                <ScrollArea className="h-[300px] pr-3">
+                  {editDeal && getDealHistory(editDeal.id).length > 0 ? (
+                    <div className="space-y-3">
+                      {getDealHistory(editDeal.id).map((entry) => (
+                        <div key={entry.id} className="flex gap-3 text-sm border-l-2 border-primary/30 pl-3 py-1">
+                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                            {entry.action === "Création" && <Plus className="h-3 w-3 text-primary" />}
+                            {entry.action === "Modification" && <Pencil className="h-3 w-3 text-primary" />}
+                            {entry.action === "Étape modifiée" && <ArrowRight className="h-3 w-3 text-primary" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-medium">{entry.action}</span>
+                              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {new Date(entry.date).toLocaleDateString("fr-FR")} à {new Date(entry.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                              </span>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5">{entry.detail}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-8">Aucun historique disponible</p>
+                  )}
+                </ScrollArea>
+              </TabsContent>
+            </Tabs>
           </DialogContent>
         </Dialog>
 
