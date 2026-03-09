@@ -40,6 +40,7 @@ export default function AdminDashboard() {
   const { factures } = useFactures();
   const { relances } = useRelances();
   const { conversations } = useConversations();
+  const { getDossiersByEmployee } = useDemoData();
 
   const donneesMensuelles = isDemo ? mockDonneesMensuelles : [];
   const activites = isDemo ? mockActivites : [];
