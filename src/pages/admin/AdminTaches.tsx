@@ -178,7 +178,12 @@ export default function AdminTaches() {
                             {task.priorite}
                           </Badge>
                           <span className="text-[10px] text-muted-foreground">{task.assignee}</span>
-                          {task.dossier && <span className="text-[10px] text-primary/60">{task.dossier}</span>}
+                          {task.dossier && (
+                            <span className="text-[10px] text-primary/60">
+                              {task.dossier}
+                              {(() => { const d = dossiers.find(dos => dos.reference === task.dossier); return d ? ` — ${d.client_nom}` : ""; })()}
+                            </span>
+                          )}
                           {task.dateEcheance && (
                             <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
                               <CalendarIcon className="h-2.5 w-2.5" />
