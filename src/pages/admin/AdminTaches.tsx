@@ -77,6 +77,18 @@ export default function AdminTaches() {
   const [form, setForm] = useState<Omit<Task, "id">>(emptyForm());
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
+  const { data: dossiers = [] } = useQuery({
+    queryKey: ["dossiers-for-tasks"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("dossiers")
+        .select("reference, client_nom")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      return data || [];
+    },
+  });
+
   const openCreate = () => {
     setEditingTask(null);
     setForm(emptyForm());
