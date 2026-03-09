@@ -83,7 +83,7 @@ export default function AdminSupport() {
               </div>
             </div>
             <AIContextButton
-              label="Réponse IA"
+              label="Analyse IA"
               context={`support - ${tickets.filter(t => t.statut === "ouvert").length} tickets ouverts, ${tickets.filter(t => t.statut === "en_cours").length} en cours. Sujets récents: ${tickets.slice(0, 3).map(t => t.sujet).join(", ")}.`}
               prompt="Propose une réponse professionnelle et empathique pour répondre aux tickets de support ouverts. Priorise les tickets urgents et suggère des solutions concrètes."
             />
