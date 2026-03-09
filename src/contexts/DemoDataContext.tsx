@@ -405,6 +405,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
   const getClientById = useCallback((id: string) => clientsState.find((c) => c.id === id), [clientsState]);
   const getNotificationsAdmin = useCallback(() => notifs.filter((n) => n.destinataire === "admin" || n.destinataire === "all"), [notifs]);
   const getNotificationsByClient = useCallback((clientId: string) => notifs.filter((n) => (n.destinataire === "client" || n.destinataire === "all") && n.clientId === clientId), [notifs]);
+  const getNotificationsByEmployee = useCallback((employeeId: string) => notifs.filter((n) => n.destinataire === "employee" && n.employeeId === employeeId), [notifs]);
   const getPreviewVisitsByDossier = useCallback((dossierId: string) => previewVisits.filter((v) => v.dossierId === dossierId), [previewVisits]);
   const addPreviewVisit = useCallback((dossierId: string) => {
     const devices: Array<"desktop" | "mobile" | "tablet"> = ["desktop", "mobile", "tablet"];
