@@ -4,7 +4,12 @@ import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Target, Users, TrendingUp, Euro, ArrowRight, Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Target, Users, TrendingUp, Euro, Plus } from "lucide-react";
+import { toast } from "sonner";
 
 interface Deal {
   id: string;
@@ -39,12 +44,44 @@ const DEMO_DEALS: Deal[] = [
 ];
 
 export default function AdminPipeline() {
-  const [deals] = useState(DEMO_DEALS);
+  const [deals, setDeals] = useState(DEMO_DEALS);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newDeal, setNewDeal] = useState({
+    nom: "",
+    entreprise: "",
+    montant: "",
+    probabilite: "25",
+    etape: "prospect",
+    contact: "",
+  });
 
   const pipelineEtapes = ETAPES.filter((e) => e.key !== "gagne" && e.key !== "perdu");
   const activeDeals = deals.filter((d) => d.etape !== "gagne" && d.etape !== "perdu");
   const totalPipeline = activeDeals.reduce((sum, d) => sum + d.montant, 0);
   const totalPondere = activeDeals.reduce((sum, d) => sum + (d.montant * d.probabilite) / 100, 0);
+
+  const handleCreateDeal = () => {
+    if (!newDeal.nom.trim() || !newDeal.entreprise.trim() || !newDeal.montant) {
+      toast.error("Veuillez remplir tous les champs obligatoires");
+      return;
+    }
+
+    const deal: Deal = {
+      id: `deal-${Date.now()}`,
+      nom: newDeal.nom.trim(),
+      entreprise: newDeal.entreprise.trim(),
+      montant: parseFloat(newDeal.montant),
+      probabilite: parseInt(newDeal.probabilite),
+      etape: newDeal.etape,
+      dateCreation: new Date().toLocaleDateString("fr-FR"),
+      contact: newDeal.contact.trim() || "Non renseigné",
+    };
+
+    setDeals((prev) => [deal, ...prev]);
+    setDialogOpen(false);
+    setNewDeal({ nom: "", entreprise: "", montant: "", probabilite: "25", etape: "prospect", contact: "" });
+    toast.success(`Opportunité "${deal.nom}" créée`);
+  };
 
   return (
     <AdminLayout>
@@ -57,7 +94,9 @@ export default function AdminPipeline() {
               </h1>
               <p className="text-muted-foreground text-sm">{activeDeals.length} opportunités actives</p>
             </div>
-            <Button className="gap-1.5"><Plus className="h-4 w-4" /> Nouvelle opportunité</Button>
+            <Button className="gap-1.5" onClick={() => setDialogOpen(true)}>
+              <Plus className="h-4 w-4" /> Nouvelle opportunité
+            </Button>
           </div>
 
           {/* Stats */}
@@ -144,6 +183,83 @@ export default function AdminPipeline() {
             })}
           </div>
         </div>
+
+        {/* Dialog nouvelle opportunité */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Nouvelle opportunité</DialogTitle>
+              <DialogDescription>Créez une nouvelle opportunité dans votre pipeline commercial.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 pt-2">
+              <div className="space-y-2">
+                <Label htmlFor="nom">Nom du projet *</Label>
+                <Input
+                  id="nom"
+                  placeholder="Ex: Refonte site web"
+                  value={newDeal.nom}
+                  onChange={(e) => setNewDeal((p) => ({ ...p, nom: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="entreprise">Entreprise / Client *</Label>
+                <Input
+                  id="entreprise"
+                  placeholder="Ex: Ma Société SAS"
+                  value={newDeal.entreprise}
+                  onChange={(e) => setNewDeal((p) => ({ ...p, entreprise: e.target.value }))}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="montant">Montant (€) *</Label>
+                  <Input
+                    id="montant"
+                    type="number"
+                    placeholder="5000"
+                    value={newDeal.montant}
+                    onChange={(e) => setNewDeal((p) => ({ ...p, montant: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="probabilite">Probabilité (%)</Label>
+                  <Select value={newDeal.probabilite} onValueChange={(v) => setNewDeal((p) => ({ ...p, probabilite: v }))}>
+                    <SelectTrigger id="probabilite"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {[10, 25, 40, 50, 60, 70, 80, 90, 95].map((p) => (
+                        <SelectItem key={p} value={String(p)}>{p}%</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="etape">Étape</Label>
+                <Select value={newDeal.etape} onValueChange={(v) => setNewDeal((p) => ({ ...p, etape: v }))}>
+                  <SelectTrigger id="etape"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {pipelineEtapes.map((e) => (
+                      <SelectItem key={e.key} value={e.key}>{e.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="contact">Contact (facultatif)</Label>
+                <Input
+                  id="contact"
+                  placeholder="Ex: Jean Dupont"
+                  value={newDeal.contact}
+                  onChange={(e) => setNewDeal((p) => ({ ...p, contact: e.target.value }))}
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <Button variant="outline" onClick={() => setDialogOpen(false)}>Annuler</Button>
+                <Button onClick={handleCreateDeal}>Créer l'opportunité</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );
