@@ -389,3 +389,12 @@ export function isAssignationEnabled(sectorKey?: string | null): boolean {
   if (!sectorKey) return true; // default: enabled
   return !SOLO_SECTORS.includes(sectorKey);
 }
+
+// ── Booking config per sector ──
+// Sectors purely project-based (no appointments) have booking disabled.
+const NO_BOOKING_SECTORS = ["developpeur", "designer", "community-manager", "consultant"];
+
+export function isBookingEnabled(sectorKey?: string | null): boolean {
+  if (!sectorKey) return true; // default: enabled
+  return !NO_BOOKING_SECTORS.includes(sectorKey);
+}

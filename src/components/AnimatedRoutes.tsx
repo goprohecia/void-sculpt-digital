@@ -31,6 +31,9 @@ import Boutique from "@/pages/secteurs/Boutique";
 import Traiteur from "@/pages/secteurs/Traiteur";
 import DjAnimateur from "@/pages/secteurs/DjAnimateur";
 
+// Public pages (booking)
+import BookingPage from "@/pages/public/BookingPage";
+
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminOnlyLogin from "@/pages/admin/AdminOnlyLogin";
@@ -205,6 +208,9 @@ export function AnimatedRoutes() {
         <Route path="/superadmin/formules" element={<SuperAdminFormules />} />
         <Route path="/superadmin/stats" element={<SuperAdminStats />} />
         <Route path="/superadmin/secteurs" element={<SuperAdminSecteurs />} />
+
+        {/* Public booking */}
+        <Route path="/rdv/:slug" element={<BookingPage />} />
 
         {/* Legacy redirects */}
         <Route path="/services/*" element={<Navigate to="/" replace />} />
