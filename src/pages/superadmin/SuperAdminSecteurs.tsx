@@ -101,6 +101,22 @@ export default function SuperAdminSecteurs() {
   const [localOverrides, setLocalOverrides] = useState<Record<string, SectorModulesConfig>>(() => JSON.parse(JSON.stringify(sectorModuleOverrides)));
   const [editingModule, setEditingModule] = useState<string | null>(null);
 
+  const handleBulkApply = (
+    sectors: string[],
+    moduleKey: string,
+    patch: { label?: string; description?: string; hidden?: boolean }
+  ) => {
+    setLocalOverrides((prev) => {
+      const copy: Record<string, SectorModulesConfig> = JSON.parse(JSON.stringify(prev));
+      sectors.forEach((sectorKey) => {
+        if (!copy[sectorKey]) copy[sectorKey] = {};
+        const existing = copy[sectorKey][moduleKey] || { label: GENERIC_MODULE_LABELS[moduleKey] || moduleKey };
+        copy[sectorKey][moduleKey] = { ...existing, ...patch };
+      });
+      return copy;
+    });
+  };
+
   const currentOverrides = localOverrides[selectedSector] || {};
   const sectorInfo = SECTORS.find((s) => s.key === selectedSector);
 
