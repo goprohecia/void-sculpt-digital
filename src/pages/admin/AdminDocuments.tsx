@@ -321,6 +321,53 @@ export default function AdminDocuments() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        {/* Rename Dialog */}
+        <Dialog open={!!renameDoc} onOpenChange={(v) => !v && setRenameDoc(null)}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Renommer le document</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <Label>Nouveau nom</Label>
+              <Input
+                value={renameName}
+                onChange={(e) => setRenameName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleRename()}
+                autoFocus
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setRenameDoc(null)}>Annuler</Button>
+              <Button onClick={handleRename} disabled={!renameName.trim()}>Renommer</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Move Dialog */}
+        <Dialog open={!!moveDoc} onOpenChange={(v) => !v && setMoveDoc(null)}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Déplacer "{moveDoc?.nom}"</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <Label>Dossier de destination</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                value={moveDossier}
+                onChange={(e) => setMoveDossier(e.target.value)}
+              >
+                {dossiers.filter((d) => d !== moveDoc?.dossier).map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">Actuellement dans : {moveDoc?.dossier}</p>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setMoveDoc(null)}>Annuler</Button>
+              <Button onClick={handleMove}>Déplacer</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );
