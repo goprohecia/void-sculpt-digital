@@ -18,7 +18,7 @@ const RAPPORTS = [
   { id: "clients", titre: "Activité clients", description: "Nouveaux clients, segments, taux de rétention", icon: Users, categorie: "Commercial" },
   { id: "factures", titre: "État des factures", description: "Factures émises, payées, en retard, montants", icon: Receipt, categorie: "Finance" },
   { id: "dossiers", titre: "Suivi des dossiers", description: "Dossiers par statut, durée moyenne, rentabilité", icon: FolderOpen, categorie: "Opérations" },
-  { id: "temps", titre: "Temps passé", description: "Temps par client, dossier, salarié et rentabilité horaire", icon: Calendar, categorie: "Opérations" },
+  { id: "temps", titre: "Temps passé", description: "Temps par client, dossier, salarié et rentabilité horaire", icon: CalendarIcon, categorie: "Opérations" },
   { id: "performance", titre: "Performance équipe", description: "Productivité, dossiers traités, objectifs atteints", icon: BarChart3, categorie: "RH" },
 ];
 
