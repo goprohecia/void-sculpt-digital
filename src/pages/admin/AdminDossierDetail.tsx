@@ -109,16 +109,21 @@ export default function AdminDossierDetail() {
   const { getCahierByDemande, validateCahier, cahiersDesCharges } = useCahiers();
   const { demandes } = useDemandes();
   const { getAssignmentsByDossier, assignDossier } = useDemoData();
-  const { sector } = useDemoPlan();
-  const assignEnabled = isAssignationEnabled(sector);
+  const { demoSector } = useDemoPlan();
+  const assignEnabled = isAssignationEnabled(demoSector);
 
   const [assignModalOpen, setAssignModalOpen] = useState(false);
+  const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
   const previewVisits = id ? getPreviewVisitsByDossier(id) : [];
   const currentAssignments = id ? getAssignmentsByDossier(id) : [];
+
+  // Find cahier by dossier's demandeId
+  const cahier = dossier?.demandeId ? getCahierByDemande(dossier.demandeId) : undefined;
+  const demandeTitre = cahier ? demandes.find((d) => d.id === cahier.demandeId)?.titre : undefined;
 
   if (!dossier) {
     return <AdminLayout><div className="p-8 text-center text-muted-foreground">Dossier introuvable</div></AdminLayout>;
