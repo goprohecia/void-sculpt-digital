@@ -925,7 +925,7 @@ export default function AdminSettings() {
                                   ? [...enabledModules, mod.key]
                                   : enabledModules.filter((k) => k !== mod.key);
                                 updateSetting.mutate({ key: "enabled_modules", value: next });
-                                toast.success(`Module "${mod.label}" ${v ? "activé" : "désactivé"}`);
+                                toast.success(`Module "${getModuleLabel(mod.key)}" ${v ? "activé" : "désactivé"}`);
                               }}
                             />
                           </div>
