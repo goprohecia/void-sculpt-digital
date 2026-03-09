@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { FolderOpen, File, FileText, Image, Upload, Search, Download, Trash2, FolderPlus } from "lucide-react";
+import { FolderOpen, File, FileText, Image, Upload, Search, Download, Trash2, FolderPlus, Pencil, FolderInput } from "lucide-react";
 import { toast } from "sonner";
 
 interface Doc {
