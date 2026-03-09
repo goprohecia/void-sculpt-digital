@@ -183,6 +183,12 @@
     border-radius: var(--glass-radius);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06);
   }
+
+  /* Hide global noise overlay in admin light theme */
+  .admin-light-theme #root::before,
+  .admin-light-theme::before {
+    display: none !important;
+  }
 }
 
 @layer base {

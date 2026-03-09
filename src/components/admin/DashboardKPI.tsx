@@ -13,11 +13,11 @@ interface DashboardKPIProps {
 }
 
 const colorMap = {
-  emerald: { bg: "bg-emerald-500/15", text: "text-emerald-400" },
-  blue: { bg: "bg-blue-500/15", text: "text-blue-400" },
-  violet: { bg: "bg-violet-500/15", text: "text-violet-400" },
-  amber: { bg: "bg-amber-500/15", text: "text-amber-400" },
-  rose: { bg: "bg-rose-500/15", text: "text-rose-400" },
+  emerald: { bg: "bg-emerald-100", text: "text-emerald-600" },
+  blue: { bg: "bg-blue-100", text: "text-blue-600" },
+  violet: { bg: "bg-violet-100", text: "text-violet-600" },
+  amber: { bg: "bg-amber-100", text: "text-amber-600" },
+  rose: { bg: "bg-rose-100", text: "text-rose-600" },
   primary: { bg: "bg-primary/10", text: "text-primary" },
 };
 
