@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Timer, Play, Square, Clock, User, FolderOpen, TrendingUp, Save } from "lucide-react";
+import { Timer, Play, Square, Clock, User, FolderOpen, TrendingUp, Save, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useDossiers } from "@/hooks/use-dossiers";
 
@@ -44,6 +44,13 @@ export default function AdminTemps() {
   const [saveDescription, setSaveDescription] = useState("");
   const [saveDossierId, setSaveDossierId] = useState("");
   const [dossierSearch, setDossierSearch] = useState("");
+
+  // Edit dialog state
+  const [editEntry, setEditEntry] = useState<TimeEntry | null>(null);
+  const [editDescription, setEditDescription] = useState("");
+  const [editDuree, setEditDuree] = useState("");
+  const [editClient, setEditClient] = useState("");
+  const [editDossier, setEditDossier] = useState("");
 
   const { dossiers } = useDossiers();
 
@@ -129,6 +136,26 @@ export default function AdminTemps() {
     toast.info("Temps non enregistré");
   };
 
+  const handleOpenEdit = (entry: TimeEntry) => {
+    setEditEntry(entry);
+    setEditDescription(entry.description);
+    setEditDuree(entry.duree);
+    setEditClient(entry.client);
+    setEditDossier(entry.dossier);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editEntry) return;
+    setEntries((prev) => prev.map((e) => e.id === editEntry.id ? { ...e, description: editDescription, duree: editDuree, client: editClient, dossier: editDossier } : e));
+    toast.success("Entrée modifiée");
+    setEditEntry(null);
+  };
+
+  const handleDeleteEntry = (id: string) => {
+    setEntries((prev) => prev.filter((e) => e.id !== id));
+    toast.success("Entrée supprimée");
+  };
+
   const selectedDossier = dossiers.find((d) => d.id === saveDossierId);
 
   return (
@@ -191,7 +218,7 @@ export default function AdminTemps() {
             <CardContent>
               <div className="space-y-1">
                 {entries.map((entry) => (
-                  <div key={entry.id} className="flex items-center gap-3 py-2.5 px-3 rounded-lg hover:bg-muted/20 transition-colors">
+                  <div key={entry.id} className="flex items-center gap-3 py-2.5 px-3 rounded-lg hover:bg-muted/20 transition-colors group">
                     <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{entry.description}</p>
@@ -199,6 +226,14 @@ export default function AdminTemps() {
                     </div>
                     <span className="text-sm font-mono font-medium text-primary shrink-0">{entry.duree}</span>
                     <span className="text-xs text-muted-foreground shrink-0">{entry.date}</span>
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                      <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Modifier" onClick={() => handleOpenEdit(entry)}>
+                        <Pencil className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive" title="Supprimer" onClick={() => handleDeleteEntry(entry.id)}>
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -264,6 +299,37 @@ export default function AdminTemps() {
               <Button onClick={handleSaveEntry} className="gap-1.5">
                 <Save className="h-3.5 w-3.5" /> Enregistrer
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Entry Dialog */}
+        <Dialog open={!!editEntry} onOpenChange={(v) => !v && setEditEntry(null)}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Modifier l'entrée</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <div className="space-y-1.5">
+                <Label>Description</Label>
+                <Input value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Durée</Label>
+                <Input value={editDuree} onChange={(e) => setEditDuree(e.target.value)} placeholder="Ex : 2h30" />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Client</Label>
+                <Input value={editClient} onChange={(e) => setEditClient(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Dossier</Label>
+                <Input value={editDossier} onChange={(e) => setEditDossier(e.target.value)} placeholder="Ex : DOS-042" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditEntry(null)}>Annuler</Button>
+              <Button onClick={handleSaveEdit}>Enregistrer</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
