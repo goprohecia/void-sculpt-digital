@@ -45,6 +45,13 @@ export default function AdminTemps() {
   const [saveDossierId, setSaveDossierId] = useState("");
   const [dossierSearch, setDossierSearch] = useState("");
 
+  // Edit dialog state
+  const [editEntry, setEditEntry] = useState<TimeEntry | null>(null);
+  const [editDescription, setEditDescription] = useState("");
+  const [editDuree, setEditDuree] = useState("");
+  const [editClient, setEditClient] = useState("");
+  const [editDossier, setEditDossier] = useState("");
+
   const { dossiers } = useDossiers();
 
   // Timer logic with proper cleanup
