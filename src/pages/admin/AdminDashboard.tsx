@@ -288,7 +288,7 @@ export default function AdminDashboard() {
               {/* Tendance CA (sparkline) */}
               <div className="glass-card p-5">
                 <h3 className="text-sm font-semibold flex items-center gap-2 mb-1">
-                  <TrendingUp className="h-4 w-4 text-emerald-400" />
+                  <TrendingUp className="h-4 w-4 text-primary" />
                   Tendance CA
                 </h3>
                 <p className="text-xs text-muted-foreground mb-3">Janvier – Juin 2026</p>
