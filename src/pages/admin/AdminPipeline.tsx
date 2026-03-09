@@ -184,8 +184,9 @@ export default function AdminPipeline() {
       draggable
       onDragStart={(e) => handleDragStart(e, deal.id)}
       onDragEnd={handleDragEnd}
+      onClick={() => openEditDeal(deal)}
       className={`p-3 rounded-lg bg-background border border-border/50 space-y-1.5 transition-all cursor-grab active:cursor-grabbing group ${
-        draggedDeal === deal.id ? "opacity-50 scale-95 border-primary" : "hover:border-primary/30"
+        draggedDeal === deal.id ? "opacity-50 scale-95 border-primary" : "hover:border-primary/30 hover:shadow-md"
       }`}
     >
       <div className="flex items-start gap-2">
