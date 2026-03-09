@@ -70,6 +70,7 @@ export default function AdminPipeline() {
   const totalPondere = activeDeals.reduce((sum, d) => sum + (d.montant * d.probabilite) / 100, 0);
 
   const handleDragStart = (e: React.DragEvent, dealId: string) => {
+    didDrag.current = true;
     setDraggedDeal(dealId);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", dealId);
