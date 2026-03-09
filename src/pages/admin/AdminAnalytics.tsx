@@ -19,6 +19,7 @@ import { exportCsv } from "@/lib/exportCsv";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { useObjectifs } from "@/hooks/use-objectifs";
+import { useServiceCategories } from "@/hooks/use-service-categories";
 import {
   ResponsiveContainer,
   LineChart,
@@ -143,17 +144,14 @@ export default function AdminAnalytics() {
     { name: "Refusées", value: demandesStats.refusees, color: "hsl(0, 84%, 60%)" },
   ], [demandesStats]);
 
-  // Ventes par type de projet par mois (from dossiers)
-  const CATS = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autres"] as const;
-  const categorize = useCallback((type: string): string => {
-    const t = type.toLowerCase();
-    if (t.includes("site web") || t.includes("vitrine") || t.includes("application web") || t.includes("landing")) return "Site web";
-    if (t.includes("mobile")) return "App mobile";
-    if (t.includes("commerce")) return "E-commerce";
-    if (t.includes("back-office") || t.includes("backoffice")) return "Back-office";
-    if (t.includes("360")) return "360";
-    return "Autres";
-  }, []);
+  // Ventes par type de projet par mois (from dossiers) — dynamic categories
+  const { categories: serviceCategories, categorize } = useServiceCategories();
+  const CATS = useMemo(() => serviceCategories.map((c) => c.nom), [serviceCategories]);
+  const catColors = useMemo(() => {
+    const map: Record<string, string> = {};
+    serviceCategories.forEach((c) => { map[c.nom] = c.couleur; });
+    return map;
+  }, [serviceCategories]);
 
   const moisMap: Record<string, string> = useMemo(() => ({
     "Jan": "01", "Fév": "02", "Mar": "03", "Avr": "04",
@@ -175,7 +173,7 @@ export default function AdminAnalytics() {
       });
       return result;
     });
-  }, [categorize, moisMap, donneesMensuelles, allDossiers]);
+  }, [categorize, moisMap, donneesMensuelles, allDossiers, CATS]);
 
   // Totals per category across all months
   const ventesTotaux = useMemo(() => {
@@ -188,7 +186,7 @@ export default function AdminAnalytics() {
       });
     });
     return totals;
-  }, [ventesParType]);
+  }, [ventesParType, CATS]);
 
   // Support stats (dynamic)
   const ticketStatuts = useMemo(() => [
@@ -608,12 +606,16 @@ export default function AdminAnalytics() {
                       <YAxis tick={{ fill: "hsl(250, 10%, 55%)", fontSize: tickFontSize }} width={isMobile ? 35 : 60} />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend wrapperStyle={{ fontSize: tickFontSize }} />
-                      <Bar dataKey="Site web" name="Site web" stackId="a" fill="hsl(265, 85%, 60%)" />
-                      <Bar dataKey="App mobile" name="App mobile" stackId="a" fill="hsl(200, 100%, 50%)" />
-                      <Bar dataKey="E-commerce" name="E-commerce" stackId="a" fill="hsl(155, 100%, 45%)" />
-                      <Bar dataKey="Back-office" name="Back-office" stackId="a" fill="hsl(45, 93%, 55%)" />
-                      <Bar dataKey="360" name="360" stackId="a" fill="hsl(330, 80%, 55%)" />
-                      <Bar dataKey="Autres" name="Autres" stackId="a" fill="hsl(250, 10%, 45%)" radius={[4, 4, 0, 0]} />
+                      {CATS.map((cat, i) => (
+                        <Bar
+                          key={cat}
+                          dataKey={cat}
+                          name={cat}
+                          stackId="a"
+                          fill={catColors[cat] || `hsl(${(i * 60) % 360}, 70%, 55%)`}
+                          radius={i === CATS.length - 1 ? [4, 4, 0, 0] : undefined}
+                        />
+                      ))}
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

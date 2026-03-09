@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical } from "lucide-react";
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
 import { useTags } from "@/hooks/use-produits";
+import { useServiceCategories, type ServiceCategory } from "@/hooks/use-service-categories";
 import { useSubscription } from "@/hooks/use-subscription";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
@@ -335,6 +336,199 @@ function TagsManager() {
   );
 }
 
+const SERVICE_COLORS = [
+  "hsl(265, 85%, 60%)", "hsl(200, 100%, 50%)", "hsl(155, 100%, 45%)",
+  "hsl(45, 93%, 55%)", "hsl(330, 80%, 55%)", "hsl(250, 10%, 45%)",
+  "hsl(0, 84%, 60%)", "hsl(280, 70%, 55%)", "hsl(170, 80%, 45%)",
+  "hsl(30, 90%, 55%)",
+];
+
+function ServiceCategoriesManager() {
+  const { categories, addCategory, updateCategory, deleteCategory } = useServiceCategories();
+  const [newName, setNewName] = useState("");
+  const [newColor, setNewColor] = useState(SERVICE_COLORS[0]);
+  const [newKeywords, setNewKeywords] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editKeywords, setEditKeywords] = useState("");
+  const [editColor, setEditColor] = useState("");
+
+  const handleCreate = async () => {
+    if (!newName.trim()) return;
+    const maxOrdre = categories.reduce((m, c) => Math.max(m, c.ordre), -1);
+    try {
+      await addCategory.mutateAsync({
+        nom: newName.trim(),
+        couleur: newColor,
+        mots_cles: newKeywords.split(",").map((k) => k.trim().toLowerCase()).filter(Boolean),
+        ordre: maxOrdre + 1,
+      });
+      setNewName("");
+      setNewKeywords("");
+      toast.success("Catégorie créée");
+    } catch {
+      toast.error("Erreur lors de la création");
+    }
+  };
+
+  const startEdit = (cat: ServiceCategory) => {
+    setEditingId(cat.id);
+    setEditName(cat.nom);
+    setEditKeywords(cat.mots_cles.join(", "));
+    setEditColor(cat.couleur);
+  };
+
+  const saveEdit = async () => {
+    if (!editingId || !editName.trim()) return;
+    try {
+      await updateCategory.mutateAsync({
+        id: editingId,
+        nom: editName.trim(),
+        couleur: editColor,
+        mots_cles: editKeywords.split(",").map((k) => k.trim().toLowerCase()).filter(Boolean),
+      });
+      toast.success("Catégorie mise à jour");
+    } catch {
+      toast.error("Erreur lors de la mise à jour");
+    }
+    setEditingId(null);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteCategory.mutateAsync(id);
+      toast.success("Catégorie supprimée");
+    } catch {
+      toast.error("Erreur lors de la suppression");
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base flex items-center gap-2">
+          <BarChart3 className="h-4 w-4" /> Catégories de services
+        </CardTitle>
+        <CardDescription>
+          Définissez les types de prestations de votre entreprise. Ils seront utilisés dans les graphiques d'analyse.
+          Les mots-clés permettent de classer automatiquement vos dossiers.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        {/* Create form */}
+        <div className="space-y-3 p-4 rounded-xl bg-muted/20 border border-border/30">
+          <p className="text-sm font-medium">Nouvelle catégorie</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label>Nom</Label>
+              <Input placeholder="Ex: Mariage, Formation…" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Mots-clés (séparés par des virgules)</Label>
+              <Input placeholder="mariage, wedding, cérémonie" value={newKeywords} onChange={(e) => setNewKeywords(e.target.value)} />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Couleur</Label>
+            <div className="flex gap-1.5 flex-wrap">
+              {SERVICE_COLORS.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setNewColor(c)}
+                  className={`h-8 w-8 rounded-lg border-2 transition-all ${newColor === c ? "border-foreground scale-110" : "border-transparent"}`}
+                  style={{ backgroundColor: c }}
+                />
+              ))}
+            </div>
+          </div>
+          <Button onClick={handleCreate} disabled={!newName.trim()} className="gap-1.5">
+            <Plus className="h-4 w-4" /> Ajouter
+          </Button>
+        </div>
+
+        <Separator />
+
+        {categories.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-6">Aucune catégorie créée.</p>
+        ) : (
+          <div className="space-y-2">
+            {categories.map((cat) => (
+              <div key={cat.id} className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
+                {editingId === cat.id ? (
+                  <div className="flex-1 space-y-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <Input
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="h-8 text-sm"
+                        placeholder="Nom"
+                        autoFocus
+                      />
+                      <Input
+                        value={editKeywords}
+                        onChange={(e) => setEditKeywords(e.target.value)}
+                        className="h-8 text-sm"
+                        placeholder="Mots-clés"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        {SERVICE_COLORS.map((c) => (
+                          <button
+                            key={c}
+                            onClick={() => setEditColor(c)}
+                            className={`h-6 w-6 rounded border-2 transition-all ${editColor === c ? "border-foreground scale-110" : "border-transparent"}`}
+                            style={{ backgroundColor: c }}
+                          />
+                        ))}
+                      </div>
+                      <div className="flex gap-1 ml-auto">
+                        <Button size="sm" variant="ghost" className="h-7 gap-1" onClick={saveEdit}>
+                          <CheckCircle className="h-3.5 w-3.5" /> OK
+                        </Button>
+                        <Button size="sm" variant="ghost" className="h-7" onClick={() => setEditingId(null)}>
+                          Annuler
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <span className="h-4 w-4 rounded-full shrink-0" style={{ backgroundColor: cat.couleur }} />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium">{cat.nom}</p>
+                        {cat.mots_cles.length > 0 && (
+                          <p className="text-[11px] text-muted-foreground truncate">
+                            Mots-clés : {cat.mots_cles.join(", ")}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0 ml-2">
+                      <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => startEdit(cat)}>
+                        <Pencil className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                        onClick={() => handleDelete(cat.id)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function AdminSettings() {
   const { user } = useDemoAuth();
   const { enabledModules, clientVisibleModules, employeeVisibleModules, updateSetting } = useAppSettings();
@@ -487,11 +681,12 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-8">
+              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-9">
                 <TabsTrigger value="profil" className="gap-1.5 text-xs"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5 text-xs"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
                 <TabsTrigger value="facturation" className="gap-1.5 text-xs"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
                 <TabsTrigger value="tags" className="gap-1.5 text-xs"><Tag className="h-3.5 w-3.5" /> Tags</TabsTrigger>
+                <TabsTrigger value="services" className="gap-1.5 text-xs"><BarChart3 className="h-3.5 w-3.5" /> Services</TabsTrigger>
                 <TabsTrigger value="modules" className="gap-1.5 text-xs"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
                 <TabsTrigger value="timeline" className="gap-1.5 text-xs"><Clock className="h-3.5 w-3.5" /> Timeline</TabsTrigger>
                 <TabsTrigger value="whitelabel" className="gap-1.5 text-xs"><Palette className="h-3.5 w-3.5" /> White Label</TabsTrigger>
@@ -666,6 +861,11 @@ export default function AdminSettings() {
               {/* TAGS TAB */}
               <TabsContent value="tags">
                 <TagsManager />
+              </TabsContent>
+
+              {/* SERVICES / CATÉGORIES TAB */}
+              <TabsContent value="services">
+                <ServiceCategoriesManager />
               </TabsContent>
 
               {/* MODULES TAB */}

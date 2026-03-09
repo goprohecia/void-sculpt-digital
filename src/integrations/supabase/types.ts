@@ -1365,6 +1365,33 @@ export type Database = {
           },
         ]
       }
+      service_categories: {
+        Row: {
+          couleur: string
+          created_at: string
+          id: string
+          mots_cles: string[]
+          nom: string
+          ordre: number
+        }
+        Insert: {
+          couleur?: string
+          created_at?: string
+          id?: string
+          mots_cles?: string[]
+          nom: string
+          ordre?: number
+        }
+        Update: {
+          couleur?: string
+          created_at?: string
+          id?: string
+          mots_cles?: string[]
+          nom?: string
+          ordre?: number
+        }
+        Relationships: []
+      }
       stock_mouvements: {
         Row: {
           created_at: string
