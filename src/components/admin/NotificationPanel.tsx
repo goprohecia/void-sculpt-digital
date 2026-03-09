@@ -107,7 +107,14 @@ export function NotificationPanel({ notifications, onMarkAllRead, onMarkRead }: 
                           {!notif.lu && <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />}
                         </div>
                         <p className="text-xs text-muted-foreground truncate mt-0.5">{notif.description}</p>
-                        <p className="text-[10px] text-muted-foreground/70 mt-1">{formatDate(notif.date)}</p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <p className="text-[10px] text-muted-foreground/70">{formatDate(notif.date)}</p>
+                          {notif.canal && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] px-1 py-0 rounded bg-muted/60 text-muted-foreground">
+                              {notif.canal === "sms" ? <><Smartphone className="h-2.5 w-2.5" /> SMS</> : notif.canal === "both" ? <><Bell className="h-2.5 w-2.5" /><Smartphone className="h-2.5 w-2.5" /></> : <><Bell className="h-2.5 w-2.5" /> Push</>}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </motion.button>
                   );
