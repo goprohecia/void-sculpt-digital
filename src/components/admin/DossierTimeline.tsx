@@ -23,6 +23,15 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEnterprise = fal
   const { templates, getDefaultTemplate } = useTimelineTemplates();
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
   const [noteInput, setNoteInput] = useState("");
+  const { demoSector } = useDemoPlan();
+  const notifConfigRef = useRef<Record<string, StepNotificationConfig>>({});
+
+  const getNotifConfig = (stepName: string): StepNotificationConfig => {
+    if (!notifConfigRef.current[stepName]) {
+      notifConfigRef.current[stepName] = getDefaultStepNotification(demoSector, stepName);
+    }
+    return notifConfigRef.current[stepName];
+  };
 
   const activeTemplate = templates.find((t) => t.id === timeline?.templateId) || getDefaultTemplate();
   const steps = activeTemplate.steps;
