@@ -3,7 +3,7 @@ import {
   Code, Palette, Camera, Users, Smartphone,
   Briefcase, Dumbbell, Building2, Home, GraduationCap,
   ShoppingBag, PartyPopper, Heart, UtensilsCrossed, Music,
-  Wrench, HardHat, Scissors, Scale, SprayCan,
+  Wrench, HardHat, Scissors, Scale, SprayCan, Car,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ScrollReveal, StaggerContainer, staggerItemVariants } from "@/components/animations";
