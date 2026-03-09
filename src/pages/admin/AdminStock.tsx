@@ -31,6 +31,7 @@ export default function AdminStock() {
   const [openCat, setOpenCat] = useState(false);
   const [openFourn, setOpenFourn] = useState(false);
   const [openBC, setOpenBC] = useState(false);
+  const [openImport, setOpenImport] = useState(false);
 
   const [prodForm, setProdForm] = useState({ reference: "", nom: "", description: "", categorie_id: "", fournisseur_id: "", prix_achat: 0, prix_vente: 0, quantite_stock: 0, seuil_alerte: 5, unite: "unité", sku: "" });
   const [mvtForm, setMvtForm] = useState({ produit_id: "", type: "entree", quantite: 1, motif: "" });
