@@ -49,6 +49,11 @@ export default function AdminPipeline() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [draggedDeal, setDraggedDeal] = useState<string | null>(null);
   const [dragOverEtape, setDragOverEtape] = useState<string | null>(null);
+  const [editDeal, setEditDeal] = useState<Deal | null>(null);
+  const [editForm, setEditForm] = useState({ nom: "", entreprise: "", montant: "", probabilite: "25", etape: "prospect", contact: "" });
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const dragStartPos = useRef<{ x: number; y: number } | null>(null);
+  const didDrag = useRef(false);
   const [newDeal, setNewDeal] = useState({
     nom: "",
     entreprise: "",
