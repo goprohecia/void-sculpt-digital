@@ -111,9 +111,21 @@ export function TimelineTemplateEditor() {
 
   // All sectors for browsing
   const allSectorPresets = getAllSectorPresets();
-  const filteredSectorPresets = selectedBrowseSector === "all"
-    ? allSectorPresets
-    : allSectorPresets.filter((s) => s.sectorKey === selectedBrowseSector);
+  const allCategories = getAllCategories();
+
+  // Apply both sector and category filters
+  const filteredSectorPresets = allSectorPresets
+    .filter((s) => selectedBrowseSector === "all" || s.sectorKey === selectedBrowseSector)
+    .map((s) => ({
+      ...s,
+      presets: selectedCategory === "all" ? s.presets : s.presets.filter((p) => p.category === selectedCategory),
+    }))
+    .filter((s) => s.presets.length > 0);
+
+  // Also filter sector suggestions by category
+  const filteredSectorSuggestions = selectedCategory === "all"
+    ? sectorPresets
+    : sectorPresets.filter((p) => p.category === selectedCategory);
 
   return (
     <motion.div className="space-y-4" variants={staggerItem}>
