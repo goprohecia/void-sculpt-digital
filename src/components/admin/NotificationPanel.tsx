@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, FolderOpen, Receipt, MessageSquare, FileText, LifeBuoy, CheckCheck } from "lucide-react";
+import { Bell, FolderOpen, Receipt, MessageSquare, FileText, LifeBuoy, CheckCheck, UserPlus, Smartphone } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
