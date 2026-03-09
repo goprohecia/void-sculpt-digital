@@ -34,6 +34,8 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
 
   const isDemoEmployee = isDemoAuth && demoUser?.role === "employee";
   const isRealAuth = !!supabaseUser;
+  const employeeId = isDemoEmployee ? (demoUser as any)?.employeeId || "emp_1" : supabaseUser?.id || "";
+  const employeeNotifications = getNotificationsByEmployee(employeeId);
 
   if (loading) return null;
 
