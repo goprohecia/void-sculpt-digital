@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { BookingStepper } from "@/components/booking/BookingStepper";
-import { BookingStepSlot, type TimeSlot } from "@/components/booking/BookingStepSlot";
+import { BookingStepSlot, generateSlots, type TimeSlot } from "@/components/booking/BookingStepSlot";
 import { BookingStepForm, type BookingFormField } from "@/components/booking/BookingStepForm";
 import { BookingStepRecap } from "@/components/booking/BookingStepRecap";
 import { BookingStepConfirmation } from "@/components/booking/BookingStepConfirmation";
+import { BookingCountdown } from "@/components/booking/BookingCountdown";
+import { toast } from "@/hooks/use-toast";
+
+const LOCK_DURATION_MS = 10 * 60 * 1000;
 
 const MOCK_CONFIG = {
   businessName: "Mon Entreprise",
@@ -24,21 +28,66 @@ export default function BookingPage() {
   const config = MOCK_CONFIG;
   const skipForm = !config.formulaireEnabled;
 
-  // Steps: always 1-based. If skipForm, we use steps [1, 2, 3] mapped to [slot, recap, confirm]
-  // Otherwise [1, 2, 3, 4] mapped to [slot, form, recap, confirm]
   const [step, setStep] = useState(1);
+  const [slots, setSlots] = useState<TimeSlot[]>(() => generateSlots());
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [lockExpiry, setLockExpiry] = useState<number | null>(null);
+  const confirmed = useRef(false);
 
-  // Stepper display step (for the visual stepper)
-  const stepperStep = step;
+  const lockSlot = useCallback((slot: TimeSlot) => {
+    setSlots(prev => prev.map(s => {
+      if (selectedSlot && s.id === selectedSlot.id && s.status === "verrouille") {
+        return { ...s, status: "disponible" as const };
+      }
+      if (s.id === slot.id) {
+        return { ...s, status: "verrouille" as const };
+      }
+      return s;
+    }));
+    setSelectedSlot(slot);
+    setLockExpiry(Date.now() + LOCK_DURATION_MS);
+    confirmed.current = false;
+  }, [selectedSlot]);
+
+  const handleExpired = useCallback(() => {
+    if (confirmed.current) return;
+    setSlots(prev => prev.map(s =>
+      selectedSlot && s.id === selectedSlot.id && s.status === "verrouille"
+        ? { ...s, status: "disponible" as const }
+        : s
+    ));
+    setSelectedSlot(null);
+    setLockExpiry(null);
+    setStep(1);
+    toast({
+      title: "Créneau expiré",
+      description: "Votre créneau n'est plus réservé, veuillez en sélectionner un autre.",
+      variant: "destructive",
+    });
+  }, [selectedSlot]);
+
+  const handleConfirm = useCallback(() => {
+    confirmed.current = true;
+    setSlots(prev => prev.map(s =>
+      selectedSlot && s.id === selectedSlot.id
+        ? { ...s, status: "reserve" as const }
+        : s
+    ));
+    setLockExpiry(null);
+    setStep(skipForm ? 3 : 4);
+  }, [selectedSlot, skipForm]);
+
+  const isConfirmed = confirmed.current;
+  const showCountdown = selectedSlot && lockExpiry && !isConfirmed;
 
   const getContent = () => {
     if (step === 1) {
       return (
         <BookingStepSlot
+          slots={slots}
           selectedSlot={selectedSlot}
-          onSelect={setSelectedSlot}
+          onSelect={lockSlot}
           onNext={() => setStep(2)}
         />
       );
@@ -46,7 +95,6 @@ export default function BookingPage() {
 
     if (step === 2) {
       if (skipForm) {
-        // Step 2 = recap when form is skipped
         return selectedSlot ? (
           <BookingStepRecap
             slot={selectedSlot}
@@ -56,12 +104,11 @@ export default function BookingPage() {
             acompteType={config.acompteType}
             acompteMontant={config.acompteMontant}
             prixPrestation={config.prixPrestation}
-            onConfirm={() => setStep(3)}
+            onConfirm={handleConfirm}
             onBack={() => setStep(1)}
           />
         ) : null;
       }
-      // Step 2 = form
       return (
         <BookingStepForm
           fields={config.champsFormulaire}
@@ -75,12 +122,10 @@ export default function BookingPage() {
 
     if (step === 3) {
       if (skipForm) {
-        // Step 3 = confirmation when form is skipped
         return selectedSlot ? (
           <BookingStepConfirmation slot={selectedSlot} businessName={config.businessName} />
         ) : null;
       }
-      // Step 3 = recap
       return selectedSlot ? (
         <BookingStepRecap
           slot={selectedSlot}
@@ -90,7 +135,7 @@ export default function BookingPage() {
           acompteType={config.acompteType}
           acompteMontant={config.acompteMontant}
           prixPrestation={config.prixPrestation}
-          onConfirm={() => setStep(4)}
+          onConfirm={handleConfirm}
           onBack={() => setStep(2)}
         />
       ) : null;
@@ -120,7 +165,10 @@ export default function BookingPage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <BookingStepper currentStep={stepperStep} skipForm={skipForm} />
+        <BookingStepper currentStep={step} skipForm={skipForm} />
+        {showCountdown && (
+          <BookingCountdown lockExpiry={lockExpiry} onExpired={handleExpired} />
+        )}
         {getContent()}
       </main>
     </div>
