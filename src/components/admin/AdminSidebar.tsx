@@ -58,7 +58,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
-const commercialKeys = ["pipeline", "facturation", "relances", "stock"];
+const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
