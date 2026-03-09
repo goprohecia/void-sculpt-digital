@@ -13,6 +13,7 @@ const typeIcons: Record<string, { icon: typeof Bell; className: string }> = {
   message: { icon: MessageSquare, className: "text-[hsl(var(--primary))]" },
   devis: { icon: FileText, className: "text-[hsl(45,93%,60%)]" },
   ticket: { icon: LifeBuoy, className: "text-[hsl(var(--neon-red))]" },
+  assignation: { icon: UserPlus, className: "text-[hsl(280,100%,70%)]" },
 };
 
 interface NotificationPanelProps {
