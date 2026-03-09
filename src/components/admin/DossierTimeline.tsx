@@ -55,7 +55,17 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEnterprise = fal
       stepDates: newDates,
       templateId: timeline?.templateId ?? activeTemplate.id,
     });
-    toast.success(`Étape "${steps[index]}" marquée comme terminée`);
+
+    // Check notification config for this step
+    const notifCfg = getNotifConfig(steps[index]);
+    if (notifCfg.enabled) {
+      const canalText = notifCfg.canal === "sms" ? "SMS" : notifCfg.canal === "email" ? "Email" : "SMS + Email";
+      toast.success(`Notification envoyée au client par ${canalText}`, {
+        description: `Étape "${steps[index]}" validée`,
+      });
+    } else {
+      toast.success(`Étape "${steps[index]}" marquée comme terminée`);
+    }
   };
 
   const revertStep = (index: number) => {
