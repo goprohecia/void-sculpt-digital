@@ -76,6 +76,8 @@ export default function AdminBilling() {
   const [fDossierId, setFDossierId] = useState("");
   const [fMontant, setFMontant] = useState("");
   const [fEcheance, setFEcheance] = useState("");
+  const [fServiceCatId, setFServiceCatId] = useState("");
+  const [fDescription, setFDescription] = useState("");
 
   // New devis form
   const [dClientId, setDClientId] = useState("");
