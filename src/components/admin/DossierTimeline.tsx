@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Check, Clock, ChevronDown, ChevronUp, Pencil, MessageSquare } from "lucide-react";
+import { Check, Clock, ChevronDown, ChevronUp, Pencil, MessageSquare, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { DEFAULT_TIMELINE_STEPS, useDossierTimeline, useTimelineTemplates } from "@/hooks/use-timeline";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { getDefaultStepNotification, type StepNotificationConfig } from "@/data/stepNotificationTemplates";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
 interface DossierTimelineProps {
   dossierId: string;
@@ -21,6 +23,15 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEnterprise = fal
   const { templates, getDefaultTemplate } = useTimelineTemplates();
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
   const [noteInput, setNoteInput] = useState("");
+  const { demoSector } = useDemoPlan();
+  const notifConfigRef = useRef<Record<string, StepNotificationConfig>>({});
+
+  const getNotifConfig = (stepName: string): StepNotificationConfig => {
+    if (!notifConfigRef.current[stepName]) {
+      notifConfigRef.current[stepName] = getDefaultStepNotification(demoSector, stepName);
+    }
+    return notifConfigRef.current[stepName];
+  };
 
   const activeTemplate = templates.find((t) => t.id === timeline?.templateId) || getDefaultTemplate();
   const steps = activeTemplate.steps;
@@ -44,7 +55,17 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEnterprise = fal
       stepDates: newDates,
       templateId: timeline?.templateId ?? activeTemplate.id,
     });
-    toast.success(`Étape "${steps[index]}" marquée comme terminée`);
+
+    // Check notification config for this step
+    const notifCfg = getNotifConfig(steps[index]);
+    if (notifCfg.enabled) {
+      const canalText = notifCfg.canal === "sms" ? "SMS" : notifCfg.canal === "email" ? "Email" : "SMS + Email";
+      toast.success(`Notification envoyée au client par ${canalText}`, {
+        description: `Étape "${steps[index]}" validée`,
+      });
+    } else {
+      toast.success(`Étape "${steps[index]}" marquée comme terminée`);
+    }
   };
 
   const revertStep = (index: number) => {
@@ -143,6 +164,16 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEnterprise = fal
                 )}
                 {hasNotes && (
                   <MessageSquare className="h-2.5 w-2.5 text-primary/60 mt-0.5" />
+                )}
+                {getNotifConfig(step).enabled && (
+                  <span className="flex items-center gap-0.5 mt-0.5">
+                    {(getNotifConfig(step).canal === "email" || getNotifConfig(step).canal === "both") && (
+                      <Mail className="h-2.5 w-2.5 text-primary/50" />
+                    )}
+                    {(getNotifConfig(step).canal === "sms" || getNotifConfig(step).canal === "both") && (
+                      <Phone className="h-2.5 w-2.5 text-primary/50" />
+                    )}
+                  </span>
                 )}
               </div>
             );

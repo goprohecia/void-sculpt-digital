@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link } from "lucide-react";
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
+import { StepNotificationSettings } from "@/components/admin/StepNotificationSettings";
 import { BookingSettingsTab } from "@/components/admin/BookingSettingsTab";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
@@ -670,7 +671,7 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-5 sm:grid-cols-10">
+              <TabsList className="grid w-full grid-cols-5 sm:grid-cols-11">
                 <TabsTrigger value="profil" className="gap-1.5 text-xs"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5 text-xs"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
                 <TabsTrigger value="facturation" className="gap-1.5 text-xs"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
@@ -681,6 +682,7 @@ export default function AdminSettings() {
                 <TabsTrigger value="reservation" className="gap-1.5 text-xs"><CalendarDays className="h-3.5 w-3.5" /> Réservation</TabsTrigger>
                 <TabsTrigger value="whitelabel" className="gap-1.5 text-xs"><Palette className="h-3.5 w-3.5" /> White Label</TabsTrigger>
                 <TabsTrigger value="notifications" className="gap-1.5 text-xs"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
+                <TabsTrigger value="suivi-client" className="gap-1.5 text-xs"><Mail className="h-3.5 w-3.5" /> Suivi client</TabsTrigger>
               </TabsList>
 
               {/* PROFIL TAB */}
@@ -1362,6 +1364,11 @@ export default function AdminSettings() {
                     </div>
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              {/* SUIVI CLIENT TAB */}
+              <TabsContent value="suivi-client">
+                <StepNotificationSettings />
               </TabsContent>
             </Tabs>
           </motion.div>
