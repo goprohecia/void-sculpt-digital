@@ -122,6 +122,7 @@ export default function AdminBilling() {
       clientId: dClientId, clientNom: client?.entreprise || "", dossierId: dDossierId || undefined,
       titre: dTitre, montant: parseFloat(dMontant), statut: "en_attente",
       dateEmission: new Date().toISOString().split("T")[0], dateValidite: validite,
+      serviceCategoryId: dServiceCatId || undefined, description: dDescription || undefined,
     });
 
     // Send real email via edge function when not in demo
@@ -143,7 +144,7 @@ export default function AdminBilling() {
     }
 
     toast.success("Devis créé");
-    setOpenDevis(false); setDClientId(""); setDDossierId(""); setDTitre(""); setDMontant(""); setDValidite("");
+    setOpenDevis(false); setDClientId(""); setDDossierId(""); setDTitre(""); setDMontant(""); setDValidite(""); setDServiceCatId(""); setDDescription("");
   };
 
   return (
