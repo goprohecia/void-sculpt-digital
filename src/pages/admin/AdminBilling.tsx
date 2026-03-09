@@ -10,6 +10,7 @@ import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useSendLogs } from "@/hooks/use-send-logs";
 import { useIsDemo } from "@/hooks/useIsDemo";
+import { useServiceCategories } from "@/hooks/use-service-categories";
 import { supabase } from "@/integrations/supabase/client";
 import type { FactureStatus, Facture, Devis } from "@/data/mockData";
 import { Receipt, Euro, AlertTriangle, Plus, Download, Eye, Send, Clock } from "lucide-react";
@@ -19,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { generateFacturePdf, generateDevisPdf, previewFacturePdf, previewDevisPdf } from "@/lib/generatePdf";
@@ -37,6 +39,7 @@ export default function AdminBilling() {
   const { getDossiersByClient } = useDossiers();
   const { sendLogs, addSendLog } = useSendLogs();
   const { isDemo } = useIsDemo();
+  const { categories: serviceCategories } = useServiceCategories();
 
   const [filterStatut, setFilterStatut] = useState<"tous" | FactureStatus>("tous");
   const [openFacture, setOpenFacture] = useState(false);
@@ -73,6 +76,8 @@ export default function AdminBilling() {
   const [fDossierId, setFDossierId] = useState("");
   const [fMontant, setFMontant] = useState("");
   const [fEcheance, setFEcheance] = useState("");
+  const [fServiceCatId, setFServiceCatId] = useState("");
+  const [fDescription, setFDescription] = useState("");
 
   // New devis form
   const [dClientId, setDClientId] = useState("");
@@ -80,6 +85,8 @@ export default function AdminBilling() {
   const [dTitre, setDTitre] = useState("");
   const [dMontant, setDMontant] = useState("");
   const [dValidite, setDValidite] = useState("");
+  const [dServiceCatId, setDServiceCatId] = useState("");
+  const [dDescription, setDDescription] = useState("");
 
   const filteredFactures = factures.filter((f) => filterStatut === "tous" || f.statut === filterStatut);
   const statsFactures = {
@@ -99,9 +106,10 @@ export default function AdminBilling() {
       clientId: fClientId, clientNom: client?.entreprise || "", dossierId: fDossierId,
       montant: parseFloat(fMontant), statut: "en_attente",
       dateEmission: new Date().toISOString().split("T")[0], dateEcheance: fEcheance || new Date().toISOString().split("T")[0],
+      serviceCategoryId: fServiceCatId || undefined, description: fDescription || undefined,
     });
     toast.success("Facture créée");
-    setOpenFacture(false); setFClientId(""); setFDossierId(""); setFMontant(""); setFEcheance("");
+    setOpenFacture(false); setFClientId(""); setFDossierId(""); setFMontant(""); setFEcheance(""); setFServiceCatId(""); setFDescription("");
   };
 
   const handleAddDevis = async () => {
@@ -114,6 +122,7 @@ export default function AdminBilling() {
       clientId: dClientId, clientNom: client?.entreprise || "", dossierId: dDossierId || undefined,
       titre: dTitre, montant: parseFloat(dMontant), statut: "en_attente",
       dateEmission: new Date().toISOString().split("T")[0], dateValidite: validite,
+      serviceCategoryId: dServiceCatId || undefined, description: dDescription || undefined,
     });
 
     // Send real email via edge function when not in demo
@@ -135,7 +144,7 @@ export default function AdminBilling() {
     }
 
     toast.success("Devis créé");
-    setOpenDevis(false); setDClientId(""); setDDossierId(""); setDTitre(""); setDMontant(""); setDValidite("");
+    setOpenDevis(false); setDClientId(""); setDDossierId(""); setDTitre(""); setDMontant(""); setDValidite(""); setDServiceCatId(""); setDDescription("");
   };
 
   return (
@@ -201,6 +210,13 @@ export default function AdminBilling() {
                         </Select>
                       </div>}
                       <div><label className="text-sm font-medium block mb-1">Montant (€) *</label><Input type="number" value={fMontant} onChange={(e) => setFMontant(e.target.value)} /></div>
+                      <div><label className="text-sm font-medium block mb-1">Service / Type de prestation</label>
+                        <Select value={fServiceCatId} onValueChange={setFServiceCatId}>
+                          <SelectTrigger><SelectValue placeholder="Sélectionner un service" /></SelectTrigger>
+                          <SelectContent>{serviceCategories.map((sc) => <SelectItem key={sc.id} value={sc.id}>{sc.nom}</SelectItem>)}</SelectContent>
+                        </Select>
+                      </div>
+                      <div><label className="text-sm font-medium block mb-1">Description / Détail</label><Textarea value={fDescription} onChange={(e) => setFDescription(e.target.value)} placeholder="Détail de la prestation…" rows={3} /></div>
                       <div><label className="text-sm font-medium block mb-1">Échéance</label><Input type="date" value={fEcheance} onChange={(e) => setFEcheance(e.target.value)} /></div>
                       <Button onClick={handleAddFacture} className="w-full">Créer la facture</Button>
                     </div>
@@ -224,6 +240,13 @@ export default function AdminBilling() {
                         </Select>
                       </div>}
                       <div><label className="text-sm font-medium block mb-1">Titre *</label><Input value={dTitre} onChange={(e) => setDTitre(e.target.value)} /></div>
+                      <div><label className="text-sm font-medium block mb-1">Service / Type de prestation</label>
+                        <Select value={dServiceCatId} onValueChange={setDServiceCatId}>
+                          <SelectTrigger><SelectValue placeholder="Sélectionner un service" /></SelectTrigger>
+                          <SelectContent>{serviceCategories.map((sc) => <SelectItem key={sc.id} value={sc.id}>{sc.nom}</SelectItem>)}</SelectContent>
+                        </Select>
+                      </div>
+                      <div><label className="text-sm font-medium block mb-1">Description / Détail</label><Textarea value={dDescription} onChange={(e) => setDDescription(e.target.value)} placeholder="Détail de la prestation…" rows={3} /></div>
                       <div><label className="text-sm font-medium block mb-1">Montant (€) *</label><Input type="number" value={dMontant} onChange={(e) => setDMontant(e.target.value)} /></div>
                       <div><label className="text-sm font-medium block mb-1">Date de validité</label><Input type="date" value={dValidite} onChange={(e) => setDValidite(e.target.value)} /></div>
                       <Button onClick={handleAddDevis} className="w-full">Créer le devis</Button>
@@ -278,22 +301,30 @@ export default function AdminBilling() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/50 bg-muted/20">
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
-                        <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredFactures.map((f) => (
-                        <tr key={f.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                          <td className="py-3 px-4 font-mono text-xs">{f.reference}</td>
-                          <td className="py-3 px-4">{f.clientNom}</td>
-                          <td className="py-3 px-4 text-right font-medium">{f.montant.toLocaleString()} €</td>
-                          <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
-                          <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Service</th>
+                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
+                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Émission</th>
+                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       {filteredFactures.map((f) => {
+                         const serviceCat = serviceCategories.find((sc) => sc.id === f.serviceCategoryId);
+                         return (
+                         <tr key={f.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                           <td className="py-3 px-4 font-mono text-xs">{f.reference}</td>
+                           <td className="py-3 px-4">{f.clientNom}</td>
+                           <td className="py-3 px-4 hidden lg:table-cell">
+                             {serviceCat ? (
+                               <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: `${serviceCat.couleur}20`, color: serviceCat.couleur }}>{serviceCat.nom}</span>
+                             ) : <span className="text-muted-foreground text-xs">—</span>}
+                           </td>
+                           <td className="py-3 px-4 text-right font-medium">{f.montant.toLocaleString()} €</td>
+                           <td className="py-3 px-4 text-center"><StatusBadge status={f.statut} /></td>
+                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{new Date(f.dateEmission).toLocaleDateString("fr-FR")}</td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex items-center justify-center gap-1">
                               <button onClick={() => handlePreviewFacture(f)} className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-primary hover:text-primary/80" title="Aperçu">
@@ -305,8 +336,10 @@ export default function AdminBilling() {
                               </button>
                             </div>
                           </td>
-                        </tr>
-                      ))}
+                         </tr>
+                       );
+                       })}
+
                     </tbody>
                   </table>
                 </div>
@@ -349,35 +382,44 @@ export default function AdminBilling() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/50 bg-muted/20">
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Titre</th>
-                        <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
-                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {devis.map((d) => (
-                        <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
-                          <td className="py-3 px-4 font-mono text-xs">{d.reference}</td>
-                          <td className="py-3 px-4">{d.clientNom}</td>
-                          <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.titre}</td>
-                          <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
-                          <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
-                          <td className="py-3 px-4 text-center">
-                            <div className="flex items-center justify-center gap-1">
-                              <button onClick={() => handlePreviewDevis(d)} className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-primary hover:text-primary/80" title="Aperçu">
-                                <Eye className="h-4 w-4" />
-                              </button>
-                              <button onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
-                                className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground" title="Télécharger PDF">
-                                <Download className="h-4 w-4" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Titre</th>
+                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Service</th>
+                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
+                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Statut</th>
+                         <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       {devis.map((d) => {
+                         const serviceCat = serviceCategories.find((sc) => sc.id === d.serviceCategoryId);
+                         return (
+                         <tr key={d.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                           <td className="py-3 px-4 font-mono text-xs">{d.reference}</td>
+                           <td className="py-3 px-4">{d.clientNom}</td>
+                           <td className="py-3 px-4 hidden md:table-cell text-muted-foreground">{d.titre}</td>
+                           <td className="py-3 px-4 hidden lg:table-cell">
+                             {serviceCat ? (
+                               <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ backgroundColor: `${serviceCat.couleur}20`, color: serviceCat.couleur }}>{serviceCat.nom}</span>
+                             ) : <span className="text-muted-foreground text-xs">—</span>}
+                           </td>
+                           <td className="py-3 px-4 text-right font-medium">{d.montant.toLocaleString()} €</td>
+                           <td className="py-3 px-4 text-center"><StatusBadge status={d.statut} /></td>
+                           <td className="py-3 px-4 text-center">
+                             <div className="flex items-center justify-center gap-1">
+                               <button onClick={() => handlePreviewDevis(d)} className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-primary hover:text-primary/80" title="Aperçu">
+                                 <Eye className="h-4 w-4" />
+                               </button>
+                               <button onClick={() => { generateDevisPdf(d, getClientById(d.clientId)); toast.success(`PDF ${d.reference} téléchargé`); }}
+                                 className="p-1.5 rounded-md hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground" title="Télécharger PDF">
+                                 <Download className="h-4 w-4" />
+                               </button>
+                             </div>
+                           </td>
+                         </tr>
+                       );
+                       })}
                     </tbody>
                   </table>
                 </div>

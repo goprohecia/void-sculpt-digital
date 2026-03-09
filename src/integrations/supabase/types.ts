@@ -523,10 +523,12 @@ export type Database = {
           date_emission: string
           date_signature: string | null
           date_validite: string
+          description: string | null
           dossier_id: string | null
           id: string
           montant: number
           reference: string
+          service_category_id: string | null
           signataire_nom: string | null
           signature_url: string | null
           statut: string
@@ -540,10 +542,12 @@ export type Database = {
           date_emission?: string
           date_signature?: string | null
           date_validite: string
+          description?: string | null
           dossier_id?: string | null
           id?: string
           montant?: number
           reference: string
+          service_category_id?: string | null
           signataire_nom?: string | null
           signature_url?: string | null
           statut?: string
@@ -557,10 +561,12 @@ export type Database = {
           date_emission?: string
           date_signature?: string | null
           date_validite?: string
+          description?: string | null
           dossier_id?: string | null
           id?: string
           montant?: number
           reference?: string
+          service_category_id?: string | null
           signataire_nom?: string | null
           signature_url?: string | null
           statut?: string
@@ -580,6 +586,13 @@ export type Database = {
             columns: ["dossier_id"]
             isOneToOne: false
             referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devis_service_category_id_fkey"
+            columns: ["service_category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
             referencedColumns: ["id"]
           },
         ]
@@ -923,10 +936,12 @@ export type Database = {
           created_at: string
           date_echeance: string
           date_emission: string
+          description: string | null
           dossier_id: string | null
           id: string
           montant: number
           reference: string
+          service_category_id: string | null
           statut: string
           updated_at: string
         }
@@ -936,10 +951,12 @@ export type Database = {
           created_at?: string
           date_echeance: string
           date_emission?: string
+          description?: string | null
           dossier_id?: string | null
           id?: string
           montant?: number
           reference: string
+          service_category_id?: string | null
           statut?: string
           updated_at?: string
         }
@@ -949,10 +966,12 @@ export type Database = {
           created_at?: string
           date_echeance?: string
           date_emission?: string
+          description?: string | null
           dossier_id?: string | null
           id?: string
           montant?: number
           reference?: string
+          service_category_id?: string | null
           statut?: string
           updated_at?: string
         }
@@ -969,6 +988,13 @@ export type Database = {
             columns: ["dossier_id"]
             isOneToOne: false
             referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "factures_service_category_id_fkey"
+            columns: ["service_category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
             referencedColumns: ["id"]
           },
         ]

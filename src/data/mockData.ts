@@ -54,6 +54,8 @@ export interface Facture {
   statut: FactureStatus;
   dateEmission: string;
   dateEcheance: string;
+  serviceCategoryId?: string;
+  description?: string;
 }
 
 export interface Relance {
@@ -118,6 +120,8 @@ export interface Devis {
   signatureDataUrl?: string;
   signataireNom?: string;
   dateSignature?: string;
+  serviceCategoryId?: string;
+  description?: string;
 }
 
 // ID du client démo (Luxe & Mode / Sophie Bernard)
