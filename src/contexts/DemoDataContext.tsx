@@ -222,6 +222,7 @@ interface DemoDataContextType {
   getClientById: (id: string) => Client | undefined;
   getNotificationsAdmin: () => Notification[];
   getNotificationsByClient: (clientId: string) => Notification[];
+  getNotificationsByEmployee: (employeeId: string) => Notification[];
   previewVisits: PreviewVisit[];
   getPreviewVisitsByDossier: (dossierId: string) => PreviewVisit[];
   addPreviewVisit: (dossierId: string) => void;
