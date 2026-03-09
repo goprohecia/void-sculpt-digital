@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -83,6 +84,19 @@ export function AssignModal({ open, onOpenChange, currentAssignments, onAssign, 
       role: employeeId === responsableId ? "responsable" : "renfort",
       dateAssignation: new Date().toISOString().split("T")[0],
     }));
+    // Check for overflow and fire admin alert
+    selected.forEach((id) => {
+      const member = MOCK_TEAM_MEMBERS.find((m) => m.id === id);
+      if (member?.capaciteMax) {
+        const active = activeDossiersCount(id);
+        if (active + 1 > member.capaciteMax) {
+          toast.warning(`⚠️ ${member.prenom} ${member.nom} dépasse sa capacité maximale (${active + 1}/${member.capaciteMax})`, {
+            description: "Une alerte a été envoyée à l'administrateur.",
+            duration: 6000,
+          });
+        }
+      }
+    });
     onAssign(assignments);
     onOpenChange(false);
   };

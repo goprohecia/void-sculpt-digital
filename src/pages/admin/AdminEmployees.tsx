@@ -56,6 +56,7 @@ export default function AdminEmployees() {
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [form, setForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
   const [inviteForm, setInviteForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
+  const [capaciteMax, setCapaciteMax] = useState("");
 
   const { data: employees = [] } = useQuery<Employee[]>({
     queryKey: ["employees"],
@@ -101,6 +102,7 @@ export default function AdminEmployees() {
   const openModulesDialog = (emp: Employee) => {
     setSelectedEmp(emp);
     setSelectedModules([...(emp.acces_modules || [])]);
+    setCapaciteMax("");
     setModulesOpen(true);
   };
 
@@ -211,18 +213,39 @@ export default function AdminEmployees() {
           </motion.div>
         </motion.div>
 
-        {/* Modules access dialog */}
+        {/* Modules access + capacity dialog */}
         <Dialog open={modulesOpen} onOpenChange={setModulesOpen}>
           <DialogContent>
-            <DialogHeader><DialogTitle>Accès modules — {selectedEmp?.prenom} {selectedEmp?.nom}</DialogTitle></DialogHeader>
-            <div className="space-y-3 pt-2">
-              {ALL_MODULES.map((mod) => (
-                <label key={mod.key} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
-                  <Checkbox checked={selectedModules.includes(mod.key)} onCheckedChange={() => toggleModule(mod.key)} />
-                  <span className="text-sm">{mod.label}</span>
-                </label>
-              ))}
-              <Button className="w-full mt-4" onClick={() => selectedEmp && updateModules.mutate({ id: selectedEmp.id, modules: selectedModules })} disabled={updateModules.isPending}>
+            <DialogHeader><DialogTitle>Paramètres — {selectedEmp?.prenom} {selectedEmp?.nom}</DialogTitle></DialogHeader>
+            <div className="space-y-4 pt-2">
+              <div>
+                <p className="text-sm font-medium mb-2">Accès modules</p>
+                <div className="space-y-2">
+                  {ALL_MODULES.map((mod) => (
+                    <label key={mod.key} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/20 cursor-pointer">
+                      <Checkbox checked={selectedModules.includes(mod.key)} onCheckedChange={() => toggleModule(mod.key)} />
+                      <span className="text-sm">{mod.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-border/50 pt-4">
+                <Label className="text-sm font-medium">Capacité maximale de dossiers actifs</Label>
+                <p className="text-xs text-muted-foreground mb-2">Nombre max de dossiers en cours simultanés. Laisser vide = pas de limite.</p>
+                <Input
+                  type="number"
+                  min={0}
+                  placeholder="Illimité"
+                  value={capaciteMax}
+                  onChange={(e) => setCapaciteMax(e.target.value)}
+                  className="max-w-[160px]"
+                />
+              </div>
+              <Button className="w-full" onClick={() => {
+                if (selectedEmp) {
+                  updateModules.mutate({ id: selectedEmp.id, modules: selectedModules });
+                }
+              }} disabled={updateModules.isPending}>
                 {updateModules.isPending ? "Mise à jour..." : "Enregistrer"}
               </Button>
             </div>

@@ -1,12 +1,26 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { EmployeeLayout } from "@/components/admin/EmployeeLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserCircle } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { UserCircle, Bell, Smartphone, Mail } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { toast } from "sonner";
 
 export default function EmployeeProfile() {
   const { user } = useDemoAuth();
+
+  const [notifInApp, setNotifInApp] = useState(true);
+  const [notifSms, setNotifSms] = useState(false);
+  const [telephone, setTelephone] = useState("");
+
+  const handleSavePrefs = () => {
+    toast.success("Préférences de notifications enregistrées");
+  };
 
   return (
     <EmployeeLayout>
@@ -38,6 +52,62 @@ export default function EmployeeProfile() {
                     <p className="text-xs text-muted-foreground capitalize mt-1">Rôle : {user?.role || "salarié"}</p>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Préférences de notifications */}
+          <motion.div variants={staggerItem}>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Bell className="h-4 w-4 text-primary" />
+                  Préférences de notifications
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {/* In-app toggle */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                      <Label className="text-sm font-medium">Notifications in-app</Label>
+                      <p className="text-xs text-muted-foreground">Recevoir les notifications dans l'application</p>
+                    </div>
+                  </div>
+                  <Switch checked={notifInApp} onCheckedChange={setNotifInApp} />
+                </div>
+
+                {/* SMS toggle */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Smartphone className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <Label className="text-sm font-medium">Notifications SMS</Label>
+                        <p className="text-xs text-muted-foreground">Recevoir un SMS à chaque nouvelle assignation</p>
+                      </div>
+                    </div>
+                    <Switch checked={notifSms} onCheckedChange={setNotifSms} />
+                  </div>
+
+                  {notifSms && (
+                    <div className="ml-7 space-y-1.5">
+                      <Label className="text-xs text-muted-foreground">Numéro de téléphone</Label>
+                      <Input
+                        type="tel"
+                        placeholder="06 12 34 56 78"
+                        value={telephone}
+                        onChange={(e) => setTelephone(e.target.value)}
+                        className="max-w-xs"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <Button size="sm" onClick={handleSavePrefs} className="mt-2">
+                  Enregistrer les préférences
+                </Button>
               </CardContent>
             </Card>
           </motion.div>
