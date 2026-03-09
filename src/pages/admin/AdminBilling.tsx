@@ -106,9 +106,10 @@ export default function AdminBilling() {
       clientId: fClientId, clientNom: client?.entreprise || "", dossierId: fDossierId,
       montant: parseFloat(fMontant), statut: "en_attente",
       dateEmission: new Date().toISOString().split("T")[0], dateEcheance: fEcheance || new Date().toISOString().split("T")[0],
+      serviceCategoryId: fServiceCatId || undefined, description: fDescription || undefined,
     });
     toast.success("Facture créée");
-    setOpenFacture(false); setFClientId(""); setFDossierId(""); setFMontant(""); setFEcheance("");
+    setOpenFacture(false); setFClientId(""); setFDossierId(""); setFMontant(""); setFEcheance(""); setFServiceCatId(""); setFDescription("");
   };
 
   const handleAddDevis = async () => {
