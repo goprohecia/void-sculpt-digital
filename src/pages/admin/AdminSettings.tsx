@@ -669,6 +669,11 @@ export default function AdminSettings() {
                 <TagsManager />
               </TabsContent>
 
+              {/* SERVICES / CATÉGORIES TAB */}
+              <TabsContent value="services">
+                <ServiceCategoriesManager />
+              </TabsContent>
+
               {/* MODULES TAB */}
               <TabsContent value="modules">
                 <div className="space-y-6">
