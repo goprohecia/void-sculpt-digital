@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { format as fmtDate } from "date-fns";
+import { fr } from "date-fns/locale";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BarChart3, Download, FileText, TrendingUp, Users, Receipt, FolderOpen, Calendar } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { BarChart3, Download, FileText, TrendingUp, Users, Receipt, FolderOpen, Calendar as CalendarIcon, CalendarDays } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const RAPPORTS = [
   { id: "ca", titre: "Chiffre d'affaires", description: "CA mensuel, trimestriel et annuel avec évolution", icon: TrendingUp, categorie: "Finance" },
