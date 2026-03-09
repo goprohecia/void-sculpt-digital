@@ -175,7 +175,8 @@ export default function SuperAdminSecteurs() {
               Personnalisez les labels, descriptions et visibilité des modules par secteur d'activité.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <BulkOverrideDialog localOverrides={localOverrides} onApply={handleBulkApply} />
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
