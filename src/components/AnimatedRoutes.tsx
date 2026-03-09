@@ -31,6 +31,9 @@ import Boutique from "@/pages/secteurs/Boutique";
 import Traiteur from "@/pages/secteurs/Traiteur";
 import DjAnimateur from "@/pages/secteurs/DjAnimateur";
 
+// Public pages (booking)
+import BookingPage from "@/pages/public/BookingPage";
+
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
 import AdminOnlyLogin from "@/pages/admin/AdminOnlyLogin";
