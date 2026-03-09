@@ -44,6 +44,7 @@ export interface TeamMember {
   poste: string;
   statut: "disponible" | "indisponible";
   couleur: string;
+  capaciteMax?: number | null;
 }
 
 // ---- DISPONIBILITÉS ----
