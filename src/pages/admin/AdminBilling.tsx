@@ -210,6 +210,13 @@ export default function AdminBilling() {
                         </Select>
                       </div>}
                       <div><label className="text-sm font-medium block mb-1">Montant (€) *</label><Input type="number" value={fMontant} onChange={(e) => setFMontant(e.target.value)} /></div>
+                      <div><label className="text-sm font-medium block mb-1">Service / Type de prestation</label>
+                        <Select value={fServiceCatId} onValueChange={setFServiceCatId}>
+                          <SelectTrigger><SelectValue placeholder="Sélectionner un service" /></SelectTrigger>
+                          <SelectContent>{serviceCategories.map((sc) => <SelectItem key={sc.id} value={sc.id}>{sc.nom}</SelectItem>)}</SelectContent>
+                        </Select>
+                      </div>
+                      <div><label className="text-sm font-medium block mb-1">Description / Détail</label><Textarea value={fDescription} onChange={(e) => setFDescription(e.target.value)} placeholder="Détail de la prestation…" rows={3} /></div>
                       <div><label className="text-sm font-medium block mb-1">Échéance</label><Input type="date" value={fEcheance} onChange={(e) => setFEcheance(e.target.value)} /></div>
                       <Button onClick={handleAddFacture} className="w-full">Créer la facture</Button>
                     </div>
