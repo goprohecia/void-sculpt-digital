@@ -116,6 +116,18 @@ export default function AdminDossierDetail() {
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [cdcViewOpen, setCdcViewOpen] = useState(false);
 
+  // Cancellation policy mock
+  const cancellationPolicy = {
+    politique: "total" as const,
+    pourcentagePartiel: 50,
+    acomptePaye: 30,
+  };
+  const montantRembourse = cancellationPolicy.politique === "total"
+    ? cancellationPolicy.acomptePaye
+    : cancellationPolicy.politique === "partiel"
+      ? Math.round(cancellationPolicy.acomptePaye * cancellationPolicy.pourcentagePartiel / 100)
+      : 0;
+
   const dossier = id ? getDossierById(id) : undefined;
   const facturesDossier = id ? getFacturesByDossier(id) : [];
   const devisDossier = id ? getDevisByDossier(id) : [];
