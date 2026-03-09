@@ -58,15 +58,58 @@ export default function AdminRapports() {
               <p className="text-muted-foreground text-sm">Générez des rapports personnalisés en PDF ou CSV</p>
             </div>
             <div className="flex gap-2">
-              <Select value={periode} onValueChange={setPeriode}>
-                <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+              <Select value={periode} onValueChange={(v) => { setPeriode(v); }}>
+                <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="semaine">Cette semaine</SelectItem>
                   <SelectItem value="mois">Ce mois</SelectItem>
                   <SelectItem value="trimestre">Ce trimestre</SelectItem>
                   <SelectItem value="annee">Cette année</SelectItem>
+                  <SelectItem value="date">Date précise</SelectItem>
+                  <SelectItem value="intervalle">Intervalle personnalisé</SelectItem>
                 </SelectContent>
               </Select>
+
+              {periode === "date" && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className={cn("w-44 justify-start text-left font-normal", !customDate && "text-muted-foreground")}>
+                      <CalendarDays className="mr-2 h-4 w-4" />
+                      {customDate ? fmtDate(customDate, "dd/MM/yyyy") : "Choisir une date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar mode="single" selected={customDate} onSelect={setCustomDate} initialFocus className={cn("p-3 pointer-events-auto")} />
+                  </PopoverContent>
+                </Popover>
+              )}
+
+              {periode === "intervalle" && (
+                <>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className={cn("w-36 justify-start text-left font-normal", !rangeFrom && "text-muted-foreground")}>
+                        <CalendarDays className="mr-2 h-4 w-4" />
+                        {rangeFrom ? fmtDate(rangeFrom, "dd/MM/yyyy") : "Du"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={rangeFrom} onSelect={setRangeFrom} initialFocus className={cn("p-3 pointer-events-auto")} />
+                    </PopoverContent>
+                  </Popover>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className={cn("w-36 justify-start text-left font-normal", !rangeTo && "text-muted-foreground")}>
+                        <CalendarDays className="mr-2 h-4 w-4" />
+                        {rangeTo ? fmtDate(rangeTo, "dd/MM/yyyy") : "Au"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar mode="single" selected={rangeTo} onSelect={setRangeTo} disabled={(d) => rangeFrom ? d < rangeFrom : false} initialFocus className={cn("p-3 pointer-events-auto")} />
+                    </PopoverContent>
+                  </Popover>
+                </>
+              )}
               <Select value={format} onValueChange={setFormat}>
                 <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
                 <SelectContent>
