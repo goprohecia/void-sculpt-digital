@@ -37,7 +37,7 @@ export default function BookingPage() {
   const skipForm = !config.formulaireEnabled;
 
   const [step, setStep] = useState(1);
-  const [slots, setSlots] = useState<TimeSlot[]>(() => generateSlots());
+  const [slots, setSlots] = useState<TimeSlot[]>(() => generateSlots(MOCK_DISPONIBILITES));
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [lockExpiry, setLockExpiry] = useState<number | null>(null);

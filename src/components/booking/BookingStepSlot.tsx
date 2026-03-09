@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { ProDisponibilites } from "@/data/mockData";
 
 export type SlotStatus = "disponible" | "indisponible" | "verrouille" | "reserve";
 
@@ -15,16 +16,69 @@ export interface TimeSlot {
 const JOURS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 const HEURES = ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00"];
 
-export function generateSlots(): TimeSlot[] {
+function isHeureInPlages(heure: string, plages: { debut: string; fin: string }[]): boolean {
+  return plages.some(p => heure >= p.debut && heure < p.fin);
+}
+
+function isDateInRange(dateStr: string, debut: string, fin: string): boolean {
+  return dateStr >= debut && dateStr <= fin;
+}
+
+export function generateSlots(disponibilites?: ProDisponibilites[], weekStartDate?: Date): TimeSlot[] {
   const slots: TimeSlot[] = [];
   let id = 1;
+
+  const startDate = weekStartDate || new Date();
+
   for (let jour = 0; jour < 7; jour++) {
+    const d = new Date(startDate);
+    d.setDate(startDate.getDate() + jour);
+    const dateStr = d.toISOString().slice(0, 10);
+
     for (const heure of HEURES) {
-      const rand = Math.random();
       let status: SlotStatus = "disponible";
-      if (jour >= 5 && (heure === "09:00" || heure === "17:00")) status = "indisponible";
-      else if (rand < 0.2) status = "indisponible";
-      else if (rand < 0.25) status = "reserve";
+
+      if (disponibilites && disponibilites.length > 0) {
+        // Check if at least one pro is available
+        const anyProAvailable = disponibilites.some(pro => {
+          // Check congés
+          const enConge = pro.conges.some(c => isDateInRange(dateStr, c.debut, c.fin));
+          if (enConge) return false;
+
+          // Check exceptions
+          const exception = pro.exceptions.find(e => e.date === dateStr);
+          if (exception) {
+            if (!exception.disponible) return false;
+            if (exception.plages && exception.plages.length > 0) {
+              return isHeureInPlages(heure, exception.plages);
+            }
+            return true;
+          }
+
+          // Check regular horaires
+          const plages = pro.horaires[jour] || [];
+          if (plages.length === 0) return false;
+          return isHeureInPlages(heure, plages);
+        });
+
+        if (!anyProAvailable) {
+          status = "indisponible";
+        } else {
+          // Simulate some locked/reserved for demo
+          const rand = Math.random();
+          if (rand < 0.08) status = "reserve";
+          else if (rand < 0.12) status = "verrouille";
+        }
+      } else {
+        // Fallback random
+        if (jour >= 5 && (heure === "09:00" || heure === "17:00")) status = "indisponible";
+        else {
+          const rand = Math.random();
+          if (rand < 0.2) status = "indisponible";
+          else if (rand < 0.25) status = "reserve";
+        }
+      }
+
       slots.push({ id: `slot-${id++}`, jour, heure, status });
     }
   }
