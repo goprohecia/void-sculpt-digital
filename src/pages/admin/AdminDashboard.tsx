@@ -181,9 +181,9 @@ export default function AdminDashboard() {
                     Calendrier des échéances
                   </h3>
                   <div className="flex items-center gap-3 text-[10px]">
-                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-blue-400" />Dossiers</span>
-                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-amber-400" />Factures</span>
-                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-rose-400" />Relances</span>
+                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-emerald-600" />Dossiers</span>
+                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-400" />Factures</span>
+                    <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-teal-400" />Relances</span>
                   </div>
                 </div>
 
