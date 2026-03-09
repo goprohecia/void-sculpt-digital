@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
 type TabType = "clients" | "salaries";
 
@@ -23,14 +24,19 @@ export default function AdminMessaging() {
   const { conversations } = useConversations();
   const { isDemo } = useIsDemo();
   const { clients } = useClients();
+  const { getModuleLabel } = useDemoPlan();
   const queryClient = useQueryClient();
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
   const [showList, setShowList] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>("clients");
   const [showNewConv, setShowNewConv] = useState(false);
-  const [newConvForm, setNewConvForm] = useState({ clientId: "", sujet: "", message: "" });
+  const [newConvForm, setNewConvForm] = useState({ recipientId: "", sujet: "", message: "" });
   const [creating, setCreating] = useState(false);
+
+  // Get sector-specific labels
+  const clientsLabel = getModuleLabel("clients");
+  const employeesLabel = getModuleLabel("employees");
 
   // Fetch employees for the "salaries" tab
   const { data: employees = [] } = useQuery<any[]>({
@@ -53,8 +59,14 @@ export default function AdminMessaging() {
     setShowList(false);
   };
 
+  // Reset form when dialog opens based on active tab
+  const handleOpenNewConv = () => {
+    setNewConvForm({ recipientId: "", sujet: "", message: "" });
+    setShowNewConv(true);
+  };
+
   const handleCreateConversation = async () => {
-    if (!newConvForm.clientId || !newConvForm.sujet.trim() || !newConvForm.message.trim()) {
+    if (!newConvForm.recipientId || !newConvForm.sujet.trim() || !newConvForm.message.trim()) {
       toast.error("Veuillez remplir tous les champs");
       return;
     }
@@ -62,52 +74,90 @@ export default function AdminMessaging() {
     if (isDemo) {
       toast.success("Conversation créée (mode démo)");
       setShowNewConv(false);
-      setNewConvForm({ clientId: "", sujet: "", message: "" });
+      setNewConvForm({ recipientId: "", sujet: "", message: "" });
       return;
     }
 
     setCreating(true);
     try {
-      const client = clients.find((c) => c.id === newConvForm.clientId);
-      const clientNom = client ? `${client.prenom} ${client.nom}` : "Client";
+      if (activeTab === "clients") {
+        const client = clients.find((c) => c.id === newConvForm.recipientId);
+        const clientNom = client ? `${client.prenom} ${client.nom}` : "Client";
 
-      // Create conversation
-      const { data: conv, error: convError } = await supabase
-        .from("conversations")
-        .insert({
-          client_id: newConvForm.clientId,
-          client_nom: clientNom,
-          sujet: newConvForm.sujet.trim(),
-          non_lus: 0,
-          dernier_message: new Date().toISOString(),
-        })
-        .select()
-        .single();
+        // Create conversation
+        const { data: conv, error: convError } = await supabase
+          .from("conversations")
+          .insert({
+            client_id: newConvForm.recipientId,
+            client_nom: clientNom,
+            sujet: newConvForm.sujet.trim(),
+            non_lus: 0,
+            dernier_message: new Date().toISOString(),
+          })
+          .select()
+          .single();
 
-      if (convError) throw convError;
+        if (convError) throw convError;
 
-      // Create first message
-      const { error: msgError } = await supabase
-        .from("messages")
-        .insert({
-          conversation_id: conv.id,
-          contenu: newConvForm.message.trim(),
-          role: "admin",
-          date: new Date().toISOString(),
+        // Create first message
+        const { error: msgError } = await supabase
+          .from("messages")
+          .insert({
+            conversation_id: conv.id,
+            contenu: newConvForm.message.trim(),
+            role: "admin",
+            date: new Date().toISOString(),
+          });
+
+        if (msgError) throw msgError;
+
+        // Create notification for the client
+        await supabase.from("notifications").insert({
+          type: "message",
+          titre: "Nouveau message",
+          description: `Vous avez reçu un nouveau message : ${newConvForm.sujet.trim()}`,
+          destinataire: "client",
+          client_id: newConvForm.recipientId,
+          lien: "/client/messagerie",
+          lu: false,
         });
 
-      if (msgError) throw msgError;
+        toast.success("Message envoyé au client");
+        queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      } else {
+        // For employees - create notification (messaging not fully implemented yet)
+        const employee = employees.find((e: any) => e.id === newConvForm.recipientId);
+        const empNom = employee ? `${employee.prenom} ${employee.nom}` : employeesLabel;
 
-      toast.success("Conversation créée");
-      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+        // Create notification for the employee
+        await supabase.from("notifications").insert({
+          type: "message",
+          titre: "Nouveau message de l'administration",
+          description: `Sujet : ${newConvForm.sujet.trim()} - ${newConvForm.message.trim().slice(0, 100)}...`,
+          destinataire: "employee",
+          lien: "/employee/messagerie",
+          lu: false,
+        });
+
+        toast.success(`Message envoyé à ${empNom}`);
+      }
+
       setShowNewConv(false);
-      setNewConvForm({ clientId: "", sujet: "", message: "" });
+      setNewConvForm({ recipientId: "", sujet: "", message: "" });
     } catch (err: any) {
-      toast.error(err.message || "Erreur lors de la création");
+      toast.error(err.message || "Erreur lors de l'envoi");
     } finally {
       setCreating(false);
     }
   };
+
+  // Get recipient list based on active tab
+  const recipients = activeTab === "clients" 
+    ? clients.map((c) => ({ id: c.id, label: `${c.prenom} ${c.nom}`, sublabel: c.entreprise || c.email }))
+    : employees.map((e: any) => ({ id: e.id, label: `${e.prenom} ${e.nom}`, sublabel: e.poste || e.email }));
+
+  const recipientLabel = activeTab === "clients" ? `${clientsLabel} destinataire` : `${employeesLabel} destinataire`;
+  const recipientPlaceholder = activeTab === "clients" ? `Sélectionner un ${clientsLabel.toLowerCase()}` : `Sélectionner un ${employeesLabel.toLowerCase()}`;
 
   return (
     <AdminLayout>
@@ -116,10 +166,10 @@ export default function AdminMessaging() {
           <motion.div variants={staggerItem} className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2"><MessageSquare className="h-6 w-6 text-primary" /> Messagerie</h1>
-              <p className="text-muted-foreground text-sm">{conversations.length} conversations clients · {employees.length} salariés</p>
+              <p className="text-muted-foreground text-sm">{conversations.length} conversations {clientsLabel.toLowerCase()} · {employees.length} {employeesLabel.toLowerCase()}</p>
             </div>
             <button
-              onClick={() => setShowNewConv(true)}
+              onClick={handleOpenNewConv}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium"
             >
               <Plus className="h-4 w-4" />
@@ -130,10 +180,10 @@ export default function AdminMessaging() {
           {/* Tab selector */}
           <motion.div variants={staggerItem} className="flex gap-1 p-1 rounded-lg bg-muted/20 w-fit">
             <button onClick={() => setActiveTab("clients")} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "clients" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-              <MessageSquare className="h-3.5 w-3.5 inline mr-1.5" />Clients
+              <MessageSquare className="h-3.5 w-3.5 inline mr-1.5" />{clientsLabel}
             </button>
             <button onClick={() => setActiveTab("salaries")} className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${activeTab === "salaries" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-              <Users className="h-3.5 w-3.5 inline mr-1.5" />Salariés
+              <Users className="h-3.5 w-3.5 inline mr-1.5" />{employeesLabel}
             </button>
           </motion.div>
 
@@ -141,7 +191,7 @@ export default function AdminMessaging() {
             <motion.div className="glass-card overflow-hidden flex" style={{ height: "calc(100dvh - 280px)" }} variants={staggerItem}>
               {/* Conversation list */}
               <div className={cn("w-full md:w-80 border-r border-border/30 flex flex-col overflow-hidden", !showList && "hidden md:flex")}>
-                <div className="p-3 border-b border-border/30"><p className="text-xs text-muted-foreground font-medium">Conversations clients</p></div>
+                <div className="p-3 border-b border-border/30"><p className="text-xs text-muted-foreground font-medium">Conversations {clientsLabel.toLowerCase()}</p></div>
                 <div className="flex-1 overflow-auto">
                   {conversations.map((conv) => (
                     <button key={conv.id} onClick={() => handleSelectConv(conv)} className={cn("w-full text-left p-3 border-b border-border/10 hover:bg-muted/20 transition-colors", activeConv?.id === conv.id && "bg-muted/30")}>
@@ -183,7 +233,7 @@ export default function AdminMessaging() {
                       </div>
                     </>
                   ) : conversations.length === 0 ? (
-                    <div className="flex-1 flex items-center justify-center"><AdminEmptyState icon={MessageSquare} title="Aucune conversation" description="Les échanges avec vos clients apparaîtront ici." /></div>
+                    <div className="flex-1 flex items-center justify-center"><AdminEmptyState icon={MessageSquare} title="Aucune conversation" description={`Les échanges avec vos ${clientsLabel.toLowerCase()} apparaîtront ici.`} /></div>
                   ) : (
                     <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">Sélectionnez une conversation</div>
                   )}
@@ -193,9 +243,9 @@ export default function AdminMessaging() {
           ) : (
             /* Salaries tab */
             <motion.div className="glass-card p-6" style={{ minHeight: "calc(100dvh - 280px)" }} variants={staggerItem}>
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> Messagerie salariés</h3>
+              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> Messagerie {employeesLabel.toLowerCase()}</h3>
               {employees.length === 0 ? (
-                <AdminEmptyState icon={Users} title="Aucun salarié" description="Ajoutez des salariés pour leur envoyer des messages." />
+                <AdminEmptyState icon={Users} title={`Aucun ${employeesLabel.toLowerCase()}`} description={`Ajoutez des ${employeesLabel.toLowerCase()} pour leur envoyer des messages.`} />
               ) : (
                 <div className="space-y-3">
                   {employees.map((emp: any) => (
@@ -204,12 +254,19 @@ export default function AdminMessaging() {
                         <p className="text-sm font-medium">{emp.prenom} {emp.nom}</p>
                         <p className="text-xs text-muted-foreground">{emp.poste || emp.email}</p>
                       </div>
-                      <button className="p-2 rounded-lg hover:bg-primary/10 text-primary transition-colors" title="Envoyer un message">
+                      <button 
+                        onClick={() => {
+                          setNewConvForm({ recipientId: emp.id, sujet: "", message: "" });
+                          setShowNewConv(true);
+                        }}
+                        className="p-2 rounded-lg hover:bg-primary/10 text-primary transition-colors" 
+                        title="Envoyer un message"
+                      >
                         <Send className="h-4 w-4" />
                       </button>
                     </div>
                   ))}
-                  <p className="text-xs text-muted-foreground text-center pt-4">La messagerie interne avec les salariés sera bientôt disponible en temps réel.</p>
+                  <p className="text-xs text-muted-foreground text-center pt-4">La messagerie interne avec les {employeesLabel.toLowerCase()} sera bientôt disponible en temps réel.</p>
                 </div>
               )}
             </motion.div>
@@ -227,15 +284,15 @@ export default function AdminMessaging() {
             </DialogHeader>
             <div className="space-y-4 pt-2">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Client destinataire</label>
-                <Select value={newConvForm.clientId || "__none__"} onValueChange={(v) => setNewConvForm((f) => ({ ...f, clientId: v === "__none__" ? "" : v }))}>
+                <label className="text-sm font-medium">{recipientLabel}</label>
+                <Select value={newConvForm.recipientId || "__none__"} onValueChange={(v) => setNewConvForm((f) => ({ ...f, recipientId: v === "__none__" ? "" : v }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner un client" />
+                    <SelectValue placeholder={recipientPlaceholder} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="__none__">Sélectionner un client</SelectItem>
-                    {clients.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>{c.prenom} {c.nom} — {c.entreprise || c.email}</SelectItem>
+                    <SelectItem value="__none__">{recipientPlaceholder}</SelectItem>
+                    {recipients.map((r) => (
+                      <SelectItem key={r.id} value={r.id}>{r.label} — {r.sublabel}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -245,7 +302,7 @@ export default function AdminMessaging() {
                 <Input
                   value={newConvForm.sujet}
                   onChange={(e) => setNewConvForm((f) => ({ ...f, sujet: e.target.value }))}
-                  placeholder="Ex: Suivi de votre projet"
+                  placeholder={activeTab === "clients" ? "Ex: Suivi de votre projet" : "Ex: Information importante"}
                 />
               </div>
               <div className="space-y-2">
@@ -263,7 +320,7 @@ export default function AdminMessaging() {
                 </button>
                 <button
                   onClick={handleCreateConversation}
-                  disabled={creating || !newConvForm.clientId || !newConvForm.sujet.trim() || !newConvForm.message.trim()}
+                  disabled={creating || !newConvForm.recipientId || !newConvForm.sujet.trim() || !newConvForm.message.trim()}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium disabled:opacity-50"
                 >
                   <Send className="h-4 w-4" />
