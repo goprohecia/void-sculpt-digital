@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Target, Users, TrendingUp, Euro, Plus } from "lucide-react";
+import { Target, Users, TrendingUp, Euro, Plus, GripVertical } from "lucide-react";
 import { toast } from "sonner";
 
 interface Deal {
@@ -46,6 +46,8 @@ const DEMO_DEALS: Deal[] = [
 export default function AdminPipeline() {
   const [deals, setDeals] = useState(DEMO_DEALS);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [draggedDeal, setDraggedDeal] = useState<string | null>(null);
+  const [dragOverEtape, setDragOverEtape] = useState<string | null>(null);
   const [newDeal, setNewDeal] = useState({
     nom: "",
     entreprise: "",
@@ -56,9 +58,56 @@ export default function AdminPipeline() {
   });
 
   const pipelineEtapes = ETAPES.filter((e) => e.key !== "gagne" && e.key !== "perdu");
+  const allDroppableEtapes = ETAPES; // Allow dropping in Gagné/Perdu too
   const activeDeals = deals.filter((d) => d.etape !== "gagne" && d.etape !== "perdu");
   const totalPipeline = activeDeals.reduce((sum, d) => sum + d.montant, 0);
   const totalPondere = activeDeals.reduce((sum, d) => sum + (d.montant * d.probabilite) / 100, 0);
+
+  const handleDragStart = (e: React.DragEvent, dealId: string) => {
+    setDraggedDeal(dealId);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", dealId);
+  };
+
+  const handleDragOver = (e: React.DragEvent, etapeKey: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    setDragOverEtape(etapeKey);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverEtape(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetEtape: string) => {
+    e.preventDefault();
+    const dealId = e.dataTransfer.getData("text/plain");
+    
+    if (dealId && targetEtape) {
+      setDeals((prev) =>
+        prev.map((deal) => {
+          if (deal.id === dealId && deal.etape !== targetEtape) {
+            const etapeLabel = ETAPES.find((et) => et.key === targetEtape)?.label;
+            toast.success(`"${deal.nom}" déplacé vers ${etapeLabel}`);
+            // Update probabilité based on stage
+            let newProba = deal.probabilite;
+            if (targetEtape === "gagne") newProba = 100;
+            else if (targetEtape === "perdu") newProba = 0;
+            return { ...deal, etape: targetEtape, probabilite: newProba };
+          }
+          return deal;
+        })
+      );
+    }
+    
+    setDraggedDeal(null);
+    setDragOverEtape(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedDeal(null);
+    setDragOverEtape(null);
+  };
 
   const handleCreateDeal = () => {
     if (!newDeal.nom.trim() || !newDeal.entreprise.trim() || !newDeal.montant) {
@@ -82,6 +131,29 @@ export default function AdminPipeline() {
     setNewDeal({ nom: "", entreprise: "", montant: "", probabilite: "25", etape: "prospect", contact: "" });
     toast.success(`Opportunité "${deal.nom}" créée`);
   };
+
+  const DealCard = ({ deal }: { deal: Deal }) => (
+    <div
+      draggable
+      onDragStart={(e) => handleDragStart(e, deal.id)}
+      onDragEnd={handleDragEnd}
+      className={`p-3 rounded-lg bg-background border border-border/50 space-y-1.5 transition-all cursor-grab active:cursor-grabbing group ${
+        draggedDeal === deal.id ? "opacity-50 scale-95 border-primary" : "hover:border-primary/30"
+      }`}
+    >
+      <div className="flex items-start gap-2">
+        <GripVertical className="h-4 w-4 text-muted-foreground/50 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium truncate">{deal.nom}</p>
+          <p className="text-xs text-muted-foreground truncate">{deal.entreprise}</p>
+        </div>
+      </div>
+      <div className="flex items-center justify-between pl-6">
+        <span className="text-xs font-semibold text-primary">{deal.montant.toLocaleString("fr-FR")}€</span>
+        <Badge variant="outline" className="text-[10px]">{deal.probabilite}%</Badge>
+      </div>
+    </div>
+  );
 
   return (
     <AdminLayout>
@@ -126,27 +198,29 @@ export default function AdminPipeline() {
             {pipelineEtapes.map((etape) => {
               const etapeDeals = deals.filter((d) => d.etape === etape.key);
               const etapeTotal = etapeDeals.reduce((sum, d) => sum + d.montant, 0);
+              const isOver = dragOverEtape === etape.key;
               return (
-                <Card key={etape.key} className="bg-muted/10">
+                <Card
+                  key={etape.key}
+                  className={`bg-muted/10 transition-all ${isOver ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
+                  onDragOver={(e) => handleDragOver(e, etape.key)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, etape.key)}
+                >
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center justify-between">
                       <Badge variant="outline" className={`${etape.color} text-xs`}>{etape.label}</Badge>
                       <span className="text-xs text-muted-foreground font-normal">{etapeTotal.toLocaleString("fr-FR")}€</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-2 min-h-[120px]">
+                  <CardContent className={`space-y-2 min-h-[120px] transition-colors ${isOver ? "bg-primary/5 rounded-b-lg" : ""}`}>
                     {etapeDeals.map((deal) => (
-                      <div key={deal.id} className="p-3 rounded-lg bg-background border border-border/50 space-y-1.5 hover:border-primary/30 transition-colors cursor-pointer">
-                        <p className="text-sm font-medium">{deal.nom}</p>
-                        <p className="text-xs text-muted-foreground">{deal.entreprise}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-primary">{deal.montant.toLocaleString("fr-FR")}€</span>
-                          <Badge variant="outline" className="text-[10px]">{deal.probabilite}%</Badge>
-                        </div>
-                      </div>
+                      <DealCard key={deal.id} deal={deal} />
                     ))}
                     {etapeDeals.length === 0 && (
-                      <p className="text-xs text-muted-foreground text-center py-6">Aucune opportunité</p>
+                      <p className={`text-xs text-center py-6 ${isOver ? "text-primary" : "text-muted-foreground"}`}>
+                        {isOver ? "Déposer ici" : "Aucune opportunité"}
+                      </p>
                     )}
                   </CardContent>
                 </Card>
@@ -159,20 +233,41 @@ export default function AdminPipeline() {
             {["gagne", "perdu"].map((status) => {
               const etape = ETAPES.find((e) => e.key === status)!;
               const statusDeals = deals.filter((d) => d.etape === status);
+              const isOver = dragOverEtape === status;
               return (
-                <Card key={status}>
+                <Card
+                  key={status}
+                  className={`transition-all ${isOver ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
+                  onDragOver={(e) => handleDragOver(e, status)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, status)}
+                >
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2">
                       <Badge variant="outline" className={`${etape.color} text-xs`}>{etape.label}</Badge>
                       <span className="text-xs text-muted-foreground font-normal">{statusDeals.length} deal(s)</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className={`min-h-[60px] transition-colors ${isOver ? "bg-primary/5 rounded-b-lg" : ""}`}>
+                    {statusDeals.length === 0 && isOver && (
+                      <p className="text-xs text-primary text-center py-3">Déposer ici</p>
+                    )}
                     {statusDeals.map((deal) => (
-                      <div key={deal.id} className="flex items-center justify-between py-2 text-sm">
-                        <div>
-                          <p className="font-medium">{deal.nom}</p>
-                          <p className="text-xs text-muted-foreground">{deal.entreprise}</p>
+                      <div
+                        key={deal.id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, deal.id)}
+                        onDragEnd={handleDragEnd}
+                        className={`flex items-center justify-between py-2 text-sm cursor-grab active:cursor-grabbing group ${
+                          draggedDeal === deal.id ? "opacity-50" : ""
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <GripVertical className="h-4 w-4 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div>
+                            <p className="font-medium">{deal.nom}</p>
+                            <p className="text-xs text-muted-foreground">{deal.entreprise}</p>
+                          </div>
                         </div>
                         <span className="font-semibold">{deal.montant.toLocaleString("fr-FR")}€</span>
                       </div>
