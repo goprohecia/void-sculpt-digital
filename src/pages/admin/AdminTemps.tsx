@@ -38,6 +38,8 @@ export default function AdminTemps() {
   const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [entries, setEntries] = useState<TimeEntry[]>(INITIAL_ENTRIES);
+  const [filterClient, setFilterClient] = useState("all");
+  const [filterSalarie, setFilterSalarie] = useState("all");
 
   // Save dialog state
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
