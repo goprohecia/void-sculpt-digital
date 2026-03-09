@@ -60,6 +60,14 @@ const PRIORITE_BADGE: Record<string, string> = {
 
 const ASSIGNEES = ["Admin", "Sophie M.", "Marc L.", "Julie R.", "Thomas D."];
 
+const DEMO_DOSSIERS = [
+  { reference: "DOS-2026-042", client_nom: "Martin SARL" },
+  { reference: "DOS-2026-038", client_nom: "Dupont Pierre" },
+  { reference: "DOS-2026-035", client_nom: "Lefèvre & Associés" },
+  { reference: "DOS-2026-041", client_nom: "Garcia Maria" },
+  { reference: "DOS-2026-040", client_nom: "Tech Solutions SAS" },
+];
+
 const emptyForm = (): Omit<Task, "id"> => ({
   titre: "",
   description: "",
@@ -85,9 +93,15 @@ export default function AdminTaches() {
         .select("reference, client_nom")
         .order("created_at", { ascending: false })
         .limit(50);
-      return data || [];
+      return (data && data.length > 0) ? data : DEMO_DOSSIERS;
     },
   });
+
+  // Helper to get client name for a dossier reference
+  const getDossierLabel = (ref: string) => {
+    const d = dossiers.find(dos => dos.reference === ref);
+    return d ? `${ref} — ${d.client_nom}` : ref;
+  };
 
   const openCreate = () => {
     setEditingTask(null);
@@ -180,8 +194,7 @@ export default function AdminTaches() {
                           <span className="text-[10px] text-muted-foreground">{task.assignee}</span>
                           {task.dossier && (
                             <span className="text-[10px] text-primary/60">
-                              {task.dossier}
-                              {(() => { const d = dossiers.find(dos => dos.reference === task.dossier); return d ? ` — ${d.client_nom}` : ""; })()}
+                              {getDossierLabel(task.dossier)}
                             </span>
                           )}
                           {task.dateEcheance && (
