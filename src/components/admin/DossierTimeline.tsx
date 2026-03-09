@@ -165,6 +165,16 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEnterprise = fal
                 {hasNotes && (
                   <MessageSquare className="h-2.5 w-2.5 text-primary/60 mt-0.5" />
                 )}
+                {getNotifConfig(step).enabled && (
+                  <span className="flex items-center gap-0.5 mt-0.5">
+                    {(getNotifConfig(step).canal === "email" || getNotifConfig(step).canal === "both") && (
+                      <Mail className="h-2.5 w-2.5 text-primary/50" />
+                    )}
+                    {(getNotifConfig(step).canal === "sms" || getNotifConfig(step).canal === "both") && (
+                      <Phone className="h-2.5 w-2.5 text-primary/50" />
+                    )}
+                  </span>
+                )}
               </div>
             );
           })}

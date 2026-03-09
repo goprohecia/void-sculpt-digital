@@ -1365,6 +1365,11 @@ export default function AdminSettings() {
                   </CardContent>
                 </Card>
               </TabsContent>
+
+              {/* SUIVI CLIENT TAB */}
+              <TabsContent value="suivi-client">
+                <StepNotificationSettings />
+              </TabsContent>
             </Tabs>
           </motion.div>
         </motion.div>
