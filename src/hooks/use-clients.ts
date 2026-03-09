@@ -71,7 +71,7 @@ export function useClients() {
   });
 
   const createClient = useMutation({
-    mutationFn: async (newClient: { prenom: string; nom: string; email: string; telephone?: string; entreprise?: string; siret?: string; adresse?: string; codePostal?: string; ville?: string; pays?: string }) => {
+    mutationFn: async (newClient: { prenom: string; nom: string; email: string; telephone: string; entreprise?: string; siret?: string; adresse?: string; codePostal?: string; ville?: string; pays?: string }) => {
       if (isDemo) return;
       const { data: { session } } = await supabase.auth.getSession();
       const res = await supabase.functions.invoke("create-client-account", {

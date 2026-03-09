@@ -109,8 +109,8 @@ export default function AdminClients() {
   };
 
   const handleCreateClient = async () => {
-    if (!newClient.prenom || !newClient.nom || !newClient.email) {
-      toast.error("Prénom, nom et email sont obligatoires");
+    if (!newClient.prenom || !newClient.nom || !newClient.email || !newClient.telephone) {
+      toast.error("Prénom, nom, email et téléphone sont obligatoires");
       return;
     }
     try {
@@ -132,7 +132,7 @@ export default function AdminClients() {
           );
         }
       }
-      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé`);
+      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé — un email d'invitation a été envoyé`);
       setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
       setNewClientTagIds([]);
       setShowCreateDialog(false);
@@ -573,13 +573,13 @@ export default function AdminClients() {
                 <Input type="email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} className="h-9" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Téléphone</label>
-                <Input value={newClient.telephone} onChange={(e) => setNewClient({ ...newClient, telephone: e.target.value })} className="h-9" />
+                <label className="text-xs font-medium text-muted-foreground">Téléphone *</label>
+                <Input value={newClient.telephone} onChange={(e) => setNewClient({ ...newClient, telephone: e.target.value })} className="h-9" placeholder="+33 6 12 34 56 78" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">Entreprise</label>
+                <label className="text-xs font-medium text-muted-foreground">Entreprise <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.entreprise} onChange={(e) => setNewClient({ ...newClient, entreprise: e.target.value })} className="h-9" />
               </div>
               <div className="space-y-1.5">
@@ -631,7 +631,7 @@ export default function AdminClients() {
             )}
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-muted-foreground">SIRET</label>
+                <label className="text-xs font-medium text-muted-foreground">SIRET <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.siret} onChange={(e) => setNewClient({ ...newClient, siret: e.target.value })} className="h-9" />
               </div>
             </div>

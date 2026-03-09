@@ -54,10 +54,29 @@ serve(async (req) => {
 
     if (!roleData) throw new Error("Accès réservé aux administrateurs");
 
+    // Fetch admin's profile name for referral
+    const { data: adminProfile } = await supabaseAdmin
+      .from("profiles")
+      .select("nom")
+      .eq("user_id", caller.id)
+      .maybeSingle();
+    const adminName = adminProfile?.nom || "Votre prestataire";
+
+    // Fetch business name from app_settings if available
+    const { data: businessSetting } = await supabaseAdmin
+      .from("app_settings")
+      .select("value")
+      .eq("key", "business_name")
+      .maybeSingle();
+    const businessName = (businessSetting?.value as string) || adminName;
+
     const { prenom, nom, email, telephone, entreprise, siret, adresse, codePostal, ville, pays } = await req.json();
 
     if (!prenom || !nom || !email) {
       throw new Error("Prénom, nom et email sont obligatoires");
+    }
+    if (!telephone) {
+      throw new Error("Le téléphone est obligatoire");
     }
 
     const tempPassword = generatePassword();
@@ -73,6 +92,7 @@ serve(async (req) => {
 
     const userId = userData.user.id;
 
+    // Update client record with extra fields
     const { data: clientRows } = await supabaseAdmin
       .from("clients")
       .select("id")
@@ -81,6 +101,7 @@ serve(async (req) => {
 
     if (clientRows) {
       await supabaseAdmin.from("clients").update({
+        telephone: telephone || "",
         entreprise: entreprise || "",
         siret: siret || null,
         adresse: adresse || null,
@@ -95,8 +116,29 @@ serve(async (req) => {
     await resend.emails.send({
       from: "Impartial <studio@impartialgames.com>",
       to: [email],
-      subject: "Bienvenue chez Impartial — Votre espace client est prêt",
-      html: `
+      subject: `${businessName} vous invite à rejoindre votre espace client`,
+      html: buildInvitationEmail({ prenom, email, tempPassword, loginUrl, businessName, adminName }),
+    });
+
+    return new Response(JSON.stringify({ success: true, userId }), {
+      status: 200,
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
+  } catch (error: any) {
+    console.error("Error in create-client-account:", error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+});
+
+function buildInvitationEmail({
+  prenom, email, tempPassword, loginUrl, businessName, adminName,
+}: {
+  prenom: string; email: string; tempPassword: string; loginUrl: string; businessName: string; adminName: string;
+}) {
+  return `
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
@@ -125,11 +167,20 @@ serve(async (req) => {
             </div>
           </div>
 
-          <p style="margin:0 0 4px;font-size:13px;color:#a78bfa;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;text-align:center;">Bienvenue</p>
+          <p style="margin:0 0 4px;font-size:13px;color:#a78bfa;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;text-align:center;">Invitation</p>
           <h2 style="margin:0 0 8px;font-size:22px;color:#fafafa;font-weight:600;text-align:center;">Bonjour ${prenom} !</h2>
           <p style="margin:0 0 28px;font-size:14px;line-height:1.7;color:#a1a1aa;text-align:center;">
-            Votre espace client Impartial a été créé avec succès. Tout est prêt pour collaborer ensemble.
+            <strong style="color:#fafafa;">${businessName}</strong> vous invite à rejoindre votre espace client personnalisé. Vous y retrouverez tous les services et informations mis à votre disposition.
           </p>
+
+          <!-- Referral badge -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:rgba(124,58,237,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:10px;margin-bottom:24px;">
+            <tr><td style="padding:14px 18px;">
+              <p style="margin:0;font-size:13px;color:#a78bfa;line-height:1.5;">
+                🔗 Vous êtes référé(e) par <strong>${adminName}</strong>. Votre espace a été configuré spécialement pour vous donner accès aux services proposés.
+              </p>
+            </td></tr>
+          </table>
 
           <!-- Credentials -->
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0f;border:1px solid #1e1e2a;border-radius:12px;margin-bottom:24px;">
@@ -186,7 +237,7 @@ serve(async (req) => {
                   <tr>
                     <td width="36" style="vertical-align:top;"><span style="font-size:18px;">💬</span></td>
                     <td style="padding-left:8px;">
-                      <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Échanger avec notre équipe</p>
+                      <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Échanger avec votre prestataire</p>
                       <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Messagerie intégrée et support dédié</p>
                     </td>
                   </tr>
@@ -200,7 +251,7 @@ serve(async (req) => {
                     <td width="36" style="vertical-align:top;"><span style="font-size:18px;">📅</span></td>
                     <td style="padding-left:8px;">
                       <p style="margin:0;font-size:14px;color:#fafafa;font-weight:500;">Planifier vos rendez-vous</p>
-                      <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Réservation directe via Calendly</p>
+                      <p style="margin:2px 0 0;font-size:12px;color:#71717a;">Réservation directe en ligne</p>
                     </td>
                   </tr>
                 </table>
@@ -229,7 +280,7 @@ serve(async (req) => {
 
         <!-- Footer -->
         <tr><td style="padding-top:28px;text-align:center;">
-          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">Cet email a été envoyé automatiquement par Impartial.</p>
+          <p style="margin:0 0 6px;font-size:12px;color:#52525b;">Cet email a été envoyé automatiquement par ${businessName}.</p>
           <p style="margin:0 0 6px;font-size:12px;color:#52525b;">Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>
           <p style="margin:0;font-size:11px;color:#3f3f46;">© ${new Date().getFullYear()} Impartial — Studio digital</p>
         </td></tr>
@@ -238,18 +289,5 @@ serve(async (req) => {
   </table>
 </body>
 </html>
-      `,
-    });
-
-    return new Response(JSON.stringify({ success: true, userId }), {
-      status: 200,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
-    });
-  } catch (error: any) {
-    console.error("Error in create-client-account:", error);
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
-  }
-});
+  `;
+}
