@@ -139,7 +139,7 @@ export default function AdminDashboard() {
                 <div className="glass-card p-5 sm:p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold flex items-center gap-2">
-                      <FolderOpen className="h-4 w-4 text-blue-400" />
+                      <FolderOpen className="h-4 w-4 text-primary" />
                       Dossiers récents
                     </h3>
                     <Link to="/admin/dossiers" className="text-xs text-primary hover:underline flex items-center gap-1">
