@@ -405,11 +405,12 @@ const ASSIGNATION_SECTORS = [
   "immobilier",     // Agence Immobilière
   "coach-sportif",  // Salle de Sport
   "cabinets",       // Expert-Comptable / Cabinet d'Avocats
-  "boutique",       // Magasin / Auto-École
+  "boutique",       // Magasin
+  "auto-ecole",     // Auto-École
 ];
 
 export function isAssignationEnabled(sectorKey?: string | null): boolean {
-  if (!sectorKey) return true; // default: enabled (hors contexte secteur)
+  if (!sectorKey) return true;
   return ASSIGNATION_SECTORS.includes(sectorKey);
 }
 
