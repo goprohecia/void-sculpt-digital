@@ -25,8 +25,10 @@ interface BookingStepRecapProps {
 export function BookingStepRecap({
   slot, formData, formFields, showForm,
   acompteType, acompteMontant, prixPrestation,
+  cancellationMessage,
   onConfirm, onBack,
 }: BookingStepRecapProps) {
+  const [accepted, setAccepted] = useState(false);
   const montantAcompte = acompteType === "fixe"
     ? acompteMontant
     : Math.round(prixPrestation * acompteMontant / 100);
