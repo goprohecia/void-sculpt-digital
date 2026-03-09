@@ -50,6 +50,9 @@ export default function AdminDossiers() {
   const { getCahierByDemande } = useCahiers();
   const { clients } = useClients();
   const { isDemo } = useIsDemo();
+  const { getAssignmentsByDossier } = useDemoData();
+  const { demoSector } = useDemoPlan();
+  const assignEnabled = isAssignationEnabled(demoSector);
 
   // Fetch tags
   const { data: tags = [] } = useQuery<any[]>({
