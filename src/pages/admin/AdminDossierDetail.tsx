@@ -263,16 +263,24 @@ export default function AdminDossierDetail() {
                   <Users className="h-4 w-4 text-primary" />
                   Équipe assignée
                 </h2>
-                <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setAssignModalOpen(true)}>
-                  <Users className="h-3.5 w-3.5" />
-                  {currentAssignments.length > 0 ? "Modifier l'assignation" : "Assigner"}
-                </Button>
+                <div className="flex items-center gap-2">
+                  {currentAssignments.length > 0 && (
+                    <Button size="sm" variant="outline" className="gap-1.5" onClick={() => { setAssignModalMode("add"); setAssignModalOpen(true); }}>
+                      <Plus className="h-3.5 w-3.5" /> Ajouter
+                    </Button>
+                  )}
+                  <Button size="sm" variant="outline" className="gap-1.5" onClick={() => { setAssignModalMode("full"); setAssignModalOpen(true); }}>
+                    <Users className="h-3.5 w-3.5" />
+                    {currentAssignments.length > 0 ? "Modifier" : "Assigner"}
+                  </Button>
+                </div>
               </div>
               {currentAssignments.length > 0 ? (
                 <div className="flex flex-wrap gap-3">
                   {currentAssignments.map((a) => {
                     const member = MOCK_TEAM_MEMBERS.find((m) => m.id === a.employeeId);
                     if (!member) return null;
+                    const isResp = a.role === "responsable";
                     return (
                       <div key={a.employeeId} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 border border-border/30">
                         <Avatar className="h-8 w-8">
@@ -284,7 +292,24 @@ export default function AdminDossierDetail() {
                           <p className="text-xs font-medium">{member.prenom} {member.nom}</p>
                           <p className="text-[10px] text-muted-foreground">{member.poste}</p>
                         </div>
-                        {a.role === "responsable" ? (
+                        {/* Star to toggle responsable */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (isResp) return; // already responsable
+                            const updated = currentAssignments.map((x) => ({
+                              ...x,
+                              role: x.employeeId === a.employeeId ? "responsable" as const : "renfort" as const,
+                            }));
+                            handleAssign(updated);
+                            toast.success(`${member.prenom} ${member.nom} est maintenant responsable`);
+                          }}
+                          className="p-1 rounded hover:bg-muted/50 transition-colors"
+                          title={isResp ? "Responsable" : "Désigner comme responsable"}
+                        >
+                          <Star className={`h-4 w-4 transition-colors ${isResp ? "fill-amber-400 text-amber-400" : "text-muted-foreground hover:text-amber-300"}`} />
+                        </button>
+                        {isResp ? (
                           <Badge className="text-[10px] px-1.5 py-0 bg-amber-500/20 text-amber-400 border-amber-500/30 gap-1">
                             <Crown className="h-2.5 w-2.5" /> Responsable
                           </Badge>
@@ -293,6 +318,41 @@ export default function AdminDossierDetail() {
                             <Shield className="h-2.5 w-2.5" /> Renfort
                           </Badge>
                         )}
+                        {/* Remove button */}
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <button type="button" className="p-1 rounded hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive" title="Retirer">
+                              <X className="h-3.5 w-3.5" />
+                            </button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Retirer {member.prenom} {member.nom} ?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {isResp && currentAssignments.length > 1
+                                  ? "Ce membre est le responsable du dossier. En le retirant, le prochain membre deviendra automatiquement responsable."
+                                  : `${member.prenom} ${member.nom} ne sera plus assigné(e) à ce dossier.`}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Annuler</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                onClick={() => {
+                                  let updated = currentAssignments.filter((x) => x.employeeId !== a.employeeId);
+                                  // If removed member was responsable, promote first remaining
+                                  if (isResp && updated.length > 0) {
+                                    updated = updated.map((x, i) => i === 0 ? { ...x, role: "responsable" as const } : x);
+                                  }
+                                  handleAssign(updated);
+                                  toast.success(`${member.prenom} ${member.nom} retiré(e) du dossier`);
+                                }}
+                              >
+                                Retirer
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     );
                   })}
@@ -307,27 +367,22 @@ export default function AdminDossierDetail() {
             <AssignModal
               open={assignModalOpen}
               onOpenChange={setAssignModalOpen}
-              currentAssignments={currentAssignments}
+              currentAssignments={assignModalMode === "add" ? [] : currentAssignments}
+              filterOut={assignModalMode === "add" ? currentAssignments.map((a) => a.employeeId) : []}
               onAssign={(newAssignments) => {
-                assignDossier(dossier.id, newAssignments);
-                // Generate notifications for each assigned member
-                newAssignments.forEach((a, i) => {
-                  const member = MOCK_TEAM_MEMBERS.find((m) => m.id === a.employeeId);
-                  const roleBadge = a.role === "responsable" ? "Responsable" : "Renfort";
-                  addNotification({
-                    id: `notif_assign_${Date.now()}_${i}`,
-                    type: "assignation",
-                    titre: "Nouveau dossier assigné",
-                    description: `${dossier.reference} — Vous êtes ${roleBadge}`,
-                    date: new Date().toISOString(),
-                    lu: false,
-                    lien: `/admin/dossiers/${dossier.id}`,
-                    destinataire: "employee",
-                    employeeId: a.employeeId,
-                    canal: "both",
-                  });
-                });
-                toast.success(`${newAssignments.length} membre(s) assigné(s) — Notifications envoyées (push + SMS)`);
+                const finalAssignments = assignModalMode === "add"
+                  ? [...currentAssignments.map((a) => ({ ...a, role: "renfort" as const })), ...newAssignments]
+                    .map((a, _i, arr) => {
+                      // Keep existing responsable if any, otherwise use new responsable
+                      const existingResp = currentAssignments.find((x) => x.role === "responsable");
+                      if (existingResp) {
+                        return { ...a, role: a.employeeId === existingResp.employeeId ? "responsable" as const : a.role };
+                      }
+                      return a;
+                    })
+                  : newAssignments;
+                handleAssign(finalAssignments);
+                toast.success(`${finalAssignments.length} membre(s) assigné(s) — Notifications envoyées (push + SMS)`);
                 toast.info(`📱 SMS de notification envoyé à ${newAssignments.length} membre(s)`);
               }}
             />
