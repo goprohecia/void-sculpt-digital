@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SuperAdminLayout } from "@/components/admin/SuperAdminLayout";
 import { useDemoPlan, SECTORS, ALL_MODULE_KEYS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { GENERIC_MODULE_LABELS, type SectorModuleOverride, type SectorModulesConfig } from "@/data/sectorModules";
+import { BulkOverrideDialog } from "@/components/admin/BulkOverrideDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
