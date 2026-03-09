@@ -1,30 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan: Timelines prédéfinies par secteur d'activité
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Objectif
-Ajouter des timelines prédéfinies pour chaque secteur d'activité dans l'éditeur de templates. Quand l'utilisateur est sur un secteur donné, il voit des suggestions de timelines adaptées à son métier qu'il peut appliquer en un clic.
+## Modifications
 
-### Changements
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-#### 1. Nouveau fichier `src/data/sectorTimelines.ts`
-Créer un dictionnaire `SECTOR_TIMELINE_PRESETS` qui mappe chaque clé de secteur à un tableau de timelines prédéfinies. Chaque preset contient un `name` et un tableau `steps`. Exemples :
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-- **Immobilier** : "Mandat de vente" (Demande reçue → Premier contact → Estimation du bien → Signature du mandat → Diffusion annonce → Visites → Offre d'achat → Signature du compromis → Délai de rétractation → Obtention du prêt → Signature chez le notaire → Remise des clés), "Location" (Demande reçue → Visite du bien → Constitution du dossier → Vérification du dossier → Signature du bail → État des lieux → Remise des clés)
-- **BTP** : étapes chantier (Appel d'offres → Étude technique → Devis → Signature contrat → Permis de construire → Gros œuvre → Second œuvre → Finitions → Réception chantier → Levée de réserves → Clôture)
-- **Coiffure** : parcours salon
-- **Photographe** : workflow shooting
-- **Consultant** : cycle mission
-- Et tous les autres secteurs (~20 secteurs, 1-2 timelines chacun)
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-On ajoutera aussi un preset "Générique" pour le template par défaut actuel.
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-#### 2. Modifier `src/components/admin/TimelineTemplateEditor.tsx`
-- Importer `SECTOR_TIMELINE_PRESETS` et `useDemoPlan` pour connaître le secteur actif
-- Ajouter une section **"Timelines suggérées pour votre secteur"** affichée au-dessus des templates existants (ou en dessous du bouton "Nouveau template")
-- Chaque suggestion est une Card compacte avec le nom, les étapes en badges, et un bouton **"Utiliser ce modèle"** qui appelle `createTemplate.mutate()` avec les steps préremplis
-- Si le secteur est "Générique", afficher le preset générique par défaut uniquement
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-### Aucune modification de base de données requise
-Les presets sont des données statiques côté client, utilisées uniquement pour pré-remplir la création de templates.
+## Details techniques
 
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
+
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.

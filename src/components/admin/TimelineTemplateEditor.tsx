@@ -1,24 +1,30 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, GripVertical, Pencil, Save, X, Clock, Sparkles } from "lucide-react";
+import { Plus, Trash2, Pencil, Save, Clock, Sparkles, Layers, ChevronDown, ChevronUp, ArrowDownToLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useTimelineTemplates, DEFAULT_TIMELINE_STEPS } from "@/hooks/use-timeline";
 import { useSubscription } from "@/hooks/use-subscription";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { staggerItem } from "@/components/admin/AdminPageTransition";
+import { useDemoPlan, SECTORS } from "@/contexts/DemoPlanContext";
+import { getPresetsForSector, getAllSectorPresets, type TimelinePreset } from "@/data/sectorTimelines";
 
 export function TimelineTemplateEditor() {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
   const { plan, isEnterprise } = useSubscription();
+  const { demoSector } = useDemoPlan();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [editSteps, setEditSteps] = useState<string[]>([]);
   const [newStepInput, setNewStepInput] = useState("");
   const [creating, setCreating] = useState(false);
+  const [showAllSectors, setShowAllSectors] = useState(false);
+  const [selectedBrowseSector, setSelectedBrowseSector] = useState<string>("all");
 
   if (!isEnterprise) {
     return (
@@ -43,6 +49,13 @@ export function TimelineTemplateEditor() {
     setEditingId(null);
     setEditName("");
     setEditSteps([...DEFAULT_TIMELINE_STEPS]);
+    setCreating(true);
+  };
+
+  const startFromPreset = (preset: TimelinePreset) => {
+    setEditingId(null);
+    setEditName(preset.name);
+    setEditSteps([...preset.steps]);
     setCreating(true);
   };
 
@@ -91,6 +104,16 @@ export function TimelineTemplateEditor() {
 
   const isEditing = creating || !!editingId;
 
+  // Presets for current sector
+  const currentSectorLabel = SECTORS.find((s) => s.key === demoSector)?.label || "Générique";
+  const sectorPresets = getPresetsForSector(demoSector);
+
+  // All sectors for browsing
+  const allSectorPresets = getAllSectorPresets();
+  const filteredSectorPresets = selectedBrowseSector === "all"
+    ? allSectorPresets
+    : allSectorPresets.filter((s) => s.sectorKey === selectedBrowseSector);
+
   return (
     <motion.div className="space-y-4" variants={staggerItem}>
       <div className="flex items-center justify-between">
@@ -107,6 +130,91 @@ export function TimelineTemplateEditor() {
           </Button>
         )}
       </div>
+
+      {/* Sector-specific suggestions */}
+      {!isEditing && sectorPresets.length > 0 && (
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="p-3 space-y-2">
+            <p className="text-xs font-semibold text-primary flex items-center gap-1.5">
+              <Layers className="h-3.5 w-3.5" />
+              Suggestions pour {currentSectorLabel}
+            </p>
+            <div className="space-y-2">
+              {sectorPresets.map((preset, idx) => (
+                <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-background/60 border border-border/30">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium mb-1">{preset.name}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {preset.steps.map((s, i) => (
+                        <Badge key={i} variant="outline" className="text-[8px] px-1.5 py-0">{i + 1}. {s}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="shrink-0 h-7 text-[10px] gap-1" onClick={() => startFromPreset(preset)}>
+                    <ArrowDownToLine className="h-3 w-3" /> Utiliser
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Browse all sectors */}
+      {!isEditing && (
+        <div>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="text-xs gap-1 text-muted-foreground w-full justify-start"
+            onClick={() => setShowAllSectors(!showAllSectors)}
+          >
+            {showAllSectors ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            Parcourir les modèles par secteur d'activité
+          </Button>
+
+          {showAllSectors && (
+            <div className="mt-2 space-y-2">
+              <Select value={selectedBrowseSector} onValueChange={setSelectedBrowseSector}>
+                <SelectTrigger className="h-8 text-xs">
+                  <SelectValue placeholder="Tous les secteurs" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les secteurs</SelectItem>
+                  {allSectorPresets.map((s) => (
+                    <SelectItem key={s.sectorKey} value={s.sectorKey}>{s.sectorLabel}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <div className="max-h-80 overflow-y-auto space-y-3 pr-1">
+                {filteredSectorPresets.map((sector) => (
+                  <div key={sector.sectorKey}>
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{sector.sectorLabel}</p>
+                    <div className="space-y-1.5">
+                      {sector.presets.map((preset, idx) => (
+                        <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-muted/30 border border-border/20">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-medium mb-1">{preset.name}</p>
+                            <div className="flex flex-wrap gap-0.5">
+                              {preset.steps.map((s, i) => (
+                                <Badge key={i} variant="outline" className="text-[8px] px-1 py-0">{s}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                          <Button size="sm" variant="outline" className="shrink-0 h-6 text-[10px] gap-1" onClick={() => startFromPreset(preset)}>
+                            <ArrowDownToLine className="h-2.5 w-2.5" /> Utiliser
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Existing templates */}
       {!isEditing && templates.map((t) => (
