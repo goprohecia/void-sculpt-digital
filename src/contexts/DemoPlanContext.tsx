@@ -32,6 +32,7 @@ export const DEFAULT_PLAN_PRICES: Record<SubscriptionPlan, number> = {
 
 // ── Sectors aligned with landing page sector pages ──
 export const SECTORS = [
+  { key: "auto-ecole", label: "Auto-École", icon: "🚗" },
   { key: "conciergerie", label: "Conciergerie", icon: "🏠" },
   { key: "btp", label: "BTP", icon: "🏗️" },
   { key: "boutique", label: "Boutique", icon: "🛍️" },
