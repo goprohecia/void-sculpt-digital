@@ -179,10 +179,10 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                     </div>
                     <div className="space-y-1">
                       <label className="text-xs text-muted-foreground">Tag client</label>
-                      <Select value={filterTag} onValueChange={setFilterTag}>
+                      <Select value={filterTag || "__all__"} onValueChange={(v) => setFilterTag(v === "__all__" ? "" : v)}>
                         <SelectTrigger className="h-8 w-36 text-sm"><SelectValue placeholder="Tous" /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Tous</SelectItem>
+                          <SelectItem value="__all__">Tous</SelectItem>
                           {tags.map((t: any) => <SelectItem key={t.id} value={t.id}>{t.nom}</SelectItem>)}
                         </SelectContent>
                       </Select>

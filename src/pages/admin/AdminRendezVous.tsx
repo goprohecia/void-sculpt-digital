@@ -224,10 +224,10 @@ export default function AdminRendezVous() {
             </div>
             <div className="space-y-2">
               <Label>Client</Label>
-              <Select value={evtForm.client_id} onValueChange={(v) => setEvtForm((f) => ({ ...f, client_id: v }))}>
+              <Select value={evtForm.client_id || "__none__"} onValueChange={(v) => setEvtForm((f) => ({ ...f, client_id: v === "__none__" ? "" : v }))}>
                 <SelectTrigger><SelectValue placeholder="Aucun" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Aucun</SelectItem>
+                  <SelectItem value="__none__">Aucun</SelectItem>
                   {clients.map((c) => <SelectItem key={c.id} value={c.id}>{c.entreprise || `${c.prenom} ${c.nom}`}</SelectItem>)}
                 </SelectContent>
               </Select>
