@@ -19,6 +19,8 @@ function mapRow(row: any): Devis {
     signatureDataUrl: row.signature_url ?? undefined,
     signataireNom: row.signataire_nom ?? undefined,
     dateSignature: row.date_signature?.split("T")[0] ?? undefined,
+    serviceCategoryId: row.service_category_id ?? undefined,
+    description: row.description ?? "",
   };
 }
 
