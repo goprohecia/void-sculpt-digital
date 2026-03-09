@@ -32,6 +32,15 @@ const HISTORIQUE = [
 export default function AdminRapports() {
   const [periode, setPeriode] = useState("mois");
   const [format, setFormat] = useState("pdf");
+  const [customDate, setCustomDate] = useState<Date | undefined>();
+  const [rangeFrom, setRangeFrom] = useState<Date | undefined>();
+  const [rangeTo, setRangeTo] = useState<Date | undefined>();
+
+  const periodeLabel = () => {
+    if (periode === "date" && customDate) return fmtDate(customDate, "dd/MM/yyyy");
+    if (periode === "intervalle" && rangeFrom && rangeTo) return `${fmtDate(rangeFrom, "dd/MM")} → ${fmtDate(rangeTo, "dd/MM/yyyy")}`;
+    return undefined;
+  };
 
   const handleGenerate = (rapportId: string) => {
     toast.success(`Rapport "${RAPPORTS.find((r) => r.id === rapportId)?.titre}" généré en ${format.toUpperCase()}`);
