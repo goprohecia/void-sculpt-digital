@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Pencil, Save, Clock, Sparkles, Layers, ChevronDown, ChevronUp, ArrowDownToLine } from "lucide-react";
+import { Plus, Trash2, Pencil, Save, Clock, Sparkles, Layers, ChevronDown, ChevronUp, ArrowDownToLine, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,7 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { staggerItem } from "@/components/admin/AdminPageTransition";
 import { useDemoPlan, SECTORS } from "@/contexts/DemoPlanContext";
-import { getPresetsForSector, getAllSectorPresets, type TimelinePreset } from "@/data/sectorTimelines";
+import { getPresetsForSector, getAllSectorPresets, getAllCategories, PRESET_CATEGORY_LABELS, type TimelinePreset, type PresetCategory } from "@/data/sectorTimelines";
 
 export function TimelineTemplateEditor() {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
@@ -25,6 +25,7 @@ export function TimelineTemplateEditor() {
   const [creating, setCreating] = useState(false);
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [selectedBrowseSector, setSelectedBrowseSector] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   if (!isEnterprise) {
     return (
@@ -110,9 +111,21 @@ export function TimelineTemplateEditor() {
 
   // All sectors for browsing
   const allSectorPresets = getAllSectorPresets();
-  const filteredSectorPresets = selectedBrowseSector === "all"
-    ? allSectorPresets
-    : allSectorPresets.filter((s) => s.sectorKey === selectedBrowseSector);
+  const allCategories = getAllCategories();
+
+  // Apply both sector and category filters
+  const filteredSectorPresets = allSectorPresets
+    .filter((s) => selectedBrowseSector === "all" || s.sectorKey === selectedBrowseSector)
+    .map((s) => ({
+      ...s,
+      presets: selectedCategory === "all" ? s.presets : s.presets.filter((p) => p.category === selectedCategory),
+    }))
+    .filter((s) => s.presets.length > 0);
+
+  // Also filter sector suggestions by category
+  const filteredSectorSuggestions = selectedCategory === "all"
+    ? sectorPresets
+    : sectorPresets.filter((p) => p.category === selectedCategory);
 
   return (
     <motion.div className="space-y-4" variants={staggerItem}>
@@ -131,8 +144,30 @@ export function TimelineTemplateEditor() {
         )}
       </div>
 
+      {/* Category filter */}
+      {!isEditing && (
+        <div className="flex items-center gap-2 flex-wrap">
+          <Filter className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+          <button
+            onClick={() => setSelectedCategory("all")}
+            className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/50"}`}
+          >
+            Tous
+          </button>
+          {allCategories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat === selectedCategory ? "all" : cat)}
+              className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/50"}`}
+            >
+              {PRESET_CATEGORY_LABELS[cat]}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Sector-specific suggestions */}
-      {!isEditing && sectorPresets.length > 0 && (
+      {!isEditing && filteredSectorSuggestions.length > 0 && (
         <Card className="border-primary/20 bg-primary/5">
           <CardContent className="p-3 space-y-2">
             <p className="text-xs font-semibold text-primary flex items-center gap-1.5">
@@ -140,10 +175,13 @@ export function TimelineTemplateEditor() {
               Suggestions pour {currentSectorLabel}
             </p>
             <div className="space-y-2">
-              {sectorPresets.map((preset, idx) => (
+              {filteredSectorSuggestions.map((preset, idx) => (
                 <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-background/60 border border-border/30">
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium mb-1">{preset.name}</p>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <p className="text-xs font-medium">{preset.name}</p>
+                      <Badge variant="secondary" className="text-[8px] px-1.5 py-0">{PRESET_CATEGORY_LABELS[preset.category]}</Badge>
+                    </div>
                     <div className="flex flex-wrap gap-1">
                       {preset.steps.map((s, i) => (
                         <Badge key={i} variant="outline" className="text-[8px] px-1.5 py-0">{i + 1}. {s}</Badge>
@@ -188,6 +226,9 @@ export function TimelineTemplateEditor() {
               </Select>
 
               <div className="max-h-80 overflow-y-auto space-y-3 pr-1">
+                {filteredSectorPresets.length === 0 && (
+                  <p className="text-xs text-muted-foreground text-center py-4">Aucun modèle pour cette combinaison de filtres</p>
+                )}
                 {filteredSectorPresets.map((sector) => (
                   <div key={sector.sectorKey}>
                     <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{sector.sectorLabel}</p>
@@ -195,7 +236,10 @@ export function TimelineTemplateEditor() {
                       {sector.presets.map((preset, idx) => (
                         <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-muted/30 border border-border/20">
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium mb-1">{preset.name}</p>
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <p className="text-xs font-medium">{preset.name}</p>
+                              <Badge variant="secondary" className="text-[8px] px-1 py-0">{PRESET_CATEGORY_LABELS[preset.category]}</Badge>
+                            </div>
                             <div className="flex flex-wrap gap-0.5">
                               {preset.steps.map((s, i) => (
                                 <Badge key={i} variant="outline" className="text-[8px] px-1 py-0">{s}</Badge>
