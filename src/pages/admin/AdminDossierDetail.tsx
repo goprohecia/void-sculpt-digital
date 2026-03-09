@@ -251,9 +251,8 @@ export default function AdminDossierDetail() {
               onAssign={(newAssignments) => {
                 assignDossier(dossier.id, newAssignments);
                 // Generate notifications for each assigned member
-                const MOCK_TEAM = (await import("@/data/mockData")).MOCK_TEAM_MEMBERS;
                 newAssignments.forEach((a, i) => {
-                  const member = MOCK_TEAM.find((m: any) => m.id === a.employeeId);
+                  const member = MOCK_TEAM_MEMBERS.find((m) => m.id === a.employeeId);
                   const roleBadge = a.role === "responsable" ? "Responsable" : "Renfort";
                   addNotification({
                     id: `notif_assign_${Date.now()}_${i}`,
