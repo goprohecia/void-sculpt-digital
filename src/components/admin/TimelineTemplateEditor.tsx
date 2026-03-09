@@ -25,6 +25,7 @@ export function TimelineTemplateEditor() {
   const [creating, setCreating] = useState(false);
   const [showAllSectors, setShowAllSectors] = useState(false);
   const [selectedBrowseSector, setSelectedBrowseSector] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   if (!isEnterprise) {
     return (
