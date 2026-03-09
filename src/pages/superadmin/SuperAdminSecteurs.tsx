@@ -100,6 +100,8 @@ export default function SuperAdminSecteurs() {
   const [selectedSector, setSelectedSector] = useState<string>(SECTORS[0].key);
   const [localOverrides, setLocalOverrides] = useState<Record<string, SectorModulesConfig>>(() => JSON.parse(JSON.stringify(sectorModuleOverrides)));
   const [editingModule, setEditingModule] = useState<string | null>(null);
+  const [showResetDialog, setShowResetDialog] = useState(false);
+  const [resetModuleKey, setResetModuleKey] = useState<string>(ALL_MODULE_KEYS[0]);
 
   const handleBulkApply = (
     sectors: string[],
