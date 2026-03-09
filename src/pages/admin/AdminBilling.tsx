@@ -336,8 +336,10 @@ export default function AdminBilling() {
                               </button>
                             </div>
                           </td>
-                        </tr>
-                      ))}
+                         </tr>
+                       );
+                       })}
+
                     </tbody>
                   </table>
                 </div>
