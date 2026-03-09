@@ -30,6 +30,7 @@ import {
   Wrench,
   ClipboardList,
   ChevronDown,
+  Truck,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
