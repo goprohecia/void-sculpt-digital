@@ -349,7 +349,7 @@ export default function AdminDashboard() {
               <div className="glass-card p-5">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-sm font-semibold flex items-center gap-2">
-                    <Activity className="h-4 w-4 text-blue-400" />
+                    <Activity className="h-4 w-4 text-primary" />
                     Activité récente
                   </h3>
                   <span className="text-xs text-muted-foreground">{activites.length}</span>
