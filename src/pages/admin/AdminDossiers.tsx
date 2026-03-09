@@ -6,10 +6,15 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import { useCahiers } from "@/hooks/use-cahiers";
 import { useClients } from "@/hooks/use-clients";
+import { useDemoData } from "@/contexts/DemoDataContext";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { isAssignationEnabled } from "@/data/sectorModules";
+import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import type { DossierStatus } from "@/data/mockData";
 import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
 import { AIContextButton } from "@/components/admin/AIContextButton";
