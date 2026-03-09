@@ -302,6 +302,37 @@ export default function AdminTemps() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Edit Entry Dialog */}
+        <Dialog open={!!editEntry} onOpenChange={(v) => !v && setEditEntry(null)}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Modifier l'entrée</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <div className="space-y-1.5">
+                <Label>Description</Label>
+                <Input value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Durée</Label>
+                <Input value={editDuree} onChange={(e) => setEditDuree(e.target.value)} placeholder="Ex : 2h30" />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Client</Label>
+                <Input value={editClient} onChange={(e) => setEditClient(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label>Dossier</Label>
+                <Input value={editDossier} onChange={(e) => setEditDossier(e.target.value)} placeholder="Ex : DOS-042" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditEntry(null)}>Annuler</Button>
+              <Button onClick={handleSaveEdit}>Enregistrer</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </AdminLayout>
   );
