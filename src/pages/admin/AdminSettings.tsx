@@ -89,10 +89,10 @@ function CustomSpacesManager() {
           <div className="space-y-2">
             <Label>Modules activés</Label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {AVAILABLE_MODULES_FOR_SPACES.map((mod) => (
-                <label key={mod.key} className="flex items-center gap-2 text-sm cursor-pointer">
-                  <Checkbox checked={newModules.includes(mod.key)} onCheckedChange={() => toggleModule(mod.key)} />
-                  {mod.label}
+              {AVAILABLE_MODULE_KEYS_FOR_SPACES.map((key) => (
+                <label key={key} className="flex items-center gap-2 text-sm cursor-pointer">
+                  <Checkbox checked={newModules.includes(key)} onCheckedChange={() => toggleModule(key)} />
+                  {getModuleLabel(key)}
                 </label>
               ))}
             </div>
