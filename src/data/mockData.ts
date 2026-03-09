@@ -43,6 +43,37 @@ export interface TeamMember {
   prenom: string;
   poste: string;
   statut: "disponible" | "indisponible";
+  couleur: string;
+}
+
+// ---- DISPONIBILITÉS ----
+export interface PlageHoraire {
+  debut: string;
+  fin: string;
+}
+
+export interface DisponibilitesHebdo {
+  [jour: number]: PlageHoraire[];
+}
+
+export interface ExceptionDispo {
+  id: string;
+  date: string;
+  disponible: boolean;
+  plages?: PlageHoraire[];
+}
+
+export interface Conge {
+  id: string;
+  debut: string;
+  fin: string;
+}
+
+export interface ProDisponibilites {
+  employeeId: string;
+  horaires: DisponibilitesHebdo;
+  exceptions: ExceptionDispo[];
+  conges: Conge[];
 }
 
 export interface Dossier {
