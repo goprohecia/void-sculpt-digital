@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Pencil, Save, Clock, Sparkles, Layers, ChevronDown, ChevronUp, ArrowDownToLine } from "lucide-react";
+import { Plus, Trash2, Pencil, Save, Clock, Sparkles, Layers, ChevronDown, ChevronUp, ArrowDownToLine, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
