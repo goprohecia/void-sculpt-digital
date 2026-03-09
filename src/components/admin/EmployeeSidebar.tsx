@@ -57,7 +57,9 @@ export function EmployeeSidebar() {
     { title: "Mon profil", url: "/employee/profil", icon: UserCircle, moduleKey: "profil" },
   ];
 
-  const navItems = allNavItems.filter((item) => employeeVisibleModules.includes(item.moduleKey));
+  const navItems = allNavItems
+    .filter((item) => employeeVisibleModules.includes(item.moduleKey))
+    .filter((item) => !isModuleHidden(item.moduleKey));
 
   const isActive = (url: string) => {
     if (url === "/employee") return location.pathname === "/employee";
