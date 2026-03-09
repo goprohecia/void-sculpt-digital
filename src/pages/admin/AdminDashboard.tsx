@@ -118,13 +118,13 @@ export default function AdminDashboard() {
               <DashboardKPI title="Chiffre d'affaires" value={`${(caFevrier / 1000).toFixed(1)}k €`} icon={Euro} iconColor="emerald" trend={hasTrendData ? { value: 23.5, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Dossiers actifs" value={dossiersActifs} icon={FolderOpen} iconColor="blue" trend={hasTrendData ? { value: 12, label: "vs jan." } : undefined} />
+              <DashboardKPI title="Dossiers actifs" value={dossiersActifs} icon={FolderOpen} iconColor="green" trend={hasTrendData ? { value: 12, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux clients" value={nouveauxClients} icon={Users} iconColor="violet" trend={hasTrendData ? { value: 50, label: "vs jan." } : undefined} />
+              <DashboardKPI title="Nouveaux clients" value={nouveauxClients} icon={Users} iconColor="teal" trend={hasTrendData ? { value: 50, label: "vs jan." } : undefined} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Factures en attente" value={facturesEnAttente} icon={Receipt} iconColor="amber" />
+              <DashboardKPI title="Factures en attente" value={facturesEnAttente} icon={Receipt} iconColor="mint" />
             </motion.div>
           </motion.div>
 
