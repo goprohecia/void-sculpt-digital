@@ -114,6 +114,46 @@ export default function AdminPipeline() {
   const handleDragEnd = () => {
     setDraggedDeal(null);
     setDragOverEtape(null);
+    // Reset drag flag after a tick so click handler can check it
+    setTimeout(() => { didDrag.current = false; }, 100);
+  };
+
+  const openEditDeal = (deal: Deal) => {
+    if (didDrag.current) return;
+    setEditDeal(deal);
+    setEditForm({
+      nom: deal.nom,
+      entreprise: deal.entreprise,
+      montant: String(deal.montant),
+      probabilite: String(deal.probabilite),
+      etape: deal.etape,
+      contact: deal.contact,
+    });
+  };
+
+  const handleUpdateDeal = () => {
+    if (!editDeal || !editForm.nom.trim() || !editForm.entreprise.trim() || !editForm.montant) {
+      toast.error("Veuillez remplir tous les champs obligatoires");
+      return;
+    }
+    setDeals((prev) =>
+      prev.map((d) =>
+        d.id === editDeal.id
+          ? { ...d, nom: editForm.nom.trim(), entreprise: editForm.entreprise.trim(), montant: parseFloat(editForm.montant), probabilite: parseInt(editForm.probabilite), etape: editForm.etape, contact: editForm.contact.trim() || "Non renseigné" }
+          : d
+      )
+    );
+    toast.success(`Opportunité "${editForm.nom}" mise à jour`);
+    setEditDeal(null);
+  };
+
+  const handleDeleteDeal = () => {
+    if (!deleteConfirmId) return;
+    const deal = deals.find((d) => d.id === deleteConfirmId);
+    setDeals((prev) => prev.filter((d) => d.id !== deleteConfirmId));
+    toast.success(`Opportunité "${deal?.nom}" supprimée`);
+    setDeleteConfirmId(null);
+    setEditDeal(null);
   };
 
   const handleCreateDeal = () => {
