@@ -382,12 +382,22 @@ export function getSectorOverrides(sectorKey: string): SectorModulesConfig {
 }
 
 // ── Assignation config per sector ──
-// Sectors where the professional works solo (no team) have assignation disabled.
-const SOLO_SECTORS = ["photographe", "coach-sportif", "community-manager", "consultant", "designer", "dj-animateur", "formateur"];
+// Only sectors with team structures have assignation enabled.
+// Métiers concernés : Garage, BTP/Artisan, Conciergerie, Agence Immobilière,
+// Salle de Sport, Expert-Comptable, Cabinet d'Avocats, Magasin, Auto-École
+const ASSIGNATION_SECTORS = [
+  "garages",        // Garage
+  "btp",            // BTP / Artisan
+  "conciergerie",   // Conciergerie
+  "immobilier",     // Agence Immobilière
+  "coach-sportif",  // Salle de Sport
+  "cabinets",       // Expert-Comptable / Cabinet d'Avocats
+  "boutique",       // Magasin / Auto-École
+];
 
 export function isAssignationEnabled(sectorKey?: string | null): boolean {
-  if (!sectorKey) return true; // default: enabled
-  return !SOLO_SECTORS.includes(sectorKey);
+  if (!sectorKey) return true; // default: enabled (hors contexte secteur)
+  return ASSIGNATION_SECTORS.includes(sectorKey);
 }
 
 // ── Booking config per sector ──
