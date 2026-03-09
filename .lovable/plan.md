@@ -1,42 +1,29 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan : Ajouter un champ "Service" aux devis et factures
 
-## Modifications
+### Contexte
+Les formulaires de création de devis et factures n'ont pas de champ pour indiquer quel service/produit est vendu. L'utilisateur veut pouvoir sélectionner parmi les catégories de services créées dans les paramètres, et ajouter une description détaillée de la prestation. Cela permettra ensuite de quantifier les ventes par service dans l'analyse.
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+### Modifications
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+**1. Migration DB : ajouter colonnes aux tables `devis` et `factures`**
+- `service_category_id` (uuid, nullable, FK vers `service_categories`)
+- `description` (text, nullable, défaut `''`)
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+**2. Interfaces TypeScript (`mockData.ts`)**
+- Ajouter `serviceCategoryId?: string` et `description?: string` aux interfaces `Facture` et `Devis`
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+**3. Formulaires de création (`AdminBilling.tsx`)**
+- Importer `useServiceCategories` pour récupérer les catégories dynamiques
+- Ajouter un Select "Service / Type de prestation" dans les deux dialogs (facture + devis) avec les catégories définies par l'entreprise
+- Ajouter un Textarea "Description / Détail de la prestation" dans les deux dialogs
+- Transmettre ces champs lors de l'insertion
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+**4. Hooks `use-factures.ts` et `use-devis.ts`**
+- Mapper les nouveaux champs `service_category_id` et `description` dans `mapRow()`
+- Les inclure dans les insertions
 
-## Details techniques
+**5. Affichage dans les tableaux**
+- Afficher le nom du service et la description (tronquée) dans les listes de factures et devis pour faciliter l'identification
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
-
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
