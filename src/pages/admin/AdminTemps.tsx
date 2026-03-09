@@ -136,6 +136,26 @@ export default function AdminTemps() {
     toast.info("Temps non enregistré");
   };
 
+  const handleOpenEdit = (entry: TimeEntry) => {
+    setEditEntry(entry);
+    setEditDescription(entry.description);
+    setEditDuree(entry.duree);
+    setEditClient(entry.client);
+    setEditDossier(entry.dossier);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editEntry) return;
+    setEntries((prev) => prev.map((e) => e.id === editEntry.id ? { ...e, description: editDescription, duree: editDuree, client: editClient, dossier: editDossier } : e));
+    toast.success("Entrée modifiée");
+    setEditEntry(null);
+  };
+
+  const handleDeleteEntry = (id: string) => {
+    setEntries((prev) => prev.filter((e) => e.id !== id));
+    toast.success("Entrée supprimée");
+  };
+
   const selectedDossier = dossiers.find((d) => d.id === saveDossierId);
 
   return (
