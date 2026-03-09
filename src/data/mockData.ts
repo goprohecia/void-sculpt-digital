@@ -29,6 +29,22 @@ export interface Client {
   nombreDossiers: number;
 }
 
+export type AssignmentRole = "responsable" | "renfort";
+
+export interface DossierAssignment {
+  employeeId: string;
+  role: AssignmentRole;
+  dateAssignation: string;
+}
+
+export interface TeamMember {
+  id: string;
+  nom: string;
+  prenom: string;
+  poste: string;
+  statut: "disponible" | "indisponible";
+}
+
 export interface Dossier {
   id: string;
   reference: string;
@@ -42,6 +58,7 @@ export interface Dossier {
   previewUrl?: string;
   demandeId?: string;
   rdvEffectue?: boolean;
+  assignments?: DossierAssignment[];
 }
 
 export interface Facture {

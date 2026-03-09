@@ -380,3 +380,12 @@ export function isModuleHidden(moduleKey: string, sectorKey?: string | null): bo
 export function getSectorOverrides(sectorKey: string): SectorModulesConfig {
   return SECTOR_MODULE_OVERRIDES[sectorKey] || {};
 }
+
+// ── Assignation config per sector ──
+// Sectors where the professional works solo (no team) have assignation disabled.
+const SOLO_SECTORS = ["photographe", "coach-sportif", "community-manager", "consultant", "designer", "dj-animateur", "formateur"];
+
+export function isAssignationEnabled(sectorKey?: string | null): boolean {
+  if (!sectorKey) return true; // default: enabled
+  return !SOLO_SECTORS.includes(sectorKey);
+}
