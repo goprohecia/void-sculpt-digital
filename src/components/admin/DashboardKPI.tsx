@@ -61,8 +61,8 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={cn(
-        "glass-card p-4 sm:p-6 relative overflow-hidden cursor-default",
-        "hover:shadow-[0_8px_30px_hsl(var(--primary)/0.15)] hover:border-primary/30 transition-[box-shadow,border-color] duration-300",
+        "bg-card border border-border rounded-2xl p-4 sm:p-6 relative overflow-hidden cursor-default shadow-sm",
+        "hover:shadow-md hover:border-primary/30 transition-[box-shadow,border-color] duration-300",
         className
       )}
     >
