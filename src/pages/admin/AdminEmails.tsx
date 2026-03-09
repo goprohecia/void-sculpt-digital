@@ -323,8 +323,8 @@ export default function AdminEmails() {
       </div>
     ) : null;
 
-  // Type selector with custom type creation
-  const TypeSelector = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
+  // Type selector rendered inline (not as a component to avoid focus loss)
+  const renderTypeSelector = (value: string, onChange: (v: string) => void) => (
     <div className="space-y-2">
       <Label>Type</Label>
       <Select value={value} onValueChange={onChange}>
