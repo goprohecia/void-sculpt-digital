@@ -102,6 +102,7 @@ export default function AdminEmployees() {
   const openModulesDialog = (emp: Employee) => {
     setSelectedEmp(emp);
     setSelectedModules([...(emp.acces_modules || [])]);
+    setCapaciteMax("");
     setModulesOpen(true);
   };
 
