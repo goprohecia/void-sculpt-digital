@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
-import { getModuleLabel } from "@/data/sectorModules";
 
 type TabType = "clients" | "salaries";
 
