@@ -1,42 +1,66 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Audit — Module 04 : Verrou de créneau anti double-réservation
 
-## Modifications
+### Constat actuel
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+Le `BookingStepSlot` définit 3 états statiques : `disponible`, `indisponible`, `verrouille`. Mais :
+- **"verrouillé"** est purement décoratif (généré aléatoirement au mount), sans logique dynamique
+- **Aucun countdown** n'existe
+- **Pas d'état "réservé"** (confirmé avec ✓)
+- L'état des slots est local à `BookingStepSlot` (constante `MOCK_SLOTS`), donc impossible de le modifier depuis `BookingPage` lors de la confirmation
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+### Plan d'implémentation
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+#### 1. Remonter l'état des slots dans `BookingPage.tsx`
+- Déplacer `generateSlots()` et l'état `slots` dans `BookingPage` via `useState`
+- Passer `slots` + `setSlots` en props à `BookingStepSlot`
+- Permettre la mutation des slots (verrouillage, libération, confirmation)
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+#### 2. Ajouter l'état `"reserve"` au type `SlotStatus`
+- `SlotStatus = "disponible" | "indisponible" | "verrouille" | "reserve"`
+- Dans la grille : fond foncé (primary) + icône `Check`, non cliquable
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+#### 3. Logique de verrouillage au clic (`BookingPage.tsx`)
+- Quand l'utilisateur sélectionne un créneau disponible :
+  - Passer son status à `"verrouille"` dans le state
+  - Enregistrer `lockExpiry = Date.now() + 10 * 60 * 1000`
+  - Démarrer le countdown
+- Si l'utilisateur change de créneau : libérer l'ancien (remettre `"disponible"`), verrouiller le nouveau
 
-## Details techniques
+#### 4. Composant `BookingCountdown.tsx` — Timer persistant
+- Affiché en sticky/fixed en haut de la zone de contenu, **visible sur toutes les étapes** (slot, form, recap)
+- Affiche "Votre créneau est réservé pendant MM:SS" avec barre de progression
+- Masqué sur l'étape confirmation
+- Si timer = 0 :
+  - Remettre le slot en `"disponible"`
+  - Réinitialiser `selectedSlot` à `null`
+  - Revenir à l'étape 1
+  - Afficher toast "Votre créneau n'est plus réservé, veuillez en sélectionner un autre"
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+#### 5. Confirmation → état `"reserve"`
+- Quand l'utilisateur confirme (étape recap → confirmation) :
+  - Passer le slot à `"reserve"` dans le state
+  - Annuler le timer
+  - Masquer le countdown
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+#### 6. Mise à jour visuelle de la grille
+- **Disponible** : fond emerald clair, cliquable (inchangé)
+- **Verrouillé** : fond amber + texte "En cours..." + non cliquable (modifié — remplacer l'icône cadenas par le texte)
+- **Réservé** : fond primary foncé + icône ✓ + non cliquable (nouveau)
+- **Indisponible** : inchangé (grisé, barré)
+- Mettre à jour la légende avec le 4e état
+
+### Fichiers à créer
+
+| Fichier | Description |
+|---|---|
+| `src/components/booking/BookingCountdown.tsx` | Barre countdown sticky avec timer MM:SS + barre de progression |
+
+### Fichiers à modifier
+
+| Fichier | Modification |
+|---|---|
+| `src/components/booking/BookingStepSlot.tsx` | Ajouter état `"reserve"` (visuel ✓), recevoir `slots` en props au lieu de constante locale, texte "En cours..." pour verrouillé |
+| `src/pages/public/BookingPage.tsx` | Gérer état slots, logique verrouillage/libération, timer, passer countdown en render persistant |
+
