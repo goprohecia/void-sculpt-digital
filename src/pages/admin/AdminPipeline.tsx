@@ -225,6 +225,7 @@ export default function AdminPipeline() {
     };
 
     setDeals((prev) => [deal, ...prev]);
+    addHistory(deal.id, "Création", `Opportunité créée — ${deal.entreprise}, ${deal.montant.toLocaleString("fr-FR")}€`);
     setDialogOpen(false);
     setNewDeal({ nom: "", entreprise: "", montant: "", probabilite: "25", etape: "prospect", contact: "" });
     toast.success(`Opportunité "${deal.nom}" créée`);
