@@ -403,17 +403,30 @@ export default function AdminSettings() {
   const [changingPassword, setChangingPassword] = useState(false);
   const [showPasswords, setShowPasswords] = useState({ new: false, confirm: false });
 
-  const handleSave = (section: string) => {
+  const handleSave = async (section: string) => {
     setSaving(true);
-    // Persist white label for WL sections
-    const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé"];
-    if (wlSections.includes(section)) {
-      updateWhiteLabel(whiteLabel);
-    }
-    setTimeout(() => {
-      setSaving(false);
+    try {
+      // Persist white label for WL sections
+      const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé"];
+      if (wlSections.includes(section)) {
+        updateWhiteLabel(whiteLabel);
+      }
+      // Persist business_name to app_settings when saving Entreprise
+      if (section === "Entreprise") {
+        const { error } = await (supabase as any)
+          .from("app_settings")
+          .upsert(
+            { key: "business_name", value: JSON.stringify(company.nom), updated_at: new Date().toISOString() },
+            { onConflict: "key" }
+          );
+        if (error) throw error;
+      }
       toast.success(`${section} mis à jour avec succès`);
-    }, 500);
+    } catch (e: any) {
+      toast.error(e.message || "Erreur lors de la sauvegarde");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleChangePassword = async () => {
