@@ -30,6 +30,7 @@ import Formateur from "@/pages/secteurs/Formateur";
 import Boutique from "@/pages/secteurs/Boutique";
 import Traiteur from "@/pages/secteurs/Traiteur";
 import DjAnimateur from "@/pages/secteurs/DjAnimateur";
+import AutoEcole from "@/pages/secteurs/AutoEcole";
 
 // Public pages (booking)
 import BookingPage from "@/pages/public/BookingPage";
