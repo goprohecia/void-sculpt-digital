@@ -15,7 +15,7 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
 import { MOCK_TEAM_MEMBERS, type DossierAssignment } from "@/data/mockData";
 import { AssignModal } from "@/components/admin/AssignModal";
-import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles, Users, Crown, Shield } from "lucide-react";
+import { ArrowLeft, FolderOpen, ExternalLink, Copy, Check, Link2, Pencil, Eye, Monitor, Smartphone, Tablet, FileText, ShieldCheck, CalendarDays, Sparkles, Users, Crown, Shield, Ban } from "lucide-react";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
