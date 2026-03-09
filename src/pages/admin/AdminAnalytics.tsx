@@ -144,17 +144,14 @@ export default function AdminAnalytics() {
     { name: "Refusées", value: demandesStats.refusees, color: "hsl(0, 84%, 60%)" },
   ], [demandesStats]);
 
-  // Ventes par type de projet par mois (from dossiers)
-  const CATS = ["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autres"] as const;
-  const categorize = useCallback((type: string): string => {
-    const t = type.toLowerCase();
-    if (t.includes("site web") || t.includes("vitrine") || t.includes("application web") || t.includes("landing")) return "Site web";
-    if (t.includes("mobile")) return "App mobile";
-    if (t.includes("commerce")) return "E-commerce";
-    if (t.includes("back-office") || t.includes("backoffice")) return "Back-office";
-    if (t.includes("360")) return "360";
-    return "Autres";
-  }, []);
+  // Ventes par type de projet par mois (from dossiers) — dynamic categories
+  const { categories: serviceCategories, categorize } = useServiceCategories();
+  const CATS = useMemo(() => serviceCategories.map((c) => c.nom), [serviceCategories]);
+  const catColors = useMemo(() => {
+    const map: Record<string, string> = {};
+    serviceCategories.forEach((c) => { map[c.nom] = c.couleur; });
+    return map;
+  }, [serviceCategories]);
 
   const moisMap: Record<string, string> = useMemo(() => ({
     "Jan": "01", "Fév": "02", "Mar": "03", "Avr": "04",
