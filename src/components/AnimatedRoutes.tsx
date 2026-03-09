@@ -139,6 +139,7 @@ export function AnimatedRoutes() {
         <Route path="/secteurs/boutique" element={<Boutique />} />
         <Route path="/secteurs/traiteur" element={<Traiteur />} />
         <Route path="/secteurs/dj-animateur" element={<DjAnimateur />} />
+        <Route path="/secteurs/auto-ecole" element={<AutoEcole />} />
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
