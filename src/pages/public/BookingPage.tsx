@@ -6,10 +6,8 @@ import { BookingStepForm, type BookingFormField } from "@/components/booking/Boo
 import { BookingStepRecap } from "@/components/booking/BookingStepRecap";
 import { BookingStepConfirmation } from "@/components/booking/BookingStepConfirmation";
 
-// Mock booking config
 const MOCK_CONFIG = {
   businessName: "Mon Entreprise",
-  businessLogo: "",
   slug: "mon-entreprise",
   acompteType: "fixe" as const,
   acompteMontant: 30,
@@ -26,154 +24,89 @@ export default function BookingPage() {
   const config = MOCK_CONFIG;
   const skipForm = !config.formulaireEnabled;
 
-  const [currentStep, setCurrentStep] = useState(1);
+  // Steps: always 1-based. If skipForm, we use steps [1, 2, 3] mapped to [slot, recap, confirm]
+  // Otherwise [1, 2, 3, 4] mapped to [slot, form, recap, confirm]
+  const [step, setStep] = useState(1);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [formData, setFormData] = useState<Record<string, string>>({});
 
-  const totalSteps = skipForm ? 3 : 4;
+  // Stepper display step (for the visual stepper)
+  const stepperStep = step;
 
-  const goNext = () => {
-    if (currentStep === 1 && skipForm) {
-      setCurrentStep(3); // skip to recap (mapped as step 3 in stepper)
-    } else {
-      setCurrentStep(s => Math.min(s + 1, totalSteps));
-    }
-  };
-
-  const goBack = () => {
-    if (currentStep === 3 && skipForm) {
-      setCurrentStep(1);
-    } else {
-      setCurrentStep(s => Math.max(s - 1, 1));
-    }
-  };
-
-  // Map logical steps when form is skipped
-  const renderStep = () => {
-    if (currentStep === 1) {
+  const getContent = () => {
+    if (step === 1) {
       return (
         <BookingStepSlot
           selectedSlot={selectedSlot}
           onSelect={setSelectedSlot}
-          onNext={goNext}
+          onNext={() => setStep(2)}
         />
       );
     }
-    if (currentStep === 2 && !skipForm) {
+
+    if (step === 2) {
+      if (skipForm) {
+        // Step 2 = recap when form is skipped
+        return selectedSlot ? (
+          <BookingStepRecap
+            slot={selectedSlot}
+            formData={formData}
+            formFields={config.champsFormulaire}
+            showForm={false}
+            acompteType={config.acompteType}
+            acompteMontant={config.acompteMontant}
+            prixPrestation={config.prixPrestation}
+            onConfirm={() => setStep(3)}
+            onBack={() => setStep(1)}
+          />
+        ) : null;
+      }
+      // Step 2 = form
       return (
         <BookingStepForm
           fields={config.champsFormulaire}
           formData={formData}
           onChange={(id, val) => setFormData(prev => ({ ...prev, [id]: val }))}
-          onNext={goNext}
-          onBack={goBack}
+          onNext={() => setStep(3)}
+          onBack={() => setStep(1)}
         />
       );
     }
-    if ((currentStep === 3 && !skipForm) || (currentStep === 2 && skipForm) || (currentStep === 3 && skipForm)) {
-      // Recap step
-      const recapStep = skipForm ? 3 : 3;
-      if (currentStep === recapStep || (skipForm && currentStep === 3)) {
+
+    if (step === 3) {
+      if (skipForm) {
+        // Step 3 = confirmation when form is skipped
         return selectedSlot ? (
-          <BookingStepRecap
-            slot={selectedSlot}
-            formData={formData}
-            formFields={config.champsFormulaire}
-            showForm={config.formulaireEnabled}
-            acompteType={config.acompteType}
-            acompteMontant={config.acompteMontant}
-            prixPrestation={config.prixPrestation}
-            onConfirm={goNext}
-            onBack={goBack}
-          />
+          <BookingStepConfirmation slot={selectedSlot} businessName={config.businessName} />
         ) : null;
       }
-    }
-    // Confirmation
-    if (selectedSlot) {
-      return (
-        <BookingStepConfirmation
+      // Step 3 = recap
+      return selectedSlot ? (
+        <BookingStepRecap
           slot={selectedSlot}
-          businessName={config.businessName}
+          formData={formData}
+          formFields={config.champsFormulaire}
+          showForm={config.formulaireEnabled}
+          acompteType={config.acompteType}
+          acompteMontant={config.acompteMontant}
+          prixPrestation={config.prixPrestation}
+          onConfirm={() => setStep(4)}
+          onBack={() => setStep(2)}
         />
-      );
+      ) : null;
     }
-    return null;
-  };
 
-  // Simplified step rendering
-  const getContent = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <BookingStepSlot
-            selectedSlot={selectedSlot}
-            onSelect={setSelectedSlot}
-            onNext={goNext}
-          />
-        );
-      case 2:
-        if (skipForm) {
-          return selectedSlot ? (
-            <BookingStepRecap
-              slot={selectedSlot}
-              formData={formData}
-              formFields={config.champsFormulaire}
-              showForm={false}
-              acompteType={config.acompteType}
-              acompteMontant={config.acompteMontant}
-              prixPrestation={config.prixPrestation}
-              onConfirm={goNext}
-              onBack={goBack}
-            />
-          ) : null;
-        }
-        return (
-          <BookingStepForm
-            fields={config.champsFormulaire}
-            formData={formData}
-            onChange={(id, val) => setFormData(prev => ({ ...prev, [id]: val }))}
-            onNext={goNext}
-            onBack={goBack}
-          />
-        );
-      case 3:
-        if (skipForm) {
-          return selectedSlot ? (
-            <BookingStepConfirmation
-              slot={selectedSlot}
-              businessName={config.businessName}
-            />
-          ) : null;
-        }
-        return selectedSlot ? (
-          <BookingStepRecap
-            slot={selectedSlot}
-            formData={formData}
-            formFields={config.champsFormulaire}
-            showForm={config.formulaireEnabled}
-            acompteType={config.acompteType}
-            acompteMontant={config.acompteMontant}
-            prixPrestation={config.prixPrestation}
-            onConfirm={goNext}
-            onBack={goBack}
-          />
-        ) : null;
-      case 4:
-        return selectedSlot ? (
-          <BookingStepConfirmation
-            slot={selectedSlot}
-            businessName={config.businessName}
-          />
-        ) : null;
-      default:
-        return null;
+    if (step === 4) {
+      return selectedSlot ? (
+        <BookingStepConfirmation slot={selectedSlot} businessName={config.businessName} />
+      ) : null;
     }
+
+    return null;
   };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b bg-card">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg">
@@ -186,9 +119,8 @@ export default function BookingPage() {
         </div>
       </header>
 
-      {/* Content */}
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <BookingStepper currentStep={currentStep} skipForm={skipForm} />
+        <BookingStepper currentStep={stepperStep} skipForm={skipForm} />
         {getContent()}
       </main>
     </div>
