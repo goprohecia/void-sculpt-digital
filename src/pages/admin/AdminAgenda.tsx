@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
-import { CalendarDays, ChevronLeft, ChevronRight, Clock, User, MapPin, Plus, Trash2 } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, Clock, User, MapPin } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { MOCK_TEAM_MEMBERS, MOCK_DISPONIBILITES, type PlageHoraire, type DisponibilitesHebdo } from "@/data/mockData";
 
 const JOURS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
