@@ -215,12 +215,36 @@ export default function AdminTemps() {
           {/* Entries */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Entrées récentes</CardTitle>
-              <CardDescription>Temps enregistré cette semaine</CardDescription>
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <CardTitle className="text-base">Entrées récentes</CardTitle>
+                  <CardDescription>Temps enregistré cette semaine</CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Select value={filterClient} onValueChange={setFilterClient}>
+                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="Client" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tous les clients</SelectItem>
+                      {[...new Set(entries.map((e) => e.client))].sort().map((c) => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select value={filterSalarie} onValueChange={setFilterSalarie}>
+                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="Salarié" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tous les salariés</SelectItem>
+                      {[...new Set(entries.map((e) => e.salarie))].sort().map((s) => (
+                        <SelectItem key={s} value={s}>{s}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-1">
-                {entries.map((entry) => (
+                {entries.filter((e) => (filterClient === "all" || e.client === filterClient) && (filterSalarie === "all" || e.salarie === filterSalarie)).map((entry) => (
                   <div key={entry.id} className="flex items-center gap-3 py-2.5 px-3 rounded-lg hover:bg-muted/20 transition-colors group">
                     <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
                     <div className="flex-1 min-w-0">
