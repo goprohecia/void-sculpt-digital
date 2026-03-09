@@ -487,11 +487,12 @@ export default function AdminSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-8">
+              <TabsList className="grid w-full grid-cols-4 sm:grid-cols-9">
                 <TabsTrigger value="profil" className="gap-1.5 text-xs"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5 text-xs"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
                 <TabsTrigger value="facturation" className="gap-1.5 text-xs"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
                 <TabsTrigger value="tags" className="gap-1.5 text-xs"><Tag className="h-3.5 w-3.5" /> Tags</TabsTrigger>
+                <TabsTrigger value="services" className="gap-1.5 text-xs"><BarChart3 className="h-3.5 w-3.5" /> Services</TabsTrigger>
                 <TabsTrigger value="modules" className="gap-1.5 text-xs"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
                 <TabsTrigger value="timeline" className="gap-1.5 text-xs"><Clock className="h-3.5 w-3.5" /> Timeline</TabsTrigger>
                 <TabsTrigger value="whitelabel" className="gap-1.5 text-xs"><Palette className="h-3.5 w-3.5" /> White Label</TabsTrigger>
