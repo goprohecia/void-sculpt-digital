@@ -55,6 +55,11 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
           <header className="h-14 flex items-center px-4 gap-4 mx-4 mt-3 rounded-2xl glass-card glass-noise border border-white/10">
             <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
             <div className="flex-1" />
+            <NotificationPanel
+              notifications={employeeNotifications}
+              onMarkAllRead={() => markAllNotificationsRead("admin")}
+              onMarkRead={markNotificationRead}
+            />
             {isDemoEmployee && (
               <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
                 Mode démo
