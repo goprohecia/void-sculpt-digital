@@ -12,41 +12,37 @@ type StatusType =
   | "a_venir" | "passe";
 
 const statusConfig: Record<StatusType, { label: string; className: string }> = {
-  en_cours: { label: "En cours", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
-  termine: { label: "Terminé", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  en_attente: { label: "En attente", className: "bg-[hsl(45,93%,55%)]/20 text-[hsl(45,93%,65%)] border-[hsl(45,93%,55%)]/30" },
-  annule: { label: "Annulé", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
-  payee: { label: "Payée", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  en_retard: { label: "En retard", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
-  a_envoyer: { label: "À envoyer", className: "bg-[hsl(45,93%,55%)]/20 text-[hsl(45,93%,65%)] border-[hsl(45,93%,55%)]/30" },
-  envoyee: { label: "Envoyée", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
-  reponse_recue: { label: "Réponse reçue", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  actif: { label: "Actif", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  inactif: { label: "Inactif", className: "bg-muted text-muted-foreground border-border" },
-  accepte: { label: "Accepté", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  refuse: { label: "Refusé", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
-  expire: { label: "Expiré", className: "bg-muted text-muted-foreground border-border" },
-  // Ticket statuses
-  ouvert: { label: "Ouvert", className: "bg-[hsl(45,93%,55%)]/20 text-[hsl(45,93%,65%)] border-[hsl(45,93%,55%)]/30" },
-  resolu: { label: "Résolu", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  ferme: { label: "Fermé", className: "bg-muted text-muted-foreground border-border" },
-  // Ticket priorities
-  basse: { label: "Basse", className: "bg-muted text-muted-foreground border-border" },
-  normale: { label: "Normale", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
-  haute: { label: "Haute", className: "bg-[hsl(45,93%,55%)]/20 text-[hsl(45,93%,65%)] border-[hsl(45,93%,55%)]/30" },
-  urgente: { label: "Urgente", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
-  // Demande statuses
-  nouvelle: { label: "Nouvelle", className: "bg-[hsl(270,80%,60%)]/20 text-[hsl(270,80%,70%)] border-[hsl(270,80%,60%)]/30" },
-  en_revue: { label: "En revue", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
-  validee: { label: "Validée", className: "bg-neon-green/20 text-[hsl(155,100%,65%)] border-[hsl(155,100%,45%)]/30" },
-  refusee: { label: "Refusée", className: "bg-destructive/20 text-[hsl(0,84%,70%)] border-destructive/30" },
-  // Rendez-vous statuses
-  a_venir: { label: "À venir", className: "bg-neon-blue/20 text-[hsl(200,100%,70%)] border-[hsl(200,100%,50%)]/30" },
-  passe: { label: "Passé", className: "bg-muted text-muted-foreground border-border" },
+  en_cours: { label: "En cours", className: "bg-blue-50 text-blue-700 border-blue-200" },
+  termine: { label: "Terminé", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  en_attente: { label: "En attente", className: "bg-amber-50 text-amber-700 border-amber-200" },
+  annule: { label: "Annulé", className: "bg-red-50 text-red-700 border-red-200" },
+  payee: { label: "Payée", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  en_retard: { label: "En retard", className: "bg-red-50 text-red-700 border-red-200" },
+  a_envoyer: { label: "À envoyer", className: "bg-amber-50 text-amber-700 border-amber-200" },
+  envoyee: { label: "Envoyée", className: "bg-blue-50 text-blue-700 border-blue-200" },
+  reponse_recue: { label: "Réponse reçue", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  actif: { label: "Actif", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  inactif: { label: "Inactif", className: "bg-gray-100 text-gray-500 border-gray-200" },
+  accepte: { label: "Accepté", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  refuse: { label: "Refusé", className: "bg-red-50 text-red-700 border-red-200" },
+  expire: { label: "Expiré", className: "bg-gray-100 text-gray-500 border-gray-200" },
+  ouvert: { label: "Ouvert", className: "bg-amber-50 text-amber-700 border-amber-200" },
+  resolu: { label: "Résolu", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  ferme: { label: "Fermé", className: "bg-gray-100 text-gray-500 border-gray-200" },
+  basse: { label: "Basse", className: "bg-gray-100 text-gray-500 border-gray-200" },
+  normale: { label: "Normale", className: "bg-blue-50 text-blue-700 border-blue-200" },
+  haute: { label: "Haute", className: "bg-amber-50 text-amber-700 border-amber-200" },
+  urgente: { label: "Urgente", className: "bg-red-50 text-red-700 border-red-200" },
+  nouvelle: { label: "Nouvelle", className: "bg-violet-50 text-violet-700 border-violet-200" },
+  en_revue: { label: "En revue", className: "bg-blue-50 text-blue-700 border-blue-200" },
+  validee: { label: "Validée", className: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  refusee: { label: "Refusée", className: "bg-red-50 text-red-700 border-red-200" },
+  a_venir: { label: "À venir", className: "bg-blue-50 text-blue-700 border-blue-200" },
+  passe: { label: "Passé", className: "bg-gray-100 text-gray-500 border-gray-200" },
 };
 
 export function StatusBadge({ status }: { status: StatusType }) {
-  const config = statusConfig[status] || { label: status, className: "bg-muted text-muted-foreground" };
+  const config = statusConfig[status] || { label: status, className: "bg-gray-100 text-gray-500" };
 
   return (
     <span

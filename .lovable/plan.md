@@ -1,55 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan: Refonte UI — Thème clair avec accents verts (style Donezo)
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Objectif
-Transformer l'interface admin d'un thème sombre glassmorphism vers un thème clair, fond blanc, avec des accents verts — fidèle à la capture partagée. Aucune modification fonctionnelle.
+## Modifications
 
-### Fichiers à modifier
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-#### 1. `src/index.css` — Variables CSS du thème
-Ajouter un jeu de variables CSS pour le mode admin clair :
-- `--background`: blanc (`0 0% 100%`)
-- `--foreground`: noir/gris foncé (`220 15% 15%`)
-- `--card`: blanc (`0 0% 100%`)
-- `--primary`: vert (`145 65% 42%`) — inspiré du vert Donezo
-- `--muted`: gris clair (`220 14% 96%`)
-- `--border`: gris subtil (`220 13% 91%`)
-- Refactorer les `.glass-card` pour que dans le contexte admin clair, ils deviennent des cartes blanches avec `border` légère et `box-shadow` douce (pas de blur/glassmorphism)
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-#### 2. `src/components/admin/AdminLayout.tsx`
-- Ajouter une classe racine (ex: `admin-light-theme`) sur le wrapper principal pour scoper le thème clair à l'admin uniquement
-- Fond blanc au lieu de `bg-background` sombre
-- Header : fond blanc, bordure légère grise, pas de glassmorphism
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-#### 3. `src/components/admin/AdminSidebar.tsx`
-- Fond blanc avec bordure grise subtile à droite
-- Liens actifs : fond vert clair avec texte vert foncé
-- Textes en gris foncé/noir
-- Footer : avatar et texte en couleurs sombres
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-#### 4. `src/components/admin/DashboardKPI.tsx`
-- Cartes blanches avec bordure légère et ombre douce
-- Icônes dans des cercles colorés (vert pour le premier KPI, comme la capture)
-- Textes en noir, sous-titres en gris
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-#### 5. `src/pages/admin/AdminDashboard.tsx`
-- Remplacer les classes `glass-card` par des classes de cartes blanches avec bordures
-- Couleurs des accents : vert au lieu de bleu/violet
-- Table des dossiers : fond blanc, lignes séparées par des bordures fines
-- Calendrier : style clair
-- Sparkline/graphiques : teintes vertes
+## Details techniques
 
-#### 6. `src/components/admin/StatusBadge.tsx`
-- Adapter les badges pour contraste sur fond blanc
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-### Approche technique
-- Créer une classe `.admin-light-theme` qui override les variables CSS au niveau du wrapper admin, permettant de garder le thème sombre pour le site vitrine
-- Les composants existants (`glass-card`, etc.) s'adapteront via les variables CSS sans changer leur markup
-- Le site public (Index, Contact, etc.) reste inchangé en mode sombre
-
-### Ce qui ne change PAS
-- Aucune fonctionnalité
-- Aucune route
-- Le site vitrine public garde son thème sombre actuel
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.

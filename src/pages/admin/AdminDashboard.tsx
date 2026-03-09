@@ -298,11 +298,11 @@ export default function AdminDashboard() {
                       <AreaChart data={sparklineData}>
                         <defs>
                           <linearGradient id="caGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="hsl(265, 85%, 60%)" stopOpacity={0.4} />
-                            <stop offset="100%" stopColor="hsl(265, 85%, 60%)" stopOpacity={0} />
+                            <stop offset="0%" stopColor="hsl(145, 63%, 42%)" stopOpacity={0.3} />
+                            <stop offset="100%" stopColor="hsl(145, 63%, 42%)" stopOpacity={0} />
                           </linearGradient>
                         </defs>
-                        <Area type="monotone" dataKey="ca" stroke="hsl(265, 85%, 60%)" fill="url(#caGradient)" strokeWidth={2} />
+                        <Area type="monotone" dataKey="ca" stroke="hsl(145, 63%, 42%)" fill="url(#caGradient)" strokeWidth={2} />
                       </AreaChart>
                     </ResponsiveContainer>
                   ) : (
