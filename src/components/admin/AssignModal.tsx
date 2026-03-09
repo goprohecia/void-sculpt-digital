@@ -5,34 +5,51 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MOCK_TEAM_MEMBERS, type DossierAssignment, type TeamMember } from "@/data/mockData";
-import { Users, Crown, Shield } from "lucide-react";
+import { Users, Crown, Shield, Star, AlertTriangle } from "lucide-react";
 
 interface AssignModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentAssignments: DossierAssignment[];
   onAssign: (assignments: DossierAssignment[]) => void;
+  filterOut?: string[];
 }
 
-export function AssignModal({ open, onOpenChange, currentAssignments, onAssign }: AssignModalProps) {
+export function AssignModal({ open, onOpenChange, currentAssignments, onAssign, filterOut = [] }: AssignModalProps) {
   const [selected, setSelected] = useState<string[]>([]);
+  const [responsableId, setResponsableId] = useState<string | null>(null);
+
+  const visibleMembers = MOCK_TEAM_MEMBERS.filter((m) => !filterOut.includes(m.id));
 
   useEffect(() => {
     if (open) {
-      // Pre-check currently assigned members in order (responsable first)
-      const sorted = [...currentAssignments].sort((a, b) => (a.role === "responsable" ? -1 : 1));
-      setSelected(sorted.map((a) => a.employeeId));
+      const ids = currentAssignments.map((a) => a.employeeId);
+      setSelected(ids);
+      const resp = currentAssignments.find((a) => a.role === "responsable");
+      setResponsableId(resp?.employeeId ?? (ids.length === 1 ? ids[0] : null));
     }
   }, [open, currentAssignments]);
+
+  // Auto-set responsable if only one selected
+  useEffect(() => {
+    if (selected.length === 1) {
+      setResponsableId(selected[0]);
+    } else if (selected.length === 0) {
+      setResponsableId(null);
+    } else if (responsableId && !selected.includes(responsableId)) {
+      setResponsableId(null);
+    }
+  }, [selected]);
 
   const toggleMember = (id: string) => {
     setSelected((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
   };
 
   const handleConfirm = () => {
-    const assignments: DossierAssignment[] = selected.map((employeeId, index) => ({
+    if (!responsableId) return;
+    const assignments: DossierAssignment[] = selected.map((employeeId) => ({
       employeeId,
-      role: index === 0 ? "responsable" : "renfort",
+      role: employeeId === responsableId ? "responsable" : "renfort",
       dateAssignation: new Date().toISOString().split("T")[0],
     }));
     onAssign(assignments);
@@ -40,6 +57,8 @@ export function AssignModal({ open, onOpenChange, currentAssignments, onAssign }
   };
 
   const getInitials = (m: TeamMember) => `${m.prenom[0]}${m.nom[0]}`;
+  const renfortCount = selected.length > 0 ? selected.length - 1 : 0;
+  const isValid = selected.length > 0 && responsableId !== null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -52,10 +71,9 @@ export function AssignModal({ open, onOpenChange, currentAssignments, onAssign }
         </DialogHeader>
 
         <div className="space-y-3 max-h-[400px] overflow-y-auto py-2">
-          {MOCK_TEAM_MEMBERS.map((member) => {
+          {visibleMembers.map((member) => {
             const isChecked = selected.includes(member.id);
-            const roleIndex = selected.indexOf(member.id);
-            const role = roleIndex === 0 ? "responsable" : roleIndex > 0 ? "renfort" : null;
+            const isResp = member.id === responsableId;
 
             return (
               <div
@@ -82,12 +100,29 @@ export function AssignModal({ open, onOpenChange, currentAssignments, onAssign }
                   <p className="text-xs text-muted-foreground">{member.poste}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  {role === "responsable" && (
+                  {isChecked && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setResponsableId(member.id);
+                      }}
+                      className="p-1 rounded hover:bg-muted/50 transition-colors"
+                      title={isResp ? "Responsable" : "Désigner comme responsable"}
+                    >
+                      <Star
+                        className={`h-4 w-4 transition-colors ${
+                          isResp ? "fill-amber-400 text-amber-400" : "text-muted-foreground"
+                        }`}
+                      />
+                    </button>
+                  )}
+                  {isChecked && isResp && (
                     <Badge className="text-[10px] px-1.5 py-0 bg-amber-500/20 text-amber-400 border-amber-500/30 gap-1">
                       <Crown className="h-2.5 w-2.5" /> Responsable
                     </Badge>
                   )}
-                  {role === "renfort" && (
+                  {isChecked && !isResp && (
                     <Badge variant="secondary" className="text-[10px] px-1.5 py-0 gap-1">
                       <Shield className="h-2.5 w-2.5" /> Renfort
                     </Badge>
@@ -108,13 +143,29 @@ export function AssignModal({ open, onOpenChange, currentAssignments, onAssign }
           })}
         </div>
 
-        <p className="text-xs text-muted-foreground">
-          Le premier membre sélectionné sera désigné <strong>Responsable</strong>, les suivants comme <strong>Renfort</strong>.
-        </p>
+        {/* Recap + validation */}
+        <div className="space-y-2">
+          {selected.length > 0 && !responsableId && (
+            <p className="text-xs text-destructive flex items-center gap-1.5">
+              <AlertTriangle className="h-3.5 w-3.5" />
+              Vous devez désigner un responsable
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            {selected.length === 0
+              ? "Sélectionnez au moins un membre de l'équipe."
+              : responsableId
+                ? <>
+                    <strong>1 responsable</strong>{renfortCount > 0 && <> + <strong>{renfortCount} en renfort</strong></>}
+                  </>
+                : "Cliquez sur l'étoile ★ pour désigner le responsable."
+            }
+          </p>
+        </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Annuler</Button>
-          <Button onClick={handleConfirm} disabled={selected.length === 0}>
+          <Button onClick={handleConfirm} disabled={!isValid}>
             Confirmer l'assignation ({selected.length})
           </Button>
         </DialogFooter>

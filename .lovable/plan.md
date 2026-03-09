@@ -1,48 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Module 07 — Multi-assignation sur un même dossier
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Audit
+## Modifications
 
-| Élément | Statut |
-|---|---|
-| Checkbox multiple dans AssignModal | **OK** — déjà fonctionnel |
-| Désignation explicite du responsable (étoile/radio) | **Manquant** — le responsable est implicitement le 1er coché (ordre de clic), pas de contrôle explicite |
-| Validation bloquante si aucun responsable | **Manquant** — le bouton est juste disabled si 0 sélectionné |
-| Auto-responsable si 1 seul coché | **Manquant** — fonctionne par hasard (index 0) mais pas explicite |
-| Récap visuel "1 responsable + N renfort" | **Manquant** — juste un compteur |
-| Bouton "+" ajouter pro dans vue dossier | **Manquant** — seul "Modifier l'assignation" existe |
-| Bouton × retirer un pro avec confirmation | **Manquant** |
-| Changement de responsable par clic étoile | **Manquant** |
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### Plan d'implémentation
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-#### 1. Refonte `AssignModal.tsx`
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-Remplacer la logique "premier coché = responsable" par un état explicite :
-- Ajouter `responsableId: string | null` au state
-- Chaque membre coché affiche une icône étoile cliquable (pleine = responsable, vide = renfort)
-- Si 1 seul coché → `responsableId` auto-set sur lui
-- Si responsable décoché → reset `responsableId` à null
-- Bouton Confirmer disabled si `selected.length === 0` OU `responsableId === null`
-- Message d'erreur "Vous devez désigner un responsable" si sélection sans responsable
-- Récap en bas : "1 responsable + N en renfort" dynamique
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-Accepter nouvelle prop optionnelle `filterOut?: string[]` pour le mode "ajouter" (pré-filtrer les déjà assignés).
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-#### 2. Enrichir la section "Équipe assignée" dans `AdminDossierDetail.tsx`
+## Details techniques
 
-Pour chaque pro assigné :
-- Ajouter icône étoile cliquable : clic sur étoile d'un renfort → le passe responsable, l'ancien responsable devient renfort (mutation directe via `assignDossier`)
-- Ajouter bouton × → AlertDialog "Retirer [Prénom Nom] de ce dossier ?" → au clic confirmer, retirer du tableau assignments et appeler `assignDossier` avec le tableau filtré
-- Si retrait du responsable → empêcher ou forcer la désignation d'un nouveau responsable
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-Ajouter bouton "+" à côté du titre "Équipe assignée" → ouvre AssignModal avec `filterOut` = IDs déjà assignés, mode ajout (les nouveaux s'ajoutent aux existants au lieu de remplacer).
-
-### Fichiers à modifier
-
-| Fichier | Modification |
-|---|---|
-| `src/components/admin/AssignModal.tsx` | État `responsableId` explicite, étoile cliquable, validation bloquante, récap visuel, prop `filterOut` |
-| `src/pages/admin/AdminDossierDetail.tsx` | Étoile inline pour changer responsable, bouton × avec confirmation, bouton "+" pour ajout partiel |
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
