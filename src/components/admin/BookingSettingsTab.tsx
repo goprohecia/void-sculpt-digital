@@ -31,6 +31,26 @@ export function BookingSettingsTab() {
   const [newFieldType, setNewFieldType] = useState<"text" | "textarea" | "select">("text");
   const [saving, setSaving] = useState(false);
 
+  // Cancellation policy state
+  const [annulationDelai, setAnnulationDelai] = useState(24);
+  const [annulationUnite, setAnnulationUnite] = useState<"heures" | "jours">("heures");
+  const [annulationPolitique, setAnnulationPolitique] = useState<"total" | "partiel" | "aucun">("total");
+  const [annulationPourcentage, setAnnulationPourcentage] = useState(50);
+  const [annulationMessage, setAnnulationMessage] = useState("");
+
+  const defaultMessage = useMemo(() => {
+    const delaiText = `${annulationDelai} ${annulationUnite === "heures" ? "heure(s)" : "jour(s)"}`;
+    if (annulationPolitique === "total") {
+      return `Annulation gratuite jusqu'à ${delaiText} avant le rendez-vous. Remboursement intégral de l'acompte.`;
+    }
+    if (annulationPolitique === "partiel") {
+      return `Annulation jusqu'à ${delaiText} avant le rendez-vous. Remboursement de ${annulationPourcentage}% de l'acompte. Au-delà, aucun remboursement.`;
+    }
+    return `Annulation jusqu'à ${delaiText} avant le rendez-vous. Aucun remboursement de l'acompte.`;
+  }, [annulationDelai, annulationUnite, annulationPolitique, annulationPourcentage]);
+
+  const displayedMessage = annulationMessage || defaultMessage;
+
   const bookingUrl = `mybusinessassistant.com/rdv/${slug}`;
 
   const copyLink = () => {
