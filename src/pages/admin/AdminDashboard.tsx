@@ -359,11 +359,11 @@ export default function AdminDashboard() {
                     {activites.slice(0, 6).map((a) => (
                       <div key={a.id} className="flex items-start gap-3 text-xs">
                         <div className="mt-1.5 h-1.5 w-1.5 rounded-full shrink-0" style={{
-                          backgroundColor: a.type === "dossier" ? "hsl(200,100%,50%)" :
-                            a.type === "client" ? "hsl(155,100%,45%)" :
-                            a.type === "facture" ? "hsl(45,93%,55%)" :
-                            a.type === "message" ? "hsl(265,85%,60%)" :
-                            "hsl(0,84%,60%)"
+                          backgroundColor: a.type === "dossier" ? "hsl(152,55%,35%)" :
+                            a.type === "client" ? "hsl(145,63%,42%)" :
+                            a.type === "facture" ? "hsl(142,72%,50%)" :
+                            a.type === "message" ? "hsl(170,55%,45%)" :
+                            "hsl(160,40%,55%)"
                         }} />
                         <div className="flex-1 min-w-0">
                           <p className="text-foreground truncate leading-tight">{a.description}</p>
