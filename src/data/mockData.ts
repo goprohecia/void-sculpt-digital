@@ -120,6 +120,8 @@ export interface Devis {
   signatureDataUrl?: string;
   signataireNom?: string;
   dateSignature?: string;
+  serviceCategoryId?: string;
+  description?: string;
 }
 
 // ID du client démo (Luxe & Mode / Sophie Bernard)

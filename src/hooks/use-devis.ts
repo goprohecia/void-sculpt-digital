@@ -109,6 +109,7 @@ export function useDevis() {
         id: d.id, reference: d.reference, client_id: d.clientId, client_nom: d.clientNom,
         dossier_id: d.dossierId || null, titre: d.titre, montant: d.montant, statut: d.statut,
         date_emission: d.dateEmission, date_validite: d.dateValidite,
+        service_category_id: d.serviceCategoryId || null, description: d.description || "",
       });
       if (error) throw error;
 

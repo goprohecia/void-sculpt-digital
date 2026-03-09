@@ -98,6 +98,7 @@ export function useFactures() {
         id: f.id, reference: f.reference, client_id: f.clientId, client_nom: f.clientNom,
         dossier_id: f.dossierId || null, montant: f.montant, statut: f.statut,
         date_emission: f.dateEmission, date_echeance: f.dateEcheance,
+        service_category_id: f.serviceCategoryId || null, description: f.description || "",
       });
       if (error) throw error;
 
