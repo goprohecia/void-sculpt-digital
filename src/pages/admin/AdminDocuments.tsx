@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { FolderOpen, File, FileText, Image, Upload, Search, Download, Trash2, FolderPlus } from "lucide-react";
+import { FolderOpen, File, FileText, Image, Upload, Search, Download, Trash2, FolderPlus, Pencil, FolderInput } from "lucide-react";
 import { toast } from "sonner";
 
 interface Doc {
@@ -66,6 +66,14 @@ export default function AdminDocuments() {
   const [importClient, setImportClient] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Rename dialog
+  const [renameDoc, setRenameDoc] = useState<Doc | null>(null);
+  const [renameName, setRenameName] = useState("");
+
+  // Move dialog
+  const [moveDoc, setMoveDoc] = useState<Doc | null>(null);
+  const [moveDossier, setMoveDossier] = useState("");
 
   const allDossiers = ["Tous", ...dossiers];
 
@@ -140,6 +148,20 @@ export default function AdminDocuments() {
     toast.info(`Téléchargement de "${doc.nom}" (démo)`);
   };
 
+  const handleRename = () => {
+    if (!renameDoc || !renameName.trim()) return;
+    setDocs((prev) => prev.map((d) => d.id === renameDoc.id ? { ...d, nom: renameName.trim(), type: detectType(renameName.trim()) } : d));
+    toast.success(`Document renommé en "${renameName.trim()}"`);
+    setRenameDoc(null);
+  };
+
+  const handleMove = () => {
+    if (!moveDoc || !moveDossier) return;
+    setDocs((prev) => prev.map((d) => d.id === moveDoc.id ? { ...d, dossier: moveDossier } : d));
+    toast.success(`"${moveDoc.nom}" déplacé vers "${moveDossier}"`);
+    setMoveDoc(null);
+  };
+
   return (
     <AdminLayout>
       <AdminPageTransition>
@@ -191,6 +213,12 @@ export default function AdminDocuments() {
                       </div>
                       <Badge variant="outline" className="text-[10px] shrink-0">{doc.dossier}</Badge>
                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Renommer" onClick={() => { setRenameDoc(doc); setRenameName(doc.nom); }}>
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Déplacer" onClick={() => { setMoveDoc(doc); setMoveDossier(dossiers.find((d) => d !== doc.dossier) || dossiers[0]); }}>
+                          <FolderInput className="h-3.5 w-3.5" />
+                        </Button>
                         <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => handleDownload(doc)}>
                           <Download className="h-3.5 w-3.5" />
                         </Button>
@@ -290,6 +318,53 @@ export default function AdminDocuments() {
               <Button onClick={handleImport} disabled={selectedFiles.length === 0}>
                 Importer {selectedFiles.length > 0 && `(${selectedFiles.length})`}
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        {/* Rename Dialog */}
+        <Dialog open={!!renameDoc} onOpenChange={(v) => !v && setRenameDoc(null)}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Renommer le document</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <Label>Nouveau nom</Label>
+              <Input
+                value={renameName}
+                onChange={(e) => setRenameName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleRename()}
+                autoFocus
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setRenameDoc(null)}>Annuler</Button>
+              <Button onClick={handleRename} disabled={!renameName.trim()}>Renommer</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Move Dialog */}
+        <Dialog open={!!moveDoc} onOpenChange={(v) => !v && setMoveDoc(null)}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Déplacer "{moveDoc?.nom}"</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 py-2">
+              <Label>Dossier de destination</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                value={moveDossier}
+                onChange={(e) => setMoveDossier(e.target.value)}
+              >
+                {dossiers.filter((d) => d !== moveDoc?.dossier).map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">Actuellement dans : {moveDoc?.dossier}</p>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setMoveDoc(null)}>Annuler</Button>
+              <Button onClick={handleMove}>Déplacer</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
