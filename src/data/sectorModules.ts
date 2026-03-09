@@ -253,16 +253,16 @@ const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
 };
 
 const MARIAGE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Mariages", description: "Organisation complète de chaque mariage" },
-  taches: { label: "Planning mariage", description: "Rétroplanning et check-lists par mariage" },
-  stock: { label: "Fournitures & Déco", description: "Décoration, fleurs et accessoires" },
-  documents: { label: "Contrats & Documents", description: "Contrats prestataires et devis validés" },
-  pipeline: { label: "Pipeline couples", description: "Demandes de devis et couples en prospection" },
-  analyse: { label: "Dashboard Mariage", description: "KPIs : mariages réalisés, budget moyen, satisfaction" },
-  "rendez-vous": { label: "RDV couple", description: "Rendez-vous avec les futurs mariés" },
-  notes: { label: "Notes organisation", description: "Souhaits des mariés et détails logistiques" },
-  support: { label: "Réclamations", description: "Ajustements et retours post-événement" },
-  clients: { label: "Couples", description: "Futurs mariés et familles" },
+  dossiers: { label: "Fiches mariées", description: "Mensurations, préférences style, photos essayages" },
+  taches: { label: "Retouches & Préparation", description: "Retouches et préparation des robes" },
+  stock: { label: "Robes & Accessoires", description: "Robes, voiles, accessoires et bijoux" },
+  documents: { label: "Documents", description: "Contrats et bons de commande" },
+  pipeline: { label: "Pipeline prospects", description: "Demandes de devis et prospects mariées" },
+  analyse: { label: "Dashboard Mariage", description: "KPIs : ventes, panier moyen, essayages" },
+  "rendez-vous": { label: "Planning essayages", description: "Essayages, retouches et livraisons" },
+  notes: { label: "Notes mariées", description: "Préférences de style et historique" },
+  support: { label: "Support", description: "Questions et ajustements" },
+  clients: { label: "Mariées", description: "Fiches mariées et coordonnées" },
 };
 
 const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
