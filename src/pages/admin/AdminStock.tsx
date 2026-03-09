@@ -11,7 +11,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Package, Plus, Search, AlertTriangle, ArrowDownUp, Truck, Tags, FolderPlus, Trash2 } from "lucide-react";
+import { Package, Plus, Search, AlertTriangle, ArrowDownUp, Truck, Tags, FolderPlus, Trash2, Upload } from "lucide-react";
+import { StockImportDialog } from "@/components/admin/StockImportDialog";
 import { useProduits, useCategories, useFournisseurs, useStockMouvements, useBonsCommande } from "@/hooks/use-produits";
 import { toast } from "sonner";
 import { format } from "date-fns";
