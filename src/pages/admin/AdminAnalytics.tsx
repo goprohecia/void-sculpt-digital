@@ -186,7 +186,7 @@ export default function AdminAnalytics() {
       });
     });
     return totals;
-  }, [ventesParType]);
+  }, [ventesParType, CATS]);
 
   // Support stats (dynamic)
   const ticketStatuts = useMemo(() => [
