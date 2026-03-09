@@ -195,6 +195,66 @@ export default function AdminDossierDetail() {
             <div><p className="text-muted-foreground text-xs sm:text-sm">Client</p><p>{dossier.clientNom}</p></div>
           </motion.div>
 
+          {/* Équipe assignée */}
+          {assignEnabled && (
+            <motion.div className="glass-card p-5" variants={staggerItem}>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Users className="h-4 w-4 text-primary" />
+                  Équipe assignée
+                </h2>
+                <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setAssignModalOpen(true)}>
+                  <Users className="h-3.5 w-3.5" />
+                  {currentAssignments.length > 0 ? "Modifier l'assignation" : "Assigner"}
+                </Button>
+              </div>
+              {currentAssignments.length > 0 ? (
+                <div className="flex flex-wrap gap-3">
+                  {currentAssignments.map((a) => {
+                    const member = MOCK_TEAM_MEMBERS.find((m) => m.id === a.employeeId);
+                    if (!member) return null;
+                    return (
+                      <div key={a.employeeId} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 border border-border/30">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback className="text-xs font-semibold bg-primary/10 text-primary">
+                            {member.prenom[0]}{member.nom[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-xs font-medium">{member.prenom} {member.nom}</p>
+                          <p className="text-[10px] text-muted-foreground">{member.poste}</p>
+                        </div>
+                        {a.role === "responsable" ? (
+                          <Badge className="text-[10px] px-1.5 py-0 bg-amber-500/20 text-amber-400 border-amber-500/30 gap-1">
+                            <Crown className="h-2.5 w-2.5" /> Responsable
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 gap-1">
+                            <Shield className="h-2.5 w-2.5" /> Renfort
+                          </Badge>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">Aucun membre assigné à ce dossier</p>
+              )}
+            </motion.div>
+          )}
+
+          {assignEnabled && (
+            <AssignModal
+              open={assignModalOpen}
+              onOpenChange={setAssignModalOpen}
+              currentAssignments={currentAssignments}
+              onAssign={(newAssignments) => {
+                assignDossier(dossier.id, newAssignments);
+                toast.success(`${newAssignments.length} membre(s) assigné(s)`);
+              }}
+            />
+          )}
+
           {/* Timeline */}
           {dossier.statut !== "annule" && (
             <motion.div className="glass-card p-5" variants={staggerItem}>
