@@ -372,6 +372,60 @@ export default function SuperAdminSecteurs() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Reset module dialog */}
+      <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Trash2 className="h-5 w-5 text-destructive" />
+              Réinitialiser un module sur tous les secteurs
+            </DialogTitle>
+            <DialogDescription>
+              Sélectionnez un module pour supprimer tous ses overrides sur l'ensemble des secteurs.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div>
+              <Label className="text-sm font-medium mb-2 block">Module à réinitialiser</Label>
+              <Select value={resetModuleKey} onValueChange={setResetModuleKey}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ALL_MODULE_KEYS.map((key) => {
+                    const count = SECTORS.filter((s) => localOverrides[s.key]?.[key]).length;
+                    return (
+                      <SelectItem key={key} value={key}>
+                        <span className="font-mono text-xs text-muted-foreground mr-2">{key}</span>
+                        {GENERIC_MODULE_LABELS[key] || key}
+                        {count > 0 && (
+                          <span className="ml-2 text-xs text-destructive">({count} secteurs)</span>
+                        )}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+            {resetAffectedCount > 0 ? (
+              <p className="text-sm text-muted-foreground">
+                ⚠️ Cette action supprimera l'override de <strong>{GENERIC_MODULE_LABELS[resetModuleKey] || resetModuleKey}</strong> sur <strong>{resetAffectedCount} secteur(s)</strong>.
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Aucun secteur n'a d'override pour ce module.
+              </p>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" size="sm" onClick={() => setShowResetDialog(false)}>Annuler</Button>
+            <Button variant="destructive" size="sm" onClick={handleResetModule} disabled={resetAffectedCount === 0}>
+              <Trash2 className="h-4 w-4 mr-1" /> Réinitialiser ({resetAffectedCount})
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </SuperAdminLayout>
   );
 }
