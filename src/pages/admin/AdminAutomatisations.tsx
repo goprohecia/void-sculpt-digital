@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Bell, Mail, Clock, ArrowRight, Plus, CheckCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Zap, Bell, Mail, Clock, ArrowRight, Plus, CheckCircle, X } from "lucide-react";
+import { toast } from "sonner";
 
 interface Automation {
   id: string;
@@ -37,11 +42,40 @@ const CAT_COLOR: Record<string, string> = {
   email: "bg-purple-500/10 text-purple-400",
 };
 
+const CATEGORIES = [
+  { value: "relance", label: "Relance" },
+  { value: "notification", label: "Notification" },
+  { value: "statut", label: "Changement de statut" },
+  { value: "email", label: "Email" },
+];
+
 export default function AdminAutomatisations() {
   const [automations, setAutomations] = useState(DEMO_AUTOMATIONS);
+  const [showForm, setShowForm] = useState(false);
+  const [newRule, setNewRule] = useState({ titre: "", description: "", declencheur: "", action: "", categorie: "email" as Automation["categorie"] });
 
   const toggleAutomation = (id: string) => {
     setAutomations((prev) => prev.map((a) => (a.id === id ? { ...a, actif: !a.actif } : a)));
+  };
+
+  const handleCreate = () => {
+    if (!newRule.titre.trim() || !newRule.declencheur.trim() || !newRule.action.trim()) return;
+    setAutomations((prev) => [
+      {
+        id: Date.now().toString(),
+        titre: newRule.titre,
+        description: newRule.description,
+        declencheur: newRule.declencheur,
+        action: newRule.action,
+        categorie: newRule.categorie,
+        actif: true,
+        executions: 0,
+      },
+      ...prev,
+    ]);
+    setNewRule({ titre: "", description: "", declencheur: "", action: "", categorie: "email" });
+    setShowForm(false);
+    toast.success("Règle d'automatisation créée");
   };
 
   const activeCount = automations.filter((a) => a.actif).length;
@@ -58,8 +92,54 @@ export default function AdminAutomatisations() {
               </h1>
               <p className="text-muted-foreground text-sm">{activeCount} règles actives · {totalExecs} exécutions au total</p>
             </div>
-            <Button className="gap-1.5"><Plus className="h-4 w-4" /> Nouvelle règle</Button>
+            <Button onClick={() => setShowForm(!showForm)} className="gap-1.5">
+              {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {showForm ? "Annuler" : "Nouvelle règle"}
+            </Button>
           </div>
+
+          {showForm && (
+            <Card>
+              <CardContent className="pt-4 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label>Titre</Label>
+                    <Input placeholder="Ex: Relance J+7" value={newRule.titre} onChange={(e) => setNewRule((r) => ({ ...r, titre: e.target.value }))} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Catégorie</Label>
+                    <Select value={newRule.categorie} onValueChange={(v) => setNewRule((r) => ({ ...r, categorie: v as Automation["categorie"] }))}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {CATEGORIES.map((c) => (
+                          <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Description</Label>
+                  <Textarea placeholder="Description de la règle..." rows={2} value={newRule.description} onChange={(e) => setNewRule((r) => ({ ...r, description: e.target.value }))} />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <Label>Déclencheur</Label>
+                    <Input placeholder="Ex: Facture impayée > 7 jours" value={newRule.declencheur} onChange={(e) => setNewRule((r) => ({ ...r, declencheur: e.target.value }))} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label>Action</Label>
+                    <Input placeholder="Ex: Envoyer email de relance" value={newRule.action} onChange={(e) => setNewRule((r) => ({ ...r, action: e.target.value }))} />
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <Button onClick={handleCreate} disabled={!newRule.titre.trim() || !newRule.declencheur.trim() || !newRule.action.trim()} className="gap-1.5">
+                    <Plus className="h-4 w-4" /> Créer la règle
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           <div className="space-y-3">
             {automations.map((auto) => {
