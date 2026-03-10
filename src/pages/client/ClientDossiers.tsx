@@ -27,6 +27,7 @@ import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
 import { SportMembreView } from "@/components/sport/SportMembreView";
 import { CMClientView } from "@/components/cm/CMClientView";
 import { ConsultantClientView } from "@/components/consultant/ConsultantClientView";
+import { DesignerClientView } from "@/components/designer/DesignerClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -159,6 +160,10 @@ export default function ClientDossiers() {
 
   if (demoSector === "consultant") {
     return (<ClientLayout><AdminPageTransition><ConsultantClientView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "designer") {
+    return (<ClientLayout><AdminPageTransition><DesignerClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {

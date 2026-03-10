@@ -193,7 +193,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Projet design",
       category: "projet",
-      steps: ["Brief créatif", "Recherche & inspiration", "Moodboard", "Wireframes", "Maquette V1", "Retours client", "Maquette V2", "Validation finale", "Export fichiers", "Livraison", "Guide d'utilisation"],
+      steps: ["Brief reçu", "Moodboard validé", "Première proposition", "Retours client", "Corrections", "BAT validé", "Fichiers livrés"],
     },
     {
       name: "Identité visuelle",
