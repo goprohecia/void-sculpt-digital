@@ -66,8 +66,8 @@ export function ModuleSwapWizard({
   getModuleLabel,
   onSwapComplete,
 }: ModuleSwapWizardProps) {
-  const [step, setStep] = useState(0);
-  const [accepted, setAccepted] = useState(false);
+  // Steps now start at 1 (removal) — warning screen is handled externally
+  const [step, setStep] = useState(1);
   const [moduleToRemove, setModuleToRemove] = useState<string | null>(null);
   const [moduleToAdd, setModuleToAdd] = useState<string | null>(null);
 
