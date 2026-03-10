@@ -147,6 +147,16 @@ export default function ClientDossiers() {
     );
   }
 
+  if (demoSector === "coach-sportif") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <SportMembreView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;
