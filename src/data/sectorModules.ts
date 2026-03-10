@@ -202,7 +202,9 @@ const DESIGNER_OVERRIDES: SectorModulesConfig = {
 };
 
 const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Événements", description: "Soirées, mariages, festivals et animations" },
+  dossiers: { label: "Prestations", description: "Soirées, mariages, festivals et animations" },
+  clients: { label: "Clients", description: "Portefeuille clients événementiel" },
+  employees: { label: "Assistants / Régisseurs", description: "Équipe technique et régisseurs" },
   taches: { label: "Préparation technique", description: "Check-lists techniques et logistique" },
   stock: { label: "Matériel sono", description: "Enceintes, platines, éclairages et câbles" },
   documents: { label: "Playlists & Riders", description: "Playlists, fiches techniques et riders" },
