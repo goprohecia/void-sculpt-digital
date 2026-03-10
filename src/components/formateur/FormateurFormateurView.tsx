@@ -13,8 +13,8 @@ import { toast } from "sonner";
 export function FormateurFormateurView() {
   const mesSessions = MOCK_SESSIONS.filter((s) => s.statut !== "terminee");
   const [selected, setSelected] = useState(mesSessions[0]);
-  const [emargement, setEmargement] = useState<Record<string, Record<string, { matin: boolean; apresMidi: boolean }>>>(() => {
-    const init: Record<string, Record<string, { matin: boolean; apresMidi: boolean }>> = {};
+  const [emargement, setEmargement] = useState<Record<string, Record<string, Record<string, { matin: boolean; apresMidi: boolean }>>>>(() => {
+    const init: Record<string, Record<string, Record<string, { matin: boolean; apresMidi: boolean }>>> = {};
     MOCK_SESSIONS.forEach((s) => {
       init[s.id] = {};
       s.stagiaires.forEach((st) => { init[s.id][st.id] = { ...st.emargement }; });
