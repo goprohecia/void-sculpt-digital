@@ -35,9 +35,10 @@ export function FormateurFormateurView() {
   const toggleEmargement = (stagiaireId: string, date: string, period: "matin" | "apresMidi") => {
     setEmargement((prev) => {
       const sessionData = { ...prev[selected.id] };
-      const stData = sessionData[stagiaireId] || {};
+      const stData = { ...(sessionData[stagiaireId] || {}) };
       const dateData = stData[date] || { matin: false, apresMidi: false };
-      sessionData[stagiaireId] = { ...stData, [date]: { ...dateData, [period]: !dateData[period] } };
+      stData[date] = { ...dateData, [period]: !dateData[period] };
+      sessionData[stagiaireId] = stData;
       return { ...prev, [selected.id]: sessionData };
     });
   };
