@@ -109,7 +109,7 @@ export function ModulesTab() {
               <TooltipTrigger asChild>
                 <div>
                   <Button
-                    onClick={() => setWizardOpen(true)}
+                    onClick={() => setShowWarning(true)}
                     disabled={isBlocked || planModuleKeys === "all"}
                     className="w-full gap-2"
                   >
