@@ -140,6 +140,10 @@ export default function EmployeeDossiers() {
     return (<EmployeeLayout><AdminPageTransition><DJAssistantView /></AdminPageTransition></EmployeeLayout>);
   }
 
+  if (demoSector === "evenementiel") {
+    return (<EmployeeLayout><AdminPageTransition><EvenementielChefProjetView /></AdminPageTransition></EmployeeLayout>);
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
