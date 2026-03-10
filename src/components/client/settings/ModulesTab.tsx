@@ -185,6 +185,16 @@ export function ModulesTab() {
         </Card>
       )}
 
+      {showWarning && (
+        <SwapWarningScreen
+          onAccept={() => {
+            setShowWarning(false);
+            setWizardOpen(true);
+          }}
+          onCancel={() => setShowWarning(false)}
+        />
+      )}
+
       <ModuleSwapWizard
         open={wizardOpen}
         onOpenChange={setWizardOpen}
