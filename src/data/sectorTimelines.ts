@@ -302,7 +302,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Réparation appareil",
       category: "réparation",
-      steps: ["Réception appareil", "Diagnostic", "Devis", "Accord client", "Commande pièces", "Réparation", "Tests", "Notification client", "Restitution", "Garantie réparation"],
+      steps: ["Appareil reçu", "Diagnostic", "Devis envoyé", "Devis accepté", "En réparation", "Tests effectués", "Prêt à récupérer", "Terminé"],
     },
     {
       name: "Intervention à domicile",

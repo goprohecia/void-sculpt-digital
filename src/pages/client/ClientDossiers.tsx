@@ -34,6 +34,7 @@ import { EvenementielClientView } from "@/components/evenementiel/EvenementielCl
 import { FormateurStagiaireView } from "@/components/formateur/FormateurStagiaireView";
 import { NettoyageClientView } from "@/components/nettoyage/NettoyageClientView";
 import { PhotographeClientView } from "@/components/photographe/PhotographeClientView";
+import { ReparateurClientView } from "@/components/reparateur/ReparateurClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -194,6 +195,10 @@ export default function ClientDossiers() {
 
   if (demoSector === "photographe") {
     return (<ClientLayout><AdminPageTransition><PhotographeClientView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "reparateur") {
+    return (<ClientLayout><AdminPageTransition><ReparateurClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {
