@@ -94,9 +94,9 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   photographe: [
     {
-      name: "Shooting photo",
+      name: "Séance photo",
       category: "projet",
-      steps: ["Demande reçue", "Brief créatif", "Devis envoyé", "Repérage", "Préparation matériel", "Shooting", "Tri & sélection", "Retouche", "Livraison galerie", "Validation client", "Livraison finale"],
+      steps: ["Réservation", "Acompte reçu", "Séance réalisée", "Sélection en cours", "Retouches", "Galerie livrée", "Solde réglé"],
     },
     {
       name: "Reportage événement",
