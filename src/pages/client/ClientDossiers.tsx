@@ -21,6 +21,7 @@ import { RecrutementClientView } from "@/components/recrutement/RecrutementClien
 import { RecrutementCandidatView } from "@/components/recrutement/RecrutementCandidatView";
 import { AutoEcoleEleveView } from "@/components/auto-ecole/AutoEcoleEleveView";
 import { MariageClientView } from "@/components/mariage/MariageClientView";
+import { AvocatClientView } from "@/components/avocat/AvocatClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
