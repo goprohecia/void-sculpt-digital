@@ -16,6 +16,7 @@ import { ImmobilierAcheteurView } from "@/components/immobilier/ImmobilierAchete
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BTPClientView } from "@/components/btp/BTPClientView";
 import { ConciergerieProprietaireView } from "@/components/conciergerie/ConciergerieProprietaireView";
+import { CoiffureClientView } from "@/components/coiffure/CoiffureClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -64,6 +65,16 @@ export default function ClientDossiers() {
       <ClientLayout>
         <AdminPageTransition>
           <ConciergerieProprietaireView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
+  if (demoSector === "coiffure") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <CoiffureClientView />
         </AdminPageTransition>
       </ClientLayout>
     );

@@ -8,6 +8,7 @@ import { GarageDashboard } from "@/components/garage/GarageDashboard";
 import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
 import { BTPDashboard } from "@/components/btp/BTPDashboard";
 import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
+import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -134,6 +135,16 @@ export default function AdminDashboard() {
       <AdminLayout>
         <AdminPageTransition>
           <ConciergerieDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "coiffure") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <CoiffureDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

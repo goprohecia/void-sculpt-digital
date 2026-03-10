@@ -13,6 +13,7 @@ import { GarageMechanicView } from "@/components/garage/GarageMechanicView";
 import { ImmobilierAgentView } from "@/components/immobilier/ImmobilierAgentView";
 import { BTPOuvrierView } from "@/components/btp/BTPOuvrierView";
 import { ConciergerieAgentView } from "@/components/conciergerie/ConciergerieAgentView";
+import { CoiffurePraticienView } from "@/components/coiffure/CoiffurePraticienView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -36,6 +37,10 @@ export default function EmployeeDossiers() {
 
   if (demoSector === "conciergerie") {
     return <ConciergerieAgentView />;
+  }
+
+  if (demoSector === "coiffure") {
+    return <CoiffurePraticienView />;
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
