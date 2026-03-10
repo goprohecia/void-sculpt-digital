@@ -27,6 +27,7 @@ import { CMChargeView } from "@/components/cm/CMChargeView";
 import { ConsultantConsultantView } from "@/components/consultant/ConsultantConsultantView";
 import { DesignerDesignerView } from "@/components/designer/DesignerDesignerView";
 import { DevDevView } from "@/components/dev/DevDevView";
+import { DJAssistantView } from "@/components/dj/DJAssistantView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
