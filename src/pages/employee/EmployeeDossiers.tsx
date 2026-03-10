@@ -131,6 +131,10 @@ export default function EmployeeDossiers() {
     return (<EmployeeLayout><AdminPageTransition><DesignerDesignerView /></AdminPageTransition></EmployeeLayout>);
   }
 
+  if (demoSector === "developpeur") {
+    return (<EmployeeLayout><AdminPageTransition><DevDevView /></AdminPageTransition></EmployeeLayout>);
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

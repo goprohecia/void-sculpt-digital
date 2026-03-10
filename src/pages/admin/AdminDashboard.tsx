@@ -237,6 +237,10 @@ export default function AdminDashboard() {
     return (<AdminLayout><AdminPageTransition><DesignerDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "developpeur") {
+    return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

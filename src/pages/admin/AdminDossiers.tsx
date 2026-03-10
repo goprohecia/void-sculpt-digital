@@ -261,6 +261,10 @@ export default function AdminDossiers() {
     return (<AdminLayout><AdminPageTransition><DesignerDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "developpeur") {
+    return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
