@@ -29,6 +29,7 @@ import { DesignerDesignerView } from "@/components/designer/DesignerDesignerView
 import { DevDevView } from "@/components/dev/DevDevView";
 import { DJAssistantView } from "@/components/dj/DJAssistantView";
 import { EvenementielChefProjetView } from "@/components/evenementiel/EvenementielChefProjetView";
+import { FormateurFormateurView } from "@/components/formateur/FormateurFormateurView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
