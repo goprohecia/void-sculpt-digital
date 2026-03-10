@@ -259,7 +259,7 @@ const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
 };
 
 const MARIAGE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Fiches mariées", description: "Mensurations, préférences style, photos essayages" },
+  dossiers: { label: "Commandes robes", description: "Dossiers mariées, mensurations, modèle choisi" },
   taches: { label: "Retouches & Préparation", description: "Retouches et préparation des robes" },
   stock: { label: "Robes & Accessoires", description: "Robes, voiles, accessoires et bijoux" },
   documents: { label: "Documents", description: "Contrats et bons de commande" },
@@ -269,6 +269,8 @@ const MARIAGE_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Notes mariées", description: "Préférences de style et historique" },
   support: { label: "Support", description: "Questions et ajustements" },
   clients: { label: "Mariées", description: "Fiches mariées et coordonnées" },
+  employees: { label: "Conseillères & Retoucheuses", description: "Équipe boutique" },
+  facturation: { label: "Acomptes & Facturation", description: "Acomptes versés, soldes et facturation" },
 };
 
 const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
