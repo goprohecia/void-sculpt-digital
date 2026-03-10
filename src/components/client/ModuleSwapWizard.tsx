@@ -236,7 +236,7 @@ export function ModuleSwapWizard({
         {/* Footer */}
         <div className="border-t p-4 flex justify-between">
           {step < 3 ? (
-            <Button variant="ghost" onClick={step === 0 ? handleClose : () => setStep(step - 1)} className="gap-1.5">
+            <Button variant="ghost" onClick={step === 1 ? handleClose : () => setStep(step - 1)} className="gap-1.5">
               <ArrowLeft className="h-4 w-4" />
               Retour
             </Button>
@@ -244,12 +244,6 @@ export function ModuleSwapWizard({
             <div />
           )}
 
-          {step === 0 && (
-            <Button onClick={() => setStep(1)} disabled={!accepted} className="gap-1.5">
-              Continuer
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          )}
           {step === 1 && (
             <Button
               onClick={() => setStep(2)}
