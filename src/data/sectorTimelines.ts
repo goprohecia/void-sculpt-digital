@@ -30,6 +30,11 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   immobilier: [
     {
+      name: "Suivi mandat client",
+      category: "vente",
+      steps: ["Mandat signé", "Photos / Annonce", "Visites en cours", "Offre reçue", "Compromis", "Acte finalisé"],
+    },
+    {
       name: "Mandat de vente",
       category: "vente",
       steps: ["Demande reçue", "Premier contact", "Estimation du bien", "Signature du mandat", "Prise de photos", "Diffusion annonce", "Visites", "Offre d'achat", "Négociation", "Signature du compromis", "Délai de rétractation", "Obtention du prêt", "Signature chez le notaire", "Remise des clés"],

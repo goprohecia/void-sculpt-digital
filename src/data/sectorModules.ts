@@ -441,7 +441,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   "auto-ecole": { admin: "Directeur", employee: "Moniteur", client: "Élève" },
   conciergerie: { admin: "Gestionnaire", employee: "Agent", client: "Propriétaire" },
   cabinets: { admin: "Associé", employee: "Collaborateur", client: "Client" },
-  immobilier: { admin: "Directeur agence", employee: "Agent immobilier", client: "Client" },
+  immobilier: { admin: "Direction", employee: "Agent", client: "Client" },
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
 };
 
