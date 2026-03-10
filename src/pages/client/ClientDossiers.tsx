@@ -10,6 +10,7 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Badge } from "@/components/ui/badge";
+import { GarageClientView } from "@/components/garage/GarageClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
