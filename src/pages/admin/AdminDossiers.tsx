@@ -119,6 +119,17 @@ export default function AdminDossiers() {
     toast.success(`Dossier ${newDossier.reference} créé depuis la demande`);
   };
 
+  if (demoSector === "garages") {
+    const { GarageVehicleList } = require("@/components/garage/GarageVehicleList");
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <GarageVehicleList />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

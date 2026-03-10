@@ -82,7 +82,9 @@ export function EmployeeSidebar() {
           )}
           <div>
             <p className="text-sm font-semibold">{wl.brandName}</p>
-            <p className="text-xs text-muted-foreground">Espace salarié</p>
+            <p className="text-xs text-muted-foreground">
+              {getSectorRoleLabel(demoSector, "employee") ? `Espace ${getSectorRoleLabel(demoSector, "employee")}` : "Espace salarié"}
+            </p>
           </div>
         </Link>
       </SidebarHeader>

@@ -18,6 +18,11 @@ export default function EmployeeDossiers() {
   const { demoSector } = useDemoPlan();
   const assignEnabled = isAssignationEnabled(demoSector);
 
+  if (demoSector === "garages") {
+    const { GarageMechanicView } = require("@/components/garage/GarageMechanicView");
+    return <GarageMechanicView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

@@ -15,7 +15,13 @@ export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
   const { getDossiersByClient, dossiers } = useDossiers();
   const { getCahierByDemande } = useCahiers();
+  const { demoSector } = useDemoPlan();
   const mesDossiers = clientId ? getDossiersByClient(clientId) : [];
+
+  if (demoSector === "garages") {
+    const { GarageClientView } = require("@/components/garage/GarageClientView");
+    return <GarageClientView />;
+  }
 
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);

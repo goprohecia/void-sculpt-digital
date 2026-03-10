@@ -96,6 +96,16 @@ export default function AdminDashboard() {
     { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-amber-400 bg-amber-500/15" },
   ];
 
+  if (demoSector === "garages") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <GarageDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

@@ -174,7 +174,9 @@ export function AdminSidebar() {
           ) : (
             <p className="text-lg font-bold tracking-tight">{wl.brandShort}</p>
           )}
-          <p className="text-xs text-muted-foreground">{wl.brandName}</p>
+          <p className="text-xs text-muted-foreground">
+            {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}
+          </p>
         </Link>
       </SidebarHeader>
 
