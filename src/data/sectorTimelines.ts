@@ -140,7 +140,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Commande client",
       category: "vente",
-      steps: ["Commande reçue", "Vérification stock", "Préparation", "Emballage", "Expédition", "Suivi livraison", "Livré", "Retour éventuel"],
+      steps: ["Commande reçue", "Paiement validé", "Préparation", "Expédié / Prêt", "Récupéré / Livré", "Terminé"],
     },
     {
       name: "Commande fournisseur",
@@ -148,6 +148,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
       steps: ["Analyse des besoins", "Sélection fournisseur", "Commande passée", "Confirmation fournisseur", "Expédition", "Réception", "Contrôle qualité", "Mise en rayon"],
     },
   ],
+
 
   cabinets: [
     {
