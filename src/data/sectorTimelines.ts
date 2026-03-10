@@ -230,6 +230,11 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   garages: [
     {
+      name: "Suivi véhicule client",
+      category: "réparation",
+      steps: ["Véhicule reçu", "Diagnostic", "Devis envoyé", "Devis accepté", "En réparation", "Prêt à récupérer", "Terminé"],
+    },
+    {
       name: "Réparation véhicule",
       category: "réparation",
       steps: ["Accueil client", "Diagnostic", "Devis", "Accord client", "Commande pièces", "Réception pièces", "Réparation", "Contrôle qualité", "Essai route", "Restitution véhicule", "Facturation"],
