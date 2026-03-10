@@ -6,6 +6,7 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useCahiers } from "@/hooks/use-cahiers";
 import { useClientId } from "@/hooks/use-client-id";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Badge } from "@/components/ui/badge";
