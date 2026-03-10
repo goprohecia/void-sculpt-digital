@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MOCK_EVENEMENTS } from "@/data/mockEvenementielData";
 import { EvenementielStepper } from "./EvenementielStepper";
-import { SignaturePad } from "@/components/SignaturePad";
 import { PartyPopper, FileText, Euro, ClipboardList, Download, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
