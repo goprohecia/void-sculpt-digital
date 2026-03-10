@@ -26,6 +26,7 @@ import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
 import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
 import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
 import { ReparateurDashboard } from "@/components/reparateur/ReparateurDashboard";
+import { TraiteurDashboard } from "@/components/traiteur/TraiteurDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
