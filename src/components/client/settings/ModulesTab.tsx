@@ -17,6 +17,7 @@ import { format, addMonths, startOfMonth } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
 import type { LucideIcon } from "lucide-react";
+import { SwapUpgradeBanner } from "@/components/client/SwapUpgradeBanner";
 
 const MODULE_ICONS: Record<string, LucideIcon> = {
   overview: Layers, clients: Users, employees: Users, dossiers: FolderKanban,
