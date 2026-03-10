@@ -307,16 +307,18 @@ const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
 };
 
 const REPARATEUR_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Réparations", description: "Suivi des appareils en réparation avec diagnostic et statut" },
+  dossiers: { label: "Réparations", description: "Fiches appareils en réparation avec diagnostic et statut" },
+  employees: { label: "Techniciens", description: "Techniciens de l'atelier" },
+  clients: { label: "Clients & Appareils", description: "Historique complet par client : appareils réparés, devis, factures" },
   taches: { label: "Ordres de réparation", description: "Diagnostic, réparation et tests par appareil" },
   stock: { label: "Pièces détachées", description: "Stock de pièces de rechange et composants" },
   documents: { label: "Fiches techniques", description: "Fiches de diagnostic et rapports d'intervention" },
   pipeline: { label: "Pipeline demandes", description: "Demandes de réparation entrantes" },
-  analyse: { label: "Dashboard Réparateur", description: "KPIs : réparations/jour, taux de réussite, délai moyen" },
+  analyse: { label: "Dashboard Atelier", description: "KPIs : réparations/jour, taux de réussite, délai moyen" },
   "rendez-vous": { label: "RDV atelier", description: "Créneaux de dépôt et récupération d'appareils" },
   notes: { label: "Notes techniques", description: "Observations et solutions appliquées" },
   support: { label: "Garanties", description: "Garanties sur les réparations effectuées" },
-  clients: { label: "Clients & Appareils", description: "Historique complet par client : appareils réparés, devis, factures" },
+  facturation: { label: "Devis & Facturation", description: "Devis transformés en factures" },
 };
 
 const TRAITEUR_OVERRIDES: SectorModulesConfig = {
