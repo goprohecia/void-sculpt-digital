@@ -381,6 +381,21 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     relances: { label: "Relances paiements", description: "Suivi des paiements échelonnés et relances" },
     support: { label: "Support élèves", description: "Questions et assistance des élèves" },
   } as SectorModulesConfig,
+  "cabinet-avocats": {
+    dossiers: { label: "Affaires", description: "Suivi des affaires judiciaires et contentieux" },
+    taches: { label: "Échéances & Délais", description: "Délais de procédure, audiences et deadlines" },
+    stock: { label: "Stock", hidden: true },
+    documents: { label: "Pièces & Conclusions", description: "Conclusions, assignations, contrats, actes" },
+    pipeline: { label: "Nouvelles affaires", description: "Consultations et prospects" },
+    analyse: { label: "Dashboard Cabinet", description: "KPIs : affaires, honoraires, taux de succès" },
+    "rendez-vous": { label: "Audiences & Consultations", description: "Audiences, consultations et rendez-vous" },
+    notes: { label: "Notes juridiques", description: "Recherches, jurisprudence et stratégie" },
+    support: { label: "Support clients", description: "Questions et demandes clients" },
+    clients: { label: "Clients", description: "Personnes physiques et morales" },
+    employees: { label: "Avocats & Collaborateurs", description: "Associés, collaborateurs et assistants" },
+    facturation: { label: "Honoraires", description: "Provisions, notes d'honoraires et suivi" },
+    temps: { label: "Heures facturables", description: "Suivi du temps par affaire" },
+  } as SectorModulesConfig,
 };
 
 // ── Helpers ──
@@ -435,6 +450,7 @@ const ASSIGNATION_SECTORS = [
   "cabinets",       // Expert-Comptable / Cabinet d'Avocats
   "boutique",       // Magasin
   "auto-ecole",     // Auto-École
+  "cabinet-avocats", // Cabinet d'Avocats
   "cabinet-recrutement", // Cabinet de Recrutement
 ];
 
@@ -471,6 +487,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
   "cabinet-recrutement": { admin: "Direction", employee: "Chargé de recrutement", client: "Client / Candidat" },
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
+  "cabinet-avocats": { admin: "Cabinet", employee: "Avocat / Collaborateur", client: "Client" },
 };
 
 export function getSectorRoleLabel(sectorKey: string | null | undefined, role: "admin" | "employee" | "client"): string | null {
