@@ -35,6 +35,7 @@ import { DesignerDashboard } from "@/components/designer/DesignerDashboard";
 import { DevDashboard } from "@/components/dev/DevDashboard";
 import { DJDashboard } from "@/components/dj/DJDashboard";
 import { EvenementielDashboard } from "@/components/evenementiel/EvenementielDashboard";
+import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
