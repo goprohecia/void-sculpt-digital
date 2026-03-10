@@ -140,6 +140,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "coiffure") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <CoiffureDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

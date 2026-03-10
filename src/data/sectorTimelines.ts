@@ -76,6 +76,11 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   coiffure: [
     {
+      name: "Suivi prestation",
+      category: "service",
+      steps: ["RDV pris", "Acompte payé", "Client arrivé", "Prestation en cours", "Terminé", "Avis demandé"],
+    },
+    {
       name: "Prestation salon",
       category: "service",
       steps: ["Prise de rendez-vous", "Accueil client", "Diagnostic capillaire", "Proposition soin", "Réalisation", "Coiffage final", "Encaissement", "Prise RDV suivant"],
