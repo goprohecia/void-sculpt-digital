@@ -109,6 +109,10 @@ export default function ClientDossiers() {
     return <AutoEcoleEleveView />;
   }
 
+  if (demoSector === "mariage") {
+    return <MariageClientView />;
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;

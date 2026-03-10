@@ -55,6 +55,27 @@ export default function EmployeeDossiers() {
     return <AutoEcoleMoniteurView />;
   }
 
+  if (demoSector === "mariage") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <Tabs defaultValue="conseillere" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="conseillere">Espace Conseillère</TabsTrigger>
+              <TabsTrigger value="retoucheuse">Espace Retoucheuse</TabsTrigger>
+            </TabsList>
+            <TabsContent value="conseillere">
+              <MariageConseillerView />
+            </TabsContent>
+            <TabsContent value="retoucheuse">
+              <MariageRetoucheuseView />
+            </TabsContent>
+          </Tabs>
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

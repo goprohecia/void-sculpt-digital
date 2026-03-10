@@ -173,6 +173,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "mariage") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <MariageDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

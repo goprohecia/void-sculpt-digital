@@ -197,6 +197,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "mariage") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <MariageDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
