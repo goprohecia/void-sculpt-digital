@@ -55,10 +55,10 @@ export function ConciergerieDashboard() {
 
       {/* KPIs */}
       <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={staggerItem}>
-        <DashboardKPI icon={Home} title="Biens gérés" value={biensActifs} color="text-blue-400" />
-        <DashboardKPI icon={CalendarDays} title="Réservations actives" value={reservationsActives} color="text-emerald-400" />
-        <DashboardKPI icon={ClipboardList} title="Interventions du jour" value={interventionsJour} color="text-amber-400" />
-        <DashboardKPI icon={Euro} title="Revenus mensuels" value={`${caTotal.toLocaleString()} €`} color="text-violet-400" />
+        <DashboardKPI icon={Home} title="Biens gérés" value={biensActifs} iconColor="blue" />
+        <DashboardKPI icon={CalendarDays} title="Réservations actives" value={reservationsActives} iconColor="emerald" />
+        <DashboardKPI icon={ClipboardList} title="Interventions du jour" value={interventionsJour} iconColor="amber" />
+        <DashboardKPI icon={Euro} title="Revenus mensuels" value={`${caTotal.toLocaleString()} €`} iconColor="violet" />
       </motion.div>
 
       {/* Calendrier multi-biens */}

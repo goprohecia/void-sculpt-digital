@@ -129,6 +129,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "conciergerie") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ConciergerieDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
