@@ -59,6 +59,16 @@ export default function ClientDossiers() {
     );
   }
 
+  if (demoSector === "conciergerie") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <ConciergerieProprietaireView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;
