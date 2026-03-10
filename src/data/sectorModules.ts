@@ -102,7 +102,7 @@ const BTP_OVERRIDES: SectorModulesConfig = {
 };
 
 const COIFFURE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Prestations", description: "Historique des prestations par client" },
+  dossiers: { label: "Réservations / Prestations", description: "Historique des prestations et réservations par client" },
   taches: { label: "Tâches salon", description: "Organisation quotidienne du salon" },
   documents: { label: "Fiches client", description: "Fiches techniques, colorations et préférences" },
   pipeline: { label: "Fidélité clients", description: "Suivi fidélité, parrainage et réengagement" },
@@ -114,6 +114,8 @@ const COIFFURE_OVERRIDES: SectorModulesConfig = {
   support: { label: "Réclamations", description: "Retouches et insatisfactions clients" },
   emails: { label: "Emails & Promos", description: "Promotions saisonnières et rappels rendez-vous" },
   relances: { label: "Relances clients", description: "Clients inactifs et rappels de visite" },
+  employees: { label: "Coiffeurs / Praticiens", description: "Équipe du salon et planning" },
+  facturation: { label: "Facturation & Acomptes", description: "Encaissements et acomptes en ligne" },
 };
 
 const BOUTIQUE_OVERRIDES: SectorModulesConfig = {
