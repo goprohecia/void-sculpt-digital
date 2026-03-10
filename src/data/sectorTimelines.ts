@@ -178,9 +178,9 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   "community-manager": [
     {
-      name: "Gestion réseaux sociaux",
+      name: "Mission client",
       category: "gestion",
-      steps: ["Brief client", "Audit réseaux existants", "Stratégie éditoriale", "Création calendrier", "Production contenu", "Validation client", "Programmation", "Publication", "Community management", "Reporting mensuel"],
+      steps: ["Brief reçu", "Stratégie validée", "Contenus créés", "Validation client", "Planifié", "Publié", "Rapport envoyé"],
     },
     {
       name: "Campagne sponsorisée",

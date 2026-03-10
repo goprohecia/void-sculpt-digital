@@ -16,6 +16,7 @@ import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
 import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
 import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
 import { SportDashboard } from "@/components/sport/SportDashboard";
+import { CMDashboard } from "@/components/cm/CMDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -218,13 +219,11 @@ export default function AdminDashboard() {
   }
 
   if (demoSector === "coach-sportif") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <SportDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
+    return (<AdminLayout><AdminPageTransition><SportDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "community-manager") {
+    return (<AdminLayout><AdminPageTransition><CMDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (

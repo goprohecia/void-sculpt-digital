@@ -150,7 +150,9 @@ const CABINETS_OVERRIDES: SectorModulesConfig = {
 };
 
 const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Campagnes", description: "Campagnes social media et stratégies digitales" },
+  dossiers: { label: "Missions", description: "Missions et comptes clients social media" },
+  clients: { label: "Comptes clients", description: "Portefeuille de comptes clients" },
+  employees: { label: "CM / Chargés de compte", description: "Équipe de community managers" },
   taches: { label: "Planning éditorial", description: "Calendrier de publications et contenus" },
   stock: { label: "Stock", hidden: true },
   documents: { label: "Contenus & Visuels", description: "Assets graphiques, vidéos et templates" },
@@ -161,6 +163,7 @@ const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
   support: { label: "Support client", description: "Demandes et ajustements de stratégie" },
   temps: { label: "Temps par client", description: "Suivi du temps passé par compte client" },
   emails: { label: "Emails & Rapports", description: "Reportings mensuels et communications" },
+  facturation: { label: "Facturation missions", description: "Honoraires et forfaits mensuels" },
 };
 
 const CONSULTANT_OVERRIDES: SectorModulesConfig = {
@@ -505,6 +508,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   immobilier: { admin: "Direction", employee: "Agent", client: "Client" },
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
   "coach-sportif": { admin: "Gérant", employee: "Coach", client: "Membre" },
+  "community-manager": { admin: "Direction", employee: "CM / Chargé de compte", client: "Client" },
 
   "cabinet-recrutement": { admin: "Direction", employee: "Chargé de recrutement", client: "Client / Candidat" },
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },

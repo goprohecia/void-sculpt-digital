@@ -23,6 +23,7 @@ import { AvocatCollaborateurView } from "@/components/avocat/AvocatCollaborateur
 import { ComptableCollaborateurView } from "@/components/comptable/ComptableCollaborateurView";
 import { BoutiqueVendeurView } from "@/components/boutique/BoutiqueVendeurView";
 import { SportCoachView } from "@/components/sport/SportCoachView";
+import { CMChargeView } from "@/components/cm/CMChargeView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -112,13 +113,11 @@ export default function EmployeeDossiers() {
   }
 
   if (demoSector === "coach-sportif") {
-    return (
-      <EmployeeLayout>
-        <AdminPageTransition>
-          <SportCoachView />
-        </AdminPageTransition>
-      </EmployeeLayout>
-    );
+    return (<EmployeeLayout><AdminPageTransition><SportCoachView /></AdminPageTransition></EmployeeLayout>);
+  }
+
+  if (demoSector === "community-manager") {
+    return (<EmployeeLayout><AdminPageTransition><CMChargeView /></AdminPageTransition></EmployeeLayout>);
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);

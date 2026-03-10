@@ -25,6 +25,7 @@ import { AvocatClientView } from "@/components/avocat/AvocatClientView";
 import { ComptableClientView } from "@/components/comptable/ComptableClientView";
 import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
 import { SportMembreView } from "@/components/sport/SportMembreView";
+import { CMClientView } from "@/components/cm/CMClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -148,13 +149,11 @@ export default function ClientDossiers() {
   }
 
   if (demoSector === "coach-sportif") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <SportMembreView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
+    return (<ClientLayout><AdminPageTransition><SportMembreView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "community-manager") {
+    return (<ClientLayout><AdminPageTransition><CMClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {
