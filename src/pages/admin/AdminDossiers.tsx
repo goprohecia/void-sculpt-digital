@@ -38,6 +38,7 @@ import { EvenementielDashboard } from "@/components/evenementiel/EvenementielDas
 import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
 import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
 import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
+import { ReparateurDashboard } from "@/components/reparateur/ReparateurDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
