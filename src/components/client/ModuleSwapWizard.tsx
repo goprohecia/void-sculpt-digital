@@ -131,45 +131,6 @@ export function ModuleSwapWizard({
         </div>
 
         <div className="p-6 min-h-[340px]">
-          {/* STEP 0 — Warning */}
-          {step === 0 && (
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 rounded-lg bg-destructive/10 border border-destructive/20">
-                <AlertTriangle className="h-8 w-8 text-destructive shrink-0 mt-0.5" />
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-destructive text-base">
-                    Attention — Perte de données irréversible
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    En retirant un module, toutes les données associées à ce module seront
-                    <strong className="text-foreground"> définitivement supprimées</strong>. Cette action est irréversible.
-                  </p>
-                  <ul className="text-xs text-muted-foreground space-y-1 mt-2">
-                    {Object.entries(CONTENT_LOSS_WARNINGS).slice(0, 4).map(([key, msg]) => (
-                      <li key={key} className="flex items-start gap-1.5">
-                        <span className="text-destructive mt-0.5">•</span>
-                        <span><strong>{getModuleLabel(key)}</strong> : {msg}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3 rounded-md border bg-muted/30">
-                <Checkbox
-                  id="accept-loss"
-                  checked={accepted}
-                  onCheckedChange={(v) => setAccepted(v === true)}
-                  className="mt-0.5"
-                />
-                <label htmlFor="accept-loss" className="text-sm cursor-pointer leading-relaxed">
-                  Je comprends que les données du module retiré seront{" "}
-                  <strong>définitivement perdues</strong> et je souhaite continuer.
-                </label>
-              </div>
-            </div>
-          )}
-
           {/* STEP 1 — Select module to remove */}
           {step === 1 && (
             <div className="space-y-4">
