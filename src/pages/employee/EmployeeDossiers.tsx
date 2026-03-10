@@ -10,6 +10,7 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
 import { FolderOpen, Crown, Shield, Eye } from "lucide-react";
 import { GarageMechanicView } from "@/components/garage/GarageMechanicView";
+import { ImmobilierAgentView } from "@/components/immobilier/ImmobilierAgentView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -21,6 +22,10 @@ export default function EmployeeDossiers() {
 
   if (demoSector === "garages") {
     return <GarageMechanicView />;
+  }
+
+  if (demoSector === "immobilier") {
+    return <ImmobilierAgentView />;
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);

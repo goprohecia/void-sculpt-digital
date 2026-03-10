@@ -5,6 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { GarageDashboard } from "@/components/garage/GarageDashboard";
+import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -101,6 +102,16 @@ export default function AdminDashboard() {
       <AdminLayout>
         <AdminPageTransition>
           <GarageDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "immobilier") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ImmobilierDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

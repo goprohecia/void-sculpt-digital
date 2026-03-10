@@ -18,6 +18,7 @@ import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import type { DossierStatus } from "@/data/mockData";
 import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
 import { GarageVehicleList } from "@/components/garage/GarageVehicleList";
+import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -125,6 +126,16 @@ export default function AdminDossiers() {
       <AdminLayout>
         <AdminPageTransition>
           <GarageVehicleList />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "immobilier") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ImmobilierDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

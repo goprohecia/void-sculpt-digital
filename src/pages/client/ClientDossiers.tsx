@@ -11,6 +11,9 @@ import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Badge } from "@/components/ui/badge";
 import { GarageClientView } from "@/components/garage/GarageClientView";
+import { ImmobilierProprietaireView } from "@/components/immobilier/ImmobilierProprietaireView";
+import { ImmobilierAcheteurView } from "@/components/immobilier/ImmobilierAcheteurView";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -21,6 +24,27 @@ export default function ClientDossiers() {
 
   if (demoSector === "garages") {
     return <GarageClientView />;
+  }
+
+  if (demoSector === "immobilier") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <Tabs defaultValue="proprietaire" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="proprietaire">Espace Propriétaire</TabsTrigger>
+              <TabsTrigger value="acheteur">Espace Acheteur</TabsTrigger>
+            </TabsList>
+            <TabsContent value="proprietaire">
+              <ImmobilierProprietaireView />
+            </TabsContent>
+            <TabsContent value="acheteur">
+              <ImmobilierAcheteurView />
+            </TabsContent>
+          </Tabs>
+        </AdminPageTransition>
+      </ClientLayout>
+    );
   }
 
   const getCahierByDossier = (dossierId: string) => {
