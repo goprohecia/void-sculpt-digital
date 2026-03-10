@@ -183,16 +183,19 @@ const CONSULTANT_OVERRIDES: SectorModulesConfig = {
 };
 
 const DESIGNER_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Projets créatifs", description: "Projets de design (branding, UI/UX, print)" },
+  dossiers: { label: "Projets", description: "Projets de design (branding, UI/UX, print)" },
+  clients: { label: "Clients", description: "Portefeuille clients du studio" },
+  employees: { label: "Designers", description: "Équipe de designers" },
   taches: { label: "Sprints créatifs", description: "Itérations et livrables créatifs" },
   stock: { label: "Stock", hidden: true },
   documents: { label: "Maquettes & Assets", description: "Fichiers sources, exports et guidelines" },
   pipeline: { label: "Pipeline créatif", description: "Demandes et propositions créatives" },
-  analyse: { label: "Dashboard Design", description: "KPIs : projets livrés, satisfaction client" },
+  analyse: { label: "Dashboard Studio", description: "KPIs : projets livrés, satisfaction client, CA" },
   "rendez-vous": { label: "Présentations", description: "Présentations clients et revues créatives" },
   notes: { label: "Inspirations", description: "Mood boards, références et veille design" },
   support: { label: "Retours clients", description: "Demandes de modifications et itérations" },
   temps: { label: "Temps par projet", description: "Suivi horaire par projet créatif" },
+  facturation: { label: "Facturation", description: "Acomptes et soldes par projet" },
 };
 
 const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
