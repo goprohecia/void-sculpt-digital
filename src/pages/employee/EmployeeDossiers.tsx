@@ -28,6 +28,7 @@ import { ConsultantConsultantView } from "@/components/consultant/ConsultantCons
 import { DesignerDesignerView } from "@/components/designer/DesignerDesignerView";
 import { DevDevView } from "@/components/dev/DevDevView";
 import { DJAssistantView } from "@/components/dj/DJAssistantView";
+import { EvenementielChefProjetView } from "@/components/evenementiel/EvenementielChefProjetView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -138,6 +139,10 @@ export default function EmployeeDossiers() {
 
   if (demoSector === "dj-animateur") {
     return (<EmployeeLayout><AdminPageTransition><DJAssistantView /></AdminPageTransition></EmployeeLayout>);
+  }
+
+  if (demoSector === "evenementiel") {
+    return (<EmployeeLayout><AdminPageTransition><EvenementielChefProjetView /></AdminPageTransition></EmployeeLayout>);
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);

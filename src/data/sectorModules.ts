@@ -218,6 +218,7 @@ const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
 
 const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
   dossiers: { label: "Événements", description: "Organisation d'événements (congrès, galas, séminaires)" },
+  employees: { label: "Chefs de projet", description: "Équipe de chefs de projet événementiel" },
   taches: { label: "Planning événement", description: "Rétroplanning et coordination des prestataires" },
   stock: { label: "Matériel & Déco", description: "Mobilier, décoration et matériel événementiel" },
   documents: { label: "Documents événement", description: "Contrats prestataires, plans de salle, briefs" },
@@ -226,7 +227,6 @@ const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
   "rendez-vous": { label: "RDV prestataires", description: "Rendez-vous avec prestataires et clients" },
   notes: { label: "Notes organisation", description: "Notes logistiques et retours d'expérience" },
   support: { label: "Réclamations", description: "Gestion des imprévus et réclamations" },
-  employees: { label: "Équipe événement", description: "Coordinateurs, régisseurs et hôtesses" },
   fournisseurs: { label: "Prestataires", description: "Traiteurs, DJ, photographes, lieux et services" },
 };
 

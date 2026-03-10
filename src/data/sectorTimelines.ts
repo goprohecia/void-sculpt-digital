@@ -227,7 +227,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Organisation événement",
       category: "événement",
-      steps: ["Brief client", "Concept créatif", "Budget prévisionnel", "Validation concept", "Recherche prestataires", "Réservation lieu", "Logistique", "Communication", "Répétition générale", "Jour J – Installation", "Événement", "Démontage", "Bilan & reporting"],
+      steps: ["Brief reçu", "Proposition envoyée", "Contrat signé", "Prestataires confirmés", "J-7 brief final", "Événement réalisé", "Bilan client", "Clôturé"],
     },
     {
       name: "Salon / Conférence",

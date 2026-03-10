@@ -30,6 +30,7 @@ import { ConsultantClientView } from "@/components/consultant/ConsultantClientVi
 import { DesignerClientView } from "@/components/designer/DesignerClientView";
 import { DevClientView } from "@/components/dev/DevClientView";
 import { DJClientView } from "@/components/dj/DJClientView";
+import { EvenementielClientView } from "@/components/evenementiel/EvenementielClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -174,6 +175,10 @@ export default function ClientDossiers() {
 
   if (demoSector === "dj-animateur") {
     return (<ClientLayout><AdminPageTransition><DJClientView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "evenementiel") {
+    return (<ClientLayout><AdminPageTransition><EvenementielClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {
