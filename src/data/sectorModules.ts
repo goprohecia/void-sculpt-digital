@@ -310,6 +310,23 @@ const TRAITEUR_OVERRIDES: SectorModulesConfig = {
   employees: { label: "Brigade", description: "Cuisiniers, serveurs et logistique" },
 };
 
+const CABINET_RECRUTEMENT_OVERRIDES: SectorModulesConfig = {
+  dossiers: { label: "Missions", description: "Portefeuille de missions de recrutement" },
+  taches: { label: "Pipeline candidats", description: "Suivi des candidats par étape" },
+  stock: { label: "Stock", hidden: true },
+  documents: { label: "CV & Documents", description: "CV, lettres de motivation et références" },
+  pipeline: { label: "Pipeline missions", description: "Missions en cours et prospection" },
+  analyse: { label: "Dashboard Recrutement", description: "KPIs : taux de transformation, délai placement, CA" },
+  "rendez-vous": { label: "Entretiens", description: "Entretiens cabinet et client" },
+  notes: { label: "Notes candidats", description: "Notes d'entretien et évaluations" },
+  support: { label: "Suivi intégration", description: "Suivi post-placement et période d'essai" },
+  clients: { label: "Clients entreprises", description: "Entreprises clientes et contacts" },
+  employees: { label: "Chargés de recrutement", description: "Équipe de consultants recrutement" },
+  facturation: { label: "Honoraires", description: "Facturation des missions de recrutement" },
+  relances: { label: "Relances missions", description: "Suivi des missions et relances clients" },
+  temps: { label: "Temps par mission", description: "Suivi du temps investi par mission" },
+};
+
 const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
   dossiers: { label: "Séjours / Réservations", description: "Gestion des séjours et réservations voyageurs" },
   taches: { label: "Interventions", description: "Ménage, check-in/out, maintenance" },
