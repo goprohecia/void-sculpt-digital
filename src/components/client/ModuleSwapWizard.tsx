@@ -72,8 +72,7 @@ export function ModuleSwapWizard({
   const [moduleToAdd, setModuleToAdd] = useState<string | null>(null);
 
   const reset = () => {
-    setStep(0);
-    setAccepted(false);
+    setStep(1);
     setModuleToRemove(null);
     setModuleToAdd(null);
   };
@@ -90,7 +89,7 @@ export function ModuleSwapWizard({
     handleClose();
   };
 
-  const steps = ["Avertissement", "Retrait", "Activation", "Confirmation"];
+  const steps = ["Retrait", "Activation", "Confirmation"];
 
   // Exclude non-swappable modules
   const swappableActive = activeModules.filter(
