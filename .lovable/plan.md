@@ -1,40 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Module 11 — Swap de modules (Espace Client)
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Audit
-Aucun composant ou écran de swap n'existe dans le projet. `ClientSettings.tsx` contient 3 onglets (Profil, Entreprise, Notifications) sans onglet "Mes modules".
+## Modifications
 
-### Plan d'implémentation
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-#### 1. Nouveau composant `src/components/client/ModuleSwapWizard.tsx`
-Composant stepper 4 écrans dans un Dialog plein écran :
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-- **Écran 1 — Avertissement** : Titre "Attention", texte expliquant la perte de données, checkbox obligatoire "Je comprends que les données du module retiré seront perdues", bouton "Continuer" disabled tant que non coché, bouton "Retour" pour fermer
-- **Écran 2 — Retrait** : Liste des modules actifs en cards cliquables (sélection unique), bouton "Confirmer le retrait" disabled tant qu'aucun module sélectionné, bouton "Retour"
-- **Écran 3 — Activation** : Liste des modules disponibles non actifs en cards cliquables, bouton "Confirmer l'activation", bouton "Retour"
-- **Écran 4 — Confirmation** : Récap "Module retiré → Module activé", pas de bouton retour, bouton "Terminer" qui décrément le compteur et met à jour les modules actifs dans le state local
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-Navigation : stepper linéaire strict, impossible de sauter une étape.
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-#### 2. Nouveau onglet dans `src/pages/client/ClientSettings.tsx`
-Ajouter un 4e onglet "Mes modules" (icône `Layers`) dans le TabsList (passer de `grid-cols-3` à `grid-cols-4`) :
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-- **Section "Modules actifs"** : Cards avec icône + nom + badge "Actif" vert — données mockées (3 modules pour Starter, 8 pour Business, tous pour Enterprise) tirées de `DemoPlanContext.planModules[demoPlan]`
-- **Section "Modules disponibles"** : Cards grisées des modules non actifs dans l'offre
-- **Compteur swaps** : Barre de progression "X / 2 swaps restants ce mois" — state local `useState(2)`, décrémenté à chaque swap
-- **Si compteur = 0** : Date de rechargement "Vos swaps se rechargent le 1er [mois prochain] à minuit" calculée via `date-fns`
-- **Bouton "Swaper un module"** : Ouvre le wizard. Si compteur = 0 → bouton disabled + tooltip avec date + CTA "Passez à l'offre supérieure" via `UpgradeBanner`
+## Details techniques
 
-#### 3. Données mock
-- Modules actifs/disponibles : lus depuis `useDemoPlan()` — `planModules[demoPlan]` donne les clés actives, le reste de `ALL_MODULE_KEYS` = disponibles
-- Icons mapping : dictionnaire local `moduleKey → LucideIcon` pour afficher les icônes sur les cards
-- Compteur : `useState(2)` avec reset automatique si on détecte un changement de mois (comparaison `new Date().getMonth()`)
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-### Fichiers à créer / modifier
-
-| Fichier | Action |
-|---|---|
-| `src/components/client/ModuleSwapWizard.tsx` | **Créer** — Stepper 4 écrans |
-| `src/pages/client/ClientSettings.tsx` | **Modifier** — Ajouter onglet "Mes modules" |
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
