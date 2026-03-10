@@ -115,6 +115,11 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   conciergerie: [
     {
+      name: "Suivi séjour",
+      category: "location",
+      steps: ["Réservation confirmée", "Préparation logement", "Check-in effectué", "Séjour en cours", "Check-out", "Ménage fait", "Bilan propriétaire"],
+    },
+    {
       name: "Gestion locative saisonnière",
       category: "location",
       steps: ["Prise en charge du bien", "Shooting photos", "Création annonce", "Publication plateformes", "Réservation reçue", "Préparation du logement", "Check-in voyageur", "Suivi séjour", "Check-out", "Ménage", "Bilan propriétaire"],

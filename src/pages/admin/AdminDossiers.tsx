@@ -153,6 +153,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "conciergerie") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ConciergerieDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

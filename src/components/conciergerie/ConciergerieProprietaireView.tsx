@@ -50,10 +50,10 @@ export function ConciergerieProprietaireView() {
 
       {/* KPIs */}
       <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-4" variants={staggerItem}>
-        <DashboardKPI icon={Home} label="Biens gérés" value={mesBiens.length} color="text-blue-400" />
-        <DashboardKPI icon={CalendarDays} label="Réservations" value={mesReservations.length} color="text-emerald-400" />
-        <DashboardKPI icon={TrendingUp} label="Taux occupation" value={`${revenus.tauxOccupationMoyen}%`} color="text-amber-400" />
-        <DashboardKPI icon={Euro} label="Solde net" value={`${revenus.soldeNet.toLocaleString()} €`} color="text-violet-400" />
+        <DashboardKPI icon={Home} title="Biens gérés" value={mesBiens.length} color="text-blue-400" />
+        <DashboardKPI icon={CalendarDays} title="Réservations" value={mesReservations.length} color="text-emerald-400" />
+        <DashboardKPI icon={TrendingUp} title="Taux occupation" value={`${revenus.tauxOccupationMoyen}%`} color="text-amber-400" />
+        <DashboardKPI icon={Euro} title="Solde net" value={`${revenus.soldeNet.toLocaleString()} €`} color="text-violet-400" />
       </motion.div>
 
       {/* Mes biens */}
