@@ -208,6 +208,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "cabinet-avocats") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <AvocatDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

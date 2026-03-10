@@ -487,6 +487,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
   "cabinet-recrutement": { admin: "Direction", employee: "Chargé de recrutement", client: "Client / Candidat" },
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
+  "cabinet-avocats": { admin: "Cabinet", employee: "Avocat / Collaborateur", client: "Client" },
 };
 
 export function getSectorRoleLabel(sectorKey: string | null | undefined, role: "admin" | "employee" | "client"): string | null {

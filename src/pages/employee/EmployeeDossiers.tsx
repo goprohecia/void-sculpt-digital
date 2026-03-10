@@ -78,6 +78,16 @@ export default function EmployeeDossiers() {
     );
   }
 
+  if (demoSector === "cabinet-avocats") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <AvocatCollaborateurView />
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

@@ -184,6 +184,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "cabinet-avocats") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <AvocatDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

@@ -114,6 +114,16 @@ export default function ClientDossiers() {
     return <MariageClientView />;
   }
 
+  if (demoSector === "cabinet-avocats") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <AvocatClientView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;
