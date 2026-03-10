@@ -166,6 +166,10 @@ export default function EmployeeDossiers() {
     return (<EmployeeLayout><AdminPageTransition><ReparateurTechnicienView /></AdminPageTransition></EmployeeLayout>);
   }
 
+  if (demoSector === "traiteur") {
+    return (<EmployeeLayout><AdminPageTransition><TraiteurEquipeView /></AdminPageTransition></EmployeeLayout>);
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

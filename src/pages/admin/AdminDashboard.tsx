@@ -272,6 +272,10 @@ export default function AdminDashboard() {
     return (<AdminLayout><AdminPageTransition><ReparateurDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "traiteur") {
+    return (<AdminLayout><AdminPageTransition><TraiteurDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
