@@ -63,7 +63,7 @@ export function PhotographeRetoucheurView() {
             </div>
             <div className="space-y-1">
               <Label className="text-xs">Temps de retouche estimé</Label>
-              <Input value={tempsRetouche[selected.id] ?? selected.tempsRetouche || ""} onChange={(e) => setTempsRetouche((p) => ({ ...p, [selected.id]: e.target.value }))} placeholder="ex: 6h" disabled={!!retouchesTerminees[selected.id]} />
+              <Input value={tempsRetouche[selected.id] ?? (selected.tempsRetouche || "")} onChange={(e) => setTempsRetouche((p) => ({ ...p, [selected.id]: e.target.value }))} placeholder="ex: 6h" disabled={!!retouchesTerminees[selected.id]} />
             </div>
           </div>
 
