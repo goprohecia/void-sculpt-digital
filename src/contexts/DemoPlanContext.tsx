@@ -55,6 +55,7 @@ export const SECTORS = [
   { key: "traiteur", label: "Traiteur", icon: "🍽️" },
   { key: "cabinet-recrutement", label: "Cabinet de Recrutement", icon: "🎯" },
   { key: "cabinet-avocats", label: "Cabinet d'Avocats", icon: "⚖️" },
+  { key: "expert-comptable", label: "Expert-Comptable", icon: "🧮" },
 ] as const;
 
 export type SectorKey = (typeof SECTORS)[number]["key"];
