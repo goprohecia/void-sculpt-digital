@@ -14,6 +14,7 @@ import { ImmobilierAgentView } from "@/components/immobilier/ImmobilierAgentView
 import { BTPOuvrierView } from "@/components/btp/BTPOuvrierView";
 import { ConciergerieAgentView } from "@/components/conciergerie/ConciergerieAgentView";
 import { CoiffurePraticienView } from "@/components/coiffure/CoiffurePraticienView";
+import { RecrutementChargeView } from "@/components/recrutement/RecrutementChargeView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
