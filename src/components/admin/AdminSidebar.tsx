@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
+import { getSectorRoleLabel } from "@/data/sectorModules";
 import {
   LayoutDashboard,
   Users,
@@ -173,7 +174,9 @@ export function AdminSidebar() {
           ) : (
             <p className="text-lg font-bold tracking-tight">{wl.brandShort}</p>
           )}
-          <p className="text-xs text-muted-foreground">{wl.brandName}</p>
+          <p className="text-xs text-muted-foreground">
+            {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}
+          </p>
         </Link>
       </SidebarHeader>
 

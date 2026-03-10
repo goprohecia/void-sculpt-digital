@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { GarageDashboard } from "@/components/garage/GarageDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -31,6 +33,7 @@ import { fr } from "date-fns/locale";
 type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" | "relance"; color: string };
 
 export default function AdminDashboard() {
+  const { demoSector } = useDemoPlan();
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const { isDemo } = useIsDemo();
@@ -92,6 +95,16 @@ export default function AdminDashboard() {
     { icon: Calendar, label: "Planifier RDV", to: "/admin/rendez-vous", color: "text-emerald-400 bg-emerald-500/15" },
     { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-amber-400 bg-amber-500/15" },
   ];
+
+  if (demoSector === "garages") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <GarageDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>

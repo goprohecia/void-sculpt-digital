@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { getSectorRoleLabel } from "@/data/sectorModules";
 import {
   Sidebar,
   SidebarContent,
@@ -39,7 +40,7 @@ export function EmployeeSidebar() {
   const { user, logout } = useDemoAuth();
   const { employeeVisibleModules } = useAppSettings();
   const { config: wl } = useWhiteLabel();
-  const { getModuleLabel, isModuleHidden } = useDemoPlan();
+  const { getModuleLabel, isModuleHidden, demoSector } = useDemoPlan();
 
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
@@ -81,7 +82,9 @@ export function EmployeeSidebar() {
           )}
           <div>
             <p className="text-sm font-semibold">{wl.brandName}</p>
-            <p className="text-xs text-muted-foreground">Espace salarié</p>
+            <p className="text-xs text-muted-foreground">
+              {getSectorRoleLabel(demoSector, "employee") ? `Espace ${getSectorRoleLabel(demoSector, "employee")}` : "Espace salarié"}
+            </p>
           </div>
         </Link>
       </SidebarHeader>

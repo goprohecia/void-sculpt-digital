@@ -6,15 +6,22 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useCahiers } from "@/hooks/use-cahiers";
 import { useClientId } from "@/hooks/use-client-id";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Badge } from "@/components/ui/badge";
+import { GarageClientView } from "@/components/garage/GarageClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
   const { getDossiersByClient, dossiers } = useDossiers();
   const { getCahierByDemande } = useCahiers();
+  const { demoSector } = useDemoPlan();
   const mesDossiers = clientId ? getDossiersByClient(clientId) : [];
+
+  if (demoSector === "garages") {
+    return <GarageClientView />;
+  }
 
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);

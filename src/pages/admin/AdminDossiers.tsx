@@ -17,6 +17,7 @@ import { isAssignationEnabled } from "@/data/sectorModules";
 import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import type { DossierStatus } from "@/data/mockData";
 import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
+import { GarageVehicleList } from "@/components/garage/GarageVehicleList";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -118,6 +119,16 @@ export default function AdminDossiers() {
     updateDemandeStatut({ id: dem.id, statut: "validee" });
     toast.success(`Dossier ${newDossier.reference} créé depuis la demande`);
   };
+
+  if (demoSector === "garages") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <GarageVehicleList />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
