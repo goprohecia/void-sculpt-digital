@@ -31,6 +31,7 @@ import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
 import { SportDashboard } from "@/components/sport/SportDashboard";
 import { CMDashboard } from "@/components/cm/CMDashboard";
 import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
+import { DesignerDashboard } from "@/components/designer/DesignerDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
