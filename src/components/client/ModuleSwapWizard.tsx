@@ -112,16 +112,16 @@ export function ModuleSwapWizard({
               Swap de module
             </h2>
             <Badge variant="outline" className="text-xs">
-              Étape {step + 1} / {steps.length}
+              Étape {step} / {steps.length}
             </Badge>
           </div>
-          <Progress value={((step + 1) / steps.length) * 100} className="h-1.5" />
+          <Progress value={(step / steps.length) * 100} className="h-1.5" />
           <div className="flex justify-between mt-2">
             {steps.map((s, i) => (
               <span
                 key={s}
                 className={`text-[10px] font-medium ${
-                  i <= step ? "text-primary" : "text-muted-foreground"
+                  i + 1 <= step ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 {s}
