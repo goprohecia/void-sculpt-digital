@@ -53,6 +53,11 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   btp: [
     {
+      name: "Suivi chantier client",
+      category: "projet",
+      steps: ["Devis envoyé", "Devis accepté", "Planification", "Chantier en cours", "Fin de chantier", "Facture envoyée", "Solde réglé"],
+    },
+    {
       name: "Chantier neuf",
       category: "projet",
       steps: ["Appel d'offres", "Étude technique", "Chiffrage", "Devis envoyé", "Signature contrat", "Demande de permis", "Terrassement", "Fondations", "Gros œuvre", "Charpente / Toiture", "Second œuvre", "Finitions", "Nettoyage chantier", "Réception travaux", "Levée de réserves", "Clôture dossier"],

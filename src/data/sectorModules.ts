@@ -97,7 +97,8 @@ const BTP_OVERRIDES: SectorModulesConfig = {
   support: { label: "SAV & Garanties", description: "Garanties décennales, levées de réserves" },
   "rendez-vous": { label: "Visites chantier", description: "Planification des visites et réunions de chantier" },
   relances: { label: "Relances situations", description: "Relances des situations de travaux impayées" },
-  employees: { label: "Équipes & Ouvriers", description: "Gestion des équipes terrain et sous-traitants" },
+  employees: { label: "Ouvriers & Techniciens", description: "Gestion des équipes terrain et sous-traitants" },
+  facturation: { label: "Facturation & Situations", description: "Situations de travaux et facturation" },
 };
 
 const COIFFURE_OVERRIDES: SectorModulesConfig = {
@@ -436,7 +437,7 @@ export interface SectorRoleLabels {
 
 export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   garages: { admin: "Réceptionniste", employee: "Mécanicien", client: "Client" },
-  btp: { admin: "Conducteur de travaux", employee: "Chef de chantier", client: "Client" },
+  btp: { admin: "Dirigeant", employee: "Ouvrier / Technicien", client: "Client" },
   coiffure: { admin: "Responsable salon", employee: "Coiffeur", client: "Client" },
   "auto-ecole": { admin: "Directeur", employee: "Moniteur", client: "Élève" },
   conciergerie: { admin: "Gestionnaire", employee: "Agent", client: "Propriétaire" },
