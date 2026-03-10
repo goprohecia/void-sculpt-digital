@@ -20,7 +20,6 @@ export default function EmployeeDossiers() {
   const assignEnabled = isAssignationEnabled(demoSector);
 
   if (demoSector === "garages") {
-    const { GarageMechanicView } = require("@/components/garage/GarageMechanicView");
     return <GarageMechanicView />;
   }
 

@@ -20,7 +20,6 @@ export default function ClientDossiers() {
   const mesDossiers = clientId ? getDossiersByClient(clientId) : [];
 
   if (demoSector === "garages") {
-    const { GarageClientView } = require("@/components/garage/GarageClientView");
     return <GarageClientView />;
   }
 

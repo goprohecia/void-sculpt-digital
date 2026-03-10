@@ -121,7 +121,7 @@ export default function AdminDossiers() {
   };
 
   if (demoSector === "garages") {
-    const { GarageVehicleList } = require("@/components/garage/GarageVehicleList");
+    return (
     return (
       <AdminLayout>
         <AdminPageTransition>
