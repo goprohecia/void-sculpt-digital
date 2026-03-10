@@ -23,6 +23,7 @@ import { AutoEcoleEleveView } from "@/components/auto-ecole/AutoEcoleEleveView";
 import { MariageClientView } from "@/components/mariage/MariageClientView";
 import { AvocatClientView } from "@/components/avocat/AvocatClientView";
 import { ComptableClientView } from "@/components/comptable/ComptableClientView";
+import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
