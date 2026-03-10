@@ -118,6 +118,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "btp") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <BTPDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

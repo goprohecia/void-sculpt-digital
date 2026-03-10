@@ -142,6 +142,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "btp") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <BTPDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

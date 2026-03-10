@@ -29,6 +29,10 @@ export default function EmployeeDossiers() {
     return <ImmobilierAgentView />;
   }
 
+  if (demoSector === "btp") {
+    return <BTPOuvrierView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
