@@ -291,7 +291,9 @@ const MARIAGE_OVERRIDES: SectorModulesConfig = {
 };
 
 const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Chantiers nettoyage", description: "Sites et contrats de nettoyage" },
+  dossiers: { label: "Contrats", description: "Contrats de nettoyage et interventions" },
+  employees: { label: "Agents", description: "Équipes de nettoyage et responsables de site" },
+  clients: { label: "Clients", description: "Clients B2B et syndics" },
   taches: { label: "Planning interventions", description: "Tournées et planning des équipes" },
   stock: { label: "Produits", description: "Produits d'entretien et consommables" },
   documents: { label: "Fiches intervention", description: "Fiches de passage et cahiers des charges" },
@@ -300,7 +302,6 @@ const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
   "rendez-vous": { label: "Interventions", description: "Planification des passages et contrôles qualité" },
   notes: { label: "Notes terrain", description: "Observations et incidents sur site" },
   support: { label: "Réclamations", description: "Réclamations clients et non-conformités" },
-  employees: { label: "Agents", description: "Équipes de nettoyage et responsables de site" },
 };
 
 const REPARATEUR_OVERRIDES: SectorModulesConfig = {

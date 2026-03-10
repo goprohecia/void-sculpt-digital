@@ -289,7 +289,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Contrat récurrent",
       category: "gestion",
-      steps: ["Demande reçue", "Visite des locaux", "Cahier des charges", "Devis", "Signature contrat", "Planification équipes", "Première intervention", "Contrôle qualité", "Suivi mensuel", "Renouvellement"],
+      steps: ["Devis envoyé", "Contrat signé", "Planifié", "Intervention en cours", "Intervention terminée", "Rapport envoyé", "Facturé"],
     },
     {
       name: "Intervention ponctuelle",

@@ -30,6 +30,7 @@ import { DevDevView } from "@/components/dev/DevDevView";
 import { DJAssistantView } from "@/components/dj/DJAssistantView";
 import { EvenementielChefProjetView } from "@/components/evenementiel/EvenementielChefProjetView";
 import { FormateurFormateurView } from "@/components/formateur/FormateurFormateurView";
+import { NettoyageAgentView } from "@/components/nettoyage/NettoyageAgentView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -148,6 +149,10 @@ export default function EmployeeDossiers() {
 
   if (demoSector === "formateur") {
     return (<EmployeeLayout><AdminPageTransition><FormateurFormateurView /></AdminPageTransition></EmployeeLayout>);
+  }
+
+  if (demoSector === "nettoyage") {
+    return (<EmployeeLayout><AdminPageTransition><NettoyageAgentView /></AdminPageTransition></EmployeeLayout>);
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
