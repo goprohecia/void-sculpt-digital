@@ -22,6 +22,7 @@ import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard
 import { BTPDashboard } from "@/components/btp/BTPDashboard";
 import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
 import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
+import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -169,6 +170,16 @@ export default function AdminDossiers() {
       <AdminLayout>
         <AdminPageTransition>
           <CoiffureDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "cabinet-recrutement") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <RecrutementDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

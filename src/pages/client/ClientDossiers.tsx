@@ -17,6 +17,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BTPClientView } from "@/components/btp/BTPClientView";
 import { ConciergerieProprietaireView } from "@/components/conciergerie/ConciergerieProprietaireView";
 import { CoiffureClientView } from "@/components/coiffure/CoiffureClientView";
+import { RecrutementClientView } from "@/components/recrutement/RecrutementClientView";
+import { RecrutementCandidatView } from "@/components/recrutement/RecrutementCandidatView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -75,6 +77,27 @@ export default function ClientDossiers() {
       <ClientLayout>
         <AdminPageTransition>
           <CoiffureClientView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
+  if (demoSector === "cabinet-recrutement") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <Tabs defaultValue="entreprise" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="entreprise">Espace Client Entreprise</TabsTrigger>
+              <TabsTrigger value="candidat">Espace Candidat</TabsTrigger>
+            </TabsList>
+            <TabsContent value="entreprise">
+              <RecrutementClientView />
+            </TabsContent>
+            <TabsContent value="candidat">
+              <RecrutementCandidatView />
+            </TabsContent>
+          </Tabs>
         </AdminPageTransition>
       </ClientLayout>
     );

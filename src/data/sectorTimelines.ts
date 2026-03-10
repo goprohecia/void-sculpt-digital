@@ -317,6 +317,19 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
       steps: ["Commande reçue", "Vérification stock", "Préparation", "Conditionnement", "Livraison / Retrait", "Confirmation réception"],
     },
   ],
+
+  "cabinet-recrutement": [
+    {
+      name: "Mission de recrutement",
+      category: "projet",
+      steps: ["Mission ouverte", "Sourcing", "Entretien cabinet", "Candidat présenté", "Entretien client", "Offre faite", "Intégré"],
+    },
+    {
+      name: "Chasse de tête",
+      category: "projet",
+      steps: ["Brief client", "Mapping marché", "Approche directe", "Entretien qualification", "Présentation shortlist", "Entretiens client", "Négociation", "Offre", "Intégration", "Suivi période d'essai"],
+    },
+  ],
 };
 
 /** Get presets for a given sector key, falling back to generic */
@@ -349,6 +362,7 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     nettoyage: "Nettoyage",
     reparateur: "Réparateur",
     traiteur: "Traiteur",
+    "cabinet-recrutement": "Cabinet de Recrutement",
   };
 
   return Object.entries(SECTOR_TIMELINE_PRESETS).map(([key, presets]) => ({
