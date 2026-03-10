@@ -33,6 +33,7 @@ const SYSTEM_MODULES = ["overview", "parametres"];
 export function ModulesTab() {
   const { demoPlan, planModules, getModuleLabel } = useDemoPlan();
   const [swapsRemaining, setSwapsRemaining] = useState(2);
+  const [showWarning, setShowWarning] = useState(false);
   const [wizardOpen, setWizardOpen] = useState(false);
 
   // Compute active modules from plan config
