@@ -270,6 +270,10 @@ export default function AdminDossiers() {
     return (<AdminLayout><AdminPageTransition><DJDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "evenementiel") {
+    return (<AdminLayout><AdminPageTransition><EvenementielDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
