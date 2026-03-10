@@ -39,6 +39,10 @@ export default function EmployeeDossiers() {
     return <ConciergerieAgentView />;
   }
 
+  if (demoSector === "coiffure") {
+    return <CoiffurePraticienView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
