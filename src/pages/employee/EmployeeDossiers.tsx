@@ -33,6 +33,7 @@ import { FormateurFormateurView } from "@/components/formateur/FormateurFormateu
 import { NettoyageAgentView } from "@/components/nettoyage/NettoyageAgentView";
 import { PhotographeRetoucheurView } from "@/components/photographe/PhotographeRetoucheurView";
 import { ReparateurTechnicienView } from "@/components/reparateur/ReparateurTechnicienView";
+import { TraiteurEquipeView } from "@/components/traiteur/TraiteurEquipeView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
