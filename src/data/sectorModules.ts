@@ -226,7 +226,7 @@ const FORMATEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const GARAGES_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Réparations", description: "Ordres de réparation et interventions" },
+  dossiers: { label: "Véhicules", description: "Suivi des véhicules en atelier" },
   taches: { label: "Ordres de réparation", description: "Tâches mécaniques et diagnostics" },
   stock: { label: "Pièces détachées", description: "Stock de pièces et consommables auto" },
   documents: { label: "Fiches techniques", description: "Carnets d'entretien et rapports de contrôle" },
@@ -236,6 +236,7 @@ const GARAGES_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Notes mécanicien", description: "Observations techniques et historique véhicule" },
   support: { label: "Garanties", description: "Garanties pièces et main d'œuvre" },
   clients: { label: "Clients & Véhicules", description: "Fiches clients avec parc automobile" },
+  employees: { label: "Mécaniciens", description: "Équipe de mécaniciens et techniciens" },
 };
 
 const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
