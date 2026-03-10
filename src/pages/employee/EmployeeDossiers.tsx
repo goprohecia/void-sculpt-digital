@@ -5,6 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
@@ -16,6 +17,8 @@ import { ConciergerieAgentView } from "@/components/conciergerie/ConciergerieAge
 import { CoiffurePraticienView } from "@/components/coiffure/CoiffurePraticienView";
 import { RecrutementChargeView } from "@/components/recrutement/RecrutementChargeView";
 import { AutoEcoleMoniteurView } from "@/components/auto-ecole/AutoEcoleMoniteurView";
+import { MariageConseillerView } from "@/components/mariage/MariageConseillerView";
+import { MariageRetoucheuseView } from "@/components/mariage/MariageRetoucheuseView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -51,6 +54,27 @@ export default function EmployeeDossiers() {
 
   if (demoSector === "auto-ecole") {
     return <AutoEcoleMoniteurView />;
+  }
+
+  if (demoSector === "mariage") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <Tabs defaultValue="conseillere" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="conseillere">Espace Conseillère</TabsTrigger>
+              <TabsTrigger value="retoucheuse">Espace Retoucheuse</TabsTrigger>
+            </TabsList>
+            <TabsContent value="conseillere">
+              <MariageConseillerView />
+            </TabsContent>
+            <TabsContent value="retoucheuse">
+              <MariageRetoucheuseView />
+            </TabsContent>
+          </Tabs>
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);

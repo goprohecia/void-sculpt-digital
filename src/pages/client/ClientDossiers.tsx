@@ -20,6 +20,7 @@ import { CoiffureClientView } from "@/components/coiffure/CoiffureClientView";
 import { RecrutementClientView } from "@/components/recrutement/RecrutementClientView";
 import { RecrutementCandidatView } from "@/components/recrutement/RecrutementCandidatView";
 import { AutoEcoleEleveView } from "@/components/auto-ecole/AutoEcoleEleveView";
+import { MariageClientView } from "@/components/mariage/MariageClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -106,6 +107,10 @@ export default function ClientDossiers() {
 
   if (demoSector === "auto-ecole") {
     return <AutoEcoleEleveView />;
+  }
+
+  if (demoSector === "mariage") {
+    return <MariageClientView />;
   }
 
   const getCahierByDossier = (dossierId: string) => {

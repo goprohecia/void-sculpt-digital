@@ -24,6 +24,7 @@ import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDas
 import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
 import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
 import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
+import { MariageDashboard } from "@/components/mariage/MariageDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -191,6 +192,16 @@ export default function AdminDossiers() {
       <AdminLayout>
         <AdminPageTransition>
           <AutoEcoleDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "mariage") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <MariageDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

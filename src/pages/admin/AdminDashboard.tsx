@@ -11,6 +11,7 @@ import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDas
 import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
 import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
 import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
+import { MariageDashboard } from "@/components/mariage/MariageDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -167,6 +168,16 @@ export default function AdminDashboard() {
       <AdminLayout>
         <AdminPageTransition>
           <AutoEcoleDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "mariage") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <MariageDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );
