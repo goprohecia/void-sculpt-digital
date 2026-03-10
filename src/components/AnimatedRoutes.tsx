@@ -209,6 +209,7 @@ export function AnimatedRoutes() {
         {/* Super Admin routes */}
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
         <Route path="/superadmin/entreprises" element={<SuperAdminEntreprises />} />
+        <Route path="/superadmin/entreprises/:id" element={<SuperAdminEntrepriseDetail />} />
         <Route path="/superadmin/abonnements" element={<SuperAdminAbonnements />} />
         <Route path="/superadmin/formules" element={<SuperAdminFormules />} />
         <Route path="/superadmin/stats" element={<SuperAdminStats />} />
