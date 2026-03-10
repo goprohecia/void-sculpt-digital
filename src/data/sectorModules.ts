@@ -309,8 +309,8 @@ const TRAITEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Prestations", description: "Gestion des logements et prestations" },
-  taches: { label: "Tâches conciergerie", description: "Ménage, check-in/out, maintenance" },
+  dossiers: { label: "Séjours / Réservations", description: "Gestion des séjours et réservations voyageurs" },
+  taches: { label: "Interventions", description: "Ménage, check-in/out, maintenance" },
   stock: { label: "Fournitures", description: "Linge, produits d'accueil et consommables" },
   documents: { label: "Documents propriétaires", description: "Contrats de gestion et inventaires" },
   pipeline: { label: "Pipeline prospects", description: "Nouveaux propriétaires et biens à gérer" },
@@ -319,7 +319,9 @@ const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Notes logements", description: "Spécificités des logements et consignes" },
   support: { label: "Réclamations", description: "Réclamations voyageurs et propriétaires" },
   clients: { label: "Propriétaires", description: "Propriétaires de biens gérés" },
+  employees: { label: "Agents d'entretien", description: "Équipe d'entretien et agents terrain" },
   relances: { label: "Relances propriétaires", description: "Renouvellements de contrats de gestion" },
+  facturation: { label: "Facturation propriétaires", description: "Facturation et commissions propriétaires" },
 };
 
 // ── Master map — add new sectors here ──
@@ -440,7 +442,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   btp: { admin: "Dirigeant", employee: "Ouvrier / Technicien", client: "Client" },
   coiffure: { admin: "Responsable salon", employee: "Coiffeur", client: "Client" },
   "auto-ecole": { admin: "Directeur", employee: "Moniteur", client: "Élève" },
-  conciergerie: { admin: "Gestionnaire", employee: "Agent", client: "Propriétaire" },
+  conciergerie: { admin: "Conciergerie", employee: "Agent d'entretien", client: "Propriétaire" },
   cabinets: { admin: "Associé", employee: "Collaborateur", client: "Client" },
   immobilier: { admin: "Direction", employee: "Agent", client: "Client" },
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
