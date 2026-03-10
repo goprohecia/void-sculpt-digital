@@ -136,6 +136,16 @@ export default function ClientDossiers() {
     );
   }
 
+  if (demoSector === "boutique") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <BoutiqueClientView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;
