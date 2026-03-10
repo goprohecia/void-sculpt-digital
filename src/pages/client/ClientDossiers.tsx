@@ -182,6 +182,10 @@ export default function ClientDossiers() {
     return (<ClientLayout><AdminPageTransition><EvenementielClientView /></AdminPageTransition></ClientLayout>);
   }
 
+  if (demoSector === "formateur") {
+    return (<ClientLayout><AdminPageTransition><FormateurStagiaireView /></AdminPageTransition></ClientLayout>);
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;

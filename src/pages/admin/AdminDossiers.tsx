@@ -276,6 +276,10 @@ export default function AdminDossiers() {
     return (<AdminLayout><AdminPageTransition><EvenementielDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "formateur") {
+    return (<AdminLayout><AdminPageTransition><FormateurDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

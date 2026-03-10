@@ -146,6 +146,10 @@ export default function EmployeeDossiers() {
     return (<EmployeeLayout><AdminPageTransition><EvenementielChefProjetView /></AdminPageTransition></EmployeeLayout>);
   }
 
+  if (demoSector === "formateur") {
+    return (<EmployeeLayout><AdminPageTransition><FormateurFormateurView /></AdminPageTransition></EmployeeLayout>);
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
