@@ -268,6 +268,11 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   mariage: [
     {
+      name: "Commande robe de mariée",
+      category: "vente",
+      steps: ["RDV Pris", "Mesures Prises", "En Confection", "Essayage Intermédiaire", "Essayage Final", "Arrivée Boutique", "Prête à Récupérer", "Terminée"],
+    },
+    {
       name: "Organisation mariage",
       category: "événement",
       steps: ["Premier rendez-vous", "Définition budget", "Sélection lieu", "Choix prestataires", "Envoi faire-part", "Gestion RSVPs", "Planning jour J", "Essayage", "Répétition", "Jour J – Installation", "Cérémonie", "Réception", "Bilan & album"],
