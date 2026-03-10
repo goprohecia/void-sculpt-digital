@@ -195,6 +195,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "expert-comptable") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ComptableDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

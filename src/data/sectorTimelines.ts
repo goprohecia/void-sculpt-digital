@@ -409,6 +409,7 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     "cabinet-recrutement": "Cabinet de Recrutement",
     "auto-ecole": "Auto-École",
     "cabinet-avocats": "Cabinet d'Avocats",
+    "expert-comptable": "Expert-Comptable",
   };
 
   return Object.entries(SECTOR_TIMELINE_PRESETS).map(([key, presets]) => ({

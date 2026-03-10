@@ -85,6 +85,7 @@ export const DEFAULT_SECTOR_RECOMMENDATIONS: Record<SectorKey, string[]> = {
   traiteur: ["clients", "dossiers", "facturation", "stock", "rendez-vous", "taches", "relances", "messagerie"],
   "cabinet-recrutement": ["clients", "dossiers", "facturation", "pipeline", "rendez-vous", "messagerie", "analyse", "taches"],
   "cabinet-avocats": ["dossiers", "clients", "facturation", "documents", "rendez-vous", "messagerie", "temps", "analyse"],
+  "expert-comptable": ["dossiers", "clients", "facturation", "documents", "rendez-vous", "temps", "analyse", "emails"],
 };
 
 interface DemoPlanContextType {

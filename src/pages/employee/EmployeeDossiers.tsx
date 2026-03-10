@@ -89,6 +89,16 @@ export default function EmployeeDossiers() {
     );
   }
 
+  if (demoSector === "expert-comptable") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <ComptableCollaborateurView />
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

@@ -125,6 +125,16 @@ export default function ClientDossiers() {
     );
   }
 
+  if (demoSector === "expert-comptable") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <ComptableClientView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;

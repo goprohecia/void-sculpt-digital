@@ -219,6 +219,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "expert-comptable") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ComptableDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
