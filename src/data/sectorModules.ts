@@ -467,6 +467,7 @@ const ASSIGNATION_SECTORS = [
   "auto-ecole",     // Auto-École
   "cabinet-avocats", // Cabinet d'Avocats
   "cabinet-recrutement", // Cabinet de Recrutement
+  "expert-comptable", // Expert-Comptable
 ];
 
 export function isAssignationEnabled(sectorKey?: string | null): boolean {
