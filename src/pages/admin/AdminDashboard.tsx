@@ -17,6 +17,7 @@ import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
 import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
 import { SportDashboard } from "@/components/sport/SportDashboard";
 import { CMDashboard } from "@/components/cm/CMDashboard";
+import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
