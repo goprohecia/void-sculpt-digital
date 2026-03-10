@@ -309,8 +309,8 @@ const TRAITEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Prestations", description: "Gestion des logements et prestations" },
-  taches: { label: "Tâches conciergerie", description: "Ménage, check-in/out, maintenance" },
+  dossiers: { label: "Séjours / Réservations", description: "Gestion des séjours et réservations voyageurs" },
+  taches: { label: "Interventions", description: "Ménage, check-in/out, maintenance" },
   stock: { label: "Fournitures", description: "Linge, produits d'accueil et consommables" },
   documents: { label: "Documents propriétaires", description: "Contrats de gestion et inventaires" },
   pipeline: { label: "Pipeline prospects", description: "Nouveaux propriétaires et biens à gérer" },
@@ -319,7 +319,9 @@ const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Notes logements", description: "Spécificités des logements et consignes" },
   support: { label: "Réclamations", description: "Réclamations voyageurs et propriétaires" },
   clients: { label: "Propriétaires", description: "Propriétaires de biens gérés" },
+  employees: { label: "Agents d'entretien", description: "Équipe d'entretien et agents terrain" },
   relances: { label: "Relances propriétaires", description: "Renouvellements de contrats de gestion" },
+  facturation: { label: "Facturation propriétaires", description: "Facturation et commissions propriétaires" },
 };
 
 // ── Master map — add new sectors here ──
