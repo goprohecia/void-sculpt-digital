@@ -14,6 +14,7 @@ import { GarageClientView } from "@/components/garage/GarageClientView";
 import { ImmobilierProprietaireView } from "@/components/immobilier/ImmobilierProprietaireView";
 import { ImmobilierAcheteurView } from "@/components/immobilier/ImmobilierAcheteurView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BTPClientView } from "@/components/btp/BTPClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
