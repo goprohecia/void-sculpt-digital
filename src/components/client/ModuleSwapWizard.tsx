@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import {
-  AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2,
+  ArrowLeft, ArrowRight, CheckCircle2,
   Users, FolderKanban, Receipt, MessageSquare, MailWarning,
   Headphones, Calendar, ListTodo, BarChart3, FileText,
   Clock, Zap, Bot, Settings, Layers, PieChart,
-  ShieldCheck, PackageSearch, ArrowRightLeft,
+  ShieldCheck, PackageSearch, ArrowRightLeft, AlertTriangle,
 } from "lucide-react";
+import { MODULE_EXTRA_WARNINGS } from "@/components/client/SwapWarningScreen";
 import type { LucideIcon } from "lucide-react";
 
 const MODULE_ICONS: Record<string, LucideIcon> = {
