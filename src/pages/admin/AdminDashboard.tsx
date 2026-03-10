@@ -14,6 +14,7 @@ import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
 import { MariageDashboard } from "@/components/mariage/MariageDashboard";
 import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
 import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
+import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
