@@ -330,6 +330,19 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
       steps: ["Brief client", "Mapping marché", "Approche directe", "Entretien qualification", "Présentation shortlist", "Entretiens client", "Négociation", "Offre", "Intégration", "Suivi période d'essai"],
     },
   ],
+
+  "auto-ecole": [
+    {
+      name: "Parcours élève permis B",
+      category: "formation",
+      steps: ["Inscription", "Dossier NEPH", "Code en cours", "Heures de conduite", "Examen blanc", "Passage code", "Passage conduite", "Diplômé"],
+    },
+    {
+      name: "Parcours conduite accompagnée",
+      category: "formation",
+      steps: ["Inscription", "Dossier NEPH", "Code en cours", "20h de conduite", "RDV pédagogique 1", "Conduite accompagnée", "RDV pédagogique 2", "Passage conduite", "Diplômé"],
+    },
+  ],
 };
 
 /** Get presets for a given sector key, falling back to generic */
@@ -363,6 +376,7 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     reparateur: "Réparateur",
     traiteur: "Traiteur",
     "cabinet-recrutement": "Cabinet de Recrutement",
+    "auto-ecole": "Auto-École",
   };
 
   return Object.entries(SECTOR_TIMELINE_PRESETS).map(([key, presets]) => ({
