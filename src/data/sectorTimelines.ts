@@ -238,9 +238,9 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   formateur: [
     {
-      name: "Formation présentielle",
+      name: "Session de formation",
       category: "formation",
-      steps: ["Analyse des besoins", "Conception programme", "Devis / Convention", "Convocations", "Préparation supports", "Jour de formation", "Évaluation à chaud", "Remise attestation", "Évaluation à froid", "Bilan"],
+      steps: ["Inscription reçue", "Convention signée", "Acompte reçu", "Formation en cours", "Évaluation finale", "Attestation émise", "Solde réglé"],
     },
     {
       name: "Formation en ligne",

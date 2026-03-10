@@ -31,6 +31,7 @@ import { DesignerClientView } from "@/components/designer/DesignerClientView";
 import { DevClientView } from "@/components/dev/DevClientView";
 import { DJClientView } from "@/components/dj/DJClientView";
 import { EvenementielClientView } from "@/components/evenementiel/EvenementielClientView";
+import { FormateurStagiaireView } from "@/components/formateur/FormateurStagiaireView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -179,6 +180,10 @@ export default function ClientDossiers() {
 
   if (demoSector === "evenementiel") {
     return (<ClientLayout><AdminPageTransition><EvenementielClientView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "formateur") {
+    return (<ClientLayout><AdminPageTransition><FormateurStagiaireView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {

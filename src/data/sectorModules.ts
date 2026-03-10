@@ -231,7 +231,9 @@ const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
 };
 
 const FORMATEUR_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Formations", description: "Programmes de formation et sessions" },
+  dossiers: { label: "Sessions", description: "Sessions de formation et dossiers stagiaires" },
+  employees: { label: "Formateurs", description: "Équipe de formateurs" },
+  clients: { label: "Stagiaires", description: "Stagiaires et organismes clients" },
   taches: { label: "Modules & Cours", description: "Préparation des modules et supports de cours" },
   stock: { label: "Supports pédagogiques", description: "Manuels, kits et matériel de formation" },
   documents: { label: "Ressources pédagogiques", description: "Supports PDF, vidéos et exercices" },
@@ -241,7 +243,6 @@ const FORMATEUR_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Notes formateur", description: "Observations pédagogiques et améliorations" },
   support: { label: "Support apprenant", description: "Questions et accompagnement post-formation" },
   temps: { label: "Heures de formation", description: "Suivi du temps par session et module" },
-  clients: { label: "Apprenants", description: "Stagiaires et organismes de formation" },
 };
 
 const GARAGES_OVERRIDES: SectorModulesConfig = {
