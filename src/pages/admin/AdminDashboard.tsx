@@ -13,6 +13,7 @@ import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashbo
 import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
 import { MariageDashboard } from "@/components/mariage/MariageDashboard";
 import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
+import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -189,6 +190,16 @@ export default function AdminDashboard() {
       <AdminLayout>
         <AdminPageTransition>
           <AvocatDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "expert-comptable") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ComptableDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

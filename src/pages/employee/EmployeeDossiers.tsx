@@ -20,6 +20,7 @@ import { AutoEcoleMoniteurView } from "@/components/auto-ecole/AutoEcoleMoniteur
 import { MariageConseillerView } from "@/components/mariage/MariageConseillerView";
 import { MariageRetoucheuseView } from "@/components/mariage/MariageRetoucheuseView";
 import { AvocatCollaborateurView } from "@/components/avocat/AvocatCollaborateurView";
+import { ComptableCollaborateurView } from "@/components/comptable/ComptableCollaborateurView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -83,6 +84,16 @@ export default function EmployeeDossiers() {
       <EmployeeLayout>
         <AdminPageTransition>
           <AvocatCollaborateurView />
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
+  if (demoSector === "expert-comptable") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <ComptableCollaborateurView />
         </AdminPageTransition>
       </EmployeeLayout>
     );

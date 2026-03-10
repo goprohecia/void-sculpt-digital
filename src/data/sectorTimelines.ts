@@ -361,6 +361,19 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
       steps: ["Consultation initiale", "Mandat signé", "Analyse du dossier", "Mise en demeure", "Négociation", "Protocole d'accord", "Exécution", "Clôturé"],
     },
   ],
+
+  "expert-comptable": [
+    {
+      name: "Mission comptable annuelle",
+      category: "gestion",
+      steps: ["Dossier ouvert", "Pièces collectées", "Saisie comptable", "Révision", "Déclaration préparée", "Validée client", "Envoyée aux impôts", "Clôturée"],
+    },
+    {
+      name: "Déclaration fiscale",
+      category: "gestion",
+      steps: ["Collecte pièces", "Saisie", "Contrôle", "Préparation déclaration", "Validation client", "Télétransmission", "Accusé de réception", "Archivage"],
+    },
+  ],
 };
 
 /** Get presets for a given sector key, falling back to generic */
@@ -396,6 +409,7 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     "cabinet-recrutement": "Cabinet de Recrutement",
     "auto-ecole": "Auto-École",
     "cabinet-avocats": "Cabinet d'Avocats",
+    "expert-comptable": "Expert-Comptable",
   };
 
   return Object.entries(SECTOR_TIMELINE_PRESETS).map(([key, presets]) => ({

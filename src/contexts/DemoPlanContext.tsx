@@ -55,6 +55,7 @@ export const SECTORS = [
   { key: "traiteur", label: "Traiteur", icon: "🍽️" },
   { key: "cabinet-recrutement", label: "Cabinet de Recrutement", icon: "🎯" },
   { key: "cabinet-avocats", label: "Cabinet d'Avocats", icon: "⚖️" },
+  { key: "expert-comptable", label: "Expert-Comptable", icon: "🧮" },
 ] as const;
 
 export type SectorKey = (typeof SECTORS)[number]["key"];
@@ -84,6 +85,7 @@ export const DEFAULT_SECTOR_RECOMMENDATIONS: Record<SectorKey, string[]> = {
   traiteur: ["clients", "dossiers", "facturation", "stock", "rendez-vous", "taches", "relances", "messagerie"],
   "cabinet-recrutement": ["clients", "dossiers", "facturation", "pipeline", "rendez-vous", "messagerie", "analyse", "taches"],
   "cabinet-avocats": ["dossiers", "clients", "facturation", "documents", "rendez-vous", "messagerie", "temps", "analyse"],
+  "expert-comptable": ["dossiers", "clients", "facturation", "documents", "rendez-vous", "temps", "analyse", "emails"],
 };
 
 interface DemoPlanContextType {
