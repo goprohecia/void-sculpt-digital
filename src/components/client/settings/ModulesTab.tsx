@@ -17,6 +17,7 @@ import { format, addMonths, startOfMonth } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
 import type { LucideIcon } from "lucide-react";
+import { SwapUpgradeBanner } from "@/components/client/SwapUpgradeBanner";
 
 const MODULE_ICONS: Record<string, LucideIcon> = {
   overview: Layers, clients: Users, employees: Users, dossiers: FolderKanban,
@@ -72,6 +73,9 @@ export function ModulesTab() {
 
   return (
     <div className="space-y-6">
+      {/* Upgrade banner */}
+      <SwapUpgradeBanner />
+
       {/* Swap counter */}
       <Card>
         <CardContent className="pt-6 space-y-4">

@@ -89,6 +89,7 @@ import ClientSupport from "@/pages/client/ClientSupport";
 import ClientPaiement from "@/pages/client/ClientPaiement";
 import ClientSettings from "@/pages/client/ClientSettings";
 import ClientRendezVous from "@/pages/client/ClientRendezVous";
+import ClientUpgrade from "@/pages/client/ClientUpgrade";
 
 // Employee pages
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
@@ -187,6 +188,7 @@ export function AnimatedRoutes() {
         <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
         <Route path="/client/profil" element={<ClientProfile />} />
         <Route path="/client/parametres" element={<ClientSettings />} />
+        <Route path="/client/upgrade" element={<ClientUpgrade />} />
 
         {/* Employee routes */}
         <Route path="/employee" element={<EmployeeDashboard />} />
