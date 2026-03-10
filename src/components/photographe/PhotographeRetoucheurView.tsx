@@ -59,7 +59,7 @@ export function PhotographeRetoucheurView() {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label className="text-xs">Nombre de clichés</Label>
-              <Input type="number" value={nbPhotos[selected.id] ?? selected.nbPhotos || ""} onChange={(e) => setNbPhotos((p) => ({ ...p, [selected.id]: e.target.value }))} disabled={!!retouchesTerminees[selected.id]} />
+              <Input type="number" value={nbPhotos[selected.id] ?? (selected.nbPhotos || "")} onChange={(e) => setNbPhotos((p) => ({ ...p, [selected.id]: e.target.value }))} disabled={!!retouchesTerminees[selected.id]} />
             </div>
             <div className="space-y-1">
               <Label className="text-xs">Temps de retouche estimé</Label>
