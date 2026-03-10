@@ -24,6 +24,7 @@ import { DJDashboard } from "@/components/dj/DJDashboard";
 import { EvenementielDashboard } from "@/components/evenementiel/EvenementielDashboard";
 import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
 import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
+import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -259,6 +260,10 @@ export default function AdminDashboard() {
 
   if (demoSector === "nettoyage") {
     return (<AdminLayout><AdminPageTransition><NettoyageDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "photographe") {
+    return (<AdminLayout><AdminPageTransition><PhotographeDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (

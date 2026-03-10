@@ -60,7 +60,9 @@ const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Séances photo", description: "Planification et suivi des séances (studio, extérieur, événement)" },
+  dossiers: { label: "Commandes", description: "Commandes et séances photo" },
+  employees: { label: "Photographes", description: "Photographes et retoucheurs" },
+  clients: { label: "Clients", description: "Portefeuille clients du studio" },
   taches: { label: "Retouche & Post-prod", description: "Suivi des retouches, éditions et traitements" },
   documents: { label: "Galeries & Livraisons", description: "Galeries clients, livraison de photos HD" },
   pipeline: { label: "Pipeline Bookings", description: "Funnel de réservations et prospects" },
@@ -70,7 +72,7 @@ const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
   notes: { label: "Mood boards", description: "Notes créatives et références visuelles" },
   support: { label: "SAV Client", description: "Demandes de retouches supplémentaires, réclamations" },
   "rendez-vous": { label: "Réservations", description: "Créneaux de shooting et rendez-vous clients" },
-  emails: { label: "Emails & Relances", description: "Communications automatisées avec les clients" },
+  facturation: { label: "Acomptes & Facturation", description: "Acomptes, soldes et facturation" },
 };
 
 const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
