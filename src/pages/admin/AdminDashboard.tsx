@@ -26,6 +26,7 @@ import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
 import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
 import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
 import { ReparateurDashboard } from "@/components/reparateur/ReparateurDashboard";
+import { TraiteurDashboard } from "@/components/traiteur/TraiteurDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -269,6 +270,10 @@ export default function AdminDashboard() {
 
   if (demoSector === "reparateur") {
     return (<AdminLayout><AdminPageTransition><ReparateurDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "traiteur") {
+    return (<AdminLayout><AdminPageTransition><TraiteurDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (

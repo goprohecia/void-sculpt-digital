@@ -322,16 +322,18 @@ const REPARATEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const TRAITEUR_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Prestations", description: "Événements traiteur et commandes" },
+  dossiers: { label: "Commandes", description: "Commandes événementielles et prestations traiteur" },
+  employees: { label: "Équipe / Brigade", description: "Cuisiniers, serveurs et logistique" },
+  clients: { label: "Clients", description: "Particuliers et entreprises" },
   taches: { label: "Préparation & Menus", description: "Préparation culinaire et élaboration des menus" },
-  stock: { label: "Ingrédients & Stock", description: "Ingrédients, boissons et consommables" },
+  stock: { label: "Matières premières", description: "Ingrédients, boissons et consommables" },
   documents: { label: "Menus & Contrats", description: "Propositions de menus et contrats clients" },
   pipeline: { label: "Pipeline événements", description: "Demandes de devis et réservations" },
   analyse: { label: "Dashboard Traiteur", description: "KPIs : événements livrés, coût matière, marge" },
   "rendez-vous": { label: "RDV dégustation", description: "Dégustations et rendez-vous de planification" },
   notes: { label: "Notes cuisine", description: "Recettes, allergies et préférences clients" },
   support: { label: "Réclamations", description: "Retours qualité et ajustements" },
-  employees: { label: "Brigade", description: "Cuisiniers, serveurs et logistique" },
+  facturation: { label: "Devis & Facturation", description: "Devis interactifs, acomptes et facturation" },
 };
 
 const CABINET_RECRUTEMENT_OVERRIDES: SectorModulesConfig = {

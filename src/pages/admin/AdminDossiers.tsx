@@ -39,6 +39,7 @@ import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
 import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
 import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
 import { ReparateurDashboard } from "@/components/reparateur/ReparateurDashboard";
+import { TraiteurDashboard } from "@/components/traiteur/TraiteurDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -293,6 +294,10 @@ export default function AdminDossiers() {
 
   if (demoSector === "reparateur") {
     return (<AdminLayout><AdminPageTransition><ReparateurDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "traiteur") {
+    return (<AdminLayout><AdminPageTransition><TraiteurDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (

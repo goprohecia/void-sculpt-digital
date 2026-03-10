@@ -313,9 +313,9 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   traiteur: [
     {
-      name: "Prestation traiteur",
+      name: "Événement traiteur",
       category: "événement",
-      steps: ["Demande reçue", "Rendez-vous découverte", "Proposition menu", "Dégustation", "Devis final", "Confirmation", "Commande fournisseurs", "Préparation", "Livraison / Installation", "Service", "Démontage", "Facturation"],
+      steps: ["Demande reçue", "Devis envoyé", "Menu validé", "Contrat signé", "Acompte reçu", "Préparation", "Livraison / Service", "Solde réglé"],
     },
     {
       name: "Commande emporter / livraison",
