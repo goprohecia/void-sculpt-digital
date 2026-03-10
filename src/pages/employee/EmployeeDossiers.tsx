@@ -26,6 +26,7 @@ import { SportCoachView } from "@/components/sport/SportCoachView";
 import { CMChargeView } from "@/components/cm/CMChargeView";
 import { ConsultantConsultantView } from "@/components/consultant/ConsultantConsultantView";
 import { DesignerDesignerView } from "@/components/designer/DesignerDesignerView";
+import { DevDevView } from "@/components/dev/DevDevView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -128,6 +129,10 @@ export default function EmployeeDossiers() {
 
   if (demoSector === "designer") {
     return (<EmployeeLayout><AdminPageTransition><DesignerDesignerView /></AdminPageTransition></EmployeeLayout>);
+  }
+
+  if (demoSector === "developpeur") {
+    return (<EmployeeLayout><AdminPageTransition><DevDevView /></AdminPageTransition></EmployeeLayout>);
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);

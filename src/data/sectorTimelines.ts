@@ -206,7 +206,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Projet web / app",
       category: "projet",
-      steps: ["Recueil des besoins", "Cahier des charges", "Architecture technique", "Devis", "Maquettes", "Développement", "Tests", "Recette client", "Corrections", "Mise en production", "Formation", "Maintenance"],
+      steps: ["Cahier des charges", "Devis signé", "Maquettes validées", "Dev en cours", "Recette client", "Corrections", "Mise en prod", "Clôturé"],
     },
     {
       name: "Mission freelance",

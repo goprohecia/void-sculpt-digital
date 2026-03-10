@@ -32,6 +32,7 @@ import { SportDashboard } from "@/components/sport/SportDashboard";
 import { CMDashboard } from "@/components/cm/CMDashboard";
 import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
 import { DesignerDashboard } from "@/components/designer/DesignerDashboard";
+import { DevDashboard } from "@/components/dev/DevDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -258,6 +259,10 @@ export default function AdminDossiers() {
 
   if (demoSector === "designer") {
     return (<AdminLayout><AdminPageTransition><DesignerDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "developpeur") {
+    return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (
