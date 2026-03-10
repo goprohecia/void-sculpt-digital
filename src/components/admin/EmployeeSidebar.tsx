@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { getSectorRoleLabel } from "@/data/sectorModules";
 import {
   Sidebar,
   SidebarContent,
