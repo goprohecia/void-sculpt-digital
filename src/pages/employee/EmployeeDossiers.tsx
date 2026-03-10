@@ -49,6 +49,10 @@ export default function EmployeeDossiers() {
     return <RecrutementChargeView />;
   }
 
+  if (demoSector === "auto-ecole") {
+    return <AutoEcoleMoniteurView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

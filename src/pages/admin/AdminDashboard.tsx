@@ -162,6 +162,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "auto-ecole") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <AutoEcoleDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
