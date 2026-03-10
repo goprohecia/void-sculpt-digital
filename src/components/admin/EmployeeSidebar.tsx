@@ -40,7 +40,7 @@ export function EmployeeSidebar() {
   const { user, logout } = useDemoAuth();
   const { employeeVisibleModules } = useAppSettings();
   const { config: wl } = useWhiteLabel();
-  const { getModuleLabel, isModuleHidden } = useDemoPlan();
+  const { getModuleLabel, isModuleHidden, demoSector } = useDemoPlan();
 
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
