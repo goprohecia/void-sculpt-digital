@@ -72,6 +72,9 @@ export function ModulesTab() {
 
   return (
     <div className="space-y-6">
+      {/* Upgrade banner */}
+      <SwapUpgradeBanner />
+
       {/* Swap counter */}
       <Card>
         <CardContent className="pt-6 space-y-4">
