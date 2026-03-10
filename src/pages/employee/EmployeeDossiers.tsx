@@ -16,6 +16,8 @@ import { ConciergerieAgentView } from "@/components/conciergerie/ConciergerieAge
 import { CoiffurePraticienView } from "@/components/coiffure/CoiffurePraticienView";
 import { RecrutementChargeView } from "@/components/recrutement/RecrutementChargeView";
 import { AutoEcoleMoniteurView } from "@/components/auto-ecole/AutoEcoleMoniteurView";
+import { MariageConseillerView } from "@/components/mariage/MariageConseillerView";
+import { MariageRetoucheuseView } from "@/components/mariage/MariageRetoucheuseView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
