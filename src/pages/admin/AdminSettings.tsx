@@ -657,10 +657,570 @@ export default function AdminSettings() {
     setProfile((p) => ({ ...p, newPassword: "", confirmPassword: "" }));
   };
 
+  const SETTINGS_NAV = [
+    { group: "Général", items: [
+      { key: "profil", label: "Profil", icon: User },
+      { key: "entreprise", label: "Entreprise", icon: Building2 },
+      { key: "facturation", label: "Facturation", icon: Receipt },
+    ]},
+    { group: "Organisation", items: [
+      { key: "tags", label: "Tags", icon: Tag },
+      { key: "services", label: "Services", icon: BarChart3 },
+      { key: "modules", label: "Modules", icon: Puzzle },
+      { key: "timeline", label: "Timeline", icon: Clock },
+    ]},
+    { group: "Avancé", items: [
+      { key: "reservation", label: "Réservation", icon: CalendarDays },
+      { key: "whitelabel", label: "White Label", icon: Palette },
+      { key: "notifications", label: "Notifications", icon: Bell },
+      { key: "suivi-client", label: "Suivi client", icon: Mail },
+    ]},
+  ];
+
+  const [activeTab, setActiveTab] = useState("profil");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "profil":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <User className="h-4 w-4" /> Informations personnelles
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="admin-nom">Nom complet</Label>
+                  <Input id="admin-nom" value={profile.nom} onChange={(e) => setProfile((p) => ({ ...p, nom: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="admin-email" className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> Email</Label>
+                  <Input id="admin-email" type="email" value={profile.email} onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="admin-tel" className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> Téléphone</Label>
+                <Input id="admin-tel" value={profile.telephone} onChange={(e) => setProfile((p) => ({ ...p, telephone: e.target.value }))} />
+              </div>
+              <Separator />
+              <div>
+                <p className="text-sm font-medium flex items-center gap-1.5 mb-3"><Lock className="h-3.5 w-3.5" /> Changer le mot de passe</p>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="new-pw">Nouveau mot de passe</Label>
+                      <div className="relative">
+                        <Input id="new-pw" type={showPasswords.new ? "text" : "password"} placeholder="Min. 8 caractères" value={profile.newPassword} onChange={(e) => setProfile((p) => ({ ...p, newPassword: e.target.value }))} className="pr-10" />
+                        <button type="button" onClick={() => setShowPasswords(s => ({ ...s, new: !s.new }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                          {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirm-pw">Confirmer</Label>
+                      <div className="relative">
+                        <Input id="confirm-pw" type={showPasswords.confirm ? "text" : "password"} placeholder="Répétez le mot de passe" value={profile.confirmPassword} onChange={(e) => setProfile((p) => ({ ...p, confirmPassword: e.target.value }))} className="pr-10" />
+                        <button type="button" onClick={() => setShowPasswords(s => ({ ...s, confirm: !s.confirm }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                          {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button onClick={handleChangePassword} disabled={changingPassword} variant="outline" className="gap-2">
+                      <Lock className="h-4 w-4" />
+                      {changingPassword ? "Modification..." : "Changer le mot de passe"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end pt-2">
+                <Button onClick={() => handleSave("Profil")} disabled={saving} className="gap-2">
+                  {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                  Enregistrer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "entreprise":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <Building2 className="h-4 w-4" /> Informations de l'entreprise
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="co-nom">Raison sociale</Label>
+                  <Input id="co-nom" value={company.nom} onChange={(e) => setCompany((c) => ({ ...c, nom: e.target.value }))} />
+                  <p className="text-xs text-muted-foreground">Ce nom sera utilisé dans les emails d'invitation envoyés à vos clients.</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="co-siret">SIRET</Label>
+                  <Input id="co-siret" value={company.siret} onChange={(e) => setCompany((c) => ({ ...c, siret: e.target.value }))} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="co-adresse" className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> Adresse</Label>
+                <Input id="co-adresse" value={company.adresse} onChange={(e) => setCompany((c) => ({ ...c, adresse: e.target.value }))} />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="co-cp">Code postal</Label>
+                  <Input id="co-cp" value={company.codePostal} onChange={(e) => setCompany((c) => ({ ...c, codePostal: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="co-ville">Ville</Label>
+                  <Input id="co-ville" value={company.ville} onChange={(e) => setCompany((c) => ({ ...c, ville: e.target.value }))} />
+                </div>
+              </div>
+              <Separator />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="co-email" className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> Email de contact</Label>
+                  <Input id="co-email" type="email" value={company.emailContact} onChange={(e) => setCompany((c) => ({ ...c, emailContact: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="co-tel" className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> Téléphone</Label>
+                  <Input id="co-tel" value={company.telephone} onChange={(e) => setCompany((c) => ({ ...c, telephone: e.target.value }))} />
+                </div>
+              </div>
+              <div className="flex justify-end pt-2">
+                <Button onClick={() => handleSave("Entreprise")} disabled={saving} className="gap-2">
+                  {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                  Enregistrer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "facturation":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <Receipt className="h-4 w-4" /> Paramètres de facturation
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="inv-logo" className="flex items-center gap-1.5"><Upload className="h-3.5 w-3.5" /> Logo sur les factures</Label>
+                <Input id="inv-logo" placeholder="URL du logo" value={invoiceSettings.logoUrl} onChange={(e) => setInvoiceSettings((s) => ({ ...s, logoUrl: e.target.value }))} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="inv-mentions">Mentions légales</Label>
+                <Textarea id="inv-mentions" rows={4} value={invoiceSettings.mentionsLegales} onChange={(e) => setInvoiceSettings((s) => ({ ...s, mentionsLegales: e.target.value }))} />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="inv-iban">IBAN</Label>
+                  <Input id="inv-iban" value={invoiceSettings.iban} onChange={(e) => setInvoiceSettings((s) => ({ ...s, iban: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="inv-bic">BIC</Label>
+                  <Input id="inv-bic" value={invoiceSettings.bic} onChange={(e) => setInvoiceSettings((s) => ({ ...s, bic: e.target.value }))} />
+                </div>
+              </div>
+              <div className="flex justify-end pt-2">
+                <Button onClick={() => handleSave("Facturation")} disabled={saving} className="gap-2">
+                  {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                  Enregistrer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "tags":
+        return <TagsManager />;
+
+      case "services":
+        return <ServiceCategoriesManager />;
+
+      case "modules":
+        return (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Puzzle className="h-4 w-4 text-primary" /> Modules admin
+                </CardTitle>
+                <CardDescription>
+                  Choisissez les modules visibles dans votre navigation admin.
+                  {modulesLimit && (
+                    <span className="ml-1 font-medium text-primary">
+                      ({enabledModules.filter(k => k !== "overview" && k !== "parametres").length}/{modulesLimit} utilisés)
+                    </span>
+                  )}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {ALL_ADMIN_MODULES.map((mod) => {
+                  const isAlwaysOn = mod.key === "overview" || mod.key === "parametres";
+                  const isOn = enabledModules.includes(mod.key);
+                  const activeCount = enabledModules.filter(k => k !== "overview" && k !== "parametres").length;
+                  const atLimit = modulesLimit !== null && activeCount >= modulesLimit && !isOn && !isAlwaysOn;
+                  return (
+                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                      <div className="flex items-center gap-2">
+                        <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
+                        {atLimit && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Upgrade</Badge>
+                        )}
+                      </div>
+                      <Switch checked={isOn} disabled={isAlwaysOn || atLimit} onCheckedChange={(v) => {
+                        const next = v ? [...enabledModules, mod.key] : enabledModules.filter((k) => k !== mod.key);
+                        updateSetting.mutate({ key: "enabled_modules", value: next });
+                        toast.success(`Module "${getModuleLabel(mod.key)}" ${v ? "activé" : "désactivé"}`);
+                      }} />
+                    </div>
+                  );
+                })}
+                {modulesLimit !== null && enabledModules.filter(k => k !== "overview" && k !== "parametres").length >= modulesLimit && (
+                  <UpgradeBanner currentPlan={plan} requiredPlan={plan === "starter" ? "business" : "enterprise"} feature="Plus de modules" className="mt-4" />
+                )}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Modules visibles côté client</CardTitle>
+                <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {ALL_CLIENT_MODULES.map((mod) => {
+                  const isOn = clientVisibleModules.includes(mod.key);
+                  const adminHasIt = enabledModules.includes(mod.key) || ["overview","profil","parametres","demandes","devis","factures"].includes(mod.key);
+                  return (
+                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                      <div className="flex items-center gap-2">
+                        <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
+                        {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
+                      </div>
+                      <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
+                        const next = v ? [...clientVisibleModules, mod.key] : clientVisibleModules.filter((k) => k !== mod.key);
+                        updateSetting.mutate({ key: "client_visible_modules", value: next });
+                      }} />
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Modules visibles côté salarié</CardTitle>
+                <CardDescription>Configurez les onglets accessibles dans l'espace salarié.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {ALL_EMPLOYEE_MODULES.map((mod) => {
+                  const isOn = employeeVisibleModules.includes(mod.key);
+                  const adminKeyMap: Record<string, string> = { calendrier: "rendez-vous" };
+                  const adminKey = adminKeyMap[mod.key] || mod.key;
+                  const adminHasIt = enabledModules.includes(adminKey) || ["overview","profil"].includes(mod.key);
+                  return (
+                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                      <div className="flex items-center gap-2">
+                        <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
+                        {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
+                      </div>
+                      <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
+                        const next = v ? [...employeeVisibleModules, mod.key] : employeeVisibleModules.filter((k) => k !== mod.key);
+                        updateSetting.mutate({ key: "employee_visible_modules", value: next });
+                      }} />
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            {canCustomizeSpaces ? <CustomSpacesManager /> : (
+              <UpgradeBanner currentPlan={plan} requiredPlan="enterprise" feature="Espaces personnalisés & renommage de modules" />
+            )}
+          </div>
+        );
+
+      case "timeline":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
+              </CardTitle>
+              <CardDescription>Personnalisez les étapes de suivi de vos projets.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TimelineTemplateEditor />
+            </CardContent>
+          </Card>
+        );
+
+      case "reservation":
+        return <BookingSettingsTab />;
+
+      case "whitelabel":
+        return isEnterprise ? (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2"><Image className="h-4 w-4" /> Identité visuelle</CardTitle>
+                <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-brand">Nom de la marque</Label>
+                    <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
+                    <p className="text-xs text-muted-foreground">Remplace "My Business Assistant" partout.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-short">Abréviation</Label>
+                    <Input id="wl-short" value={whiteLabel.brandShort} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandShort: e.target.value }))} placeholder="MBA" maxLength={5} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-footer">Texte du footer</Label>
+                    <Input id="wl-footer" value={whiteLabel.footerText} onChange={(e) => setWhiteLabel((s) => ({ ...s, footerText: e.target.value }))} />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-logo" className="flex items-center gap-1.5"><Upload className="h-3.5 w-3.5" /> URL du logo</Label>
+                    <Input id="wl-logo" placeholder="https://example.com/logo.png" value={whiteLabel.logoUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, logoUrl: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-favicon" className="flex items-center gap-1.5"><Image className="h-3.5 w-3.5" /> URL du favicon</Label>
+                    <Input id="wl-favicon" placeholder="https://example.com/favicon.ico" value={whiteLabel.faviconUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, faviconUrl: e.target.value }))} />
+                  </div>
+                </div>
+                {whiteLabel.logoUrl && (
+                  <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
+                    <p className="text-xs text-muted-foreground mb-2">Aperçu du logo :</p>
+                    <img src={whiteLabel.logoUrl} alt="Logo preview" className="h-12 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                  </div>
+                )}
+                <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
+                  <div>
+                    <p className="text-sm font-medium">Masquer "Powered by MBA"</p>
+                    <p className="text-xs text-muted-foreground">Supprime toute mention MBA de l'interface.</p>
+                  </div>
+                  <Switch checked={whiteLabel.hidePoweredBy} onCheckedChange={(v) => setWhiteLabel((s) => ({ ...s, hidePoweredBy: v }))} />
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Button onClick={() => handleSave("Identité visuelle")} disabled={saving} className="gap-2">
+                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                    Enregistrer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2"><Palette className="h-4 w-4" /> Couleurs personnalisées</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {([
+                    { key: "primaryColor" as const, label: "Couleur primaire" },
+                    { key: "accentColor" as const, label: "Couleur d'accent" },
+                    { key: "bgColor" as const, label: "Fond principal" },
+                  ]).map(({ key, label }) => (
+                    <div key={key} className="space-y-2">
+                      <Label>{label}</Label>
+                      <div className="flex items-center gap-3">
+                        <input type="color" value={whiteLabel[key]} onChange={(e) => setWhiteLabel((s) => ({ ...s, [key]: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
+                        <Input value={whiteLabel[key]} onChange={(e) => setWhiteLabel((s) => ({ ...s, [key]: e.target.value }))} className="font-mono text-sm" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4 rounded-xl border border-border/30 space-y-3">
+                  <p className="text-xs text-muted-foreground font-medium">Aperçu</p>
+                  <div className="flex gap-3 items-center">
+                    <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.primaryColor }} />
+                    <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.accentColor }} />
+                    <div className="h-12 w-12 rounded-lg border border-border" style={{ backgroundColor: whiteLabel.bgColor }} />
+                    <div className="flex-1 h-12 rounded-lg flex items-center px-4 text-sm font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
+                      {whiteLabel.brandName || "Bouton primaire"}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Button onClick={() => handleSave("Couleurs")} disabled={saving} className="gap-2">
+                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                    Enregistrer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2"><Globe className="h-4 w-4" /> Domaine personnalisé</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="space-y-2">
+                  <Label htmlFor="wl-domain">Nom de domaine</Label>
+                  <Input id="wl-domain" placeholder="app.monentreprise.com" value={whiteLabel.customDomain} onChange={(e) => setWhiteLabel((s) => ({ ...s, customDomain: e.target.value }))} />
+                  <p className="text-xs text-muted-foreground">Configurez un enregistrement CNAME pointant vers notre plateforme.</p>
+                </div>
+                {whiteLabel.customDomain && (
+                  <div className="p-4 rounded-lg bg-muted/20 border border-border/30 space-y-2">
+                    <p className="text-xs font-medium text-muted-foreground">Configuration DNS requise :</p>
+                    <div className="font-mono text-xs bg-background/50 rounded-md p-3 space-y-1">
+                      <p><span className="text-primary">Type:</span> CNAME</p>
+                      <p><span className="text-primary">Nom:</span> {whiteLabel.customDomain.split('.')[0]}</p>
+                      <p><span className="text-primary">Valeur:</span> app.mba-platform.com</p>
+                    </div>
+                    <Badge variant="outline" className="text-amber-500 border-amber-500/30">En attente de vérification</Badge>
+                  </div>
+                )}
+                <div className="flex justify-end pt-2">
+                  <Button onClick={() => handleSave("Domaine")} disabled={saving} className="gap-2">
+                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                    Enregistrer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2"><Mail className="h-4 w-4" /> Emails personnalisés</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-sender-name">Nom de l'expéditeur</Label>
+                    <Input id="wl-sender-name" value={whiteLabel.senderName} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderName: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-sender-email">Email de l'expéditeur</Label>
+                    <Input id="wl-sender-email" type="email" value={whiteLabel.senderEmail} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderEmail: e.target.value }))} />
+                  </div>
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Button onClick={() => handleSave("Emails")} disabled={saving} className="gap-2">
+                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                    Enregistrer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2"><Type className="h-4 w-4" /> Page de connexion</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-login-title">Titre de la page</Label>
+                    <Input id="wl-login-title" value={whiteLabel.loginTitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginTitle: e.target.value }))} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-login-sub">Sous-titre</Label>
+                    <Input id="wl-login-sub" value={whiteLabel.loginSubtitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginSubtitle: e.target.value }))} />
+                  </div>
+                </div>
+                <div className="p-6 rounded-xl border border-border/30 text-center space-y-3" style={{ backgroundColor: whiteLabel.bgColor }}>
+                  <p className="text-xs text-muted-foreground font-medium mb-4">Aperçu page de connexion</p>
+                  {whiteLabel.logoUrl ? (
+                    <img src={whiteLabel.logoUrl} alt="Logo" className="h-10 mx-auto object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                  ) : (
+                    <div className="h-10 w-10 rounded-lg mx-auto flex items-center justify-center text-sm font-bold" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
+                      {whiteLabel.brandName?.charAt(0) || "M"}
+                    </div>
+                  )}
+                  <p className="text-base font-semibold" style={{ color: "#fff" }}>{whiteLabel.loginTitle}</p>
+                  <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{whiteLabel.loginSubtitle}</p>
+                  <div className="max-w-xs mx-auto space-y-2 mt-2">
+                    <div className="h-9 rounded-md bg-white/10 border border-white/10" />
+                    <div className="h-9 rounded-md bg-white/10 border border-white/10" />
+                    <div className="h-9 rounded-md flex items-center justify-center text-xs font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>Se connecter</div>
+                  </div>
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Button onClick={() => handleSave("Page de connexion")} disabled={saving} className="gap-2">
+                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                    Enregistrer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2"><Settings className="h-4 w-4" /> CSS personnalisé (avancé)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Textarea rows={8} placeholder={`:root {\n  --primary: 240 5.9% 50%;\n  --radius: 0.75rem;\n}`} value={whiteLabel.customCss} onChange={(e) => setWhiteLabel((s) => ({ ...s, customCss: e.target.value }))} className="font-mono text-xs" />
+                <div className="flex justify-end pt-2">
+                  <Button onClick={() => handleSave("CSS personnalisé")} disabled={saving} className="gap-2">
+                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                    Appliquer
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : (
+          <UpgradeBanner currentPlan={plan} requiredPlan="enterprise" feature="White Label & Personnalisation complète" />
+        );
+
+      case "notifications":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2"><Bell className="h-4 w-4" /> Préférences de notifications</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">Choisissez les types de notifications email que vous souhaitez recevoir.</p>
+              {[
+                { key: "emailRelance" as const, label: "Relances de paiement", desc: "Recevoir une notification lors de l'envoi d'une relance" },
+                { key: "emailPaiement" as const, label: "Confirmations de paiement", desc: "Être notifié lorsqu'un paiement est reçu" },
+                { key: "emailDemande" as const, label: "Nouvelles demandes", desc: "Recevoir une alerte pour chaque nouvelle demande client" },
+                { key: "emailDevis" as const, label: "Devis acceptés / refusés", desc: "Être notifié du statut des devis" },
+                { key: "emailValidation" as const, label: "Validations", desc: "Notifications de validation de demandes" },
+                { key: "emailSupport" as const, label: "Tickets support", desc: "Être alerté des nouveaux tickets et réponses" },
+              ].map((item) => (
+                <div key={item.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                  <div>
+                    <p className="text-sm font-medium">{item.label}</p>
+                    <p className="text-xs text-muted-foreground">{item.desc}</p>
+                  </div>
+                  <Switch checked={notifs[item.key]} onCheckedChange={(v) => setNotifs((n) => ({ ...n, [item.key]: v }))} />
+                </div>
+              ))}
+              <div className="flex justify-end pt-2">
+                <Button onClick={() => handleSave("Notifications")} disabled={saving} className="gap-2">
+                  {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                  Enregistrer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
+
+      case "suivi-client":
+        return <StepNotificationSettings />;
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <AdminLayout>
       <AdminPageTransition>
-        <motion.div className="space-y-6 max-w-3xl" variants={staggerContainer} initial="initial" animate="animate">
+        <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
           <motion.div variants={staggerItem}>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Settings className="h-6 w-6 text-primary" />
@@ -670,707 +1230,52 @@ export default function AdminSettings() {
           </motion.div>
 
           <motion.div variants={staggerItem}>
-            <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-5 sm:grid-cols-11">
-                <TabsTrigger value="profil" className="gap-1.5 text-xs"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
-                <TabsTrigger value="entreprise" className="gap-1.5 text-xs"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
-                <TabsTrigger value="facturation" className="gap-1.5 text-xs"><Receipt className="h-3.5 w-3.5" /> Facturation</TabsTrigger>
-                <TabsTrigger value="tags" className="gap-1.5 text-xs"><Tag className="h-3.5 w-3.5" /> Tags</TabsTrigger>
-                <TabsTrigger value="services" className="gap-1.5 text-xs"><BarChart3 className="h-3.5 w-3.5" /> Services</TabsTrigger>
-                <TabsTrigger value="modules" className="gap-1.5 text-xs"><Puzzle className="h-3.5 w-3.5" /> Modules</TabsTrigger>
-                <TabsTrigger value="timeline" className="gap-1.5 text-xs"><Clock className="h-3.5 w-3.5" /> Timeline</TabsTrigger>
-                <TabsTrigger value="reservation" className="gap-1.5 text-xs"><CalendarDays className="h-3.5 w-3.5" /> Réservation</TabsTrigger>
-                <TabsTrigger value="whitelabel" className="gap-1.5 text-xs"><Palette className="h-3.5 w-3.5" /> White Label</TabsTrigger>
-                <TabsTrigger value="notifications" className="gap-1.5 text-xs"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
-                <TabsTrigger value="suivi-client" className="gap-1.5 text-xs"><Mail className="h-3.5 w-3.5" /> Suivi client</TabsTrigger>
-              </TabsList>
-
-              {/* PROFIL TAB */}
-              <TabsContent value="profil">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <User className="h-4 w-4" /> Informations personnelles
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="admin-nom">Nom complet</Label>
-                        <Input id="admin-nom" value={profile.nom} onChange={(e) => setProfile((p) => ({ ...p, nom: e.target.value }))} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="admin-email" className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> Email</Label>
-                        <Input id="admin-email" type="email" value={profile.email} onChange={(e) => setProfile((p) => ({ ...p, email: e.target.value }))} />
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Vertical sidebar navigation */}
+              <nav className="md:w-56 shrink-0">
+                <div className="md:sticky md:top-6 space-y-5">
+                  {SETTINGS_NAV.map((group) => (
+                    <div key={group.group}>
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 px-3">
+                        {group.group}
+                      </p>
+                      <div className="space-y-0.5">
+                        {group.items.map((item) => {
+                          const Icon = item.icon;
+                          const isActive = activeTab === item.key;
+                          return (
+                            <button
+                              key={item.key}
+                              onClick={() => setActiveTab(item.key)}
+                              className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
+                                isActive
+                                  ? "bg-primary/10 text-primary"
+                                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                              }`}
+                            >
+                              <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : ""}`} />
+                              {item.label}
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="admin-tel" className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> Téléphone</Label>
-                      <Input id="admin-tel" value={profile.telephone} onChange={(e) => setProfile((p) => ({ ...p, telephone: e.target.value }))} />
-                    </div>
-
-                    <Separator />
-
-                    <div>
-                      <p className="text-sm font-medium flex items-center gap-1.5 mb-3"><Lock className="h-3.5 w-3.5" /> Changer le mot de passe</p>
-                      <div className="space-y-3">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="new-pw">Nouveau mot de passe</Label>
-                            <div className="relative">
-                              <Input id="new-pw" type={showPasswords.new ? "text" : "password"} placeholder="Min. 8 caractères" value={profile.newPassword} onChange={(e) => setProfile((p) => ({ ...p, newPassword: e.target.value }))} className="pr-10" />
-                              <button type="button" onClick={() => setShowPasswords(s => ({ ...s, new: !s.new }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                                {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                              </button>
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="confirm-pw">Confirmer</Label>
-                            <div className="relative">
-                              <Input id="confirm-pw" type={showPasswords.confirm ? "text" : "password"} placeholder="Répétez le mot de passe" value={profile.confirmPassword} onChange={(e) => setProfile((p) => ({ ...p, confirmPassword: e.target.value }))} className="pr-10" />
-                              <button type="button" onClick={() => setShowPasswords(s => ({ ...s, confirm: !s.confirm }))} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                                {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex justify-end">
-                          <Button onClick={handleChangePassword} disabled={changingPassword} variant="outline" className="gap-2">
-                            <Lock className="h-4 w-4" />
-                            {changingPassword ? "Modification..." : "Changer le mot de passe"}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end pt-2">
-                      <Button onClick={() => handleSave("Profil")} disabled={saving} className="gap-2">
-                        {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                        Enregistrer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* ENTREPRISE TAB */}
-              <TabsContent value="entreprise">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Building2 className="h-4 w-4" /> Informations de l'entreprise
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="co-nom">Raison sociale</Label>
-                        <Input id="co-nom" value={company.nom} onChange={(e) => setCompany((c) => ({ ...c, nom: e.target.value }))} />
-                        <p className="text-xs text-muted-foreground">Ce nom sera utilisé dans les emails d'invitation envoyés à vos clients.</p>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="co-siret">SIRET</Label>
-                        <Input id="co-siret" value={company.siret} onChange={(e) => setCompany((c) => ({ ...c, siret: e.target.value }))} />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="co-adresse" className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" /> Adresse</Label>
-                      <Input id="co-adresse" value={company.adresse} onChange={(e) => setCompany((c) => ({ ...c, adresse: e.target.value }))} />
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="co-cp">Code postal</Label>
-                        <Input id="co-cp" value={company.codePostal} onChange={(e) => setCompany((c) => ({ ...c, codePostal: e.target.value }))} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="co-ville">Ville</Label>
-                        <Input id="co-ville" value={company.ville} onChange={(e) => setCompany((c) => ({ ...c, ville: e.target.value }))} />
-                      </div>
-                    </div>
-
-                    <Separator />
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="co-email" className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" /> Email de contact</Label>
-                        <Input id="co-email" type="email" value={company.emailContact} onChange={(e) => setCompany((c) => ({ ...c, emailContact: e.target.value }))} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="co-tel" className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" /> Téléphone</Label>
-                        <Input id="co-tel" value={company.telephone} onChange={(e) => setCompany((c) => ({ ...c, telephone: e.target.value }))} />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end pt-2">
-                      <Button onClick={() => handleSave("Entreprise")} disabled={saving} className="gap-2">
-                        {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                        Enregistrer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* FACTURATION TAB */}
-              <TabsContent value="facturation">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Receipt className="h-4 w-4" /> Personnalisation des factures / devis
-                    </CardTitle>
-                    <CardDescription>Ces informations apparaîtront sur les PDF générés.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-5">
-                    <div className="space-y-2">
-                      <Label htmlFor="inv-logo">URL du logo (optionnel)</Label>
-                      <Input id="inv-logo" placeholder="https://example.com/logo.png" value={invoiceSettings.logoUrl} onChange={(e) => setInvoiceSettings((s) => ({ ...s, logoUrl: e.target.value }))} />
-                      <p className="text-xs text-muted-foreground">Le logo sera affiché en haut à gauche des factures et devis.</p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="inv-iban">IBAN</Label>
-                        <Input id="inv-iban" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" value={invoiceSettings.iban} onChange={(e) => setInvoiceSettings((s) => ({ ...s, iban: e.target.value }))} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="inv-bic">BIC / SWIFT</Label>
-                        <Input id="inv-bic" placeholder="BNPAFRPP" value={invoiceSettings.bic} onChange={(e) => setInvoiceSettings((s) => ({ ...s, bic: e.target.value }))} />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="inv-mentions">Mentions légales</Label>
-                      <Textarea id="inv-mentions" rows={4} placeholder="Conditions de paiement, pénalités de retard..." value={invoiceSettings.mentionsLegales} onChange={(e) => setInvoiceSettings((s) => ({ ...s, mentionsLegales: e.target.value }))} />
-                    </div>
-                    <div className="flex justify-end pt-2">
-                      <Button onClick={() => handleSave("Facturation")} disabled={saving} className="gap-2">
-                        {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                        Enregistrer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* TAGS TAB */}
-              <TabsContent value="tags">
-                <TagsManager />
-              </TabsContent>
-
-              {/* SERVICES / CATÉGORIES TAB */}
-              <TabsContent value="services">
-                <ServiceCategoriesManager />
-              </TabsContent>
-
-              {/* MODULES TAB */}
-              <TabsContent value="modules">
-                <div className="space-y-6">
-                  {/* Plan indicator */}
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                            <Crown className="h-5 w-5 text-primary" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">
-                              Plan actuel : <span className="text-primary capitalize">{plan}</span>
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {modulesLimit ? `${enabledModules.filter(k => k !== "overview" && k !== "parametres").length}/${modulesLimit} modules activés` : "Modules illimités"}
-                            </p>
-                          </div>
-                        </div>
-                        {!isEnterprise && (
-                          <Badge variant="outline" className="gap-1.5 text-primary border-primary/30">
-                            <Sparkles className="h-3 w-3" />
-                            Upgrade disponible
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Admin modules */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base flex items-center gap-2">
-                        <Puzzle className="h-4 w-4" /> Modules admin actifs
-                      </CardTitle>
-                      <CardDescription>
-                        Choisissez les modules visibles dans votre navigation admin.
-                        {modulesLimit && (
-                          <span className="ml-1 font-medium text-primary">
-                            ({enabledModules.filter(k => k !== "overview" && k !== "parametres").length}/{modulesLimit} utilisés)
-                          </span>
-                        )}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {ALL_ADMIN_MODULES.map((mod) => {
-                        const isAlwaysOn = mod.key === "overview" || mod.key === "parametres";
-                        const isOn = enabledModules.includes(mod.key);
-                        const activeCount = enabledModules.filter(k => k !== "overview" && k !== "parametres").length;
-                        const atLimit = modulesLimit !== null && activeCount >= modulesLimit && !isOn && !isAlwaysOn;
-
-                        return (
-                          <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                            <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                              {atLimit && (
-                                <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
-                                  Upgrade
-                                </Badge>
-                              )}
-                            </div>
-                            <Switch
-                              checked={isOn}
-                              disabled={isAlwaysOn || atLimit}
-                              onCheckedChange={(v) => {
-                                const next = v
-                                  ? [...enabledModules, mod.key]
-                                  : enabledModules.filter((k) => k !== mod.key);
-                                updateSetting.mutate({ key: "enabled_modules", value: next });
-                                toast.success(`Module "${getModuleLabel(mod.key)}" ${v ? "activé" : "désactivé"}`);
-                              }}
-                            />
-                          </div>
-                        );
-                      })}
-
-                      {modulesLimit !== null && enabledModules.filter(k => k !== "overview" && k !== "parametres").length >= modulesLimit && (
-                        <UpgradeBanner
-                          currentPlan={plan}
-                          requiredPlan={plan === "starter" ? "business" : "enterprise"}
-                          feature="Plus de modules"
-                          className="mt-4"
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
-
-                  {/* Client visible modules */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">Modules visibles côté client</CardTitle>
-                      <CardDescription>Configurez les onglets accessibles dans l'espace client. Seuls les modules activés côté admin sont proposés.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {ALL_CLIENT_MODULES.map((mod) => {
-                        const isOn = clientVisibleModules.includes(mod.key);
-                        const adminHasIt = enabledModules.includes(mod.key) || mod.key === "overview" || mod.key === "profil" || mod.key === "parametres" || mod.key === "demandes" || mod.key === "devis" || mod.key === "factures";
-                        return (
-                          <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                            <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                              {!adminHasIt && (
-                                <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
-                                  Désactivé côté admin
-                                </Badge>
-                              )}
-                            </div>
-                            <Switch
-                              checked={isOn}
-                              disabled={!adminHasIt}
-                              onCheckedChange={(v) => {
-                                const next = v
-                                  ? [...clientVisibleModules, mod.key]
-                                  : clientVisibleModules.filter((k) => k !== mod.key);
-                                updateSetting.mutate({ key: "client_visible_modules", value: next });
-                              }}
-                            />
-                          </div>
-                        );
-                      })}
-                    </CardContent>
-                  </Card>
-
-                  {/* Employee visible modules */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">Modules visibles côté salarié</CardTitle>
-                      <CardDescription>Configurez les onglets accessibles dans l'espace salarié. Seuls les modules activés côté admin sont proposés.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {ALL_EMPLOYEE_MODULES.map((mod) => {
-                        const isOn = employeeVisibleModules.includes(mod.key);
-                        // Map employee module keys to admin equivalents
-                        const adminKeyMap: Record<string, string> = { calendrier: "rendez-vous" };
-                        const adminKey = adminKeyMap[mod.key] || mod.key;
-                        const adminHasIt = enabledModules.includes(adminKey) || mod.key === "overview" || mod.key === "profil";
-                        return (
-                          <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                            <div className="flex items-center gap-2">
-                              <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                              {!adminHasIt && (
-                                <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
-                                  Désactivé côté admin
-                                </Badge>
-                              )}
-                            </div>
-                            <Switch
-                              checked={isOn}
-                              disabled={!adminHasIt}
-                              onCheckedChange={(v) => {
-                                const next = v
-                                  ? [...employeeVisibleModules, mod.key]
-                                  : employeeVisibleModules.filter((k) => k !== mod.key);
-                                updateSetting.mutate({ key: "employee_visible_modules", value: next });
-                              }}
-                            />
-                          </div>
-                        );
-                      })}
-                    </CardContent>
-                  </Card>
-
-                  {/* Custom Spaces - Enterprise only */}
-                  {canCustomizeSpaces ? (
-                    <CustomSpacesManager />
-                  ) : (
-                    <UpgradeBanner
-                      currentPlan={plan}
-                      requiredPlan="enterprise"
-                      feature="Espaces personnalisés & renommage de modules"
-                    />
-                  )}
+                  ))}
                 </div>
-              </TabsContent>
+              </nav>
 
-              {/* TIMELINE TAB */}
-              <TabsContent value="timeline">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
-                    </CardTitle>
-                    <CardDescription>Personnalisez les étapes de suivi de vos projets (Enterprise uniquement).</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <TimelineTemplateEditor />
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* WHITE LABEL TAB */}
-              <TabsContent value="whitelabel">
-                {isEnterprise ? (
-                  <div className="space-y-6">
-                    {/* Branding */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Image className="h-4 w-4" /> Identité visuelle
-                        </CardTitle>
-                        <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-brand">Nom de la marque</Label>
-                            <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
-                            <p className="text-xs text-muted-foreground">Remplace "My Business Assistant" partout.</p>
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-short">Abréviation</Label>
-                            <Input id="wl-short" value={whiteLabel.brandShort} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandShort: e.target.value }))} placeholder="MBA" maxLength={5} />
-                            <p className="text-xs text-muted-foreground">Affichée dans les sidebars (3-5 car.).</p>
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-footer">Texte du footer</Label>
-                            <Input id="wl-footer" value={whiteLabel.footerText} onChange={(e) => setWhiteLabel((s) => ({ ...s, footerText: e.target.value }))} />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-logo" className="flex items-center gap-1.5"><Upload className="h-3.5 w-3.5" /> URL du logo</Label>
-                            <Input id="wl-logo" placeholder="https://example.com/logo.png" value={whiteLabel.logoUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, logoUrl: e.target.value }))} />
-                            <p className="text-xs text-muted-foreground">Logo affiché dans le header et la page de connexion.</p>
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-favicon" className="flex items-center gap-1.5"><Image className="h-3.5 w-3.5" /> URL du favicon</Label>
-                            <Input id="wl-favicon" placeholder="https://example.com/favicon.ico" value={whiteLabel.faviconUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, faviconUrl: e.target.value }))} />
-                          </div>
-                        </div>
-
-                        {/* Preview */}
-                        {whiteLabel.logoUrl && (
-                          <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
-                            <p className="text-xs text-muted-foreground mb-2">Aperçu du logo :</p>
-                            <img src={whiteLabel.logoUrl} alt="Logo preview" className="h-12 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                          </div>
-                        )}
-
-                        <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
-                          <div>
-                            <p className="text-sm font-medium">Masquer "Powered by MBA"</p>
-                            <p className="text-xs text-muted-foreground">Supprime toute mention MBA de l'interface.</p>
-                          </div>
-                          <Switch checked={whiteLabel.hidePoweredBy} onCheckedChange={(v) => setWhiteLabel((s) => ({ ...s, hidePoweredBy: v }))} />
-                        </div>
-
-                        <div className="flex justify-end pt-2">
-                          <Button onClick={() => handleSave("Identité visuelle")} disabled={saving} className="gap-2">
-                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                            Enregistrer
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Colors */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Palette className="h-4 w-4" /> Couleurs personnalisées
-                        </CardTitle>
-                        <CardDescription>Définissez la palette de couleurs de votre plateforme.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                          <div className="space-y-2">
-                            <Label>Couleur primaire</Label>
-                            <div className="flex items-center gap-3">
-                              <input type="color" value={whiteLabel.primaryColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, primaryColor: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
-                              <Input value={whiteLabel.primaryColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, primaryColor: e.target.value }))} className="font-mono text-sm" />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Couleur d'accent</Label>
-                            <div className="flex items-center gap-3">
-                              <input type="color" value={whiteLabel.accentColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, accentColor: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
-                              <Input value={whiteLabel.accentColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, accentColor: e.target.value }))} className="font-mono text-sm" />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Fond principal</Label>
-                            <div className="flex items-center gap-3">
-                              <input type="color" value={whiteLabel.bgColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, bgColor: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
-                              <Input value={whiteLabel.bgColor} onChange={(e) => setWhiteLabel((s) => ({ ...s, bgColor: e.target.value }))} className="font-mono text-sm" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Color preview */}
-                        <div className="p-4 rounded-xl border border-border/30 space-y-3">
-                          <p className="text-xs text-muted-foreground font-medium">Aperçu</p>
-                          <div className="flex gap-3 items-center">
-                            <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.primaryColor }} />
-                            <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.accentColor }} />
-                            <div className="h-12 w-12 rounded-lg border border-border" style={{ backgroundColor: whiteLabel.bgColor }} />
-                            <div className="flex-1 h-12 rounded-lg flex items-center px-4 text-sm font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
-                              {whiteLabel.brandName || "Bouton primaire"}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-end pt-2">
-                          <Button onClick={() => handleSave("Couleurs")} disabled={saving} className="gap-2">
-                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                            Enregistrer
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Custom domain */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Globe className="h-4 w-4" /> Domaine personnalisé
-                        </CardTitle>
-                        <CardDescription>Utilisez votre propre nom de domaine pour accéder à la plateforme.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-5">
-                        <div className="space-y-2">
-                          <Label htmlFor="wl-domain">Nom de domaine</Label>
-                          <Input id="wl-domain" placeholder="app.monentreprise.com" value={whiteLabel.customDomain} onChange={(e) => setWhiteLabel((s) => ({ ...s, customDomain: e.target.value }))} />
-                          <p className="text-xs text-muted-foreground">Configurez un enregistrement CNAME pointant vers notre plateforme.</p>
-                        </div>
-
-                        {whiteLabel.customDomain && (
-                          <div className="p-4 rounded-lg bg-muted/20 border border-border/30 space-y-2">
-                            <p className="text-xs font-medium text-muted-foreground">Configuration DNS requise :</p>
-                            <div className="font-mono text-xs bg-background/50 rounded-md p-3 space-y-1">
-                              <p><span className="text-primary">Type:</span> CNAME</p>
-                              <p><span className="text-primary">Nom:</span> {whiteLabel.customDomain.split('.')[0]}</p>
-                              <p><span className="text-primary">Valeur:</span> app.mba-platform.com</p>
-                            </div>
-                            <Badge variant="outline" className="text-amber-500 border-amber-500/30">En attente de vérification</Badge>
-                          </div>
-                        )}
-
-                        <div className="flex justify-end pt-2">
-                          <Button onClick={() => handleSave("Domaine")} disabled={saving} className="gap-2">
-                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                            Enregistrer
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Email customization */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Mail className="h-4 w-4" /> Emails personnalisés
-                        </CardTitle>
-                        <CardDescription>Personnalisez l'expéditeur et l'apparence des emails envoyés par la plateforme.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-sender-name">Nom de l'expéditeur</Label>
-                            <Input id="wl-sender-name" value={whiteLabel.senderName} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderName: e.target.value }))} />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-sender-email">Email de l'expéditeur</Label>
-                            <Input id="wl-sender-email" type="email" value={whiteLabel.senderEmail} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderEmail: e.target.value }))} />
-                            <p className="text-xs text-muted-foreground">Nécessite la vérification du domaine.</p>
-                          </div>
-                        </div>
-                        <div className="flex justify-end pt-2">
-                          <Button onClick={() => handleSave("Emails")} disabled={saving} className="gap-2">
-                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                            Enregistrer
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Login page */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Type className="h-4 w-4" /> Page de connexion
-                        </CardTitle>
-                        <CardDescription>Personnalisez les textes affichés sur la page de connexion de vos clients et salariés.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-5">
-                        <div className="grid grid-cols-1 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-login-title">Titre de la page</Label>
-                            <Input id="wl-login-title" value={whiteLabel.loginTitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginTitle: e.target.value }))} />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="wl-login-sub">Sous-titre</Label>
-                            <Input id="wl-login-sub" value={whiteLabel.loginSubtitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginSubtitle: e.target.value }))} />
-                          </div>
-                        </div>
-
-                        {/* Login preview */}
-                        <div className="p-6 rounded-xl border border-border/30 text-center space-y-3" style={{ backgroundColor: whiteLabel.bgColor }}>
-                          <p className="text-xs text-muted-foreground font-medium mb-4">Aperçu page de connexion</p>
-                          {whiteLabel.logoUrl ? (
-                            <img src={whiteLabel.logoUrl} alt="Logo" className="h-10 mx-auto object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                          ) : (
-                            <div className="h-10 w-10 rounded-lg mx-auto flex items-center justify-center text-sm font-bold" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
-                              {whiteLabel.brandName?.charAt(0) || "M"}
-                            </div>
-                          )}
-                          <p className="text-base font-semibold" style={{ color: "#fff" }}>{whiteLabel.loginTitle}</p>
-                          <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{whiteLabel.loginSubtitle}</p>
-                          <div className="max-w-xs mx-auto space-y-2 mt-2">
-                            <div className="h-9 rounded-md bg-white/10 border border-white/10" />
-                            <div className="h-9 rounded-md bg-white/10 border border-white/10" />
-                            <div className="h-9 rounded-md flex items-center justify-center text-xs font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
-                              Se connecter
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-end pt-2">
-                          <Button onClick={() => handleSave("Page de connexion")} disabled={saving} className="gap-2">
-                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                            Enregistrer
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Custom CSS */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="text-base flex items-center gap-2">
-                          <Settings className="h-4 w-4" /> CSS personnalisé (avancé)
-                        </CardTitle>
-                        <CardDescription>Injectez du CSS personnalisé pour un contrôle total sur l'apparence.</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <Textarea
-                          rows={8}
-                          placeholder={`:root {\n  --primary: 240 5.9% 50%;\n  --radius: 0.75rem;\n}`}
-                          value={whiteLabel.customCss}
-                          onChange={(e) => setWhiteLabel((s) => ({ ...s, customCss: e.target.value }))}
-                          className="font-mono text-xs"
-                        />
-                        <div className="flex justify-end pt-2">
-                          <Button onClick={() => handleSave("CSS personnalisé")} disabled={saving} className="gap-2">
-                            {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                            Appliquer
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ) : (
-                  <UpgradeBanner
-                    currentPlan={plan}
-                    requiredPlan="enterprise"
-                    feature="White Label & Personnalisation complète"
-                  />
-                )}
-              </TabsContent>
-
-              {/* RÉSERVATION TAB */}
-              <TabsContent value="reservation">
-                <BookingSettingsTab />
-              </TabsContent>
-
-              {/* NOTIFICATIONS TAB */}
-              <TabsContent value="notifications">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Bell className="h-4 w-4" /> Préférences de notifications
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground">Choisissez les types de notifications email que vous souhaitez recevoir.</p>
-                    {[
-                      { key: "emailRelance" as const, label: "Relances de paiement", desc: "Recevoir une notification lors de l'envoi d'une relance" },
-                      { key: "emailPaiement" as const, label: "Confirmations de paiement", desc: "Être notifié lorsqu'un paiement est reçu" },
-                      { key: "emailDemande" as const, label: "Nouvelles demandes", desc: "Recevoir une alerte pour chaque nouvelle demande client" },
-                      { key: "emailDevis" as const, label: "Devis acceptés / refusés", desc: "Être notifié du statut des devis" },
-                      { key: "emailValidation" as const, label: "Validations", desc: "Notifications de validation de demandes" },
-                      { key: "emailSupport" as const, label: "Tickets support", desc: "Être alerté des nouveaux tickets et réponses" },
-                    ].map((item) => (
-                      <div key={item.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                        <div>
-                          <p className="text-sm font-medium">{item.label}</p>
-                          <p className="text-xs text-muted-foreground">{item.desc}</p>
-                        </div>
-                        <Switch
-                          checked={notifs[item.key]}
-                          onCheckedChange={(v) => setNotifs((n) => ({ ...n, [item.key]: v }))}
-                        />
-                      </div>
-                    ))}
-                    <div className="flex justify-end pt-2">
-                      <Button onClick={() => handleSave("Notifications")} disabled={saving} className="gap-2">
-                        {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                        Enregistrer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* SUIVI CLIENT TAB */}
-              <TabsContent value="suivi-client">
-                <StepNotificationSettings />
-              </TabsContent>
-            </Tabs>
+              {/* Content area */}
+              <div className="flex-1 min-w-0 max-w-3xl">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {renderContent()}
+                </motion.div>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       </AdminPageTransition>
