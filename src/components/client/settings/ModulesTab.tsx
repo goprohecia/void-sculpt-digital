@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useDemoPlan, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
 import { ModuleSwapWizard } from "@/components/client/ModuleSwapWizard";
+import { SwapWarningScreen } from "@/components/client/SwapWarningScreen";
 import { format, addMonths, startOfMonth } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";

@@ -39,15 +39,7 @@ const MODULE_ICONS: Record<string, LucideIcon> = {
   parametres: Settings,
 };
 
-// Modules that trigger specific content-loss warnings
-const CONTENT_LOSS_WARNINGS: Record<string, string> = {
-  facturation: "Toutes vos factures, devis et historiques de paiement seront définitivement supprimés.",
-  dossiers: "Tous vos dossiers clients et leur suivi seront définitivement supprimés.",
-  messagerie: "Toutes vos conversations et messages seront définitivement supprimés.",
-  agenda: "Tous vos rendez-vous et événements planifiés seront définitivement supprimés.",
-  documents: "Tous vos documents stockés seront définitivement supprimés.",
-  stock: "Tout votre inventaire et historique de mouvements sera définitivement supprimé.",
-};
+
 
 interface ModuleSwapWizardProps {
   open: boolean;
