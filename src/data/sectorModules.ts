@@ -396,6 +396,21 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     facturation: { label: "Honoraires", description: "Provisions, notes d'honoraires et suivi" },
     temps: { label: "Heures facturables", description: "Suivi du temps par affaire" },
   } as SectorModulesConfig,
+  "expert-comptable": {
+    dossiers: { label: "Missions comptables", description: "Tenue comptable, bilans et déclarations fiscales" },
+    taches: { label: "Échéances fiscales", description: "TVA, IS, IR, CFE et autres obligations" },
+    stock: { label: "Stock", hidden: true },
+    documents: { label: "Pièces comptables", description: "Relevés, factures, bulletins de paie, bilans" },
+    pipeline: { label: "Prospects", description: "Nouveaux clients et demandes de devis" },
+    analyse: { label: "Dashboard Cabinet", description: "KPIs : missions, déclarations, honoraires" },
+    "rendez-vous": { label: "Rendez-vous clients", description: "Bilans annuels et points trimestriels" },
+    notes: { label: "Notes techniques", description: "Notes comptables et fiscales" },
+    support: { label: "Support", description: "Questions clients" },
+    clients: { label: "Portefeuille clients", description: "Entreprises clientes et contacts" },
+    employees: { label: "Collaborateurs", description: "Comptables, fiscalistes et assistants" },
+    facturation: { label: "Honoraires", description: "Forfaits mensuels et notes d'honoraires" },
+    temps: { label: "Heures facturables", description: "Suivi du temps par mission" },
+  } as SectorModulesConfig,
 };
 
 // ── Helpers ──
