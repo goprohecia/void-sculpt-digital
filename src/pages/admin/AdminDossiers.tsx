@@ -20,6 +20,7 @@ import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
 import { GarageVehicleList } from "@/components/garage/GarageVehicleList";
 import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
 import { BTPDashboard } from "@/components/btp/BTPDashboard";
+import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
