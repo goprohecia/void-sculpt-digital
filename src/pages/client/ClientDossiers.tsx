@@ -33,6 +33,7 @@ import { DJClientView } from "@/components/dj/DJClientView";
 import { EvenementielClientView } from "@/components/evenementiel/EvenementielClientView";
 import { FormateurStagiaireView } from "@/components/formateur/FormateurStagiaireView";
 import { NettoyageClientView } from "@/components/nettoyage/NettoyageClientView";
+import { PhotographeClientView } from "@/components/photographe/PhotographeClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
