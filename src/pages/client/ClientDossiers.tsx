@@ -176,6 +176,10 @@ export default function ClientDossiers() {
     return (<ClientLayout><AdminPageTransition><DJClientView /></AdminPageTransition></ClientLayout>);
   }
 
+  if (demoSector === "evenementiel") {
+    return (<ClientLayout><AdminPageTransition><EvenementielClientView /></AdminPageTransition></ClientLayout>);
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;
