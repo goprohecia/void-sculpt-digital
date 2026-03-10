@@ -124,7 +124,9 @@ export function EvenementielClientView() {
               )}
             </div>
             {!contratSigne && (
-              <SignaturePad onSign={handleSignContrat} label="Signer le contrat" />
+              <Button size="sm" onClick={handleSignContrat} className="gap-1">
+                <FileText className="h-3.5 w-3.5" /> Signer électroniquement
+              </Button>
             )}
           </div>
 
