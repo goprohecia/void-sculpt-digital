@@ -29,6 +29,7 @@ import { CMClientView } from "@/components/cm/CMClientView";
 import { ConsultantClientView } from "@/components/consultant/ConsultantClientView";
 import { DesignerClientView } from "@/components/designer/DesignerClientView";
 import { DevClientView } from "@/components/dev/DevClientView";
+import { DJClientView } from "@/components/dj/DJClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
