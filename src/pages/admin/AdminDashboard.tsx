@@ -217,6 +217,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "coach-sportif") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <SportDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

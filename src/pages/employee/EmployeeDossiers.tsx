@@ -111,6 +111,16 @@ export default function EmployeeDossiers() {
     );
   }
 
+  if (demoSector === "coach-sportif") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <SportCoachView />
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
