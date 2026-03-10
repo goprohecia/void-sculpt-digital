@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useDemoPlan, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
 import { ModuleSwapWizard } from "@/components/client/ModuleSwapWizard";
+import { SwapWarningScreen } from "@/components/client/SwapWarningScreen";
 import { format, addMonths, startOfMonth } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
@@ -32,6 +33,7 @@ const SYSTEM_MODULES = ["overview", "parametres"];
 export function ModulesTab() {
   const { demoPlan, planModules, getModuleLabel } = useDemoPlan();
   const [swapsRemaining, setSwapsRemaining] = useState(2);
+  const [showWarning, setShowWarning] = useState(false);
   const [wizardOpen, setWizardOpen] = useState(false);
 
   // Compute active modules from plan config
@@ -107,7 +109,7 @@ export function ModulesTab() {
               <TooltipTrigger asChild>
                 <div>
                   <Button
-                    onClick={() => setWizardOpen(true)}
+                    onClick={() => setShowWarning(true)}
                     disabled={isBlocked || planModuleKeys === "all"}
                     className="w-full gap-2"
                   >
@@ -181,6 +183,16 @@ export function ModulesTab() {
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {showWarning && (
+        <SwapWarningScreen
+          onAccept={() => {
+            setShowWarning(false);
+            setWizardOpen(true);
+          }}
+          onCancel={() => setShowWarning(false)}
+        />
       )}
 
       <ModuleSwapWizard

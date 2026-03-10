@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import {
-  AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2,
+  ArrowLeft, ArrowRight, CheckCircle2,
   Users, FolderKanban, Receipt, MessageSquare, MailWarning,
   Headphones, Calendar, ListTodo, BarChart3, FileText,
   Clock, Zap, Bot, Settings, Layers, PieChart,
-  ShieldCheck, PackageSearch, ArrowRightLeft,
+  ShieldCheck, PackageSearch, ArrowRightLeft, AlertTriangle,
 } from "lucide-react";
+import { MODULE_EXTRA_WARNINGS } from "@/components/client/SwapWarningScreen";
 import type { LucideIcon } from "lucide-react";
 
 const MODULE_ICONS: Record<string, LucideIcon> = {
@@ -39,15 +39,7 @@ const MODULE_ICONS: Record<string, LucideIcon> = {
   parametres: Settings,
 };
 
-// Modules that trigger specific content-loss warnings
-const CONTENT_LOSS_WARNINGS: Record<string, string> = {
-  facturation: "Toutes vos factures, devis et historiques de paiement seront définitivement supprimés.",
-  dossiers: "Tous vos dossiers clients et leur suivi seront définitivement supprimés.",
-  messagerie: "Toutes vos conversations et messages seront définitivement supprimés.",
-  agenda: "Tous vos rendez-vous et événements planifiés seront définitivement supprimés.",
-  documents: "Tous vos documents stockés seront définitivement supprimés.",
-  stock: "Tout votre inventaire et historique de mouvements sera définitivement supprimé.",
-};
+
 
 interface ModuleSwapWizardProps {
   open: boolean;
@@ -66,14 +58,13 @@ export function ModuleSwapWizard({
   getModuleLabel,
   onSwapComplete,
 }: ModuleSwapWizardProps) {
-  const [step, setStep] = useState(0);
-  const [accepted, setAccepted] = useState(false);
+  // Steps now start at 1 (removal) — warning screen is handled externally
+  const [step, setStep] = useState(1);
   const [moduleToRemove, setModuleToRemove] = useState<string | null>(null);
   const [moduleToAdd, setModuleToAdd] = useState<string | null>(null);
 
   const reset = () => {
-    setStep(0);
-    setAccepted(false);
+    setStep(1);
     setModuleToRemove(null);
     setModuleToAdd(null);
   };
@@ -90,7 +81,7 @@ export function ModuleSwapWizard({
     handleClose();
   };
 
-  const steps = ["Avertissement", "Retrait", "Activation", "Confirmation"];
+  const steps = ["Retrait", "Activation", "Confirmation"];
 
   // Exclude non-swappable modules
   const swappableActive = activeModules.filter(
@@ -113,16 +104,16 @@ export function ModuleSwapWizard({
               Swap de module
             </h2>
             <Badge variant="outline" className="text-xs">
-              Étape {step + 1} / {steps.length}
+              Étape {step} / {steps.length}
             </Badge>
           </div>
-          <Progress value={((step + 1) / steps.length) * 100} className="h-1.5" />
+          <Progress value={(step / steps.length) * 100} className="h-1.5" />
           <div className="flex justify-between mt-2">
             {steps.map((s, i) => (
               <span
                 key={s}
                 className={`text-[10px] font-medium ${
-                  i <= step ? "text-primary" : "text-muted-foreground"
+                  i + 1 <= step ? "text-primary" : "text-muted-foreground"
                 }`}
               >
                 {s}
@@ -132,45 +123,6 @@ export function ModuleSwapWizard({
         </div>
 
         <div className="p-6 min-h-[340px]">
-          {/* STEP 0 — Warning */}
-          {step === 0 && (
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 rounded-lg bg-destructive/10 border border-destructive/20">
-                <AlertTriangle className="h-8 w-8 text-destructive shrink-0 mt-0.5" />
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-destructive text-base">
-                    Attention — Perte de données irréversible
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    En retirant un module, toutes les données associées à ce module seront
-                    <strong className="text-foreground"> définitivement supprimées</strong>. Cette action est irréversible.
-                  </p>
-                  <ul className="text-xs text-muted-foreground space-y-1 mt-2">
-                    {Object.entries(CONTENT_LOSS_WARNINGS).slice(0, 4).map(([key, msg]) => (
-                      <li key={key} className="flex items-start gap-1.5">
-                        <span className="text-destructive mt-0.5">•</span>
-                        <span><strong>{getModuleLabel(key)}</strong> : {msg}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3 rounded-md border bg-muted/30">
-                <Checkbox
-                  id="accept-loss"
-                  checked={accepted}
-                  onCheckedChange={(v) => setAccepted(v === true)}
-                  className="mt-0.5"
-                />
-                <label htmlFor="accept-loss" className="text-sm cursor-pointer leading-relaxed">
-                  Je comprends que les données du module retiré seront{" "}
-                  <strong>définitivement perdues</strong> et je souhaite continuer.
-                </label>
-              </div>
-            </div>
-          )}
-
           {/* STEP 1 — Select module to remove */}
           {step === 1 && (
             <div className="space-y-4">
@@ -198,10 +150,10 @@ export function ModuleSwapWizard({
                   </Card>
                 ))}
               </div>
-              {moduleToRemove && CONTENT_LOSS_WARNINGS[moduleToRemove] && (
+              {moduleToRemove && MODULE_EXTRA_WARNINGS[moduleToRemove] && (
                 <p className="text-xs text-destructive flex items-start gap-1.5 p-2 rounded bg-destructive/5">
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                  {CONTENT_LOSS_WARNINGS[moduleToRemove]}
+                  {MODULE_EXTRA_WARNINGS[moduleToRemove]}
                 </p>
               )}
             </div>
@@ -276,7 +228,7 @@ export function ModuleSwapWizard({
         {/* Footer */}
         <div className="border-t p-4 flex justify-between">
           {step < 3 ? (
-            <Button variant="ghost" onClick={step === 0 ? handleClose : () => setStep(step - 1)} className="gap-1.5">
+            <Button variant="ghost" onClick={step === 1 ? handleClose : () => setStep(step - 1)} className="gap-1.5">
               <ArrowLeft className="h-4 w-4" />
               Retour
             </Button>
@@ -284,12 +236,6 @@ export function ModuleSwapWizard({
             <div />
           )}
 
-          {step === 0 && (
-            <Button onClick={() => setStep(1)} disabled={!accepted} className="gap-1.5">
-              Continuer
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          )}
           {step === 1 && (
             <Button
               onClick={() => setStep(2)}
