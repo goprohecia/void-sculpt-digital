@@ -158,10 +158,10 @@ export function ModuleSwapWizard({
                   </Card>
                 ))}
               </div>
-              {moduleToRemove && CONTENT_LOSS_WARNINGS[moduleToRemove] && (
+              {moduleToRemove && MODULE_EXTRA_WARNINGS[moduleToRemove] && (
                 <p className="text-xs text-destructive flex items-start gap-1.5 p-2 rounded bg-destructive/5">
                   <AlertTriangle className="h-3.5 w-3.5 shrink-0 mt-0.5" />
-                  {CONTENT_LOSS_WARNINGS[moduleToRemove]}
+                  {MODULE_EXTRA_WARNINGS[moduleToRemove]}
                 </p>
               )}
             </div>
