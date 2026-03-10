@@ -100,6 +100,16 @@ export default function EmployeeDossiers() {
     );
   }
 
+  if (demoSector === "boutique") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <BoutiqueVendeurView />
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

@@ -206,6 +206,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "boutique") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <BoutiqueDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

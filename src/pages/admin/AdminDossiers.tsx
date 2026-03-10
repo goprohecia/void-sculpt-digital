@@ -230,6 +230,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "boutique") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <BoutiqueDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
