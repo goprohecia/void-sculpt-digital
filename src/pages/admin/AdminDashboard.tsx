@@ -9,6 +9,7 @@ import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard
 import { BTPDashboard } from "@/components/btp/BTPDashboard";
 import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
 import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
+import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
