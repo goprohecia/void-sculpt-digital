@@ -291,6 +291,10 @@ export default function AdminDossiers() {
     return (<AdminLayout><AdminPageTransition><PhotographeDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "reparateur") {
+    return (<AdminLayout><AdminPageTransition><ReparateurDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
