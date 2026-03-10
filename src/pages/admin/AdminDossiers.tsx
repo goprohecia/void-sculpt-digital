@@ -25,6 +25,7 @@ import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
 import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
 import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
 import { MariageDashboard } from "@/components/mariage/MariageDashboard";
+import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
