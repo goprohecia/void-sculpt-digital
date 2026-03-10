@@ -75,6 +75,7 @@ import SuperAdminAbonnements from "@/pages/superadmin/SuperAdminAbonnements";
 import SuperAdminStats from "@/pages/superadmin/SuperAdminStats";
 import SuperAdminFormules from "@/pages/superadmin/SuperAdminFormules";
 import SuperAdminSecteurs from "@/pages/superadmin/SuperAdminSecteurs";
+import SuperAdminEntrepriseDetail from "@/pages/superadmin/SuperAdminEntrepriseDetail";
 
 // Client pages
 import ClientDashboard from "@/pages/client/ClientDashboard";
@@ -208,6 +209,7 @@ export function AnimatedRoutes() {
         {/* Super Admin routes */}
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
         <Route path="/superadmin/entreprises" element={<SuperAdminEntreprises />} />
+        <Route path="/superadmin/entreprises/:id" element={<SuperAdminEntrepriseDetail />} />
         <Route path="/superadmin/abonnements" element={<SuperAdminAbonnements />} />
         <Route path="/superadmin/formules" element={<SuperAdminFormules />} />
         <Route path="/superadmin/stats" element={<SuperAdminStats />} />

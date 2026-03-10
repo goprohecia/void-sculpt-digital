@@ -1,53 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Module 14 — Swap supplémentaire via Super Admin
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Audit
+## Modifications
 
-- **Super Admin area exists** at `/superadmin/*` with distinct amber-themed sidebar (`SuperAdminSidebar.tsx`) and layout (`SuperAdminLayout.tsx`).
-- **Entreprises page exists** (`SuperAdminEntreprises.tsx`) with mock client list but **no swap management columns** (no swaps restants, no déblocages).
-- **No client detail page** exists under super admin — clicking a client does nothing meaningful.
-- **No swap unlock/log system** exists anywhere.
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### Plan
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-#### 1. Extend `MOCK_ENTERPRISES` data in `SuperAdminEntreprises.tsx`
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-Add `swapsRemaining: number`, `deblocages: number` fields to each mock enterprise. Add columns "Swaps restants" and "Déblocages" to the card display. Make each card a `Link` to `/superadmin/entreprises/:id`.
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-#### 2. Create `src/pages/superadmin/SuperAdminEntrepriseDetail.tsx`
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-New page wrapped in `SuperAdminLayout`, receives enterprise ID from URL params, finds it in shared mock data.
+## Details techniques
 
-**Sections:**
-- **Info header**: Nom, plan, statut, email, sector
-- **Gestion des swaps card**:
-  - Counter display: "X / 2 swaps restants — remise à zéro le [1er du mois prochain]" (date-fns)
-  - Button "Débloquer 1 swap supplémentaire" → opens confirmation Dialog
-- **Historique des déblocages table**:
-  - Columns: Date | Identifiant support | Raison | Swaps octroyés
-  - Mock initial entries + real-time local state additions
-  - Badge alert "Déblocages fréquents — upgrade recommandé" if ≥3 déblocages this month
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-**Confirmation Dialog:**
-- Textarea "Raison du déblocage" — required, `Confirmer` button disabled while empty
-- Visible reminder text about logging
-- On confirm: increment swap counter (+1), add log entry with current date/admin name/reason
-
-#### 3. Add route in `AnimatedRoutes.tsx`
-
-- Import `SuperAdminEntrepriseDetail`
-- Route: `/superadmin/entreprises/:id`
-
-#### 4. Shared mock data
-
-Extract `MOCK_ENTERPRISES` to a shared constant or keep inline but augmented with swap fields. The detail page will use same data source via ID lookup.
-
-### Files
-
-| File | Action |
-|---|---|
-| `src/pages/superadmin/SuperAdminEntreprises.tsx` | Modify — add swap columns, link to detail |
-| `src/pages/superadmin/SuperAdminEntrepriseDetail.tsx` | Create — detail page with swap management |
-| `src/components/AnimatedRoutes.tsx` | Modify — add route |
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
