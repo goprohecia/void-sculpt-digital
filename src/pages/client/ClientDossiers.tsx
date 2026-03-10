@@ -82,6 +82,27 @@ export default function ClientDossiers() {
     );
   }
 
+  if (demoSector === "cabinet-recrutement") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <Tabs defaultValue="entreprise" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="entreprise">Espace Client Entreprise</TabsTrigger>
+              <TabsTrigger value="candidat">Espace Candidat</TabsTrigger>
+            </TabsList>
+            <TabsContent value="entreprise">
+              <RecrutementClientView />
+            </TabsContent>
+            <TabsContent value="candidat">
+              <RecrutementCandidatView />
+            </TabsContent>
+          </Tabs>
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;

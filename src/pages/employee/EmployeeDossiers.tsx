@@ -44,6 +44,10 @@ export default function EmployeeDossiers() {
     return <CoiffurePraticienView />;
   }
 
+  if (demoSector === "cabinet-recrutement") {
+    return <RecrutementChargeView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

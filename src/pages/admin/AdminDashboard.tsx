@@ -151,6 +151,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "cabinet-recrutement") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <RecrutementDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

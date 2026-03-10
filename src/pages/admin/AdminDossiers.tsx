@@ -175,6 +175,16 @@ export default function AdminDossiers() {
     );
   }
 
+  if (demoSector === "cabinet-recrutement") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <RecrutementDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
