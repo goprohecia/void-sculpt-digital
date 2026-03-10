@@ -27,6 +27,7 @@ import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
 import { MariageDashboard } from "@/components/mariage/MariageDashboard";
 import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
 import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
+import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -224,6 +225,16 @@ export default function AdminDossiers() {
       <AdminLayout>
         <AdminPageTransition>
           <ComptableDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
+  if (demoSector === "boutique") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <BoutiqueDashboard />
         </AdminPageTransition>
       </AdminLayout>
     );

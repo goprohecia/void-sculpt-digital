@@ -23,6 +23,7 @@ import { AutoEcoleEleveView } from "@/components/auto-ecole/AutoEcoleEleveView";
 import { MariageClientView } from "@/components/mariage/MariageClientView";
 import { AvocatClientView } from "@/components/avocat/AvocatClientView";
 import { ComptableClientView } from "@/components/comptable/ComptableClientView";
+import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -130,6 +131,16 @@ export default function ClientDossiers() {
       <ClientLayout>
         <AdminPageTransition>
           <ComptableClientView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
+  if (demoSector === "boutique") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <BoutiqueClientView />
         </AdminPageTransition>
       </ClientLayout>
     );

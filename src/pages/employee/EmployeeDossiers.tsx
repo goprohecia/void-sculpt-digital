@@ -21,6 +21,7 @@ import { MariageConseillerView } from "@/components/mariage/MariageConseillerVie
 import { MariageRetoucheuseView } from "@/components/mariage/MariageRetoucheuseView";
 import { AvocatCollaborateurView } from "@/components/avocat/AvocatCollaborateurView";
 import { ComptableCollaborateurView } from "@/components/comptable/ComptableCollaborateurView";
+import { BoutiqueVendeurView } from "@/components/boutique/BoutiqueVendeurView";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -94,6 +95,16 @@ export default function EmployeeDossiers() {
       <EmployeeLayout>
         <AdminPageTransition>
           <ComptableCollaborateurView />
+        </AdminPageTransition>
+      </EmployeeLayout>
+    );
+  }
+
+  if (demoSector === "boutique") {
+    return (
+      <EmployeeLayout>
+        <AdminPageTransition>
+          <BoutiqueVendeurView />
         </AdminPageTransition>
       </EmployeeLayout>
     );
