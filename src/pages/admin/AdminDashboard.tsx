@@ -10,6 +10,7 @@ import { BTPDashboard } from "@/components/btp/BTPDashboard";
 import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
 import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
 import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
+import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
