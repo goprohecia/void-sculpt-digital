@@ -437,7 +437,7 @@ export interface SectorRoleLabels {
 
 export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   garages: { admin: "Réceptionniste", employee: "Mécanicien", client: "Client" },
-  btp: { admin: "Conducteur de travaux", employee: "Chef de chantier", client: "Client" },
+  btp: { admin: "Dirigeant", employee: "Ouvrier / Technicien", client: "Client" },
   coiffure: { admin: "Responsable salon", employee: "Coiffeur", client: "Client" },
   "auto-ecole": { admin: "Directeur", employee: "Moniteur", client: "Élève" },
   conciergerie: { admin: "Gestionnaire", employee: "Agent", client: "Propriétaire" },
