@@ -113,13 +113,11 @@ export default function EmployeeDossiers() {
   }
 
   if (demoSector === "coach-sportif") {
-    return (
-      <EmployeeLayout>
-        <AdminPageTransition>
-          <SportCoachView />
-        </AdminPageTransition>
-      </EmployeeLayout>
-    );
+    return (<EmployeeLayout><AdminPageTransition><SportCoachView /></AdminPageTransition></EmployeeLayout>);
+  }
+
+  if (demoSector === "community-manager") {
+    return (<EmployeeLayout><AdminPageTransition><CMChargeView /></AdminPageTransition></EmployeeLayout>);
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);

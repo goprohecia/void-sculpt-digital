@@ -149,13 +149,11 @@ export default function ClientDossiers() {
   }
 
   if (demoSector === "coach-sportif") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <SportMembreView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
+    return (<ClientLayout><AdminPageTransition><SportMembreView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "community-manager") {
+    return (<ClientLayout><AdminPageTransition><CMClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {

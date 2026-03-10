@@ -243,13 +243,11 @@ export default function AdminDossiers() {
   }
 
   if (demoSector === "coach-sportif") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <SportDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
+    return (<AdminLayout><AdminPageTransition><SportDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "community-manager") {
+    return (<AdminLayout><AdminPageTransition><CMDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (
