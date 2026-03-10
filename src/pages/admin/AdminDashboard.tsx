@@ -33,6 +33,7 @@ import { fr } from "date-fns/locale";
 type CalendarEvent = { date: string; label: string; type: "dossier" | "facture" | "relance"; color: string };
 
 export default function AdminDashboard() {
+  const { demoSector } = useDemoPlan();
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 1, 1));
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const { isDemo } = useIsDemo();
