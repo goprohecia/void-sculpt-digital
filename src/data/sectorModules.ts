@@ -45,15 +45,18 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
 // Only keys that differ from generic need to be listed.
 
 const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Projets", description: "Suivi de projets tech, stack et repos" },
-  taches: { label: "Sprints & Tâches", description: "Organisation par sprints et kanban" },
+  dossiers: { label: "Projets", description: "Suivi de projets tech, sprints et repos" },
+  clients: { label: "Clients", description: "Portefeuille clients du studio" },
+  employees: { label: "Développeurs", description: "Équipe de développeurs" },
+  taches: { label: "Sprints & Tickets", description: "Organisation par sprints et kanban" },
   temps: { label: "Time Tracking", description: "Suivi horaire par projet et client" },
   documents: { label: "Livrables", description: "Fichiers et livrables clients" },
   pipeline: { label: "Pipeline Projets", description: "Funnel de prospection et projets dev" },
-  analyse: { label: "Dashboard Dev", description: "KPIs dev : taux horaire, projets livrés" },
+  analyse: { label: "Dashboard Studio", description: "KPIs dev : taux horaire, projets livrés, CA" },
   support: { label: "Tickets Support", description: "Support technique et maintenance" },
   notes: { label: "Notes techniques", description: "Documentation interne et snippets" },
   stock: { label: "Stock", hidden: true },
+  facturation: { label: "Facturation jalons", description: "Facturation par jalon de projet" },
 };
 
 const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
