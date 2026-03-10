@@ -34,6 +34,10 @@ export default function EmployeeDossiers() {
     return <BTPOuvrierView />;
   }
 
+  if (demoSector === "conciergerie") {
+    return <ConciergerieAgentView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
