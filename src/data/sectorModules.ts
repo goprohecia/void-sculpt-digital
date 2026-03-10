@@ -365,6 +365,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   reparateur: REPARATEUR_OVERRIDES,
   traiteur: TRAITEUR_OVERRIDES,
   conciergerie: CONCIERGERIE_OVERRIDES,
+  "cabinet-recrutement": CABINET_RECRUTEMENT_OVERRIDES,
   "auto-ecole": {
     dossiers: { label: "Élèves", description: "Fiches élèves, progression et heures de conduite" },
     taches: { label: "Leçons & Examens", description: "Planification des leçons et inscriptions aux examens" },
