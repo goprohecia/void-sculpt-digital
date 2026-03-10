@@ -19,6 +19,7 @@ import { ConciergerieProprietaireView } from "@/components/conciergerie/Concierg
 import { CoiffureClientView } from "@/components/coiffure/CoiffureClientView";
 import { RecrutementClientView } from "@/components/recrutement/RecrutementClientView";
 import { RecrutementCandidatView } from "@/components/recrutement/RecrutementCandidatView";
+import { AutoEcoleEleveView } from "@/components/auto-ecole/AutoEcoleEleveView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
