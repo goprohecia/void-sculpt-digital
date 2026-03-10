@@ -122,7 +122,6 @@ export default function AdminDossiers() {
 
   if (demoSector === "garages") {
     return (
-    return (
       <AdminLayout>
         <AdminPageTransition>
           <GarageVehicleList />
