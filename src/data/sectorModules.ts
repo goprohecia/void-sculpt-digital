@@ -240,7 +240,7 @@ const GARAGES_OVERRIDES: SectorModulesConfig = {
 };
 
 const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
-  dossiers: { label: "Biens", description: "Portefeuille de biens à la vente et location" },
+  dossiers: { label: "Mandats", description: "Portefeuille de mandats de vente et location" },
   taches: { label: "Visites & Tâches", description: "Organisation des visites et tâches administratives" },
   stock: { label: "Stock", hidden: true },
   documents: { label: "Mandats & Actes", description: "Mandats, compromis et actes notariés" },
@@ -251,6 +251,8 @@ const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
   support: { label: "Litiges", description: "Réclamations et litiges acquéreurs/vendeurs" },
   clients: { label: "Acquéreurs & Vendeurs", description: "Fichier clients acheteurs et vendeurs" },
   relances: { label: "Relances mandats", description: "Suivi des mandats arrivant à échéance" },
+  employees: { label: "Agents", description: "Agents immobiliers de l'agence" },
+  facturation: { label: "Commissions & Facturation", description: "Commissions agents et facturation" },
 };
 
 const MARIAGE_OVERRIDES: SectorModulesConfig = {
