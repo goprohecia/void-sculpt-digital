@@ -257,6 +257,10 @@ export default function AdminDashboard() {
     return (<AdminLayout><AdminPageTransition><FormateurDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "nettoyage") {
+    return (<AdminLayout><AdminPageTransition><NettoyageDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

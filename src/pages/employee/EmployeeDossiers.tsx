@@ -151,6 +151,10 @@ export default function EmployeeDossiers() {
     return (<EmployeeLayout><AdminPageTransition><FormateurFormateurView /></AdminPageTransition></EmployeeLayout>);
   }
 
+  if (demoSector === "nettoyage") {
+    return (<EmployeeLayout><AdminPageTransition><NettoyageAgentView /></AdminPageTransition></EmployeeLayout>);
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
