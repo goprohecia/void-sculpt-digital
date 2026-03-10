@@ -107,6 +107,16 @@ export default function AdminDashboard() {
     );
   }
 
+  if (demoSector === "immobilier") {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <ImmobilierDashboard />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

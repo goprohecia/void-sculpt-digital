@@ -26,6 +26,27 @@ export default function ClientDossiers() {
     return <GarageClientView />;
   }
 
+  if (demoSector === "immobilier") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <Tabs defaultValue="proprietaire" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="proprietaire">Espace Propriétaire</TabsTrigger>
+              <TabsTrigger value="acheteur">Espace Acheteur</TabsTrigger>
+            </TabsList>
+            <TabsContent value="proprietaire">
+              <ImmobilierProprietaireView />
+            </TabsContent>
+            <TabsContent value="acheteur">
+              <ImmobilierAcheteurView />
+            </TabsContent>
+          </Tabs>
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;

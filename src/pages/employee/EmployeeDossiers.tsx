@@ -24,6 +24,10 @@ export default function EmployeeDossiers() {
     return <GarageMechanicView />;
   }
 
+  if (demoSector === "immobilier") {
+    return <ImmobilierAgentView />;
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {
