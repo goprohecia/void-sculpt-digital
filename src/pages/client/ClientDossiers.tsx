@@ -157,6 +157,10 @@ export default function ClientDossiers() {
     return (<ClientLayout><AdminPageTransition><CMClientView /></AdminPageTransition></ClientLayout>);
   }
 
+  if (demoSector === "consultant") {
+    return (<ClientLayout><AdminPageTransition><ConsultantClientView /></AdminPageTransition></ClientLayout>);
+  }
+
   const getCahierByDossier = (dossierId: string) => {
     const dossier = dossiers.find((d) => d.id === dossierId);
     if (!dossier?.demandeId) return undefined;

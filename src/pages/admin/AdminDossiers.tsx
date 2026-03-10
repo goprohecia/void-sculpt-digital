@@ -251,6 +251,10 @@ export default function AdminDossiers() {
     return (<AdminLayout><AdminPageTransition><CMDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "consultant") {
+    return (<AdminLayout><AdminPageTransition><ConsultantDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>

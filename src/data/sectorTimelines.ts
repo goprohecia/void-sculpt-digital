@@ -109,7 +109,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Mission de conseil",
       category: "projet",
-      steps: ["Premier contact", "Analyse du besoin", "Proposition commerciale", "Négociation", "Signature contrat", "Cadrage mission", "Audit / Diagnostic", "Recommandations", "Plan d'action", "Accompagnement", "Bilan de mission", "Clôture"],
+      steps: ["Mission qualifiée", "Proposition envoyée", "Contrat signé", "Mission en cours", "Livrable intermédiaire", "Livrable final", "Clôturée"],
     },
     {
       name: "Formation sur mesure",
