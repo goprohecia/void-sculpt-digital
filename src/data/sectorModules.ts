@@ -515,6 +515,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   "coach-sportif": { admin: "Gérant", employee: "Coach", client: "Membre" },
   "community-manager": { admin: "Direction", employee: "CM / Chargé de compte", client: "Client" },
   consultant: { admin: "Direction", employee: "Consultant", client: "Client" },
+  designer: { admin: "Studio / Gérant", employee: "Designer", client: "Client" },
 
   "cabinet-recrutement": { admin: "Direction", employee: "Chargé de recrutement", client: "Client / Candidat" },
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
