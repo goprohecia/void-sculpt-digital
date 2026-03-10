@@ -17,6 +17,7 @@ import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
 import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
 import { SportDashboard } from "@/components/sport/SportDashboard";
 import { CMDashboard } from "@/components/cm/CMDashboard";
+import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -224,6 +225,10 @@ export default function AdminDashboard() {
 
   if (demoSector === "community-manager") {
     return (<AdminLayout><AdminPageTransition><CMDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "consultant") {
+    return (<AdminLayout><AdminPageTransition><ConsultantDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (

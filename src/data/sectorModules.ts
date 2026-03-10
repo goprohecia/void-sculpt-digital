@@ -168,16 +168,18 @@ const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
 
 const CONSULTANT_OVERRIDES: SectorModulesConfig = {
   dossiers: { label: "Missions", description: "Suivi des missions de conseil en cours" },
+  clients: { label: "Portefeuille clients", description: "Clients et contacts du cabinet" },
+  employees: { label: "Consultants", description: "Équipe de consultants" },
   taches: { label: "Livrables & Tâches", description: "Tâches et jalons par mission" },
   stock: { label: "Stock", hidden: true },
   documents: { label: "Rapports & Études", description: "Livrables, études de marché, audits" },
   pipeline: { label: "Pipeline missions", description: "Propositions commerciales et appels d'offres" },
-  analyse: { label: "Dashboard Consultant", description: "KPIs : TJM, taux d'occupation, CA par mission" },
+  analyse: { label: "Dashboard Direction", description: "KPIs : TJM, taux d'occupation, CA par mission" },
   "rendez-vous": { label: "Réunions", description: "Réunions clients et comités de pilotage" },
   notes: { label: "Notes de mission", description: "Comptes-rendus et recommandations" },
   support: { label: "Support client", description: "Suivi post-mission et questions" },
   temps: { label: "Temps par mission", description: "Suivi horaire et facturation au temps passé" },
-  employees: { label: "Équipe conseil", description: "Consultants et analystes" },
+  facturation: { label: "Honoraires", description: "Facturation par jalon ou forfait" },
 };
 
 const DESIGNER_OVERRIDES: SectorModulesConfig = {
@@ -509,6 +511,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
   "coach-sportif": { admin: "Gérant", employee: "Coach", client: "Membre" },
   "community-manager": { admin: "Direction", employee: "CM / Chargé de compte", client: "Client" },
+  consultant: { admin: "Direction", employee: "Consultant", client: "Client" },
 
   "cabinet-recrutement": { admin: "Direction", employee: "Chargé de recrutement", client: "Client / Candidat" },
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },

@@ -26,6 +26,7 @@ import { ComptableClientView } from "@/components/comptable/ComptableClientView"
 import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
 import { SportMembreView } from "@/components/sport/SportMembreView";
 import { CMClientView } from "@/components/cm/CMClientView";
+import { ConsultantClientView } from "@/components/consultant/ConsultantClientView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -154,6 +155,10 @@ export default function ClientDossiers() {
 
   if (demoSector === "community-manager") {
     return (<ClientLayout><AdminPageTransition><CMClientView /></AdminPageTransition></ClientLayout>);
+  }
+
+  if (demoSector === "consultant") {
+    return (<ClientLayout><AdminPageTransition><ConsultantClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {
