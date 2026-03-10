@@ -24,6 +24,7 @@ import { MariageClientView } from "@/components/mariage/MariageClientView";
 import { AvocatClientView } from "@/components/avocat/AvocatClientView";
 import { ComptableClientView } from "@/components/comptable/ComptableClientView";
 import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
+import { SportMembreView } from "@/components/sport/SportMembreView";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -141,6 +142,16 @@ export default function ClientDossiers() {
       <ClientLayout>
         <AdminPageTransition>
           <BoutiqueClientView />
+        </AdminPageTransition>
+      </ClientLayout>
+    );
+  }
+
+  if (demoSector === "coach-sportif") {
+    return (
+      <ClientLayout>
+        <AdminPageTransition>
+          <SportMembreView />
         </AdminPageTransition>
       </ClientLayout>
     );

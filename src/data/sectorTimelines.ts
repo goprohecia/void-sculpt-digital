@@ -165,9 +165,9 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
 
   "coach-sportif": [
     {
-      name: "Suivi client",
+      name: "Suivi membre",
       category: "suivi",
-      steps: ["Premier contact", "Bilan forme", "Définition objectifs", "Programme personnalisé", "Séance découverte", "Suivi régulier", "Bilan intermédiaire", "Ajustement programme", "Bilan final"],
+      steps: ["Inscription", "Abonnement actif", "Bilan initial", "Programme en cours", "Bilan intermédiaire", "Renouvellement", "Terminé"],
     },
     {
       name: "Stage / Bootcamp",
