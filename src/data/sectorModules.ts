@@ -450,6 +450,7 @@ const ASSIGNATION_SECTORS = [
   "cabinets",       // Expert-Comptable / Cabinet d'Avocats
   "boutique",       // Magasin
   "auto-ecole",     // Auto-École
+  "cabinet-avocats", // Cabinet d'Avocats
   "cabinet-recrutement", // Cabinet de Recrutement
 ];
 
