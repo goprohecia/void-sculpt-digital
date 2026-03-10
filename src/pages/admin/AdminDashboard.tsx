@@ -20,6 +20,7 @@ import { CMDashboard } from "@/components/cm/CMDashboard";
 import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
 import { DesignerDashboard } from "@/components/designer/DesignerDashboard";
 import { DevDashboard } from "@/components/dev/DevDashboard";
+import { DJDashboard } from "@/components/dj/DJDashboard";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -239,6 +240,10 @@ export default function AdminDashboard() {
 
   if (demoSector === "developpeur") {
     return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
+  if (demoSector === "dj-animateur") {
+    return (<AdminLayout><AdminPageTransition><DJDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (
