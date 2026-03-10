@@ -136,6 +136,10 @@ export default function EmployeeDossiers() {
     return (<EmployeeLayout><AdminPageTransition><DevDevView /></AdminPageTransition></EmployeeLayout>);
   }
 
+  if (demoSector === "dj-animateur") {
+    return (<EmployeeLayout><AdminPageTransition><DJAssistantView /></AdminPageTransition></EmployeeLayout>);
+  }
+
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
 
   if (!assignEnabled) {

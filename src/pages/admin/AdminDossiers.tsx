@@ -266,6 +266,10 @@ export default function AdminDossiers() {
     return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
   }
 
+  if (demoSector === "dj-animateur") {
+    return (<AdminLayout><AdminPageTransition><DJDashboard /></AdminPageTransition></AdminLayout>);
+  }
+
   return (
     <AdminLayout>
       <AdminPageTransition>
