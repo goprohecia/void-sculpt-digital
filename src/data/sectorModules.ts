@@ -97,7 +97,8 @@ const BTP_OVERRIDES: SectorModulesConfig = {
   support: { label: "SAV & Garanties", description: "Garanties décennales, levées de réserves" },
   "rendez-vous": { label: "Visites chantier", description: "Planification des visites et réunions de chantier" },
   relances: { label: "Relances situations", description: "Relances des situations de travaux impayées" },
-  employees: { label: "Équipes & Ouvriers", description: "Gestion des équipes terrain et sous-traitants" },
+  employees: { label: "Ouvriers & Techniciens", description: "Gestion des équipes terrain et sous-traitants" },
+  facturation: { label: "Facturation & Situations", description: "Situations de travaux et facturation" },
 };
 
 const COIFFURE_OVERRIDES: SectorModulesConfig = {
