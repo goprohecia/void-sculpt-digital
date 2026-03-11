@@ -14,6 +14,7 @@ import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
+import logoMba from "@/assets/logo-mba.png";
 
 export function ClientSidebar() {
   const location = useLocation();
