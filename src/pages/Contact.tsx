@@ -85,7 +85,7 @@ const Contact = () => {
           }}
         />
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             className="max-w-3xl mx-auto text-center"
             initial={{ opacity: 0 }}
@@ -102,7 +102,7 @@ const Contact = () => {
             </motion.p>
 
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl font-light mb-8 tracking-tight leading-[1.1] text-gray-900"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-8 tracking-tight leading-[1.1] text-gray-900"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -127,7 +127,7 @@ const Contact = () => {
       {/* Contact Section */}
       <SectionTransition className="py-20 relative bg-white">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
             {/* Contact Info */}
             <div className="lg:col-span-1 space-y-8">
               <ScrollReveal variant="fadeInLeft">
@@ -180,7 +180,7 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <ScrollReveal variant="fadeInRight">
-                <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-3xl border border-gray-200 bg-gray-50">
+                <form onSubmit={handleSubmit} className="p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-gray-200 bg-gray-50">
                   <h2 className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-8">
                     Demandez une démo
                   </h2>
@@ -253,7 +253,7 @@ const Contact = () => {
 
       {/* Calendly Section */}
       <SectionTransition className="py-20 relative bg-white">
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto">
             <ScrollReveal variant="fadeInUp">
               <div className="text-center mb-12">
@@ -269,10 +269,10 @@ const Contact = () => {
                 <iframe
                   src="https://calendly.com/yannis-bezriche/impartial-games"
                   width="100%"
-                  height="700"
+                  height="600"
                   frameBorder="0"
                   title="Calendly"
-                  className="bg-white"
+                  className="bg-white sm:h-[700px]"
                 />
               </div>
             </ScrollReveal>

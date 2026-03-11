@@ -149,8 +149,8 @@ export default function Fonctionnalites() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative bg-white">
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="pt-28 pb-12 md:pt-40 md:pb-24 relative bg-white">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <ScrollReveal variant="fadeInUp">
               <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-6">
@@ -158,7 +158,7 @@ export default function Fonctionnalites() {
               </p>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.1}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 tracking-tight text-gray-900">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-light mb-6 tracking-tight text-gray-900">
                 Tous les outils pour{" "}
                 <span className="font-medium text-gradient-neon">piloter votre activité</span>
               </h1>
@@ -199,7 +199,7 @@ export default function Fonctionnalites() {
             id={mod.id}
             className={`py-16 md:py-24 relative ${bgClass}`}
           >
-            <div className="container mx-auto px-6 relative z-10">
+            <div className="container mx-auto px-4 sm:px-6 relative z-10">
               <div
                 className={`flex flex-col ${
                   isReversed ? "lg:flex-row-reverse" : "lg:flex-row"
@@ -267,9 +267,9 @@ export default function Fonctionnalites() {
 
       {/* Bottom CTA */}
       <section className="py-24 relative bg-white">
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="scaleIn">
-            <div className="max-w-3xl mx-auto text-center bg-gray-50 border border-gray-200 p-12 md:p-16 rounded-3xl shadow-lg">
+            <div className="max-w-3xl mx-auto text-center bg-gray-50 border border-gray-200 p-8 sm:p-12 md:p-16 rounded-2xl sm:rounded-3xl shadow-lg">
               <h2 className="text-3xl md:text-4xl font-light mb-4 tracking-tight text-gray-900">
                 Prêt à tout <span className="font-medium text-gradient-neon">centraliser ?</span>
               </h2>

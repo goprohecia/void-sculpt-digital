@@ -28,13 +28,13 @@ export function ArgumentsSection() {
           </div>
 
           <StaggerContainer className="max-w-4xl mx-auto space-y-3" staggerDelay={0.08} delayStart={0.2}>
-            <div className="grid grid-cols-2 gap-4 px-4 pb-2">
+            <div className="hidden sm:grid grid-cols-2 gap-4 px-4 pb-2">
               <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Le problème</p>
               <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">La solution MBA</p>
             </div>
             {comparisons.map((row, i) => (
               <motion.div key={i} variants={staggerItemVariants}>
-                <div className="grid grid-cols-2 gap-4 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all">
                   <div className="flex items-start gap-3">
                     <X className="h-4 w-4 text-rose-500 mt-0.5 shrink-0" />
                     <span className="text-sm text-gray-600">{row.problem}</span>

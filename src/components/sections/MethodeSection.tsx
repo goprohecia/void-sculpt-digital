@@ -36,7 +36,7 @@ const steps = [
 export function MethodeSection() {
   return (
     <section id="methode" className="py-24 relative bg-white">
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <ScrollReveal variant="fadeInUp">
             <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-6">
@@ -62,7 +62,7 @@ export function MethodeSection() {
         >
           {steps.map((step) => (
             <motion.div key={step.number} variants={staggerItemVariants}>
-              <div className="group h-full p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500">
+              <div className="group h-full p-6 sm:p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500">
                 <div className="text-3xl font-light text-gradient-neon mb-4">{step.number}</div>
                 <div className="w-10 h-10 rounded-lg bg-[#22c55e]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                   <step.icon className="h-4 w-4 text-[#22c55e]" />

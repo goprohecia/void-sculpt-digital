@@ -9,14 +9,14 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-gray-200 py-16 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 max-w-6xl mx-auto">
+    <footer className="relative border-t border-gray-200 py-12 sm:py-16 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-12 max-w-6xl mx-auto">
           {/* Brand */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="sm:col-span-2 lg:col-span-2 space-y-4 sm:space-y-6">
             <Link to="/" className="flex items-center gap-3">
-              <img src={logoMba} alt="MBA" className="h-10 w-auto" />
-              <span className="text-xl font-medium tracking-wide text-gray-900">MY BUSINESS ASSISTANT</span>
+              <img src={logoMba} alt="MBA" className="h-8 sm:h-10 w-auto" />
+              <span className="text-base sm:text-xl font-medium tracking-wide text-gray-900">MY BUSINESS ASSISTANT</span>
             </Link>
             <p className="text-sm text-gray-600 leading-relaxed max-w-sm">
               Plateforme SaaS modulable pour la gestion de votre entreprise, vos clients et vos salariés.

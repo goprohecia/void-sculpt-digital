@@ -126,7 +126,7 @@ export default function DemoTour() {
     <div className="min-h-screen bg-white flex flex-col">
       {/* Top bar */}
       <div className="border-b border-gray-200 bg-white">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <img src={logoMba} alt="MBA" className="h-8 w-auto" />
             <span className="text-sm font-medium text-gray-500">
@@ -159,7 +159,7 @@ export default function DemoTour() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 container mx-auto px-6 py-8 flex flex-col lg:flex-row gap-8 items-start">
+      <div className="flex-1 container mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col lg:flex-row gap-6 sm:gap-8 items-start">
         {/* Left: Info panel */}
         <div className="w-full lg:w-[380px] lg:flex-shrink-0">
           {/* Step navigation dots */}
