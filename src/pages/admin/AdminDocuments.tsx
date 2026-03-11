@@ -239,7 +239,7 @@ export default function AdminDocuments() {
 
         {/* New Folder Dialog */}
         <Dialog open={folderDialogOpen} onOpenChange={setFolderDialogOpen}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Nouveau dossier</DialogTitle>
             </DialogHeader>
