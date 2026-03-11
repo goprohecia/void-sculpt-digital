@@ -9,10 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp } from "lucide-react";
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { StepNotificationSettings } from "@/components/admin/StepNotificationSettings";
 import { BookingSettingsTab } from "@/components/admin/BookingSettingsTab";
+import { AdminModulesSection } from "@/components/admin/AdminModulesSection";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -847,103 +848,17 @@ export default function AdminSettings() {
       case "modules":
         return (
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Puzzle className="h-4 w-4 text-primary" /> Modules admin
-                </CardTitle>
-                <CardDescription>
-                  Choisissez les modules visibles dans votre navigation admin.
-                  {modulesLimit && (
-                    <span className="ml-1 font-medium text-primary">
-                      ({enabledModules.filter(k => k !== "overview" && k !== "parametres").length}/{modulesLimit} utilisés)
-                    </span>
-                  )}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {ALL_ADMIN_MODULES.map((mod) => {
-                  const isAlwaysOn = mod.key === "overview" || mod.key === "parametres";
-                  const isOn = enabledModules.includes(mod.key);
-                  const activeCount = enabledModules.filter(k => k !== "overview" && k !== "parametres").length;
-                  const atLimit = modulesLimit !== null && activeCount >= modulesLimit && !isOn && !isAlwaysOn;
-                  return (
-                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                        {atLimit && (
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Upgrade</Badge>
-                        )}
-                      </div>
-                      <Switch checked={isOn} disabled={isAlwaysOn || atLimit} onCheckedChange={(v) => {
-                        const next = v ? [...enabledModules, mod.key] : enabledModules.filter((k) => k !== mod.key);
-                        updateSetting.mutate({ key: "enabled_modules", value: next });
-                        toast.success(`Module "${getModuleLabel(mod.key)}" ${v ? "activé" : "désactivé"}`);
-                      }} />
-                    </div>
-                  );
-                })}
-                {modulesLimit !== null && enabledModules.filter(k => k !== "overview" && k !== "parametres").length >= modulesLimit && (
-                  <UpgradeBanner currentPlan={plan} requiredPlan={plan === "starter" ? "business" : "enterprise"} feature="Plus de modules" className="mt-4" />
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Modules visibles côté client</CardTitle>
-                <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {ALL_CLIENT_MODULES.map((mod) => {
-                  const isOn = clientVisibleModules.includes(mod.key);
-                  const adminHasIt = enabledModules.includes(mod.key) || ["overview","profil","parametres","demandes","devis","factures"].includes(mod.key);
-                  return (
-                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                        {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
-                      </div>
-                      <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
-                        const next = v ? [...clientVisibleModules, mod.key] : clientVisibleModules.filter((k) => k !== mod.key);
-                        updateSetting.mutate({ key: "client_visible_modules", value: next });
-                      }} />
-                    </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Modules visibles côté salarié</CardTitle>
-                <CardDescription>Configurez les onglets accessibles dans l'espace salarié.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {ALL_EMPLOYEE_MODULES.map((mod) => {
-                  const isOn = employeeVisibleModules.includes(mod.key);
-                  const adminKeyMap: Record<string, string> = { calendrier: "rendez-vous" };
-                  const adminKey = adminKeyMap[mod.key] || mod.key;
-                  const adminHasIt = enabledModules.includes(adminKey) || ["overview","profil"].includes(mod.key);
-                  return (
-                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                        {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
-                      </div>
-                      <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
-                        const next = v ? [...employeeVisibleModules, mod.key] : employeeVisibleModules.filter((k) => k !== mod.key);
-                        updateSetting.mutate({ key: "employee_visible_modules", value: next });
-                      }} />
-                    </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-
-            {canCustomizeSpaces ? <CustomSpacesManager /> : (
-              <UpgradeBanner currentPlan={plan} requiredPlan="enterprise" feature="Espaces personnalisés & renommage de modules" />
-            )}
+            <AdminModulesSection
+              plan={plan}
+              modulesLimit={modulesLimit}
+              enabledModules={enabledModules}
+              clientVisibleModules={clientVisibleModules}
+              employeeVisibleModules={employeeVisibleModules}
+              getModuleLabel={getModuleLabel}
+              updateSetting={updateSetting}
+              canCustomizeSpaces={canCustomizeSpaces}
+            />
+            {canCustomizeSpaces && <CustomSpacesManager />}
           </div>
         );
 

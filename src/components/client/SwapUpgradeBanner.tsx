@@ -28,7 +28,7 @@ export function SwapUpgradeBanner() {
 
       <div className="flex items-center gap-3 pl-8">
         <Button asChild size="sm">
-          <Link to="/client/upgrade">Voir les offres</Link>
+          <Link to="/admin/upgrade">Voir les offres</Link>
         </Button>
 
         <Popover>

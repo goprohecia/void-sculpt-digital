@@ -3,13 +3,12 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Layers } from "lucide-react";
+import { Settings, User, Building2, Bell } from "lucide-react";
 import { useClients } from "@/hooks/use-clients";
 import { useClientId } from "@/hooks/use-client-id";
 import { ProfileTab } from "@/components/client/settings/ProfileTab";
 import { CompanyTab } from "@/components/client/settings/CompanyTab";
 import { NotificationsTab } from "@/components/client/settings/NotificationsTab";
-import { ModulesTab } from "@/components/client/settings/ModulesTab";
 
 export default function ClientSettings() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -33,11 +32,10 @@ export default function ClientSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="profil" className="gap-1.5"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
                 <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
-                <TabsTrigger value="modules" className="gap-1.5"><Layers className="h-3.5 w-3.5" /> Mes modules</TabsTrigger>
               </TabsList>
 
               <TabsContent value="profil">
@@ -50,10 +48,6 @@ export default function ClientSettings() {
 
               <TabsContent value="notifications">
                 <NotificationsTab />
-              </TabsContent>
-
-              <TabsContent value="modules">
-                <ModulesTab />
               </TabsContent>
             </Tabs>
           </motion.div>

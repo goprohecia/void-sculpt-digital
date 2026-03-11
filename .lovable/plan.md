@@ -1,52 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan: Move swap module system from Client space to Admin space
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Problem
-The module swap system (swap counter, swap wizard, upgrade banner, upgrade page) is currently placed in the **client space** (`/client/parametres` → ModulesTab, `/client/upgrade`). But the "client" here is the end-customer of the business. 
+## Modifications
 
-The swap system should be for the **business admin** (MBA's customer) who manages their subscription and chooses which modules to activate within their plan quota. End-customers of those businesses should not see or manage module swaps.
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### What needs to change
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-**1. Move ModulesTab swap functionality into AdminSettings.tsx**
-- In the existing "modules" case of `AdminSettings` (line ~847), integrate the swap system:
-  - Add swap counter (2/month, reset 1st of month)
-  - Add "Swaper un module" button (only for starter/business plans)
-  - Import and use `SwapWarningScreen` and `ModuleSwapWizard`
-  - Show `SwapUpgradeBanner` adapted for admin context
-- The existing toggle switches in AdminSettings already show modules — the swap replaces the simple toggle for plans with limits
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-**2. Move upgrade page from `/client/upgrade` to `/admin/upgrade`**
-- Create `src/pages/admin/AdminUpgrade.tsx` (copy logic from `ClientUpgrade.tsx` but use `AdminLayout`)
-- Update route in `AnimatedRoutes.tsx`: remove `/client/upgrade`, add `/admin/upgrade`
-- Update all links pointing to `/client/upgrade` → `/admin/upgrade`
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-**3. Remove swap from Client space**
-- `ClientSettings.tsx`: Remove the "Mes modules" tab entirely (clients don't manage modules)
-- Change `TabsList` from `grid-cols-4` to `grid-cols-3`
-- Remove `ModulesTab` import
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-**4. Adapt SwapUpgradeBanner links**
-- `SwapUpgradeBanner.tsx`: Change link from `/client/upgrade` to `/admin/upgrade`
+## Details techniques
 
-**5. Move component files (optional rename)**
-- Keep components in `src/components/client/` but they'll now be used from admin context — or move to `src/components/admin/` for clarity:
-  - `ModuleSwapWizard.tsx` → used from `AdminSettings`
-  - `SwapWarningScreen.tsx` → used from `AdminSettings`
-  - `SwapUpgradeBanner.tsx` → link updated to `/admin/upgrade`
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-### Files to modify
-1. **`src/pages/admin/AdminSettings.tsx`** — Integrate swap counter, warning screen, wizard into the "modules" tab
-2. **`src/pages/admin/AdminUpgrade.tsx`** — New file, upgrade page with `AdminLayout`
-3. **`src/pages/client/ClientSettings.tsx`** — Remove "Mes modules" tab
-4. **`src/components/client/SwapUpgradeBanner.tsx`** — Update link to `/admin/upgrade`
-5. **`src/components/AnimatedRoutes.tsx`** — Move route from `/client/upgrade` to `/admin/upgrade`
-6. **`src/pages/client/ClientUpgrade.tsx`** — Delete or repurpose (replaced by AdminUpgrade)
-
-### Logic preserved
-- Swap quota: 2/month for starter & business, unlimited (no swap needed) for enterprise
-- SwapWarningScreen with data loss acknowledgment
-- 3-step ModuleSwapWizard (remove → add → confirm)
-- SuperAdmin deblocage system stays unchanged (already correctly targets enterprises)
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
