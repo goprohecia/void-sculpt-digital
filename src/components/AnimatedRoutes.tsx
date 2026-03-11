@@ -37,7 +37,7 @@ import BookingPage from "@/pages/public/BookingPage";
 
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
-import AdminOnlyLogin from "@/pages/admin/AdminOnlyLogin";
+
 import ClientSignup from "@/pages/admin/ClientSignup";
 import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
