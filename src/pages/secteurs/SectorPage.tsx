@@ -47,7 +47,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
               </motion.p>
 
               <motion.h1
-                className="text-3xl sm:text-4xl md:text-5xl font-light mb-6 tracking-tight leading-[1.1] text-gray-900"
+                className="text-2xl sm:text-3xl md:text-5xl font-light mb-6 tracking-tight leading-[1.1] text-gray-900"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
