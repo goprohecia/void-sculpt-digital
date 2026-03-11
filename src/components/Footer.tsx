@@ -14,8 +14,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 max-w-6xl mx-auto">
           {/* Brand */}
           <div className="lg:col-span-2 space-y-6">
-            <Link to="/" className="text-xl font-medium tracking-wide text-gray-900">
-              MY BUSINESS ASSISTANT
+            <Link to="/" className="flex items-center gap-3">
+              <img src={logoMba} alt="MBA" className="h-10 w-auto" />
+              <span className="text-xl font-medium tracking-wide text-gray-900">MY BUSINESS ASSISTANT</span>
             </Link>
             <p className="text-sm text-gray-600 leading-relaxed max-w-sm">
               Plateforme SaaS modulable pour la gestion de votre entreprise, vos clients et vos salariés.

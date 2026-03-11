@@ -97,7 +97,7 @@ export function Header() {
           <MagneticButton as="div" strength={0.2}>
             <Link to="/" className="flex items-center gap-2 sm:gap-3 group flex-shrink-0">
               <motion.img
-                src={logoHero}
+                src={logoMba}
                 alt="MBA"
                 className="h-8 sm:h-10 md:h-12 w-auto drop-shadow-[0_0_10px_rgba(34,197,94,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(34,197,94,0.6)] transition-all duration-300"
                 whileHover={{ scale: 1.1, rotate: 5 }}
