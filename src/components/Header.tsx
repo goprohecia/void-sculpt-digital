@@ -17,12 +17,12 @@ function NavLinkItem({
   to,
   children,
   isActive,
-  isScrolled,
+  isHeroOverlay,
 }: {
   to: string;
   children: React.ReactNode;
   isActive: boolean;
-  isScrolled: boolean;
+  isHeroOverlay: boolean;
 }) {
   const handleClick = (e: React.MouseEvent) => {
     if (to.startsWith("/#")) {
