@@ -136,7 +136,7 @@ export function AdminSidebar() {
     });
 
   return (
-    <Sidebar variant="floating" collapsible="icon" className="!bg-white !border-r !border-[#e4e8df] !border-none" style={{ boxShadow: "var(--shadow-sidebar)" }}>
+    <Sidebar variant="sidebar" collapsible="icon" className="!bg-white !border-r !border-[#e4e8df]" style={{ boxShadow: "var(--shadow-sidebar)" }}>
       <SidebarHeader className="p-5 pb-4 border-b border-[#e4e8df]">
         <Link to="/admin" className="flex flex-col items-center text-center gap-1">
           {wl.logoUrl ? (
