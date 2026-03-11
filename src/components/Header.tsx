@@ -41,7 +41,7 @@ function NavLinkItem({
         to={to}
         onClick={handleClick}
         className={`relative font-medium transition-colors duration-200 hover:text-[#22c55e] px-2 py-1 ${
-          isActive ? "text-[#22c55e]" : isScrolled ? "text-gray-700" : "text-white/90"
+          isActive ? "text-[#22c55e]" : isHeroOverlay ? "text-white/90" : "text-gray-700"
         }`}
       >
         <motion.span className="relative z-10" whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
