@@ -629,7 +629,7 @@ export default function AdminClients() {
                 </div>
               </div>
             )}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">SIRET <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.siret} onChange={(e) => setNewClient({ ...newClient, siret: e.target.value })} className="h-9" />
