@@ -524,9 +524,9 @@ export default function AdminClients() {
               </div>
             </div>
           )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingClient(null)}>Annuler</Button>
-            <Button onClick={handleSaveEdit} className="gap-1.5"><Save className="h-3.5 w-3.5" /> Enregistrer</Button>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setEditingClient(null)} className="w-full sm:w-auto">Annuler</Button>
+            <Button onClick={handleSaveEdit} className="gap-1.5 w-full sm:w-auto"><Save className="h-3.5 w-3.5" /> Enregistrer</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
