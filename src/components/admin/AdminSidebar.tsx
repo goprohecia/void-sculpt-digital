@@ -24,6 +24,7 @@ import {
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
+import logoMba from "@/assets/logo-mba.png";
 
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
