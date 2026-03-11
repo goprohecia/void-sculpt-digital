@@ -219,7 +219,7 @@ export function Header() {
                   <Link
                     to="/contact?subject=Demo%20MBA"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="mt-4 glass-button px-6 py-3 font-medium rounded-xl text-center block relative z-10"
+                    className="mt-4 px-6 py-3 font-medium rounded-xl text-center block relative z-10 border border-gray-300 text-gray-900"
                   >
                     Essayer MBA
                   </Link>
