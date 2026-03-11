@@ -269,16 +269,23 @@
     transform: none !important;
   }
 
-  /* Page-level text on dark green background */
-  .mba-app main > * h1 {
+  /* Page-level text on dark green background — all headings */
+  .mba-app main > * h1,
+  .mba-app main > * h2,
+  .mba-app main > * h3 {
     color: #ffffff;
   }
-  .mba-app main > * p.text-muted-foreground {
-    color: rgba(255,255,255,0.60);
-  }
+  .mba-app main > * p.text-muted-foreground,
   .mba-app main > * .text-muted-foreground {
     color: rgba(255,255,255,0.60);
   }
+  /* Icons next to page titles */
+  .mba-app main > * h1 .text-primary,
+  .mba-app main > * h2 .text-primary,
+  .mba-app main > * h3 .text-primary {
+    color: #22c55e;
+  }
+
   /* Inside white cards, restore dark text */
   .mba-app .glass-card h1,
   .mba-app .glass-card h2,
@@ -288,8 +295,12 @@
   .mba-app .glass-card td,
   .mba-app .glass-card th,
   .mba-app .mba-card h1,
+  .mba-app .mba-card h2,
+  .mba-app .mba-card h3,
   .mba-app .mba-card p,
   .mba-app [class*="bg-white"] h1,
+  .mba-app [class*="bg-white"] h2,
+  .mba-app [class*="bg-white"] h3,
   .mba-app [class*="bg-white"] p {
     color: inherit;
   }
@@ -298,11 +309,6 @@
   }
   .mba-app .glass-card .text-foreground {
     color: hsl(var(--text-primary));
-  }
-
-  /* Icons next to page titles */
-  .mba-app main > * h1 .text-primary {
-    color: #22c55e;
   }
 
   /* Select triggers in admin — white background */
