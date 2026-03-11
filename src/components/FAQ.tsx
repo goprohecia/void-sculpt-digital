@@ -49,7 +49,7 @@ const faqItemVariants = {
 
 export function FAQ() {
   return (
-    <SectionTransition className="py-24 relative bg-white" parallaxStrength={0.05}>
+    <SectionTransition className="py-24 relative bg-[#F6F5F2]" parallaxStrength={0.05}>
       <div className="container mx-auto px-4 relative">
         <div className="text-center mb-16">
           <ScrollReveal variant="fadeInUp">

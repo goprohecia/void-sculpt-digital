@@ -5,7 +5,7 @@ import { ScrollReveal, SectionTransition } from "@/components/animations";
 
 export function CTAFinal() {
   return (
-    <section id="contact" className="bg-white">
+    <section id="contact" className="bg-[#F6F5F2]">
       <SectionTransition className="py-24 md:py-32 relative overflow-hidden" parallaxStrength={0.08} scaleOnScroll>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">

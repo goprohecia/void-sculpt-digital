@@ -113,7 +113,7 @@ export function OffresSection() {
   const [isAnnual, setIsAnnual] = useState(false);
 
   return (
-    <section id="offres" className="bg-white">
+    <section id="offres" className="bg-[#F6F5F2]">
       <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
         <div className="container mx-auto px-4 relative z-10">
           {/* Header */}

@@ -26,7 +26,7 @@ export function HeroPremium() {
   const gradientY = useTransform(smoothMouseY, [-0.5, 0.5], ["40%", "60%"]);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-white">
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[#F6F5F2]">
       {/* Subtle overlay effect */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
         <motion.div
