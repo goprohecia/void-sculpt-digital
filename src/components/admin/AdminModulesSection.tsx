@@ -30,6 +30,10 @@ interface AdminModulesSectionProps {
 
 const SYSTEM_MODULES = ["overview", "parametres"];
 
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 export function AdminModulesSection({
   plan,
   modulesLimit,
