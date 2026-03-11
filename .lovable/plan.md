@@ -1,42 +1,38 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan: Apply white/light theme to SectorPage.tsx
 
-## Modifications
+Only one file needs to change — `src/pages/secteurs/SectorPage.tsx` — since all sector pages (Garages, Boutique, BTP, etc.) use this shared component.
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+### Changes
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+**Hero section (lines 32-87)**
+- Remove `bg-gradient-to-b from-violet-500/5` → no gradient overlay
+- Image border: `border-white/10` → `border-gray-200`
+- Remove violet glow div (line 82): `bg-gradient-to-tr from-violet-500/20...`
+- Bottom separator: `via-white/10` → `via-gray-200`
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+**Use Cases cards (lines 100-114)**
+- Card: `border-white/5 bg-white/[0.02] hover:border-white/10` → `border-gray-200 bg-gray-50 hover:border-gray-300`
+- Icon container: `bg-violet-500/10` → `bg-[#22c55e]/10`
+- Icon color: `text-violet-400` → `text-[#22c55e]`
+- Card title: add `text-gray-900`
+- Card description: `text-muted-foreground` → `text-gray-600`
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+**Modules chips (lines 130-137)**
+- Chip: `border-white/5 bg-white/[0.02] hover:border-violet-500/30` → `border-gray-200 bg-gray-50 hover:border-[#22c55e]/30`
+- Icon: `text-violet-400` → `text-[#22c55e]`
+- Text: add `text-gray-900`
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+**CTA section (lines 142-167)**
+- Button: replace violet gradient with green → `from-[#22c55e] to-[#16a34a]`
+- Button text/arrow: `text-background` → `text-gray-900`
+- Description: add `text-gray-600`
 
-## Details techniques
+**Section headings throughout**
+- Add `text-gray-900` to h2 elements
+- Subtitle labels: `text-muted-foreground` → `text-gray-500`
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+### Files to modify
+1. `src/pages/secteurs/SectorPage.tsx`
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
