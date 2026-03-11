@@ -81,7 +81,7 @@ const Contact = () => {
         <motion.div
           className="absolute inset-0 opacity-40"
           style={{
-            background: `radial-gradient(ellipse 80% 60% at ${gradientX} ${gradientY}, hsl(var(--neon-violet) / 0.12), transparent 70%)`,
+            background: `radial-gradient(ellipse 80% 60% at ${gradientX} ${gradientY}, hsl(142 71% 45% / 0.12), transparent 70%)`,
           }}
         />
 
@@ -138,12 +138,12 @@ const Contact = () => {
                 <ScrollReveal variant="fadeInLeft" delay={0.1}>
                   <div className="group p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
-                        <Mail className="h-4 w-4 text-violet-400" />
+                      <div className="w-10 h-10 rounded-xl bg-[#22c55e]/10 flex items-center justify-center">
+                        <Mail className="h-4 w-4 text-[#22c55e]" />
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">Email</p>
-                        <a href="mailto:contact@mybusinessassistant.com" className="text-foreground hover:text-violet-400 transition-colors">
+                        <a href="mailto:contact@mybusinessassistant.com" className="text-foreground hover:text-[#22c55e] transition-colors">
                           contact@mybusinessassistant.com
                         </a>
                       </div>
@@ -154,8 +154,8 @@ const Contact = () => {
                 <ScrollReveal variant="fadeInLeft" delay={0.2}>
                   <div className="group p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center">
-                        <MapPin className="h-4 w-4 text-rose-400" />
+                      <div className="w-10 h-10 rounded-xl bg-[#22c55e]/10 flex items-center justify-center">
+                        <MapPin className="h-4 w-4 text-[#4ade80]" />
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">Localisation</p>
@@ -189,14 +189,14 @@ const Contact = () => {
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                       <label htmlFor="name" className="block text-sm text-muted-foreground mb-2">Nom complet *</label>
                       <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-violet-500/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-muted-foreground/50"
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-muted-foreground/50"
                         placeholder="John Doe" />
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
                       <label htmlFor="email" className="block text-sm text-muted-foreground mb-2">Email *</label>
                       <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-violet-500/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-muted-foreground/50"
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-muted-foreground/50"
                         placeholder="john@example.com" />
                     </motion.div>
                   </div>
@@ -205,14 +205,14 @@ const Contact = () => {
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
                       <label htmlFor="company" className="block text-sm text-muted-foreground mb-2">Entreprise</label>
                       <input type="text" id="company" name="company" value={formData.company} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-violet-500/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-muted-foreground/50"
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-muted-foreground/50"
                         placeholder="Votre entreprise" />
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
                       <label htmlFor="subject" className="block text-sm text-muted-foreground mb-2">Sujet *</label>
                       <select id="subject" name="subject" required value={formData.subject} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-violet-500/50 focus:outline-none focus:ring-0 transition-colors text-foreground appearance-none">
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors text-foreground appearance-none">
                         <option value="" disabled className="bg-background text-muted-foreground">Choisir un sujet</option>
                         {subjectOptions.map(opt => (
                           <option key={opt} value={opt} className="bg-background text-foreground">{opt}</option>
@@ -224,7 +224,7 @@ const Contact = () => {
                   <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                     <label htmlFor="message" className="block text-sm text-muted-foreground mb-2">Message *</label>
                     <textarea id="message" name="message" required rows={6} value={formData.message} onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-violet-500/50 focus:outline-none focus:ring-0 transition-colors resize-none placeholder:text-muted-foreground/50"
+                      className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors resize-none placeholder:text-muted-foreground/50"
                       placeholder="Décrivez votre activité et vos besoins..." />
                   </motion.div>
 
@@ -233,7 +233,7 @@ const Contact = () => {
                       className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                       whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <span className="absolute inset-0 bg-white rounded-full" />
-                      <span className="absolute inset-0 bg-gradient-to-r from-violet-500 to-violet-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <span className="relative text-background group-hover:text-white transition-colors duration-500">
                         {isLoading ? "Envoi en cours..." : "Envoyer le message"}
                       </span>
