@@ -250,6 +250,83 @@
   }
 
   /* ========================================
+     MBA APP CONTEXT — glass-card → white
+     ======================================== */
+  .mba-app .glass-card {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e4e8df !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-card) !important;
+  }
+  .mba-app .glass-card::before,
+  .mba-app .glass-card::after {
+    display: none !important;
+  }
+  .mba-app .glass-card:hover {
+    box-shadow: var(--shadow-card-hover) !important;
+    transform: none !important;
+  }
+
+  /* Page-level text on dark green background */
+  .mba-app main > * h1 {
+    color: #ffffff;
+  }
+  .mba-app main > * p.text-muted-foreground {
+    color: rgba(255,255,255,0.60);
+  }
+  .mba-app main > * .text-muted-foreground {
+    color: rgba(255,255,255,0.60);
+  }
+  /* Inside white cards, restore dark text */
+  .mba-app .glass-card h1,
+  .mba-app .glass-card h2,
+  .mba-app .glass-card h3,
+  .mba-app .glass-card p,
+  .mba-app .glass-card span,
+  .mba-app .glass-card td,
+  .mba-app .glass-card th,
+  .mba-app .mba-card h1,
+  .mba-app .mba-card p,
+  .mba-app [class*="bg-white"] h1,
+  .mba-app [class*="bg-white"] p {
+    color: inherit;
+  }
+  .mba-app .glass-card .text-muted-foreground {
+    color: hsl(var(--text-muted));
+  }
+  .mba-app .glass-card .text-foreground {
+    color: hsl(var(--text-primary));
+  }
+
+  /* Icons next to page titles */
+  .mba-app main > * h1 .text-primary {
+    color: #22c55e;
+  }
+
+  /* Select triggers in admin — white background */
+  .mba-app select,
+  .mba-app button[role="combobox"] {
+    background: #ffffff !important;
+    border-color: #e4e8df !important;
+    color: #1a2318 !important;
+  }
+
+  /* Export / action buttons on dark green bg */
+  .mba-app .mba-btn-surface {
+    background: #ffffff;
+    border: 1px solid #e4e8df;
+    color: #4a5e46;
+    border-radius: var(--radius-full);
+  }
+  .mba-app .mba-btn-surface:hover {
+    background: #f0fdf4;
+    border-color: #22c55e;
+    color: #16a34a;
+  }
+
+  /* ========================================
      ATMOSPHERE BACKGROUND (landing page)
      ======================================== */
   .atmosphere { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }

@@ -291,9 +291,9 @@ export default function AdminDashboard() {
             </div>
             <Link
               to="/admin/dossiers"
-              className="glass-card px-4 py-2.5 text-sm font-medium flex items-center gap-2 hover:border-primary/40 transition-colors w-fit"
+              className="px-4 py-2.5 text-sm font-medium flex items-center gap-2 bg-white border border-[#e4e8df] rounded-full hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors shadow-[var(--shadow-card)]"
             >
-              <Plus className="h-4 w-4 text-primary" />
+              <Plus className="h-4 w-4 text-[#22c55e]" />
               Nouveau dossier
             </Link>
           </motion.div>

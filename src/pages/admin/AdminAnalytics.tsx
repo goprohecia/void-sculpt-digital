@@ -404,7 +404,7 @@ export default function AdminAnalytics() {
                 <BarChart3 className="h-6 w-6 text-primary" />
                 Analyse
               </h1>
-              <p className="text-muted-foreground text-sm">Données analytiques 2026</p>
+              <p className="text-white/60 text-sm">Données analytiques 2026</p>
             </div>
             <div className="flex flex-wrap gap-2 self-start">
               <AIContextButton
@@ -428,7 +428,7 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export factures CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-[#e4e8df] text-[#4a5e46] text-xs sm:text-sm font-medium hover:bg-[#f0fdf4] hover:border-[#22c55e] hover:text-[#16a34a] transition-colors"
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Factures</span><span className="sm:hidden">Fact.</span>
               </button>
@@ -440,7 +440,7 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export demandes CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-[#e4e8df] text-[#4a5e46] text-xs sm:text-sm font-medium hover:bg-[#f0fdf4] hover:border-[#22c55e] hover:text-[#16a34a] transition-colors"
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Demandes</span><span className="sm:hidden">Dem.</span>
               </button>
@@ -452,7 +452,7 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export clients CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-[#e4e8df] text-[#4a5e46] text-xs sm:text-sm font-medium hover:bg-[#f0fdf4] hover:border-[#22c55e] hover:text-[#16a34a] transition-colors"
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Clients</span><span className="sm:hidden">Cli.</span>
               </button>
@@ -473,7 +473,7 @@ export default function AdminAnalytics() {
                   exportCsv("ventes-par-type.csv", headers, rows);
                   toast.success("Export ventes par type CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-[#e4e8df] text-[#4a5e46] text-xs sm:text-sm font-medium hover:bg-[#f0fdf4] hover:border-[#22c55e] hover:text-[#16a34a] transition-colors"
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Ventes/Type</span><span className="sm:hidden">V/T</span>
               </button>
