@@ -192,11 +192,6 @@ export function AdminModulesSection({
           </CardTitle>
           <CardDescription>
             Les modules actuellement activés dans votre espace admin.
-            {modulesLimit && (
-              <span className="ml-1 font-medium text-primary">
-                ({enabledModules.filter(k => !SYSTEM_MODULES.includes(k)).length}/{modulesLimit} utilisés)
-              </span>
-            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
