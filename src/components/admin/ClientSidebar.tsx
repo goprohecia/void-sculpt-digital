@@ -53,7 +53,7 @@ export function ClientSidebar() {
   };
 
   return (
-    <Sidebar variant="floating" collapsible="icon" className="!bg-[#14532d] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.15)" }}>
+    <Sidebar variant="floating" collapsible="icon" className="!bg-[#0c3b1e] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.20)" }}>
       <SidebarHeader className="p-5 pb-4 border-b border-white/10">
         <Link to="/client" className="flex items-center gap-2">
           {wl.logoUrl ? (
