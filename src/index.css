@@ -343,7 +343,7 @@
 
   /* Glass-button in admin → white surface buttons */
   .mba-app main .glass-button {
-    background: #ffffff !important;
+    background: #F6F5F2 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: 1px solid #e4e8df !important;
