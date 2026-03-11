@@ -13,6 +13,9 @@ import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { StepNotificationSettings } from "@/components/admin/StepNotificationSettings";
 import { BookingSettingsTab } from "@/components/admin/BookingSettingsTab";
+import { ModuleSwapWizard } from "@/components/client/ModuleSwapWizard";
+import { SwapWarningScreen } from "@/components/client/SwapWarningScreen";
+import { SwapUpgradeBanner } from "@/components/client/SwapUpgradeBanner";
 import { Textarea } from "@/components/ui/textarea";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
