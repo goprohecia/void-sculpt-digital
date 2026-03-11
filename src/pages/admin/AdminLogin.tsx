@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, Eye, EyeOff, CheckCircle } from "lucide-react";
+import { LogIn, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 import logoMba from "@/assets/logo-mba.png";
 
@@ -104,6 +104,12 @@ export default function AdminLogin() {
       }}
     >
       <div className="w-full max-w-[400px] space-y-5">
+        {/* Back to home */}
+        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors">
+          <ArrowLeft className="h-4 w-4" />
+          Retour au site
+        </Link>
+
         {/* Logo */}
         <div className="text-center space-y-1.5">
           <img src={logoMba} alt="MBA" className="h-20 mx-auto" />
