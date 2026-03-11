@@ -379,7 +379,7 @@ export default function AdminAutomatisations() {
 
         {/* Delete confirm dialog */}
         <Dialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Supprimer la règle</DialogTitle>
               <DialogDescription>

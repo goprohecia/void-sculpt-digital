@@ -688,9 +688,9 @@ export default function AdminClients() {
               <Textarea value={bulkMessage} onChange={(e) => setBulkMessage(e.target.value)} placeholder="Contenu de l'email..." rows={6} />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowBulkEmailDialog(false)}>Annuler</Button>
-            <Button onClick={handleSendBulkEmail} disabled={bulkSending || !bulkSubject.trim() || !bulkMessage.trim()} className="gap-1.5">
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setShowBulkEmailDialog(false)} className="w-full sm:w-auto">Annuler</Button>
+            <Button onClick={handleSendBulkEmail} disabled={bulkSending || !bulkSubject.trim() || !bulkMessage.trim()} className="gap-1.5 w-full sm:w-auto">
               <Send className="h-3.5 w-3.5" /> {bulkSending ? "Envoi..." : `Envoyer (${filtered.length})`}
             </Button>
           </DialogFooter>

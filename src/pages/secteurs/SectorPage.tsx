@@ -138,8 +138,8 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
       </SectionTransition>
 
       {/* CTA */}
-      <SectionTransition className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-16 sm:py-24 relative">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="fadeInUp">
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-light mb-6 text-gray-900">

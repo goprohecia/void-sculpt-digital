@@ -490,7 +490,7 @@ export default function AdminEmails() {
 
         {/* ── Template Dialog ── */}
         <Dialog open={tplOpen} onOpenChange={setTplOpen}>
-          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
             <DialogHeader><DialogTitle className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /> Nouveau template</DialogTitle></DialogHeader>
             <div className="space-y-4 pt-2">
               <div className="space-y-2"><Label>Nom *</Label><Input value={tplForm.nom} onChange={(e) => setTplForm((f) => ({ ...f, nom: e.target.value }))} /></div>

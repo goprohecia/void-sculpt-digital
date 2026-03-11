@@ -111,7 +111,7 @@ export default function AdminRapports() {
                 </>
               )}
               <Select value={format} onValueChange={setFormat}>
-                <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-full sm:w-28"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="pdf">PDF</SelectItem>
                   <SelectItem value="csv">CSV</SelectItem>

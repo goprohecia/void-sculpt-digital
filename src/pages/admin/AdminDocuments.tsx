@@ -345,7 +345,7 @@ export default function AdminDocuments() {
 
         {/* Move Dialog */}
         <Dialog open={!!moveDoc} onOpenChange={(v) => !v && setMoveDoc(null)}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Déplacer "{moveDoc?.nom}"</DialogTitle>
             </DialogHeader>
