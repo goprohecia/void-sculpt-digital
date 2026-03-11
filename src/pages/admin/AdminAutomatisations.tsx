@@ -293,14 +293,14 @@ export default function AdminAutomatisations() {
     <AdminLayout>
       <AdminPageTransition>
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <Zap className="h-6 w-6 text-primary" /> Automatisations
               </h1>
               <p className="text-muted-foreground text-sm">{activeCount} règles actives · {totalExecs} exécutions au total</p>
             </div>
-            <Button onClick={() => setShowForm(!showForm)} className="gap-1.5">
+            <Button onClick={() => setShowForm(!showForm)} className="gap-1.5 self-start">
               {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
               {showForm ? "Annuler" : "Nouvelle règle"}
             </Button>
@@ -325,19 +325,19 @@ export default function AdminAutomatisations() {
               return (
                 <Card key={auto.id} className={`transition-opacity ${!auto.actif ? "opacity-60" : ""}`}>
                   <CardContent className="pt-4">
-                    <div className="flex items-start gap-4">
+                    <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                       <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 ${CAT_COLOR[auto.categorie]}`}>
                         <Icon className="h-5 w-5" />
                       </div>
                       <div className="flex-1 min-w-0 space-y-1.5">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <p className="text-sm font-semibold">{auto.titre}</p>
                           <Badge variant="outline" className="text-[10px]">{auto.categorie}</Badge>
                         </div>
                         <p className="text-xs text-muted-foreground">{auto.description}</p>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1 flex-wrap">
                           <span className="px-2 py-0.5 rounded bg-muted/30 font-medium">{auto.declencheur}</span>
-                          <ArrowRight className="h-3 w-3" />
+                          <ArrowRight className="h-3 w-3 shrink-0" />
                           <span className="px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">{auto.action}</span>
                         </div>
                         <div className="flex items-center gap-3 text-[11px] text-muted-foreground pt-1">
@@ -345,7 +345,7 @@ export default function AdminAutomatisations() {
                           {auto.derniereExec && <span>· Dernière : {auto.derniereExec}</span>}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
                         <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(auto)}>
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>
@@ -364,7 +364,7 @@ export default function AdminAutomatisations() {
 
         {/* Edit dialog */}
         <Dialog open={!!editId} onOpenChange={(o) => { if (!o) setEditId(null); }}>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Modifier la règle</DialogTitle>
               <DialogDescription>Modifiez les paramètres de cette automatisation.</DialogDescription>
@@ -379,7 +379,7 @@ export default function AdminAutomatisations() {
 
         {/* Delete confirm dialog */}
         <Dialog open={!!deleteId} onOpenChange={(o) => { if (!o) setDeleteId(null); }}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Supprimer la règle</DialogTitle>
               <DialogDescription>

@@ -1,78 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan : Responsive mobile + Design pop-up pour les pages admin
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### 1. Fix build error (PWA)
+## Modifications
 
-Add `maximumFileSizeToCacheInBytes: 4 * 1024 * 1024` in `vite.config.ts` workbox config to allow large JS bundles.
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### 2. Pages admin — Responsive mobile
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-All pages share common patterns that break on mobile (390px viewport): horizontal `flex` headers with buttons that overflow, `grid-cols-2/3` forms in dialogs, fixed-width selects/inputs, etc.
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-**AdminClients.tsx:**
-- Header: stack title and buttons vertically on mobile (`flex-col` on small screens)
-- Filter bar: already has `sm:flex-row`, keep
-- Dialog forms: `grid-cols-2` → `grid-cols-1 sm:grid-cols-2`, `grid-cols-3` → same
-- Bulk email button: full-width on mobile
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-**AdminEmails.tsx:**
-- Header row with tabs + buttons: stack on mobile
-- Compose/template dialogs: responsive form grids
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-**AdminSupport.tsx:**
-- Already mostly responsive. Ticket detail: improve the header flex for small screens
+## Details techniques
 
-**AdminNotes.tsx:**
-- Header: stack search + button below title on mobile
-- Filters row: wrap with `flex-wrap`, reduce select widths to `w-full sm:w-40`
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-**AdminRapports.tsx:**
-- Header: stack title/selects vertically on mobile
-- Select row: `flex-col sm:flex-row` with full-width selects on mobile
-
-**AdminDocuments.tsx:**
-- Header: stack buttons below title on mobile
-- Filter row: `flex-col sm:flex-row`
-- File actions: always visible on mobile (no group-hover)
-
-**AdminAutomatisations.tsx:**
-- Header: stack on mobile
-- Automation cards: stack icon/content/controls vertically on small screens
-- `RuleFormFields`: already uses `sm:grid-cols-2`, good
-
-**AdminIA.tsx:**
-- Chat grid: already `grid-cols-1 lg:grid-cols-[280px_1fr]`
-- Chat height: use `min-h-[60vh]` instead of `calc` for mobile
-- Config cards: already responsive
-
-### 3. SectorPage (Développeur) — Mobile responsive
-
-- Hero grid: already `grid-cols-1 lg:grid-cols-2`
-- Hero image height: `h-[240px] sm:h-[340px]`
-- Title: smaller on mobile `text-2xl sm:text-3xl md:text-5xl`
-- Section padding: `py-16 sm:py-24`
-- Use case cards: `p-6 sm:p-8`
-
-### 4. Pop-up / Dialog design improvement
-
-Improve all `DialogContent` instances across these pages with:
-- Mobile-first sizing: `max-w-[95vw] sm:max-w-lg` on mobile
-- Max height constraint: `max-h-[85dvh] overflow-y-auto`
-- Form grids: `grid-cols-1 sm:grid-cols-2`
-- Footer buttons: `flex-col sm:flex-row` on mobile for stacked buttons
-- Rounded corners + subtle shadow for a more polished feel
-- Consistent padding patterns
-
-### Files to modify
-- `vite.config.ts` — fix PWA build error
-- `src/pages/admin/AdminClients.tsx` — mobile responsive + dialog design
-- `src/pages/admin/AdminEmails.tsx` — mobile responsive
-- `src/pages/admin/AdminSupport.tsx` — minor mobile tweaks
-- `src/pages/admin/AdminNotes.tsx` — mobile responsive
-- `src/pages/admin/AdminRapports.tsx` — mobile responsive
-- `src/pages/admin/AdminDocuments.tsx` — mobile responsive + dialog design
-- `src/pages/admin/AdminAutomatisations.tsx` — mobile responsive
-- `src/pages/admin/AdminIA.tsx` — mobile responsive
-- `src/pages/secteurs/SectorPage.tsx` — mobile responsive
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.

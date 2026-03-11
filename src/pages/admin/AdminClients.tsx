@@ -296,19 +296,19 @@ export default function AdminClients() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div className="flex items-center justify-between" variants={staggerItem}>
+          <motion.div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3" variants={staggerItem}>
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Clients</h1>
               <p className="text-muted-foreground text-sm">{clients.length} clients enregistrés</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 self-start">
               {filtered.length > 0 && (
-                <Button variant="outline" onClick={() => setShowBulkEmailDialog(true)} className="gap-1.5">
-                  <Mail className="h-4 w-4" /> Email groupé ({filtered.length})
+                <Button variant="outline" onClick={() => setShowBulkEmailDialog(true)} className="gap-1.5 text-xs sm:text-sm">
+                  <Mail className="h-4 w-4" /> <span className="hidden sm:inline">Email groupé</span> ({filtered.length})
                 </Button>
               )}
-              <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5">
-                <UserPlus className="h-4 w-4" /> Nouveau client
+              <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5 text-xs sm:text-sm">
+                <UserPlus className="h-4 w-4" /> <span className="hidden sm:inline">Nouveau</span> client
               </Button>
             </div>
           </motion.div>
@@ -462,14 +462,14 @@ export default function AdminClients() {
 
       {/* Edit dialog */}
       <Dialog open={!!editingClient} onOpenChange={(open) => !open && setEditingClient(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Modifier le client</DialogTitle>
             <DialogDescription>Modifiez les informations du client ci-dessous.</DialogDescription>
           </DialogHeader>
           {editingClient && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Prénom</label>
                   <Input value={editingClient.prenom} onChange={(e) => setEditingClient({ ...editingClient, prenom: e.target.value })} className="h-9" />
@@ -479,7 +479,7 @@ export default function AdminClients() {
                   <Input value={editingClient.nom} onChange={(e) => setEditingClient({ ...editingClient, nom: e.target.value })} className="h-9" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Email</label>
                   <Input type="email" value={editingClient.email} onChange={(e) => setEditingClient({ ...editingClient, email: e.target.value })} className="h-9" />
@@ -489,7 +489,7 @@ export default function AdminClients() {
                   <Input value={editingClient.telephone} onChange={(e) => setEditingClient({ ...editingClient, telephone: e.target.value })} className="h-9" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Entreprise</label>
                   <Input value={editingClient.entreprise} onChange={(e) => setEditingClient({ ...editingClient, entreprise: e.target.value })} className="h-9" />
@@ -503,7 +503,7 @@ export default function AdminClients() {
                 <label className="text-xs font-medium text-muted-foreground">Adresse</label>
                 <Input value={editingClient.adresse || ""} onChange={(e) => setEditingClient({ ...editingClient, adresse: e.target.value })} className="h-9" />
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Code postal</label>
                   <Input value={editingClient.codePostal || ""} onChange={(e) => setEditingClient({ ...editingClient, codePostal: e.target.value })} className="h-9" />
@@ -524,9 +524,9 @@ export default function AdminClients() {
               </div>
             </div>
           )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingClient(null)}>Annuler</Button>
-            <Button onClick={handleSaveEdit} className="gap-1.5"><Save className="h-3.5 w-3.5" /> Enregistrer</Button>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setEditingClient(null)} className="w-full sm:w-auto">Annuler</Button>
+            <Button onClick={handleSaveEdit} className="gap-1.5 w-full sm:w-auto"><Save className="h-3.5 w-3.5" /> Enregistrer</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -551,13 +551,13 @@ export default function AdminClients() {
 
       {/* Create client dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Nouveau client</DialogTitle>
             <DialogDescription>Renseignez les informations du nouveau client.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Prénom *</label>
                 <Input value={newClient.prenom} onChange={(e) => setNewClient({ ...newClient, prenom: e.target.value })} className="h-9" />
@@ -567,7 +567,7 @@ export default function AdminClients() {
                 <Input value={newClient.nom} onChange={(e) => setNewClient({ ...newClient, nom: e.target.value })} className="h-9" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Email *</label>
                 <Input type="email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} className="h-9" />
@@ -577,7 +577,7 @@ export default function AdminClients() {
                 <Input value={newClient.telephone} onChange={(e) => setNewClient({ ...newClient, telephone: e.target.value })} className="h-9" placeholder="+33 6 12 34 56 78" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Entreprise <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.entreprise} onChange={(e) => setNewClient({ ...newClient, entreprise: e.target.value })} className="h-9" />
@@ -629,7 +629,7 @@ export default function AdminClients() {
                 </div>
               </div>
             )}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">SIRET <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.siret} onChange={(e) => setNewClient({ ...newClient, siret: e.target.value })} className="h-9" />
@@ -639,7 +639,7 @@ export default function AdminClients() {
               <label className="text-xs font-medium text-muted-foreground">Adresse</label>
               <Input value={newClient.adresse} onChange={(e) => setNewClient({ ...newClient, adresse: e.target.value })} className="h-9" />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Code postal</label>
                 <Input value={newClient.codePostal} onChange={(e) => setNewClient({ ...newClient, codePostal: e.target.value })} className="h-9" />
@@ -654,16 +654,16 @@ export default function AdminClients() {
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Annuler</Button>
-            <Button onClick={handleCreateClient} className="gap-1.5"><UserPlus className="h-3.5 w-3.5" /> Créer</Button>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)} className="w-full sm:w-auto">Annuler</Button>
+            <Button onClick={handleCreateClient} className="gap-1.5 w-full sm:w-auto"><UserPlus className="h-3.5 w-3.5" /> Créer</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Bulk email dialog */}
       <Dialog open={showBulkEmailDialog} onOpenChange={setShowBulkEmailDialog}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> Email groupé</DialogTitle>
             <DialogDescription>
@@ -688,9 +688,9 @@ export default function AdminClients() {
               <Textarea value={bulkMessage} onChange={(e) => setBulkMessage(e.target.value)} placeholder="Contenu de l'email..." rows={6} />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowBulkEmailDialog(false)}>Annuler</Button>
-            <Button onClick={handleSendBulkEmail} disabled={bulkSending || !bulkSubject.trim() || !bulkMessage.trim()} className="gap-1.5">
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setShowBulkEmailDialog(false)} className="w-full sm:w-auto">Annuler</Button>
+            <Button onClick={handleSendBulkEmail} disabled={bulkSending || !bulkSubject.trim() || !bulkMessage.trim()} className="gap-1.5 w-full sm:w-auto">
               <Send className="h-3.5 w-3.5" /> {bulkSending ? "Envoi..." : `Envoyer (${filtered.length})`}
             </Button>
           </DialogFooter>

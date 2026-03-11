@@ -47,7 +47,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
               </motion.p>
 
               <motion.h1
-                className="text-3xl sm:text-4xl md:text-5xl font-light mb-6 tracking-tight leading-[1.1] text-gray-900"
+                className="text-2xl sm:text-3xl md:text-5xl font-light mb-6 tracking-tight leading-[1.1] text-gray-900"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
@@ -75,7 +75,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
                 <img
                   src={heroImage}
                   alt={sectorLabel}
-                  className="w-full h-[340px] object-cover"
+                  className="w-full h-[240px] sm:h-[340px] object-cover"
                 />
               </div>
             </motion.div>
@@ -85,10 +85,10 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
       </section>
 
       {/* Use Cases */}
-      <SectionTransition className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-16 sm:py-24 relative">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="fadeInUp">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 sm:mb-16">
               <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-6">Cas d'usage</p>
               <h2 className="text-3xl md:text-4xl font-light text-gray-900">
                 Ce que MBA fait pour <span className="font-medium text-[#16a34a]">vous</span>
@@ -99,7 +99,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" staggerDelay={0.1}>
             {useCases.map((uc) => (
               <motion.div key={uc.title} variants={staggerItemVariants}>
-                <div className="group p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-500 h-full">
+                <div className="group p-5 sm:p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-500 h-full">
                   <div className="w-12 h-12 rounded-xl bg-[#22c55e]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <uc.icon className="h-5 w-5 text-[#22c55e]" />
                   </div>
@@ -113,10 +113,10 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
       </SectionTransition>
 
       {/* Recommended Modules */}
-      <SectionTransition className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-16 sm:py-24 relative">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="fadeInUp">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 sm:mb-16">
               <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-6">Modules</p>
               <h2 className="text-3xl md:text-4xl font-light text-gray-900">
                 Modules <span className="font-medium text-[#16a34a]">recommandés</span>
@@ -138,8 +138,8 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
       </SectionTransition>
 
       {/* CTA */}
-      <SectionTransition className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-16 sm:py-24 relative">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="fadeInUp">
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-light mb-6 text-gray-900">

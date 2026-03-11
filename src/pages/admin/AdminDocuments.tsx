@@ -166,26 +166,26 @@ export default function AdminDocuments() {
     <AdminLayout>
       <AdminPageTransition>
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <FolderOpen className="h-6 w-6 text-primary" /> Documents
               </h1>
               <p className="text-muted-foreground text-sm">{stats.total} fichiers · {stats.taille} · {stats.dossiers} dossiers</p>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="gap-1.5" onClick={() => setFolderDialogOpen(true)}>
-                <FolderPlus className="h-4 w-4" /> Nouveau dossier
+            <div className="flex gap-2 self-start">
+              <Button variant="outline" className="gap-1.5 text-xs sm:text-sm" onClick={() => setFolderDialogOpen(true)}>
+                <FolderPlus className="h-4 w-4" /> <span className="hidden sm:inline">Nouveau</span> dossier
               </Button>
-              <Button className="gap-1.5" onClick={() => { setImportDossier(dossiers[0]); setImportDialogOpen(true); }}>
+              <Button className="gap-1.5 text-xs sm:text-sm" onClick={() => { setImportDossier(dossiers[0]); setImportDialogOpen(true); }}>
                 <Upload className="h-4 w-4" /> Importer
               </Button>
             </div>
           </div>
 
           {/* Filters */}
-          <div className="flex gap-3 items-center flex-wrap">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center flex-wrap">
+            <div className="relative w-full sm:flex-1 sm:max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input placeholder="Rechercher un fichier..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
             </div>
@@ -212,7 +212,7 @@ export default function AdminDocuments() {
                         <p className="text-xs text-muted-foreground">{doc.taille} · {doc.dateAjout}{doc.client && ` · ${doc.client}`}</p>
                       </div>
                       <Badge variant="outline" className="text-[10px] shrink-0">{doc.dossier}</Badge>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                      <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                         <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Renommer" onClick={() => { setRenameDoc(doc); setRenameName(doc.nom); }}>
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>
@@ -239,7 +239,7 @@ export default function AdminDocuments() {
 
         {/* New Folder Dialog */}
         <Dialog open={folderDialogOpen} onOpenChange={setFolderDialogOpen}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Nouveau dossier</DialogTitle>
             </DialogHeader>
@@ -253,16 +253,16 @@ export default function AdminDocuments() {
                 autoFocus
               />
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setFolderDialogOpen(false)}>Annuler</Button>
-              <Button onClick={handleCreateFolder} disabled={!newFolderName.trim()}>Créer</Button>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setFolderDialogOpen(false)} className="w-full sm:w-auto">Annuler</Button>
+              <Button onClick={handleCreateFolder} disabled={!newFolderName.trim()} className="w-full sm:w-auto">Créer</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
         {/* Import Dialog */}
         <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-[95vw] sm:max-w-md max-h-[85dvh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Importer des fichiers</DialogTitle>
             </DialogHeader>
@@ -313,9 +313,9 @@ export default function AdminDocuments() {
                 <Input placeholder="Nom du client" value={importClient} onChange={(e) => setImportClient(e.target.value)} />
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setImportDialogOpen(false)}>Annuler</Button>
-              <Button onClick={handleImport} disabled={selectedFiles.length === 0}>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setImportDialogOpen(false)} className="w-full sm:w-auto">Annuler</Button>
+              <Button onClick={handleImport} disabled={selectedFiles.length === 0} className="w-full sm:w-auto">
                 Importer {selectedFiles.length > 0 && `(${selectedFiles.length})`}
               </Button>
             </DialogFooter>
@@ -323,7 +323,7 @@ export default function AdminDocuments() {
         </Dialog>
         {/* Rename Dialog */}
         <Dialog open={!!renameDoc} onOpenChange={(v) => !v && setRenameDoc(null)}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Renommer le document</DialogTitle>
             </DialogHeader>
@@ -345,7 +345,7 @@ export default function AdminDocuments() {
 
         {/* Move Dialog */}
         <Dialog open={!!moveDoc} onOpenChange={(v) => !v && setMoveDoc(null)}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Déplacer "{moveDoc?.nom}"</DialogTitle>
             </DialogHeader>

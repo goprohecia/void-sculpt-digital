@@ -273,7 +273,7 @@ export default function AdminIA() {
 
           {/* CHAT TAB */}
           <TabsContent value="chat" className="space-y-0">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 h-[calc(100vh-260px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 min-h-[60vh] lg:h-[calc(100vh-260px)]">
               {/* Sidebar conversations */}
               <Card className="hidden lg:flex flex-col">
                 <CardHeader className="pb-2">
