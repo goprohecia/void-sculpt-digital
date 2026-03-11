@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
-import logoHero from "@/assets/logo-hero.png";
+import logoMba from "@/assets/logo-mba.png";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
