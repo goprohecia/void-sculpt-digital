@@ -15,25 +15,27 @@ export function SwapUpgradeBanner() {
   if (demoPlan === "enterprise") return null;
 
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-primary/20 bg-primary/5 p-4">
+    <div className="flex flex-col gap-4 rounded-xl border border-[#16a34a]/30 bg-[#f0fdf4] p-5 shadow-sm">
       <div className="flex items-start gap-3">
-        <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+        <div className="h-9 w-9 rounded-full bg-[#16a34a]/15 flex items-center justify-center shrink-0 mt-0.5">
+          <Sparkles className="h-4.5 w-4.5 text-[#16a34a]" />
+        </div>
         <div className="space-y-1">
-          <p className="text-sm font-semibold leading-snug">
+          <p className="text-sm font-semibold leading-snug text-gray-900">
             Vous souhaitez ajouter un module sans en perdre un&nbsp;? Passez à l'offre supérieure.
           </p>
-          <p className="text-sm text-muted-foreground">{PLAN_MESSAGES[demoPlan]}</p>
+          <p className="text-sm text-gray-500">{PLAN_MESSAGES[demoPlan]}</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 pl-8">
-        <Button asChild size="sm">
+      <div className="flex items-center gap-3 pl-12">
+        <Button asChild size="sm" className="bg-[#16a34a] hover:bg-[#15803d] text-white shadow-sm">
           <Link to="/admin/upgrade">Voir les offres</Link>
         </Button>
 
         <Popover>
           <PopoverTrigger asChild>
-            <button className="inline-flex items-center gap-1 text-xs text-muted-foreground underline hover:text-foreground">
+            <button className="inline-flex items-center gap-1 text-xs text-gray-500 underline hover:text-gray-700">
               <Info className="h-3.5 w-3.5" />
               En savoir plus sur le swap
             </button>
