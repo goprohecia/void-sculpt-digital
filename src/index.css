@@ -398,7 +398,7 @@
   /* Filter buttons using bg-muted/* on dark bg */
   .mba-app main button.bg-muted\/30,
   .mba-app main button.bg-muted\/50 {
-    background-color: #ffffff !important;
+    background-color: #F6F5F2 !important;
     border: 1px solid #e4e8df;
     color: #1a2318 !important;
   }
