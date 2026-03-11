@@ -90,7 +90,7 @@ import ClientSupport from "@/pages/client/ClientSupport";
 import ClientPaiement from "@/pages/client/ClientPaiement";
 import ClientSettings from "@/pages/client/ClientSettings";
 import ClientRendezVous from "@/pages/client/ClientRendezVous";
-import ClientUpgrade from "@/pages/client/ClientUpgrade";
+import AdminUpgrade from "@/pages/admin/AdminUpgrade";
 
 // Employee pages
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
