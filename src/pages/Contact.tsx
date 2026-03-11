@@ -253,7 +253,7 @@ const Contact = () => {
 
       {/* Calendly Section */}
       <SectionTransition className="py-20 relative bg-white">
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto">
             <ScrollReveal variant="fadeInUp">
               <div className="text-center mb-12">
