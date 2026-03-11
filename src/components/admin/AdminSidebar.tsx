@@ -1,5 +1,8 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useLayoutEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+
+// Module-level: survives component unmount/remount
+let _savedScrollTop = 0;
 import { supabase } from "@/integrations/supabase/client";
 import { SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { getSectorRoleLabel } from "@/data/sectorModules";
