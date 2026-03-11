@@ -253,9 +253,9 @@ export default function AdminDocuments() {
                 autoFocus
               />
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setFolderDialogOpen(false)}>Annuler</Button>
-              <Button onClick={handleCreateFolder} disabled={!newFolderName.trim()}>Créer</Button>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setFolderDialogOpen(false)} className="w-full sm:w-auto">Annuler</Button>
+              <Button onClick={handleCreateFolder} disabled={!newFolderName.trim()} className="w-full sm:w-auto">Créer</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
