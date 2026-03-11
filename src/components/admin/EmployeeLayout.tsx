@@ -49,7 +49,7 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
       <div className="mba-app min-h-screen flex w-full" style={{ background: "hsl(150, 60%, 10%)" }}>
         <EmployeeSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 md:h-16 flex items-center px-3 md:px-8 gap-2 md:gap-4 bg-white border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
+          <header className="h-14 md:h-16 flex items-center px-3 md:px-8 gap-2 md:gap-4 bg-[#F6F5F2] border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
             <SidebarTrigger className="text-[#9ca3af] hover:text-[#1a2318] hover:bg-[#f0fdf4] rounded-[var(--radius-sm)] p-2 transition-colors" />
             <img src={logoMba} alt="MBA" className="h-7 md:hidden" />
             <div className="relative w-[300px] hidden md:block">

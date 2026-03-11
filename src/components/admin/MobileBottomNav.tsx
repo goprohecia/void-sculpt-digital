@@ -50,7 +50,7 @@ export function MobileBottomNav({ variant }: MobileBottomNavProps) {
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#e4e8df] shadow-[0_-2px_10px_rgba(0,0,0,0.06)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#F6F5F2] border-t border-[#e4e8df] shadow-[0_-2px_10px_rgba(0,0,0,0.06)]"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <div className="flex items-center justify-around h-14">

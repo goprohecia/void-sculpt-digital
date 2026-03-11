@@ -51,7 +51,7 @@ export function EmployeeSidebar() {
   const initials = user?.nom?.split(" ").map((n) => n[0]).join("").slice(0, 2) || "SA";
 
   return (
-    <Sidebar variant="sidebar" collapsible="icon" className="!bg-white !border-r !border-[#e4e8df]" style={{ boxShadow: "var(--shadow-sidebar)" }}>
+    <Sidebar variant="sidebar" collapsible="icon" className="!bg-[#F6F5F2] !border-r !border-[#e4e8df]" style={{ boxShadow: "var(--shadow-sidebar)" }}>
       <SidebarHeader className="p-5 pb-4 border-b border-[#e4e8df]">
         <Link to="/employee" className="flex items-center gap-2">
           {wl.logoUrl ? (

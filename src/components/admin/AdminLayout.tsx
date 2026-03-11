@@ -42,7 +42,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header — responsive */}
-          <header className="h-14 md:h-16 flex items-center px-3 md:px-8 gap-2 md:gap-4 bg-white border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
+          <header className="h-14 md:h-16 flex items-center px-3 md:px-8 gap-2 md:gap-4 bg-[#F6F5F2] border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
             <SidebarTrigger className="text-[#9ca3af] hover:text-[#1a2318] hover:bg-[#f0fdf4] rounded-[var(--radius-sm)] p-2 transition-colors" />
 
             {/* Logo mobile centré */}
@@ -102,7 +102,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
           <main className="flex-1 p-4 md:p-7 overflow-auto pb-20 md:pb-7">
             {plan !== "enterprise" && showBanner && (
-              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-white p-4 flex items-center gap-3 relative shadow-[var(--shadow-card)]">
+              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-[#F6F5F2] p-4 flex items-center gap-3 relative shadow-[var(--shadow-card)]">
                 <button
                   onClick={() => setShowBanner(false)}
                   className="absolute top-2 right-2 p-1 rounded-md hover:bg-[#f0fdf4] text-[#9ca3af] hover:text-[#1a2318] transition-colors"

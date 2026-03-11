@@ -76,7 +76,7 @@ const sectorGroups: SectorGroup[] = [
 
 export function ServicesSection() {
   return (
-    <section id="secteurs" className="py-24 relative bg-white">
+    <section id="secteurs" className="py-24 relative bg-[#F6F5F2]">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <ScrollReveal variant="fadeInUp">

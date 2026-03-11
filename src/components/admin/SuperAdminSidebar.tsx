@@ -28,7 +28,7 @@ export function SuperAdminSidebar() {
   };
 
   return (
-    <Sidebar variant="sidebar" collapsible="icon" className="!bg-white !border-r !border-[#e4e8df]" style={{ boxShadow: "var(--shadow-sidebar)" }}>
+    <Sidebar variant="sidebar" collapsible="icon" className="!bg-[#F6F5F2] !border-r !border-[#e4e8df]" style={{ boxShadow: "var(--shadow-sidebar)" }}>
       <SidebarHeader className="p-5 pb-4 border-b border-[#e4e8df]">
         <Link to="/superadmin" className="flex flex-col items-center text-center gap-1">
           <img src={logoMba} alt="MBA" className="h-24 w-auto object-contain" />

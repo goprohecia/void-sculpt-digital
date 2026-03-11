@@ -13,16 +13,16 @@
     /* App background = very dark green */
     --bg-app: 150 60% 10%;
     --bg-app-deep: 150 55% 7%;
-    --bg-surface: 0 0% 100%;
+    --bg-surface: 40 20% 96%;
     --bg-surface-2: 80 6% 98%;
 
     --background: 150 60% 10%;
     --foreground: 105 18% 12%;
 
-    --card: 0 0% 100%;
+    --card: 40 20% 96%;
     --card-foreground: 105 18% 12%;
 
-    --popover: 0 0% 100%;
+    --popover: 40 20% 96%;
     --popover-foreground: 105 18% 12%;
 
     --primary: 142 71% 56%;
@@ -112,7 +112,7 @@
     --tier-custom: 45 93% 55%;
 
     /* Sidebar — WHITE on dark green */
-    --sidebar-background: 0 0% 100%;
+    --sidebar-background: 40 20% 96%;
     --sidebar-foreground: 105 18% 12%;
     --sidebar-primary: 142 71% 56%;
     --sidebar-primary-foreground: 144 57% 13%;
@@ -135,6 +135,11 @@
 
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Global override: bg-white → Chalk White #F6F5F2 */
+  .bg-white {
+    background-color: #F6F5F2 !important;
   }
 }
 
@@ -230,7 +235,7 @@
      MBA ADMIN LIGHT THEME — CARDS
      ======================================== */
   .mba-card {
-    background: #ffffff;
+    background: #F6F5F2;
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
@@ -253,7 +258,7 @@
      MBA APP CONTEXT — glass-card → white
      ======================================== */
   .mba-app .glass-card {
-    background: #ffffff !important;
+    background: #F6F5F2 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: 1px solid #e4e8df !important;
@@ -316,7 +321,7 @@
 
   /* Override bg-background and bg-muted inside main content to white surfaces */
   .mba-app main .bg-background {
-    background-color: #ffffff;
+    background-color: #F6F5F2;
   }
   .mba-app main .bg-muted {
     background-color: #f7f8f5;
@@ -343,7 +348,7 @@
 
   /* Glass-button in admin → white surface buttons */
   .mba-app main .glass-button {
-    background: #ffffff !important;
+    background: #F6F5F2 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: 1px solid #e4e8df !important;
@@ -363,7 +368,7 @@
 
   /* Glass-input in admin → white input */
   .mba-app main .glass-input {
-    background: #ffffff !important;
+    background: #F6F5F2 !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: 1px solid #e4e8df !important;
@@ -386,7 +391,7 @@
   /* All inputs in admin — ensure white bg */
   .mba-app main input:not([type="checkbox"]):not([type="radio"]),
   .mba-app main textarea {
-    background-color: #ffffff;
+    background-color: #F6F5F2;
     color: #1a2318;
     border-color: #e4e8df;
   }
@@ -398,7 +403,7 @@
   /* Filter buttons using bg-muted/* on dark bg */
   .mba-app main button.bg-muted\/30,
   .mba-app main button.bg-muted\/50 {
-    background-color: #ffffff !important;
+    background-color: #F6F5F2 !important;
     border: 1px solid #e4e8df;
     color: #1a2318 !important;
   }
@@ -406,14 +411,14 @@
   /* Select triggers in admin — white background */
   .mba-app select,
   .mba-app button[role="combobox"] {
-    background: #ffffff !important;
+    background: #F6F5F2 !important;
     border-color: #e4e8df !important;
     color: #1a2318 !important;
   }
 
   /* Export / action buttons on dark green bg */
   .mba-app .mba-btn-surface {
-    background: #ffffff;
+    background: #F6F5F2;
     border: 1px solid #e4e8df;
     color: #4a5e46;
     border-radius: var(--radius-full);
@@ -507,7 +512,7 @@
      DIALOG / SHEET — force white in app
      ======================================== */
   .mba-app [role="dialog"] {
-    background-color: #ffffff !important;
+    background-color: #F6F5F2 !important;
     color: #1a2318 !important;
   }
   .mba-app [role="dialog"] label,

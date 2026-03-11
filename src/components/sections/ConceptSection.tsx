@@ -11,7 +11,7 @@ const espaces = [
 
 export function ConceptSection() {
   return (
-    <section id="concept" className="bg-white">
+    <section id="concept" className="bg-[#F6F5F2]">
       <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
