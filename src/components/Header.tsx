@@ -126,7 +126,7 @@ export function Header() {
             <MagneticButton as="div" strength={0.25}>
               <Link
                 to="/contact?subject=Demo%20MBA"
-                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-[#22c55e]/30 transition-colors"
+                className="px-5 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
               >
                 Essayer MBA
               </Link>
