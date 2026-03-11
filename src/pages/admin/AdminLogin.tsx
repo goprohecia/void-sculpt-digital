@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
+import logoHero from "@/assets/logo-hero.png";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -56,7 +57,6 @@ export default function AdminLogin() {
       const dest = low.includes("superadmin") ? "/superadmin" : low.includes("employee") ? "/employee" : low.includes("client") ? "/client" : "/admin";
       navigate(dest, { replace: true });
       return;
-      return;
     }
 
     if (email.toLowerCase() === "admin@mybusinessassistant.com") {
@@ -89,8 +89,8 @@ export default function AdminLogin() {
     }
   };
 
-  const fillDemo = (type: "admin" | "client" | "employee") => {
-    const emails = { admin: "admin@mba.demo", client: "client@mba.demo", employee: "employee@mba.demo" };
+  const fillDemo = (type: "admin" | "client" | "employee" | "superadmin") => {
+    const emails = { admin: "admin@mba.demo", client: "client@mba.demo", employee: "employee@mba.demo", superadmin: "superadmin@mba.demo" };
     setEmail(emails[type]);
     setPassword("demo2026");
     setError("");
@@ -100,41 +100,37 @@ export default function AdminLogin() {
     <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{
-        backgroundColor: "#14532d",
-        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
-        backgroundSize: "28px 28px",
+        backgroundColor: "#f0f2ec",
       }}
     >
-      <div className="w-full max-w-[440px] space-y-6">
+      <div className="w-full max-w-[400px] space-y-5">
         {/* Logo */}
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-extrabold text-[#14532d]" style={{ fontFamily: "'Syne', 'Inter', sans-serif", WebkitTextStroke: "0", color: "white" }}>
-            <span style={{ background: "linear-gradient(90deg, #22c55e, #4ade80)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>MBA</span>
-          </h1>
-          <p className="text-sm text-white/60">My Business Assistant</p>
+        <div className="text-center space-y-1.5">
+          <img src={logoHero} alt="MBA" className="h-10 mx-auto" />
+          <p className="text-xs text-[#9ca3af] tracking-wide">My Business Assistant</p>
         </div>
 
         {/* Verified banner */}
         {verified && (
-          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-[#bbf7d0] bg-white p-4 shadow-[var(--shadow-card)]">
-            <CheckCircle className="h-5 w-5 text-[#22c55e] shrink-0" />
-            <p className="text-sm text-[#1a2318]">Votre compte a été vérifié avec succès ! Vous pouvez maintenant vous connecter.</p>
+          <div className="flex items-center gap-2.5 rounded-xl border border-[#bbf7d0] bg-white p-3 shadow-sm">
+            <CheckCircle className="h-4 w-4 text-[#22c55e] shrink-0" />
+            <p className="text-xs text-[#1a2318]">Compte vérifié ! Connectez-vous maintenant.</p>
           </div>
         )}
 
         {/* Form Card */}
-        <div className="bg-white rounded-[var(--radius-xl)] shadow-[0_24px_64px_rgba(0,0,0,0.3)] border border-white/15 p-10 space-y-5">
-          <div className="text-center space-y-1">
-            <h2 className="text-2xl font-bold text-[#1a2318]">Connectez-vous</h2>
-            <p className="text-sm text-[#9ca3af]">Accédez à votre espace de gestion</p>
+        <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[#e4e8df] p-7 space-y-4">
+          <div className="text-center space-y-0.5">
+            <h2 className="text-lg font-bold text-[#1a2318]">Connectez-vous</h2>
+            <p className="text-xs text-[#9ca3af]">Accédez à votre espace de gestion</p>
           </div>
 
           {/* Google Sign In */}
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 h-11 rounded-[var(--radius-full,9999px)] border-[1.5px] border-[#e4e8df] bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)] transition-all text-sm font-medium text-[#1a2318]"
+            className="w-full flex items-center justify-center gap-2.5 h-10 rounded-full border border-[#e4e8df] bg-white hover:shadow-md transition-all text-sm font-medium text-[#1a2318]"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24">
+            <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
@@ -147,85 +143,78 @@ export default function AdminLogin() {
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-[#e4e8df]" />
             </div>
-            <div className="relative flex justify-center text-xs">
+            <div className="relative flex justify-center text-[10px]">
               <span className="bg-white px-2 text-[#9ca3af]">ou</span>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-[13px] font-medium text-[#4a5e46]">Email</label>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-[#4a5e46]">Email</label>
               <Input
                 type="email"
                 placeholder="votre@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-11 bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] focus:border-[#22c55e] focus:ring-[3px] focus:ring-[rgba(34,197,94,0.15)]"
+                className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]"
                 required
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-[13px] font-medium text-[#4a5e46]">Mot de passe</label>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-[#4a5e46]">Mot de passe</label>
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-11 bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] pr-10 focus:border-[#22c55e] focus:ring-[3px] focus:ring-[rgba(34,197,94,0.15)]"
+                  className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg pr-9 focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]"
                   required
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#1a2318]">
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#1a2318]">
+                  {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                 </button>
               </div>
+              <div className="flex justify-end">
+                <Link to="/forgot-password" className="text-[10px] text-[#9ca3af] hover:text-[#22c55e] transition-colors">
+                  Mot de passe oublié ?
+                </Link>
+              </div>
             </div>
-            {error && <p className="text-sm text-[#dc2626]">{error}</p>}
-            <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-xs text-[#9ca3af] hover:text-[#22c55e] transition-colors">
-                Mot de passe oublié ?
-              </Link>
-            </div>
-            <Button type="submit" className="w-full h-12 gap-2 text-[15px]">
-              <LogIn className="h-4 w-4" />
+            {error && <p className="text-xs text-[#dc2626]">{error}</p>}
+            <Button type="submit" className="w-full h-10 gap-2 text-sm rounded-xl">
+              <LogIn className="h-3.5 w-3.5" />
               Se connecter
             </Button>
           </form>
 
           {/* Demo accounts */}
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-[#e4e8df]" />
               </div>
-              <div className="relative flex justify-center text-xs">
+              <div className="relative flex justify-center text-[10px]">
                 <span className="bg-white px-2 text-[#9ca3af]">Comptes de démonstration</span>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <button onClick={() => fillDemo("admin")} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
-                <p className="text-xs font-bold text-[#14532d]">Admin</p>
-                <p className="text-[10px] text-[#9ca3af]">admin@mba.demo</p>
-              </button>
-              <button onClick={() => fillDemo("employee")} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
-                <p className="text-xs font-bold text-[#14532d]">Salarié</p>
-                <p className="text-[10px] text-[#9ca3af]">employee@mba.demo</p>
-              </button>
-              <button onClick={() => fillDemo("client")} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
-                <p className="text-xs font-bold text-[#14532d]">Client</p>
-                <p className="text-[10px] text-[#9ca3af]">client@mba.demo</p>
-              </button>
-              <button onClick={() => { setEmail("superadmin@mba.demo"); setPassword("demo2026"); setError(""); }} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
-                <p className="text-xs font-bold text-[#14532d]">Super Admin</p>
-                <p className="text-[10px] text-[#9ca3af]">superadmin@mba.demo</p>
-              </button>
+            <div className="grid grid-cols-2 gap-2">
+              {([
+                { type: "admin" as const, label: "Admin", email: "admin@mba.demo" },
+                { type: "employee" as const, label: "Salarié", email: "employee@mba.demo" },
+                { type: "client" as const, label: "Client", email: "client@mba.demo" },
+                { type: "superadmin" as const, label: "Super Admin", email: "superadmin@mba.demo" },
+              ]).map((d) => (
+                <button key={d.type} onClick={() => fillDemo(d.type)} className="bg-[#f7f8f5] border border-[#e4e8df] rounded-lg p-2.5 text-left hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
+                  <p className="text-[11px] font-bold text-[#14532d]">{d.label}</p>
+                  <p className="text-[9px] text-[#9ca3af]">{d.email}</p>
+                </button>
+              ))}
             </div>
-            <div className="text-center pt-1 space-y-2">
-              <p className="text-sm text-[#9ca3af]">
-                Pas encore de compte ?{" "}
-                <Link to="/signup" className="text-[#22c55e] hover:underline font-medium">Créer un compte client</Link>
-              </p>
-            </div>
+            <p className="text-center text-xs text-[#9ca3af]">
+              Pas encore de compte ?{" "}
+              <Link to="/signup" className="text-[#22c55e] hover:underline font-medium">Créer un compte</Link>
+            </p>
           </div>
         </div>
       </div>
