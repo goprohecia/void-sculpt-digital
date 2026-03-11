@@ -28,7 +28,7 @@ export function ArgumentsSection() {
           </div>
 
           <StaggerContainer className="max-w-4xl mx-auto space-y-3" staggerDelay={0.08} delayStart={0.2}>
-            <div className="grid grid-cols-2 gap-4 px-4 pb-2">
+            <div className="hidden sm:grid grid-cols-2 gap-4 px-4 pb-2">
               <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Le problème</p>
               <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">La solution MBA</p>
             </div>
