@@ -37,7 +37,7 @@ export function SuperAdminSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 px-5 py-3">
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/40 px-5 py-3">
             Gestion globale
           </SidebarGroupLabel>
           <SidebarGroupContent>
