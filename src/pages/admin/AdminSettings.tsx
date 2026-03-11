@@ -912,10 +912,6 @@ export default function AdminSettings() {
               </CardContent>
             </Card>
 
-            {canCustomizeSpaces ? <CustomSpacesManager /> : (
-              <UpgradeBanner currentPlan={plan} requiredPlan="enterprise" feature="Espaces personnalisés & renommage de modules" />
-            )}
-          </div>
         );
 
       case "timeline":

@@ -49,10 +49,6 @@ export default function ClientSettings() {
               <TabsContent value="notifications">
                 <NotificationsTab />
               </TabsContent>
-
-              <TabsContent value="modules">
-                <ModulesTab />
-              </TabsContent>
             </Tabs>
           </motion.div>
         </motion.div>

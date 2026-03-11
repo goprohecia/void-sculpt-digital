@@ -199,7 +199,6 @@ export function AnimatedRoutes() {
         <Route path="/client/rendez-vous" element={<ClientRendezVous />} />
         <Route path="/client/profil" element={<ClientProfile />} />
         <Route path="/client/parametres" element={<ClientSettings />} />
-        <Route path="/client/upgrade" element={<ClientUpgrade />} />
 
         {/* Employee routes */}
         <Route path="/employee" element={<EmployeeDashboard />} />
