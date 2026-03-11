@@ -107,7 +107,7 @@ export default function AdminNotes() {
               </SelectContent>
             </Select>
             <Select value={filterClient} onValueChange={setFilterClient}>
-              <SelectTrigger className="w-40 h-8 text-xs">
+              <SelectTrigger className="w-full sm:w-40 h-8 text-xs">
                 <SelectValue placeholder="Client" />
               </SelectTrigger>
               <SelectContent>
