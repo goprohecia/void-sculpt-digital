@@ -1,42 +1,42 @@
 
+# Sidebar flottant avec glassmorphisme
 
-## Plan: Fix pop-up design, Settings nav, and darken background
+## Objectif
+Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
 
-### Issues identified
+## Modifications
 
-1. **All dialogs/pop-ups** have `bg-background` which resolves to dark green (`#14532d`). Labels, text, and form elements are nearly invisible. Same issue on Sheet component.
-2. **Settings page sidebar nav** sits directly on the dark green background with `text-muted-foreground` — barely visible.
-3. **Background not dark enough** — user wants an even darker green.
+### 1. AdminSidebar - Activer le mode flottant
+- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
+- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
 
-### Implementation
+### 2. Sidebar UI component - Appliquer le glassmorphisme
+- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
+  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
+  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
+  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
 
-**1. Darken the app background** — `src/index.css`
-- Change `--background` and `--bg-app` from `144 57% 20%` (#14532d) to `144 57% 12%` (~#082b16), a much darker green.
-- Update `--bg-app-deep` accordingly.
+### 3. AdminLayout - Ajuster le layout
+- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
+- Appliquer aussi le glass-nav sur le header de maniere coherente
+- Ajuster le gap/padding pour que tout soit visuellement aligne
 
-**2. Fix Dialog component** — `src/components/ui/dialog.tsx`
-- Replace `bg-background` with `bg-white` on `DialogContent` so all pop-ups render on a white surface with dark text.
-- Add `text-[#1a2318]` to force dark text inside dialogs.
-- Style the close button with visible dark color.
+### 4. Variables CSS sidebar
+- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
 
-**3. Fix AlertDialog component** — `src/components/ui/alert-dialog.tsx`
-- Same fix: `bg-background` → `bg-white text-[#1a2318]`.
+### 5. ClientSidebar et EmployeeSidebar
+- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
 
-**4. Fix Sheet component** — `src/components/ui/sheet.tsx`
-- Same fix on `sheetVariants`: `bg-background` → `bg-white text-[#1a2318]`.
+## Details techniques
 
-**5. Fix Settings sidebar nav** — `src/pages/admin/AdminSettings.tsx`
-- Wrap the `<nav>` content in a white rounded card (`bg-white rounded-xl border border-[#e4e8df] p-4 shadow-sm`) so the navigation items are clearly visible against a white surface.
-- Update active/inactive button colors to work on white (active: `bg-[#f0fdf4] text-[#16a34a]`, inactive: `text-[#6b7280] hover:bg-[#f7f8f5]`).
-- Group labels: use `text-[#9ca3af]` instead of `text-muted-foreground`.
+Fichiers modifies :
+- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
+- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
+- `src/components/admin/ClientSidebar.tsx` : idem
+- `src/components/admin/EmployeeSidebar.tsx` : idem
+- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
+- `src/components/admin/ClientLayout.tsx` : idem si necessaire
+- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
+- `src/index.css` : eventuel ajustement des variables sidebar
 
-**6. Global CSS: dialog label fix** — `src/index.css`
-- Add rule: `.mba-app [role="dialog"]` forces white bg, dark text, and proper label colors inside all dialogs/modals/sheets, as a safety net.
-
-### Files to modify
-- `src/index.css` — darker background + dialog CSS overrides
-- `src/components/ui/dialog.tsx` — white bg
-- `src/components/ui/alert-dialog.tsx` — white bg
-- `src/components/ui/sheet.tsx` — white bg
-- `src/pages/admin/AdminSettings.tsx` — settings nav styling
-
+Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
