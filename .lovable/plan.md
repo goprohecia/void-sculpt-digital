@@ -1,42 +1,40 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan : Remplacer tous les fonds blancs par Chalk White `#F6F5F2`
 
-## Modifications
+Le changement sera centralisé au maximum via les CSS variables et les classes globales dans `index.css`, puis appliqué aux composants qui utilisent `bg-white` en dur.
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+### 1. CSS Variables (`src/index.css`)
+- Changer `--bg-surface: 0 0% 100%` → `40 20% 96%` (HSL de #F6F5F2)
+- Changer `--card: 0 0% 100%` → `40 20% 96%`
+- Changer `--popover: 0 0% 100%` → `40 20% 96%`
+- Remplacer toutes les occurrences de `#ffffff` par `#F6F5F2` (~15 occurrences dans les classes `.mba-app`)
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+### 2. Composant Card (`src/components/ui/card.tsx`)
+- Remplacer `bg-white` par `bg-[#F6F5F2]`
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+### 3. Sidebars (4 fichiers)
+- `AdminSidebar.tsx`, `EmployeeSidebar.tsx`, `ClientSidebar.tsx`, `SuperAdminSidebar.tsx` : `!bg-white` → `!bg-[#F6F5F2]`
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+### 4. Layouts — Headers (4 fichiers)
+- `AdminLayout.tsx`, `EmployeeLayout.tsx`, `ClientLayout.tsx`, `SuperAdminLayout.tsx` : `bg-white` → `bg-[#F6F5F2]` dans les `<header>`
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+### 5. Site public — Pages avec `bg-white` en fond de section
+- `Contact.tsx` : `bg-white` → `bg-[#F6F5F2]` (hero + section contact)
+- `Fonctionnalites.tsx`, `DemoTour.tsx`, `AdminLogin.tsx`, `ClientSignup.tsx`, et autres pages publiques qui utilisent `bg-white` comme fond
+- Inputs avec `bg-white` dans les formulaires
 
-## Details techniques
+### 6. Composants admin divers
+- `MobileBottomNav.tsx`, `DashboardKPI.tsx`, `AdminLayout.tsx` (upgrade banner), `BookingSettingsTab.tsx`
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+### 7. Sections landing page
+- Toutes les sections du site public (`ServicesSection`, `CiblesSection`, etc.) qui utilisent `bg-white` ou `bg-gray-50` comme fond → `bg-[#F6F5F2]`
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+### Fichiers à modifier (~25 fichiers)
+- `src/index.css` (centralise la majorité des changements)
+- `src/components/ui/card.tsx`
+- 4 sidebars + 4 layouts
+- Pages publiques (Contact, Login, Signup, etc.)
+- Composants admin (MobileBottomNav, DashboardKPI, etc.)
+- Sections landing page avec bg-white
+
