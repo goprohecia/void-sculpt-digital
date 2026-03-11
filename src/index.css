@@ -76,12 +76,12 @@
     --radius-xl: 22px;
     --radius-full: 9999px;
 
-    /* Neon Colors (kept for landing page) */
-    --neon-red: 345 100% 60%;
-    --neon-green: 155 100% 45%;
-    --neon-blue: 200 100% 50%;
+    /* Neon Colors (landing page — green MBA palette) */
+    --neon-red: 142 72% 42%;
+    --neon-green: 142 71% 56%;
+    --neon-blue: 142 63% 30%;
     --neon-white: 0 0% 100%;
-    --neon-violet: 215 85% 55%;
+    --neon-violet: 142 71% 45%;
 
     /* Glass tokens (kept for landing page) */
     --glass-alpha: 0.08;
