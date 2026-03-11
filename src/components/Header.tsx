@@ -144,7 +144,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
             <motion.button
-              className="glass-button p-2 sm:p-2.5"
+              className="p-2 sm:p-2.5 border border-gray-300 rounded-xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
