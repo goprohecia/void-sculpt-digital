@@ -60,7 +60,7 @@ export function ClientSidebar() {
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <img src={logoMba} alt="MBA" className="h-11 w-auto object-contain" />
+            <img src={logoMba} alt="MBA" className="h-[88px] w-auto object-contain" />
           )}
           <div>
             <p className="text-sm font-bold text-[#1a2318]">{clientName}</p>

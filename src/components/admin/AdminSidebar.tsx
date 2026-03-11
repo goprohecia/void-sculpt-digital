@@ -143,7 +143,7 @@ export function AdminSidebar() {
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <img src={logoMba} alt="MBA" className="h-12 w-auto object-contain" />
+            <img src={logoMba} alt="MBA" className="h-24 w-auto object-contain" />
           )}
           <p className="text-[11px] text-[#9ca3af]">
             {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}
