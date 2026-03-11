@@ -316,7 +316,7 @@
 
   /* Override bg-background and bg-muted inside main content to white surfaces */
   .mba-app main .bg-background {
-    background-color: #ffffff;
+    background-color: #F6F5F2;
   }
   .mba-app main .bg-muted {
     background-color: #f7f8f5;
