@@ -75,7 +75,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
                 <img
                   src={heroImage}
                   alt={sectorLabel}
-                  className="w-full h-[340px] object-cover"
+                  className="w-full h-[240px] sm:h-[340px] object-cover"
                 />
               </div>
             </motion.div>
