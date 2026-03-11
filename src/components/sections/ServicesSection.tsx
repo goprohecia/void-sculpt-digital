@@ -177,7 +177,7 @@ export function ServicesSection() {
                   </h3>
                 </ScrollReveal>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+                <div className={`grid grid-cols-2 sm:grid-cols-3 ${group.sectors.length > 5 ? 'lg:grid-cols-6' : 'lg:grid-cols-5'} gap-4 sm:gap-5`}>
                   {group.sectors.map((sector) => {
                     const idx = globalIndex++;
                     return <SectorCard key={sector.title} sector={sector} index={idx} />;
