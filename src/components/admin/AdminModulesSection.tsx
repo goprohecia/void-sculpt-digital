@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Puzzle, ArrowRightLeft, Lock, TrendingUp } from "lucide-react";
+import { Puzzle, ArrowRightLeft, Lock, TrendingUp, Sparkles, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
-import { useDemoPlan, ALL_MODULE_KEYS } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, ALL_MODULE_KEYS, DEFAULT_PLAN_MODULES } from "@/contexts/DemoPlanContext";
 import { ModuleSwapWizard } from "@/components/client/ModuleSwapWizard";
 import { SwapWarningScreen } from "@/components/client/SwapWarningScreen";
 import { SwapUpgradeBanner } from "@/components/client/SwapUpgradeBanner";
@@ -15,6 +15,7 @@ import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { format, addMonths, startOfMonth } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 
 interface AdminModulesSectionProps {
@@ -29,10 +30,23 @@ interface AdminModulesSectionProps {
 }
 
 const SYSTEM_MODULES = ["overview", "parametres"];
+const ALWAYS_INCLUDED = ["overview", "parametres", "analyse"];
 
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+const NEXT_PLAN: Record<string, SubscriptionPlan | null> = {
+  starter: "business",
+  business: "enterprise",
+  enterprise: null,
+};
+
+const PLAN_LABELS: Record<SubscriptionPlan, string> = {
+  starter: "Starter",
+  business: "Business",
+  enterprise: "Enterprise",
+};
 
 export function AdminModulesSection({
   plan,
@@ -46,7 +60,6 @@ export function AdminModulesSection({
 }: AdminModulesSectionProps) {
   const { demoPlan, planModules } = useDemoPlan();
   const isEnterprise = demoPlan === "enterprise";
-  const planModuleKeys = planModules[demoPlan];
 
   // Swap state
   const [swapsRemaining, setSwapsRemaining] = useState(2);
@@ -62,6 +75,40 @@ export function AdminModulesSection({
     () => ALL_MODULE_KEYS.filter((m) => !enabledModules.includes(m) && !SYSTEM_MODULES.includes(m)),
     [enabledModules]
   );
+
+  // Modules only in enabled list (what's in the sidebar)
+  const enabledAdminModules = useMemo(
+    () => ALL_ADMIN_MODULES.filter((mod) => enabledModules.includes(mod.key)),
+    [enabledModules]
+  );
+
+  // Modules available in the next plan but not in current
+  const nextPlan = NEXT_PLAN[demoPlan] as SubscriptionPlan | null;
+  const upsellModules = useMemo(() => {
+    if (!nextPlan || isEnterprise) return [];
+    const nextPlanMods = planModules[nextPlan];
+    const nextKeys = nextPlanMods === "all"
+      ? ALL_MODULE_KEYS
+      : nextPlanMods;
+    // Modules in next plan that are NOT in current enabled + not system
+    return ALL_ADMIN_MODULES.filter(
+      (mod) =>
+        !enabledModules.includes(mod.key) &&
+        !ALWAYS_INCLUDED.includes(mod.key) &&
+        nextKeys.includes(mod.key)
+    );
+  }, [demoPlan, enabledModules, nextPlan, isEnterprise, planModules]);
+
+  // For enterprise, also show modules not yet in next plan (all remaining)
+  const allRemainingModules = useMemo(() => {
+    if (nextPlan !== "enterprise" || isEnterprise) return [];
+    return ALL_ADMIN_MODULES.filter(
+      (mod) =>
+        !enabledModules.includes(mod.key) &&
+        !ALWAYS_INCLUDED.includes(mod.key) &&
+        !upsellModules.find((u) => u.key === mod.key)
+    );
+  }, [enabledModules, nextPlan, isEnterprise, upsellModules]);
 
   const isBlocked = swapsRemaining <= 0;
   const showSwapSystem = !isEnterprise && modulesLimit !== null;
@@ -137,14 +184,14 @@ export function AdminModulesSection({
         </>
       )}
 
-      {/* Admin modules toggles */}
+      {/* Active admin modules (only those currently enabled) */}
       <Card>
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
-            <Puzzle className="h-4 w-4 text-primary" /> Modules admin
+            <Puzzle className="h-4 w-4 text-primary" /> Vos modules actifs
           </CardTitle>
           <CardDescription>
-            Choisissez les modules visibles dans votre navigation admin.
+            Les modules actuellement activés dans votre espace admin.
             {modulesLimit && (
               <span className="ml-1 font-medium text-primary">
                 ({enabledModules.filter(k => !SYSTEM_MODULES.includes(k)).length}/{modulesLimit} utilisés)
@@ -153,34 +200,82 @@ export function AdminModulesSection({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {ALL_ADMIN_MODULES.map((mod) => {
+          {enabledAdminModules.map((mod) => {
             const isAlwaysOn = SYSTEM_MODULES.includes(mod.key);
-            const isOn = enabledModules.includes(mod.key);
-            const activeCount = enabledModules.filter(k => !SYSTEM_MODULES.includes(k)).length;
-            const atLimit = modulesLimit !== null && activeCount >= modulesLimit && !isOn && !isAlwaysOn;
             return (
               <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                 <div className="flex items-center gap-2">
-                  <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{capitalize(getModuleLabel(mod.key))}</p>
-                  {atLimit && (
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
-                      {showSwapSystem ? "Swap requis" : "Upgrade"}
+                  <CheckCircle2 className="h-4 w-4 text-[#16a34a]" />
+                  <p className="text-sm font-medium">{capitalize(getModuleLabel(mod.key))}</p>
+                  {ALWAYS_INCLUDED.includes(mod.key) && (
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-gray-400 border-gray-200">
+                      Inclus
                     </Badge>
                   )}
                 </div>
-                <Switch checked={isOn} disabled={isAlwaysOn || atLimit} onCheckedChange={(v) => {
-                  const next = v ? [...enabledModules, mod.key] : enabledModules.filter((k) => k !== mod.key);
-                  updateSetting.mutate({ key: "enabled_modules", value: next });
-                  toast.success(`Module "${capitalize(getModuleLabel(mod.key))}" ${v ? "activé" : "désactivé"}`);
-                }} />
+                <Switch
+                  checked={true}
+                  disabled={isAlwaysOn}
+                  onCheckedChange={(v) => {
+                    if (!v) {
+                      const next = enabledModules.filter((k) => k !== mod.key);
+                      updateSetting.mutate({ key: "enabled_modules", value: next });
+                      toast.success(`Module "${capitalize(getModuleLabel(mod.key))}" désactivé`);
+                    }
+                  }}
+                />
               </div>
             );
           })}
-          {modulesLimit !== null && enabledModules.filter(k => !SYSTEM_MODULES.includes(k)).length >= modulesLimit && (
-            <UpgradeBanner currentPlan={plan} requiredPlan={plan === "starter" ? "business" : "enterprise"} feature="Plus de modules" className="mt-4" />
-          )}
         </CardContent>
       </Card>
+
+      {/* Upsell: modules available in next plan */}
+      {!isEnterprise && nextPlan && (upsellModules.length > 0 || allRemainingModules.length > 0) && (
+        <Card className="border-[#16a34a]/20 bg-[#f0fdf4]/50">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-[#16a34a]" />
+              Modules disponibles avec le plan {PLAN_LABELS[nextPlan]}
+            </CardTitle>
+            <CardDescription>
+              Passez au plan supérieur pour débloquer ces modules et enrichir votre espace.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {upsellModules.map((mod) => (
+              <div key={mod.key} className="flex items-center justify-between py-2 border-b border-[#16a34a]/10 last:border-0">
+                <div className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-gray-400" />
+                  <p className="text-sm font-medium text-gray-500">{capitalize(getModuleLabel(mod.key))}</p>
+                  <Badge className="text-[10px] px-1.5 py-0 bg-[#16a34a]/10 text-[#16a34a] border-0 hover:bg-[#16a34a]/10">
+                    {PLAN_LABELS[nextPlan]}
+                  </Badge>
+                </div>
+              </div>
+            ))}
+            {allRemainingModules.map((mod) => (
+              <div key={mod.key} className="flex items-center justify-between py-2 border-b border-[#16a34a]/10 last:border-0">
+                <div className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-gray-400" />
+                  <p className="text-sm font-medium text-gray-500">{capitalize(getModuleLabel(mod.key))}</p>
+                  <Badge className="text-[10px] px-1.5 py-0 bg-gray-100 text-gray-500 border-0 hover:bg-gray-100">
+                    Enterprise
+                  </Badge>
+                </div>
+              </div>
+            ))}
+            <div className="pt-3">
+              <Button asChild size="sm" className="gap-1.5 bg-[#16a34a] hover:bg-[#15803d] text-white">
+                <Link to="/admin/upgrade">
+                  Voir les offres
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Employee-visible modules */}
       <Card>
