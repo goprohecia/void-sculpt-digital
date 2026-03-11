@@ -275,9 +275,18 @@
   .mba-app main > * h3 {
     color: #ffffff;
   }
-  .mba-app main > * p.text-muted-foreground,
-  .mba-app main > * .text-muted-foreground {
+  .mba-app main > * > .text-muted-foreground,
+  .mba-app main > * > * > .text-muted-foreground,
+  .mba-app main > * > p.text-muted-foreground {
     color: rgba(255,255,255,0.60);
+  }
+  /* But restore inside white surfaces */
+  .mba-app .glass-card .text-muted-foreground,
+  .mba-app .mba-card .text-muted-foreground,
+  .mba-app main [class*="bg-white"] .text-muted-foreground,
+  .mba-app main .bg-muted .text-muted-foreground,
+  .mba-app main .rounded-\[var\(--radius-lg\)\] .text-muted-foreground {
+    color: #9ca3af !important;
   }
   /* Icons next to page titles */
   .mba-app main > * h1 .text-primary,
