@@ -400,8 +400,8 @@ export default function AdminAnalytics() {
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
           <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2 text-white">
-                <BarChart3 className="h-6 w-6 text-[#22c55e]" />
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <BarChart3 className="h-6 w-6 text-primary" />
                 Analyse
               </h1>
               <p className="text-white/60 text-sm">Données analytiques 2026</p>
