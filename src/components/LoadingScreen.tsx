@@ -60,7 +60,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           <motion.img
             src={logoMba}
             alt="MBA"
-            className="h-20 w-auto object-contain drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+            className="h-28 w-auto object-contain drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]"
             animate={{ 
               filter: [
                 'drop-shadow(0 0 20px rgba(34,197,94,0.2))',
