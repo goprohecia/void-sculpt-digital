@@ -567,7 +567,7 @@ export default function AdminClients() {
                 <Input value={newClient.nom} onChange={(e) => setNewClient({ ...newClient, nom: e.target.value })} className="h-9" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Email *</label>
                 <Input type="email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} className="h-9" />
@@ -577,7 +577,7 @@ export default function AdminClients() {
                 <Input value={newClient.telephone} onChange={(e) => setNewClient({ ...newClient, telephone: e.target.value })} className="h-9" placeholder="+33 6 12 34 56 78" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Entreprise <span className="text-muted-foreground/60">(facultatif)</span></label>
                 <Input value={newClient.entreprise} onChange={(e) => setNewClient({ ...newClient, entreprise: e.target.value })} className="h-9" />
