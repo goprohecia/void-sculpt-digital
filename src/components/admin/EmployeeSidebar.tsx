@@ -50,7 +50,7 @@ export function EmployeeSidebar() {
   const initials = user?.nom?.split(" ").map((n) => n[0]).join("").slice(0, 2) || "SA";
 
   return (
-    <Sidebar variant="floating" collapsible="icon" className="!bg-[#14532d] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.15)" }}>
+    <Sidebar variant="floating" collapsible="icon" className="!bg-[#0c3b1e] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.20)" }}>
       <SidebarHeader className="p-5 pb-4 border-b border-white/10">
         <Link to="/employee" className="flex items-center gap-2">
           {wl.logoUrl ? (
@@ -71,7 +71,7 @@ export function EmployeeSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 px-5 py-3">Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/40 px-5 py-3">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
@@ -81,13 +81,13 @@ export function EmployeeSidebar() {
                     <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                       <Link
                         to={item.url}
-                        className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
+                        className={`flex items-center gap-3 py-[10px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                           active
-                            ? "bg-white/[0.12] text-white font-semibold border-l-[#4ade80]"
-                            : "text-white/[0.65] border-l-transparent hover:bg-white/[0.07] hover:text-white"
+                            ? "bg-white/[0.15] text-white font-semibold border-l-[#4ade80]"
+                            : "text-white/[0.80] border-l-transparent hover:bg-white/[0.10] hover:text-white"
                         }`}
                       >
-                        <item.icon className={`h-4 w-4 ${active ? "text-[#4ade80]" : "opacity-60"}`} />
+                        <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#4ade80]" : "opacity-70"}`} />
                         <span className="flex-1">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -99,7 +99,7 @@ export function EmployeeSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-[#0f3d20] border-t border-white/10">
+      <SidebarFooter className="p-4 bg-[#082b14] border-t border-white/10">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
             {initials}
