@@ -8,7 +8,6 @@ import {
   ServicesSection,
   RealisationsSection,
   MethodeSection,
-  CiblesSection,
   ArgumentsSection,
   CTAFinal,
 } from "@/components/sections";
