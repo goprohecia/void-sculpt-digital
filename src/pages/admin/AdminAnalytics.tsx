@@ -428,7 +428,7 @@ export default function AdminAnalytics() {
                   );
                   toast.success("Export factures CSV téléchargé");
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-muted/30 text-foreground text-xs sm:text-sm font-medium hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-[#e4e8df] text-[#4a5e46] text-xs sm:text-sm font-medium hover:bg-[#f0fdf4] hover:border-[#22c55e] hover:text-[#16a34a] transition-colors"
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Factures</span><span className="sm:hidden">Fact.</span>
               </button>
