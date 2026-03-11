@@ -37,7 +37,7 @@ import BookingPage from "@/pages/public/BookingPage";
 
 // Auth pages
 import AdminLogin from "@/pages/admin/AdminLogin";
-import AdminOnlyLogin from "@/pages/admin/AdminOnlyLogin";
+
 import ClientSignup from "@/pages/admin/ClientSignup";
 import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
@@ -154,7 +154,7 @@ export function AnimatedRoutes() {
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
-        <Route path="/admin/access" element={<AdminOnlyLogin />} />
+        
         <Route path="/signup" element={<ClientSignup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
