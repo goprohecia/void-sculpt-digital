@@ -639,7 +639,7 @@ export default function AdminClients() {
               <label className="text-xs font-medium text-muted-foreground">Adresse</label>
               <Input value={newClient.adresse} onChange={(e) => setNewClient({ ...newClient, adresse: e.target.value })} className="h-9" />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Code postal</label>
                 <Input value={newClient.codePostal} onChange={(e) => setNewClient({ ...newClient, codePostal: e.target.value })} className="h-9" />
