@@ -142,7 +142,11 @@ export function Header() {
             <MagneticButton as="div" strength={0.15}>
               <Link
                 to="/client/login"
-                className="px-5 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
+                className={`px-5 py-2.5 text-sm font-medium rounded-xl border transition-colors ${
+                  isScrolled
+                    ? "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
+                    : "border-white/30 text-white hover:border-white/60"
+                }`}
               >
                 Connexion
               </Link>
