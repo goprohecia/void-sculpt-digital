@@ -117,7 +117,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
-              <NavLinkItem key={item.href} to={item.href} isActive={isActive(item.href)}>
+              <NavLinkItem key={item.href} to={item.href} isActive={isActive(item.href)} isScrolled={isScrolled}>
                 {item.name}
               </NavLinkItem>
             ))}
