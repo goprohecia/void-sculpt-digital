@@ -5,6 +5,10 @@ export function useScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    // Skip for admin/client/employee routes — they use overflow-auto on <main>
+    const isAppRoute = /^\/(admin|client|employee|superadmin)/.test(pathname);
+    if (!isAppRoute) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
   }, [pathname]);
 }
