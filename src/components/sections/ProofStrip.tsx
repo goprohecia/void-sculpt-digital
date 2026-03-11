@@ -11,7 +11,7 @@ const proofItems = [
 
 export function ProofStrip() {
   return (
-    <section className="py-8 md:py-12 relative border-y border-gray-200 bg-[#F6F5F2]">
+    <section className="py-8 md:py-12 relative bg-[#F6F5F2]">
       <div className="container mx-auto px-4 relative z-10">
         <ScrollReveal variant="fadeIn">
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 lg:gap-16">
