@@ -3,14 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronRight, ChevronLeft, Play, BarChart3, Users, FileText, MessageSquare, Receipt, Package, HeadphonesIcon, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoMba from "@/assets/logo-mba.png";
-import dashboardImg from "@/assets/screenshots/dashboard.jpg";
-import clientsImg from "@/assets/screenshots/clients.jpg";
-import dossiersImg from "@/assets/screenshots/dossiers.jpg";
-import messagerieImg from "@/assets/screenshots/messagerie.jpg";
-import facturationImg from "@/assets/screenshots/facturation.jpg";
-import stockImg from "@/assets/screenshots/stock.jpg";
-import supportImg from "@/assets/screenshots/support.jpg";
-import analyseImg from "@/assets/screenshots/analyse.jpg";
+import dashboardImg from "@/assets/screenshots/dashboard.png";
+import clientsImg from "@/assets/screenshots/clients.png";
+import dossiersImg from "@/assets/screenshots/dossiers.png";
+import messagerieImg from "@/assets/screenshots/messagerie.png";
+import facturationImg from "@/assets/screenshots/facturation.png";
+import stockImg from "@/assets/screenshots/stock.png";
+import supportImg from "@/assets/screenshots/support.png";
+import analyseImg from "@/assets/screenshots/analyse.png";
 
 const tourSteps = [
   {
