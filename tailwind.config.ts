@@ -55,10 +55,12 @@ export default {
         "mba-green": {
           50: "hsl(var(--green-50))",
           100: "hsl(var(--green-100))",
+          400: "hsl(var(--green-400))",
           500: "hsl(var(--green-500))",
           600: "hsl(var(--green-600))",
           700: "hsl(var(--green-700))",
           900: "hsl(var(--green-900))",
+          950: "hsl(var(--green-950))",
         },
         // Neon colors (landing page)
         neon: {
