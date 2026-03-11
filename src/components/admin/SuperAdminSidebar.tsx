@@ -49,10 +49,10 @@ export function SuperAdminSidebar() {
                     <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                       <Link
                         to={item.url}
-                        className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
+                        className={`flex items-center gap-3 py-[10px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                           active
-                            ? "bg-white/[0.12] text-white font-semibold border-l-[#4ade80]"
-                            : "text-white/[0.65] border-l-transparent hover:bg-white/[0.07] hover:text-white"
+                            ? "bg-white/[0.15] text-white font-semibold border-l-[#4ade80]"
+                            : "text-white/[0.80] border-l-transparent hover:bg-white/[0.10] hover:text-white"
                         }`}
                       >
                         <item.icon className={`h-4 w-4 ${active ? "text-[#4ade80]" : "opacity-60"}`} />
