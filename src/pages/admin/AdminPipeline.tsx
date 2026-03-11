@@ -34,12 +34,12 @@ interface Deal {
 }
 
 const ETAPES = [
-  { key: "prospect", label: "Prospect", color: "bg-slate-500/20 text-slate-400 border-slate-500/30" },
-  { key: "qualifie", label: "Qualifié", color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
-  { key: "proposition", label: "Proposition", color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
-  { key: "negociation", label: "Négociation", color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
-  { key: "gagne", label: "Gagné", color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
-  { key: "perdu", label: "Perdu", color: "bg-red-500/20 text-red-400 border-red-500/30" },
+  { key: "prospect", label: "Prospect", color: "bg-slate-100 text-slate-700 border-slate-300" },
+  { key: "qualifie", label: "Qualifié", color: "bg-blue-100 text-blue-700 border-blue-300" },
+  { key: "proposition", label: "Proposition", color: "bg-amber-100 text-amber-700 border-amber-300" },
+  { key: "negociation", label: "Négociation", color: "bg-purple-100 text-purple-700 border-purple-300" },
+  { key: "gagne", label: "Gagné", color: "bg-emerald-100 text-emerald-700 border-emerald-300" },
+  { key: "perdu", label: "Perdu", color: "bg-red-100 text-red-700 border-red-300" },
 ];
 
 const DEMO_DEALS: Deal[] = [
@@ -237,7 +237,7 @@ export default function AdminPipeline() {
       onDragStart={(e) => handleDragStart(e, deal.id)}
       onDragEnd={handleDragEnd}
       onClick={() => openEditDeal(deal)}
-      className={`p-3 rounded-lg bg-background border border-border/50 space-y-1.5 transition-all cursor-grab active:cursor-grabbing group ${
+      className={`p-3 rounded-lg bg-[#f7f8f5] border border-[#e4e8df] space-y-1.5 transition-all cursor-grab active:cursor-grabbing group ${
         draggedDeal === deal.id ? "opacity-50 scale-95 border-primary" : "hover:border-primary/30 hover:shadow-md"
       }`}
     >
@@ -302,7 +302,7 @@ export default function AdminPipeline() {
               return (
                 <Card
                   key={etape.key}
-                  className={`bg-muted/10 transition-all ${isOver ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
+                  className={`bg-white border border-[#e4e8df] transition-all ${isOver ? "ring-2 ring-primary ring-offset-2 ring-offset-[#14532d]" : ""}`}
                   onDragOver={(e) => handleDragOver(e, etape.key)}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, etape.key)}
