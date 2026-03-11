@@ -38,8 +38,8 @@ function NavLinkItem({
       <Link
         to={to}
         onClick={handleClick}
-        className={`relative font-medium transition-colors duration-200 hover:text-neon-violet px-2 py-1 ${
-          isActive ? "text-neon-violet" : "text-foreground"
+        className={`relative font-medium transition-colors duration-200 hover:text-[#22c55e] px-2 py-1 ${
+          isActive ? "text-[#22c55e]" : "text-foreground"
         }`}
       >
         <motion.span className="relative z-10" whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
@@ -48,7 +48,7 @@ function NavLinkItem({
         {isActive && (
           <motion.div
             layoutId="activeNav"
-            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-neon-violet rounded-full"
+            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#22c55e] rounded-full"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
         )}
@@ -100,7 +100,7 @@ export function Header() {
               <motion.img
                 src={logoHero}
                 alt="MBA"
-                className="h-8 sm:h-10 md:h-12 w-auto drop-shadow-[0_0_10px_rgba(139,92,246,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] transition-all duration-300"
+                className="h-8 sm:h-10 md:h-12 w-auto drop-shadow-[0_0_10px_rgba(34,197,94,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(34,197,94,0.6)] transition-all duration-300"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 transition={{ duration: 0.3 }}
               />
@@ -127,7 +127,7 @@ export function Header() {
             <MagneticButton as="div" strength={0.25}>
               <Link
                 to="/contact?subject=Demo%20MBA"
-                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
+                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-[#22c55e]/30 transition-colors"
               >
                 Essayer MBA
               </Link>
@@ -135,7 +135,7 @@ export function Header() {
             <MagneticButton as="div" strength={0.15}>
               <Link
                 to="/client/login"
-                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-primary/30 transition-colors"
+                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-[#22c55e]/30 transition-colors"
               >
                 Connexion
               </Link>
@@ -206,7 +206,7 @@ export function Header() {
                         }
                       }}
                       className={`relative z-10 px-4 py-3 rounded-xl transition-colors block ${
-                        isActive(item.href) ? "bg-neon-violet/10 text-neon-violet" : ""
+                        isActive(item.href) ? "bg-[#22c55e]/10 text-[#22c55e]" : ""
                       }`}
                     >
                       {item.name}

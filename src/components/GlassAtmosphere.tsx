@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export function GlassAtmosphere() {
   return (
     <div className="atmosphere">
-      {/* Primary violet orb - top left */}
+      {/* Primary green orb - top left */}
       <motion.div
         className="atmosphere-orb"
         style={{
@@ -13,7 +13,7 @@ export function GlassAtmosphere() {
           maxHeight: "550px",
           left: "-12%",
           top: "-8%",
-          background: "radial-gradient(circle, hsl(265 85% 50% / 0.25), hsl(265 85% 35% / 0.08), transparent 65%)",
+          background: "radial-gradient(circle, hsl(142 71% 45% / 0.20), hsl(142 63% 30% / 0.08), transparent 65%)",
         }}
         animate={{
           x: [0, 40, -25, 0],
@@ -27,7 +27,7 @@ export function GlassAtmosphere() {
         }}
       />
 
-      {/* Secondary blue orb - bottom right */}
+      {/* Secondary emerald orb - bottom right */}
       <motion.div
         className="atmosphere-orb"
         style={{
@@ -37,7 +37,7 @@ export function GlassAtmosphere() {
           maxHeight: "450px",
           right: "-8%",
           bottom: "12%",
-          background: "radial-gradient(circle, hsl(200 100% 55% / 0.2), hsl(200 100% 45% / 0.08), transparent 65%)",
+          background: "radial-gradient(circle, hsl(141 69% 68% / 0.15), hsl(142 63% 55% / 0.06), transparent 65%)",
         }}
         animate={{
           x: [0, -35, 25, 0],
@@ -52,7 +52,7 @@ export function GlassAtmosphere() {
         }}
       />
 
-      {/* Tertiary pink/magenta orb - center right */}
+      {/* Tertiary light green orb - center right */}
       <motion.div
         className="atmosphere-orb"
         style={{
@@ -62,7 +62,7 @@ export function GlassAtmosphere() {
           maxHeight: "350px",
           right: "25%",
           top: "35%",
-          background: "radial-gradient(circle, hsl(320 80% 55% / 0.15), hsl(320 80% 45% / 0.06), transparent 65%)",
+          background: "radial-gradient(circle, hsl(142 72% 42% / 0.12), hsl(150 60% 40% / 0.05), transparent 65%)",
         }}
         animate={{
           x: [0, 50, -35, 0],
@@ -77,7 +77,7 @@ export function GlassAtmosphere() {
         }}
       />
 
-      {/* Accent cyan orb - top right */}
+      {/* Accent green orb - top right */}
       <motion.div
         className="atmosphere-orb"
         style={{
@@ -87,7 +87,7 @@ export function GlassAtmosphere() {
           maxHeight: "300px",
           right: "15%",
           top: "8%",
-          background: "radial-gradient(circle, hsl(180 100% 50% / 0.12), hsl(180 100% 40% / 0.04), transparent 65%)",
+          background: "radial-gradient(circle, hsl(141 79% 60% / 0.10), hsl(142 71% 50% / 0.04), transparent 65%)",
         }}
         animate={{
           x: [0, -25, 35, 0],
@@ -102,7 +102,7 @@ export function GlassAtmosphere() {
         }}
       />
 
-      {/* Subtle violet accent - bottom left */}
+      {/* Subtle deep green accent - bottom left */}
       <motion.div
         className="atmosphere-orb"
         style={{
@@ -112,7 +112,7 @@ export function GlassAtmosphere() {
           maxHeight: "250px",
           left: "8%",
           bottom: "18%",
-          background: "radial-gradient(circle, hsl(265 70% 55% / 0.12), hsl(265 70% 45% / 0.04), transparent 65%)",
+          background: "radial-gradient(circle, hsl(150 60% 40% / 0.10), hsl(150 60% 30% / 0.04), transparent 65%)",
         }}
         animate={{
           x: [0, 20, -30, 0],
@@ -140,9 +140,9 @@ export function GlassAtmosphere() {
         className="absolute inset-0 opacity-25 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 70% 45% at 15% 35%, hsl(265 85% 45% / 0.12), transparent),
-            radial-gradient(ellipse 55% 35% at 85% 55%, hsl(200 100% 50% / 0.08), transparent),
-            radial-gradient(ellipse 60% 45% at 55% 85%, hsl(320 80% 50% / 0.06), transparent)
+            radial-gradient(ellipse 70% 45% at 15% 35%, hsl(142 71% 45% / 0.10), transparent),
+            radial-gradient(ellipse 55% 35% at 85% 55%, hsl(141 69% 68% / 0.06), transparent),
+            radial-gradient(ellipse 60% 45% at 55% 85%, hsl(142 63% 55% / 0.05), transparent)
           `,
         }}
       />
