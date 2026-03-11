@@ -102,7 +102,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
           <main className="flex-1 p-4 md:p-7 overflow-auto pb-20 md:pb-7">
             {plan !== "enterprise" && showBanner && (
-              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-white p-4 flex items-center gap-3 relative shadow-[var(--shadow-card)]">
+              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-[#F6F5F2] p-4 flex items-center gap-3 relative shadow-[var(--shadow-card)]">
                 <button
                   onClick={() => setShowBanner(false)}
                   className="absolute top-2 right-2 p-1 rounded-md hover:bg-[#f0fdf4] text-[#9ca3af] hover:text-[#1a2318] transition-colors"
