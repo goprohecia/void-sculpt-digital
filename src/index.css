@@ -386,7 +386,7 @@
   /* All inputs in admin — ensure white bg */
   .mba-app main input:not([type="checkbox"]):not([type="radio"]),
   .mba-app main textarea {
-    background-color: #ffffff;
+    background-color: #F6F5F2;
     color: #1a2318;
     border-color: #e4e8df;
   }
