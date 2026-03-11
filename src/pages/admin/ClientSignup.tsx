@@ -11,6 +11,7 @@ import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/context
 import { getModuleLabel as getSectorModuleLabel, isModuleHidden } from "@/data/sectorModules";
 import { GENERIC_MODULE_LABELS } from "@/data/sectorModules";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
+import logoMba from "@/assets/logo-mba.png";
 
 const ALWAYS_INCLUDED = ["overview", "parametres"];
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
@@ -68,21 +69,15 @@ export default function ClientSignup() {
   const handleSelectSector = (sector: SectorKey) => {
     setSelectedSector(sector);
     if (!selectedPlan) return;
-
     const recommendations = sectorRecommendations[sector] || [];
     const limit = getModuleLimit(selectedPlan);
-
     if (selectedPlan === "enterprise") {
-      // Enterprise: pre-select all recommended, go to modules for optional deselection
       setSelectedModules(SELECTABLE_MODULES);
-      setStep("modules");
     } else {
-      // Starter/Business: pre-select the top N recommended modules
       const count = limit ?? recommendations.length;
-      const preSelected = recommendations.slice(0, count);
-      setSelectedModules(preSelected);
-      setStep("modules");
+      setSelectedModules(recommendations.slice(0, count));
     }
+    setStep("modules");
   };
 
   const toggleModule = (key: string) => {
@@ -102,7 +97,6 @@ export default function ClientSignup() {
     if (!nom.trim()) { setError("Le nom est requis"); return; }
     if (password.length < 6) { setError("Le mot de passe doit contenir au moins 6 caractères"); return; }
     if (password !== confirmPassword) { setError("Les mots de passe ne correspondent pas"); return; }
-
     setLoading(true);
     try {
       const { data, error: fnError } = await supabase.functions.invoke("send-signup-confirmation", {
@@ -130,124 +124,146 @@ export default function ClientSignup() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="w-full max-w-md space-y-6 text-center">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/20">
-            <CheckCircle className="h-8 w-8 text-primary" />
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: "#f0f2ec" }}>
+        <div className="w-full max-w-[400px] space-y-5">
+          <div className="text-center space-y-1.5">
+            <img src={logoMba} alt="MBA" className="h-20 mx-auto" />
           </div>
-          <h1 className="text-2xl font-bold">Inscription réussie !</h1>
-          <p className="text-muted-foreground">
-            Un email de confirmation a été envoyé à <strong>{email}</strong>.
-            Veuillez vérifier votre boîte de réception et cliquer sur le lien pour activer votre compte.
-          </p>
-          <Button variant="outline" onClick={() => navigate("/client/login")} className="gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            Retour à la connexion
-          </Button>
+          <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[#e4e8df] p-7 space-y-5 text-center">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#f0fdf4]">
+              <CheckCircle className="h-7 w-7 text-[#22c55e]" />
+            </div>
+            <h1 className="text-lg font-bold text-[#1a2318]">Inscription réussie !</h1>
+            <p className="text-sm text-[#9ca3af]">
+              Un email de confirmation a été envoyé à <strong className="text-[#1a2318]">{email}</strong>.
+              Veuillez vérifier votre boîte de réception et cliquer sur le lien pour activer votre compte.
+            </p>
+            <Button variant="outline" onClick={() => navigate("/client/login")} className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Retour à la connexion
+            </Button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-2xl space-y-4">
-        {/* Header */}
-        <div className="text-center space-y-1">
-          <h1 className="text-xl font-bold">
-            {step === "plan" ? "Choisissez votre formule" :
-             step === "sector" ? "Quel est votre secteur d'activité ?" :
-             step === "modules" ? "Sélectionnez vos modules" :
-             "Créer votre compte"}
-          </h1>
-          <p className="text-sm text-muted-foreground">My Business Assistant</p>
-          {/* Step indicator */}
-          <div className="flex items-center justify-center gap-2 pt-2">
-            {STEP_LABELS.map((label, i) => (
-              <div key={label} className="flex items-center gap-1">
-                <div className={`h-1.5 rounded-full transition-all ${i === currentStepIndex ? "w-8 bg-primary" : i < currentStepIndex ? "w-6 bg-primary/50" : "w-4 bg-muted"}`} />
-              </div>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: "#f0f2ec" }}>
+      <div className="w-full max-w-[520px] space-y-5">
+        {/* Back to home */}
+        <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors">
+          <ArrowLeft className="h-4 w-4" />
+          Retour au site
+        </Link>
+
+        {/* Logo */}
+        <div className="text-center space-y-1.5">
+          <img src={logoMba} alt="MBA" className="h-20 mx-auto" />
+          <p className="text-xs text-[#9ca3af] tracking-wide">My Business Assistant</p>
+        </div>
+
+        {/* Step indicator */}
+        <div className="flex flex-col items-center gap-1.5">
+          <div className="flex items-center gap-2">
+            {STEP_LABELS.map((_, i) => (
+              <div key={i} className={`h-1.5 rounded-full transition-all ${i === currentStepIndex ? "w-8 bg-[#22c55e]" : i < currentStepIndex ? "w-6 bg-[#22c55e]/40" : "w-4 bg-[#e4e8df]"}`} />
             ))}
           </div>
-          <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground pt-1">
+          <div className="flex items-center gap-4 text-[10px] text-[#9ca3af]">
             {STEP_LABELS.map((label, i) => (
-              <span key={label} className={i === currentStepIndex ? "text-primary font-medium" : ""}>{label}</span>
+              <span key={label} className={i === currentStepIndex ? "text-[#22c55e] font-medium" : ""}>{label}</span>
             ))}
           </div>
         </div>
 
         {/* Step 1: Plan selection */}
         {step === "plan" && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {(["starter", "business", "enterprise"] as SubscriptionPlan[]).map((plan) => {
-              const modules = planModules[plan];
-              const moduleCount = modules === "all" ? SELECTABLE_MODULES.length : modules.length;
-              const price = planPrices[plan];
-              const colors: Record<SubscriptionPlan, string> = {
-                starter: "border-muted-foreground/30 hover:border-muted-foreground/60",
-                business: "border-neon-blue/30 hover:border-neon-blue/60",
-                enterprise: "border-amber-400/30 hover:border-amber-400/60",
-              };
-              const accents: Record<SubscriptionPlan, string> = {
-                starter: "text-muted-foreground",
-                business: "text-neon-blue",
-                enterprise: "text-amber-400",
-              };
+          <div className="space-y-3">
+            <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[#e4e8df] p-5 space-y-3">
+              <div className="text-center space-y-0.5">
+                <h2 className="text-lg font-bold text-[#1a2318]">Choisissez votre formule</h2>
+                <p className="text-xs text-[#9ca3af]">Sélectionnez le plan adapté à vos besoins</p>
+              </div>
 
-              return (
-                <button
-                  key={plan}
-                  onClick={() => handleSelectPlan(plan)}
-                  className={`glass-card p-5 border ${colors[plan]} text-left space-y-3 transition-all cursor-pointer`}
-                >
-                  <div>
-                    <h3 className={`text-lg font-bold uppercase ${accents[plan]}`}>{plan}</h3>
-                    <p className="text-2xl font-bold mt-1">{price}€<span className="text-sm font-normal text-muted-foreground">/mois</span></p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">{modules === "all" ? "Tous les modules" : `${moduleCount} modules inclus`}</p>
-                    {modules !== "all" && (
-                      <div className="flex flex-wrap gap-1">
-                        {modules.map((m) => (
-                          <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground capitalize">{GENERIC_MODULE_LABELS[m] || m}</span>
-                        ))}
+              <div className="space-y-2.5">
+                {(["starter", "business", "enterprise"] as SubscriptionPlan[]).map((plan) => {
+                  const modules = planModules[plan];
+                  const moduleCount = modules === "all" ? SELECTABLE_MODULES.length : modules.length;
+                  const price = planPrices[plan];
+                  const borderColors: Record<SubscriptionPlan, string> = {
+                    starter: "border-[#e4e8df] hover:border-[#9ca3af]",
+                    business: "border-[#e4e8df] hover:border-[#22c55e]",
+                    enterprise: "border-[#e4e8df] hover:border-[#eab308]",
+                  };
+                  const accents: Record<SubscriptionPlan, string> = {
+                    starter: "text-[#4a5e46]",
+                    business: "text-[#22c55e]",
+                    enterprise: "text-[#eab308]",
+                  };
+
+                  return (
+                    <button
+                      key={plan}
+                      onClick={() => handleSelectPlan(plan)}
+                      className={`w-full bg-[#f7f8f5] rounded-xl border ${borderColors[plan]} p-4 text-left space-y-2 transition-all cursor-pointer hover:shadow-md`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <h3 className={`text-base font-bold uppercase ${accents[plan]}`}>{plan}</h3>
+                        <p className="text-lg font-bold text-[#1a2318]">{price}€<span className="text-xs font-normal text-[#9ca3af]">/mois</span></p>
                       </div>
-                    )}
-                  </div>
-                  <div className={`text-sm font-medium ${accents[plan]} flex items-center gap-1`}>
-                    Choisir <ArrowRight className="h-3 w-3" />
-                  </div>
-                </button>
-              );
-            })}
+                      <div className="space-y-1.5">
+                        <p className="text-[11px] text-[#9ca3af]">{modules === "all" ? "Tous les modules" : `${moduleCount} modules inclus`}</p>
+                        {modules !== "all" && (
+                          <div className="flex flex-wrap gap-1">
+                            {modules.map((m) => (
+                              <span key={m} className="text-[10px] px-1.5 py-0.5 rounded-md bg-white border border-[#e4e8df] text-[#4a5e46] capitalize">{GENERIC_MODULE_LABELS[m] || m}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className={`text-xs font-medium ${accents[plan]} flex items-center gap-1`}>
+                        Choisir <ArrowRight className="h-3 w-3" />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <p className="text-center text-xs text-[#9ca3af]">
+              Déjà un compte ?{" "}
+              <Link to="/client/login" className="text-[#22c55e] hover:underline font-medium">Se connecter</Link>
+            </p>
           </div>
         )}
 
         {/* Step 2: Sector selection */}
         {step === "sector" && (
-          <div className="glass-card p-6 space-y-4">
+          <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[#e4e8df] p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <button onClick={() => setStep("plan")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <button onClick={() => setStep("plan")} className="text-xs text-[#9ca3af] hover:text-[#1a2318] flex items-center gap-1 transition-colors">
                 <ArrowLeft className="h-3 w-3" /> Retour
               </button>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium uppercase">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f0fdf4] text-[#22c55e] font-medium uppercase border border-[#bbf7d0]">
                 {selectedPlan}
               </span>
             </div>
 
-            <p className="text-sm text-muted-foreground text-center">
-              Nous vous recommanderons les modules les plus adaptés à votre activité.
-            </p>
+            <div className="text-center space-y-0.5">
+              <h2 className="text-lg font-bold text-[#1a2318]">Votre secteur d'activité</h2>
+              <p className="text-xs text-[#9ca3af]">Nous vous recommanderons les modules adaptés</p>
+            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {SECTORS.map((s) => (
                 <button
                   key={s.key}
                   onClick={() => handleSelectSector(s.key)}
-                  className="flex flex-col items-center gap-1.5 p-3 rounded-xl border border-transparent hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer text-center"
+                  className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl bg-[#f7f8f5] border border-[#e4e8df] hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-all cursor-pointer text-center"
                 >
-                  <span className="text-2xl">{s.icon}</span>
-                  <span className="text-xs font-medium">{s.label}</span>
+                  <span className="text-xl">{s.icon}</span>
+                  <span className="text-[10px] font-medium text-[#4a5e46] leading-tight">{s.label}</span>
                 </button>
               ))}
             </div>
@@ -256,21 +272,26 @@ export default function ClientSignup() {
 
         {/* Step 3: Module selection */}
         {step === "modules" && selectedPlan && (
-          <div className="glass-card p-6 space-y-4">
+          <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[#e4e8df] p-5 space-y-4">
             <div className="flex items-center justify-between">
-              <button onClick={() => setStep("sector")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <button onClick={() => setStep("sector")} className="text-xs text-[#9ca3af] hover:text-[#1a2318] flex items-center gap-1 transition-colors">
                 <ArrowLeft className="h-3 w-3" /> Retour
               </button>
-              <span className="text-xs text-muted-foreground">
-                {selectedModules.length}/{getModuleLimit(selectedPlan) ?? "∞"} modules sélectionnés
+              <span className="text-[11px] text-[#9ca3af]">
+                {selectedModules.length}/{getModuleLimit(selectedPlan) ?? "∞"} modules
               </span>
             </div>
 
+            <div className="text-center space-y-0.5">
+              <h2 className="text-lg font-bold text-[#1a2318]">Sélectionnez vos modules</h2>
+              <p className="text-xs text-[#9ca3af]">Personnalisez votre espace de gestion</p>
+            </div>
+
             {selectedSector && sectorRecommendations[selectedSector] && (
-              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-primary/5 border border-primary/10">
-                <Sparkles className="h-4 w-4 text-primary shrink-0" />
-                <p className="text-xs text-muted-foreground">
-                  Modules pré-sélectionnés selon votre secteur <strong className="text-foreground">{SECTORS.find(s => s.key === selectedSector)?.label}</strong>. Vous pouvez ajuster.
+              <div className="flex items-center gap-2 p-2.5 rounded-xl bg-[#f0fdf4] border border-[#bbf7d0]">
+                <Sparkles className="h-4 w-4 text-[#22c55e] shrink-0" />
+                <p className="text-[11px] text-[#4a5e46]">
+                  Modules pré-sélectionnés pour <strong className="text-[#1a2318]">{SECTORS.find(s => s.key === selectedSector)?.label}</strong>
                 </p>
               </div>
             )}
@@ -286,7 +307,7 @@ export default function ClientSignup() {
                   <label
                     key={key}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-colors border ${
-                      isSelected ? "border-primary/30 bg-primary/5" : "border-transparent hover:bg-muted/30"
+                      isSelected ? "border-[#22c55e] bg-[#f0fdf4]" : "border-[#e4e8df] bg-[#f7f8f5] hover:bg-white"
                     } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
                   >
                     <Checkbox
@@ -294,16 +315,16 @@ export default function ClientSignup() {
                       disabled={disabled}
                       onCheckedChange={() => toggleModule(key)}
                     />
-                    <span className="text-sm">{getSectorModuleLabel(key, selectedSector)}</span>
+                    <span className="text-xs text-[#1a2318]">{getSectorModuleLabel(key, selectedSector)}</span>
                     {isRecommended && !isSelected && (
-                      <Sparkles className="h-3 w-3 text-primary/50 ml-auto" />
+                      <Sparkles className="h-3 w-3 text-[#22c55e]/50 ml-auto" />
                     )}
                   </label>
                 );
               })}
             </div>
 
-            <Button onClick={() => setStep("form")} className="w-full gap-2" disabled={selectedModules.length === 0}>
+            <Button onClick={() => setStep("form")} className="w-full gap-2 rounded-xl" disabled={selectedModules.length === 0}>
               Continuer <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -311,29 +332,34 @@ export default function ClientSignup() {
 
         {/* Step 4: Account form */}
         {step === "form" && (
-          <div className="glass-card p-6 space-y-4">
+          <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-[#e4e8df] p-7 space-y-4">
             <div className="flex items-center justify-between">
-              <button onClick={() => setStep("modules")} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1">
+              <button onClick={() => setStep("modules")} className="text-xs text-[#9ca3af] hover:text-[#1a2318] flex items-center gap-1 transition-colors">
                 <ArrowLeft className="h-3 w-3" /> Retour
               </button>
               <div className="flex items-center gap-2">
                 {selectedSector && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f7f8f5] text-[#4a5e46] border border-[#e4e8df]">
                     {SECTORS.find(s => s.key === selectedSector)?.label}
                   </span>
                 )}
-                <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium uppercase">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#f0fdf4] text-[#22c55e] font-medium uppercase border border-[#bbf7d0]">
                   {selectedPlan}
                 </span>
               </div>
             </div>
 
+            <div className="text-center space-y-0.5">
+              <h2 className="text-lg font-bold text-[#1a2318]">Créer votre compte</h2>
+              <p className="text-xs text-[#9ca3af]">Finalisez votre inscription</p>
+            </div>
+
             {/* Google */}
             <button
               onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-3 h-10 rounded-lg border border-border bg-background hover:bg-muted/50 transition-colors text-sm font-medium"
+              className="w-full flex items-center justify-center gap-2.5 h-10 rounded-full border border-[#e4e8df] bg-white hover:shadow-md transition-all text-sm font-medium text-[#1a2318]"
             >
-              <svg className="h-5 w-5" viewBox="0 0 24 24">
+              <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
@@ -343,61 +369,50 @@ export default function ClientSignup() {
             </button>
 
             <div className="relative">
-              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
-              <div className="relative flex justify-center text-xs"><span className="bg-card px-2 text-muted-foreground">ou</span></div>
+              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-[#e4e8df]" /></div>
+              <div className="relative flex justify-center text-[10px]"><span className="bg-white px-2 text-[#9ca3af]">ou</span></div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Nom complet *</label>
-                  <Input type="text" placeholder="Jean Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="glass-input border-0 h-10" required />
+                  <label className="text-xs font-medium text-[#4a5e46]">Nom complet *</label>
+                  <Input type="text" placeholder="Jean Dupont" value={nom} onChange={(e) => setNom(e.target.value)} className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]" required />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Téléphone</label>
-                  <Input type="tel" placeholder="+33 6 12 34 56 78" value={telephone} onChange={(e) => setTelephone(e.target.value)} className="glass-input border-0 h-10" />
+                  <label className="text-xs font-medium text-[#4a5e46]">Téléphone</label>
+                  <Input type="tel" placeholder="+33 6 12 34 56 78" value={telephone} onChange={(e) => setTelephone(e.target.value)} className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]" />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium">Email *</label>
-                <Input type="email" placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className="glass-input border-0 h-10" required />
+                <label className="text-xs font-medium text-[#4a5e46]">Email *</label>
+                <Input type="email" placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]" required />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Mot de passe *</label>
+                  <label className="text-xs font-medium text-[#4a5e46]">Mot de passe *</label>
                   <div className="relative">
-                    <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="glass-input border-0 h-10 pr-10" required minLength={6} />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg pr-9 focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]" required minLength={6} />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#1a2318]">
+                      {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                     </button>
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium">Confirmer *</label>
-                  <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="glass-input border-0 h-10" required minLength={6} />
+                  <label className="text-xs font-medium text-[#4a5e46]">Confirmer *</label>
+                  <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-9 text-sm bg-[#f7f8f5] border border-[#e4e8df] rounded-lg focus:border-[#22c55e] focus:ring-2 focus:ring-[rgba(34,197,94,0.12)]" required minLength={6} />
                 </div>
               </div>
-              {error && <p className="text-sm text-destructive">{error}</p>}
-              <Button type="submit" className="w-full h-10 gap-2" disabled={loading}>
-                <UserPlus className="h-4 w-4" />
+              {error && <p className="text-xs text-[#dc2626]">{error}</p>}
+              <Button type="submit" className="w-full h-10 gap-2 text-sm rounded-xl" disabled={loading}>
+                <UserPlus className="h-3.5 w-3.5" />
                 {loading ? "Création en cours..." : "Créer mon compte"}
               </Button>
             </form>
 
-            <div className="text-center text-sm text-muted-foreground">
-              <p>
-                Déjà un compte ?{" "}
-                <Link to="/client/login" className="text-primary hover:underline font-medium">Se connecter</Link>
-              </p>
-            </div>
-          </div>
-        )}
-
-        {step === "plan" && (
-          <div className="text-center text-sm text-muted-foreground">
-            <p>
+            <p className="text-center text-xs text-[#9ca3af]">
               Déjà un compte ?{" "}
-              <Link to="/client/login" className="text-primary hover:underline font-medium">Se connecter</Link>
+              <Link to="/client/login" className="text-[#22c55e] hover:underline font-medium">Se connecter</Link>
             </p>
           </div>
         )}
