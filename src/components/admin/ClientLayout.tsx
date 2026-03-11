@@ -42,7 +42,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="mba-app min-h-screen flex w-full" style={{ background: "#14532d" }}>
+      <div className="mba-app min-h-screen flex w-full" style={{ background: "hsl(150, 60%, 10%)" }}>
         <ClientSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           <header className="h-16 flex items-center px-8 gap-4 bg-white border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
