@@ -8,7 +8,6 @@ import {
   ServicesSection,
   RealisationsSection,
   MethodeSection,
-  CiblesSection,
   ArgumentsSection,
   CTAFinal,
 } from "@/components/sections";
@@ -22,7 +21,6 @@ const Index = () => {
       <ServicesSection />
       <RealisationsSection />
       <OffresSection />
-      <CiblesSection />
       <MethodeSection />
       <ArgumentsSection />
       <FAQ />

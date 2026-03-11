@@ -153,12 +153,12 @@ export function ServicesSection() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-20 max-w-3xl mx-auto">
             <ScrollReveal variant="fadeInUp">
-              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-6">Secteurs</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-6">Nos secteurs</p>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.1}>
               <h2 className="text-3xl md:text-5xl font-light mb-6 text-gray-900">
-                Adapté à votre{" "}
-                <span className="font-medium text-gradient-neon">secteur d'activité</span>
+                Conçu pour les{" "}
+                <span className="font-medium text-gradient-neon">professionnels exigeants.</span>
               </h2>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.2}>
@@ -177,7 +177,7 @@ export function ServicesSection() {
                   </h3>
                 </ScrollReveal>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+                <div className={`grid grid-cols-2 sm:grid-cols-3 ${group.sectors.length > 5 ? 'lg:grid-cols-6' : 'lg:grid-cols-5'} gap-4 sm:gap-5`}>
                   {group.sectors.map((sector) => {
                     const idx = globalIndex++;
                     return <SectorCard key={sector.title} sector={sector} index={idx} />;
