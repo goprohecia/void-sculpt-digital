@@ -50,16 +50,16 @@ export default function AdminRapports() {
     <AdminLayout>
       <AdminPageTransition>
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <BarChart3 className="h-6 w-6 text-primary" /> Rapports & Exports
               </h1>
               <p className="text-muted-foreground text-sm">Générez des rapports personnalisés en PDF ou CSV</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Select value={periode} onValueChange={(v) => { setPeriode(v); }}>
-                <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
+                <SelectTrigger className="w-full sm:w-44"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="semaine">Cette semaine</SelectItem>
                   <SelectItem value="mois">Ce mois</SelectItem>
