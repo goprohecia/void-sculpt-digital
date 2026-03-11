@@ -296,19 +296,19 @@ export default function AdminClients() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div className="flex items-center justify-between" variants={staggerItem}>
+          <motion.div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3" variants={staggerItem}>
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Clients</h1>
               <p className="text-muted-foreground text-sm">{clients.length} clients enregistrés</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 self-start">
               {filtered.length > 0 && (
-                <Button variant="outline" onClick={() => setShowBulkEmailDialog(true)} className="gap-1.5">
-                  <Mail className="h-4 w-4" /> Email groupé ({filtered.length})
+                <Button variant="outline" onClick={() => setShowBulkEmailDialog(true)} className="gap-1.5 text-xs sm:text-sm">
+                  <Mail className="h-4 w-4" /> <span className="hidden sm:inline">Email groupé</span> ({filtered.length})
                 </Button>
               )}
-              <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5">
-                <UserPlus className="h-4 w-4" /> Nouveau client
+              <Button onClick={() => setShowCreateDialog(true)} className="gap-1.5 text-xs sm:text-sm">
+                <UserPlus className="h-4 w-4" /> <span className="hidden sm:inline">Nouveau</span> client
               </Button>
             </div>
           </motion.div>
