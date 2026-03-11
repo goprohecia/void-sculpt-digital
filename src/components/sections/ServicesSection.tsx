@@ -100,7 +100,7 @@ export function ServicesSection() {
             <div key={group.category}>
               <ScrollReveal variant="fadeInUp" delay={gi * 0.1}>
                 <div className="flex items-center justify-center sm:justify-start gap-3 mb-6">
-                  <div className={`h-1 w-8 rounded-full ${group.bg.replace("/10", "/50")}`} />
+                  <div className={`h-1 w-8 rounded-full ${group.bg.replace("/10", "/50")} hidden sm:block`} />
                   <h3 className={`text-lg font-semibold ${group.color}`}>{group.category}</h3>
                 </div>
               </ScrollReveal>
