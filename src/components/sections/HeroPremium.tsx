@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { LineReveal } from "@/components/animations";
 import logoMba from "@/assets/logo-mba.png";
+import heroBgVideo from "@/assets/hero-bg-video.mp4";
 
 export function HeroPremium() {
   const mouseX = useMotionValue(0);
