@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { LineReveal } from "@/components/animations";
 import logoMba from "@/assets/logo-mba.png";
+import heroBgVideo from "@/assets/hero-bg-video.mp4";
 
 export function HeroPremium() {
   const mouseX = useMotionValue(0);
@@ -26,13 +27,27 @@ export function HeroPremium() {
   const gradientY = useTransform(smoothMouseY, [-0.5, 0.5], ["40%", "60%"]);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[#F6F5F2]">
-      {/* Subtle overlay effect */}
-      <div className="absolute inset-0 z-[1] pointer-events-none">
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src={heroBgVideo} type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/50 z-[1]" />
+
+      {/* Subtle radial glow */}
+      <div className="absolute inset-0 z-[2] pointer-events-none">
         <motion.div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.04) 0%, transparent 60%)`,
+            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.08) 0%, transparent 60%)`,
           }}
         />
       </div>
@@ -51,7 +66,7 @@ export function HeroPremium() {
             </motion.div>
 
             {/* Main headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-10 md:mb-12 tracking-tight leading-[1.15] text-gray-900">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-10 md:mb-12 tracking-tight leading-[1.15] text-white">
               <LineReveal lines={["Votre CRM. Votre métier."]} delay={0.4} lineClassName="block pb-1" />
               <div className="mt-2 overflow-hidden pb-1">
                 <motion.span
@@ -68,7 +83,7 @@ export function HeroPremium() {
             {/* Subtitle */}
             <div className="overflow-hidden mb-10 md:mb-12">
               <motion.p
-                className="text-sm sm:text-base md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
+                className="text-sm sm:text-base md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
@@ -100,7 +115,7 @@ export function HeroPremium() {
 
               <Link
                 to="/#offres"
-                className="text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
+                className="text-xs sm:text-sm font-medium text-white/60 hover:text-white transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
               >
                 Découvrir les offres
               </Link>
