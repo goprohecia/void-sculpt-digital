@@ -26,7 +26,7 @@ export const PLAN_INFO: Record<SubscriptionPlan, { label: string; price: number;
 
 export const PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = {
   starter: ["clients", "dossiers", "facturation"],
-  business: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "emails", "rendez-vous"],
+  business: ["clients", "dossiers", "facturation", "messagerie", "relances", "support"],
   enterprise: "all",
 };
 

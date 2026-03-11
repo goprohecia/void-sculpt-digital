@@ -20,7 +20,7 @@ export const ALL_MODULE_KEYS = [
 // Default plan module configuration
 export const DEFAULT_PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = {
   starter: ["clients", "dossiers", "facturation"],
-  business: ["clients", "dossiers", "facturation", "messagerie", "relances", "support", "emails", "rendez-vous"],
+  business: ["clients", "dossiers", "facturation", "messagerie", "relances", "support"],
   enterprise: "all",
 };
 
