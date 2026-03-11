@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoHero from "@/assets/logo-hero.png";
+import logoMba from "@/assets/logo-mba.png";
 import { MagneticButton } from "@/components/animations";
 
 const navItems = [
