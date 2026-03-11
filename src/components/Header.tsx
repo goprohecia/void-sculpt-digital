@@ -17,12 +17,12 @@ function NavLinkItem({
   to,
   children,
   isActive,
-  isScrolled,
+  isHeroOverlay,
 }: {
   to: string;
   children: React.ReactNode;
   isActive: boolean;
-  isScrolled: boolean;
+  isHeroOverlay: boolean;
 }) {
   const handleClick = (e: React.MouseEvent) => {
     if (to.startsWith("/#")) {
@@ -41,7 +41,7 @@ function NavLinkItem({
         to={to}
         onClick={handleClick}
         className={`relative font-medium transition-colors duration-200 hover:text-[#22c55e] px-2 py-1 ${
-          isActive ? "text-[#22c55e]" : isScrolled ? "text-gray-700" : "text-white/90"
+          isActive ? "text-[#22c55e]" : isHeroOverlay ? "text-white/90" : "text-gray-700"
         }`}
       >
         <motion.span className="relative z-10" whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
@@ -63,6 +63,7 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const isHomepage = location.pathname === "/";
 
   const isActive = (path: string) => {
     if (path.startsWith("/#")) {
@@ -76,6 +77,8 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const heroOverlay = isHomepage && !isScrolled;
 
   return (
     <motion.header
@@ -107,7 +110,7 @@ export function Header() {
               />
               <motion.span
                 className={`text-base sm:text-lg md:text-xl font-bold hidden sm:block transition-colors duration-300 ${
-                  isScrolled ? "text-gray-900" : "text-white"
+                  heroOverlay ? "text-white" : "text-gray-900"
                 }`}
                 whileHover={{ scale: 1.05 }}
               >
@@ -119,7 +122,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
-              <NavLinkItem key={item.href} to={item.href} isActive={isActive(item.href)} isScrolled={isScrolled}>
+              <NavLinkItem key={item.href} to={item.href} isActive={isActive(item.href)} isHeroOverlay={heroOverlay}>
                 {item.name}
               </NavLinkItem>
             ))}
@@ -131,9 +134,9 @@ export function Header() {
               <Link
                 to="/contact?subject=Demo%20MBA"
                 className={`px-5 py-2.5 text-sm font-medium rounded-xl border transition-colors ${
-                  isScrolled
-                    ? "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
-                    : "border-white/30 text-white hover:border-white/60"
+                  heroOverlay
+                    ? "border-white/30 text-white hover:border-white/60"
+                    : "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
                 }`}
               >
                 Essayer MBA
@@ -143,9 +146,9 @@ export function Header() {
               <Link
                 to="/client/login"
                 className={`px-5 py-2.5 text-sm font-medium rounded-xl border transition-colors ${
-                  isScrolled
-                    ? "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
-                    : "border-white/30 text-white hover:border-white/60"
+                  heroOverlay
+                    ? "border-white/30 text-white hover:border-white/60"
+                    : "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
                 }`}
               >
                 Connexion
@@ -156,7 +159,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
             <motion.button
-              className={`p-2 sm:p-2.5 border rounded-xl ${isScrolled ? "border-gray-300" : "border-white/30 text-white"}`}
+              className={`p-2 sm:p-2.5 border rounded-xl ${heroOverlay ? "border-white/30 text-white" : "border-gray-300"}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
