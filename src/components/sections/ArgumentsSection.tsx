@@ -34,7 +34,7 @@ export function ArgumentsSection() {
             </div>
             {comparisons.map((row, i) => (
               <motion.div key={i} variants={staggerItemVariants}>
-                <div className="grid grid-cols-2 gap-4 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all">
                   <div className="flex items-start gap-3">
                     <X className="h-4 w-4 text-rose-500 mt-0.5 shrink-0" />
                     <span className="text-sm text-gray-600">{row.problem}</span>

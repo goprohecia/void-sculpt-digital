@@ -49,7 +49,7 @@ export function CiblesSection() {
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto" staggerDelay={0.12} delayStart={0.2}>
             {cibles.map((c) => (
               <motion.div key={c.title} variants={staggerItemVariants}>
-                <div className="h-full p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500">
+                <div className="h-full p-6 sm:p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500">
                   <div className={`w-12 h-12 rounded-xl ${c.bg} flex items-center justify-center mb-5`}>
                     <c.icon className={`h-5 w-5 ${c.color}`} />
                   </div>

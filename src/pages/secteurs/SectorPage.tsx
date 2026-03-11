@@ -30,7 +30,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
     <Layout>
       {/* Hero */}
       <section className="relative min-h-[55svh] flex items-center overflow-hidden pt-24">
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0 }}

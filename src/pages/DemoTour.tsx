@@ -159,7 +159,7 @@ export default function DemoTour() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 container mx-auto px-6 py-8 flex flex-col lg:flex-row gap-8 items-start">
+      <div className="flex-1 container mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col lg:flex-row gap-6 sm:gap-8 items-start">
         {/* Left: Info panel */}
         <div className="w-full lg:w-[380px] lg:flex-shrink-0">
           {/* Step navigation dots */}

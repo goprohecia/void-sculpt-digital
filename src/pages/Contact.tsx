@@ -269,10 +269,10 @@ const Contact = () => {
                 <iframe
                   src="https://calendly.com/yannis-bezriche/impartial-games"
                   width="100%"
-                  height="700"
+                  height="600"
                   frameBorder="0"
                   title="Calendly"
-                  className="bg-white"
+                  className="bg-white sm:h-[700px]"
                 />
               </div>
             </ScrollReveal>

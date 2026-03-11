@@ -10,7 +10,7 @@ export function CTAFinal() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             <ScrollReveal variant="scaleIn" duration={0.8}>
-              <div className="text-center relative overflow-hidden p-10 md:p-16 lg:p-20 rounded-2xl border border-gray-200 bg-gray-50">
+              <div className="text-center relative overflow-hidden p-8 sm:p-10 md:p-16 lg:p-20 rounded-2xl border border-gray-200 bg-gray-50">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/5 via-transparent to-emerald-600/5 rounded-[inherit]" />
                 <div className="relative z-10">
                   <ScrollReveal variant="fadeInUp" delay={0.1}>
