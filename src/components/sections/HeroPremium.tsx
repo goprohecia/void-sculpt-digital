@@ -83,7 +83,7 @@ export function HeroPremium() {
             {/* Subtitle */}
             <div className="overflow-hidden mb-10 md:mb-12">
               <motion.p
-                className="text-sm sm:text-base md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
+                className="text-sm sm:text-base md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
