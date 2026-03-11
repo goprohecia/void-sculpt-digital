@@ -323,7 +323,7 @@ export default function AdminDocuments() {
         </Dialog>
         {/* Rename Dialog */}
         <Dialog open={!!renameDoc} onOpenChange={(v) => !v && setRenameDoc(null)}>
-          <DialogContent className="max-w-sm">
+          <DialogContent className="max-w-[95vw] sm:max-w-sm">
             <DialogHeader>
               <DialogTitle>Renommer le document</DialogTitle>
             </DialogHeader>
