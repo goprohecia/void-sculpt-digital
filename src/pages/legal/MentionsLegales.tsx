@@ -1,34 +1,21 @@
 import { Layout } from "@/components/Layout";
-import { FloatingParticles } from "@/components/FloatingParticles";
-import { Building2, Mail, Phone, Globe, Server, Shield } from "lucide-react";
-import logoHero from "@/assets/logo-hero.png";
-const MentionsLegales = () => {
-  return <Layout>
-      <FloatingParticles />
-      
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/10 via-transparent to-transparent" />
-        <div className="absolute inset-0 grid-bg" />
+import { Building2, Shield, Server } from "lucide-react";
+import logoMba from "@/assets/logo-mba.png";
 
+const MentionsLegales = () => {
+  return (
+    <Layout>
+      {/* Hero */}
+      <section className="relative pt-32 pb-16 overflow-hidden bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="mb-8 flex justify-center opacity-0 animate-fade-in">
-              <div className="relative">
-                <div className="absolute inset-0 bg-neon-violet/50 blur-[60px] rounded-full scale-110 animate-pulse-glow" />
-                <img src={logoHero} alt="IMPARTIAL" className="relative w-24 h-24 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)]" />
-              </div>
+            <div className="mb-8 flex justify-center">
+              <img src={logoMba} alt="MBA" className="w-20 h-20" />
             </div>
-            
-            
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 opacity-0 animate-fade-in-up" style={{
-            animationDelay: "0.2s"
-          }}>
-              Mentions <span className="text-gradient-neon">légales</span>
+            <h1 className="text-4xl md:text-5xl font-light mb-6 text-gray-900">
+              Mentions <span className="font-medium text-gradient-neon">légales</span>
             </h1>
-            <p className="text-xl text-muted-foreground opacity-0 animate-fade-in-up" style={{
-            animationDelay: "0.3s"
-          }}>
+            <p className="text-xl text-gray-600">
               Conformément aux dispositions légales en vigueur
             </p>
           </div>
@@ -36,142 +23,109 @@ const MentionsLegales = () => {
       </section>
 
       {/* Content */}
-      <section className="py-16 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
-        
+      <section className="py-16 relative bg-white">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto space-y-12">
-            
+
             {/* Éditeur du site */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-neon-violet/20 border border-neon-violet/30">
-                  <Building2 className="h-6 w-6 text-neon-violet" />
+                <div className="p-3 rounded-xl bg-[#22c55e]/10 border border-[#22c55e]/20">
+                  <Building2 className="h-6 w-6 text-[#22c55e]" />
                 </div>
-                <h2 className="text-2xl font-bold">Éditeur du site</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Éditeur du site</h2>
               </div>
-              <div className="space-y-4 text-muted-foreground">
-                <p><span className="font-semibold text-foreground">Raison sociale :</span> Impartial Games </p>
-                <p><span className="font-semibold text-foreground">Forme juridique :</span> C corp </p>
-                
-                <p><span className="font-semibold text-foreground">Siège social :</span>Siège social : Delaware, États-Unis</p>
-                
-                
-                
+              <div className="space-y-4 text-gray-600">
+                <p><span className="font-semibold text-gray-900">Raison sociale :</span> Impartial Games</p>
+                <p><span className="font-semibold text-gray-900">Forme juridique :</span> C corp</p>
+                <p><span className="font-semibold text-gray-900">Siège social :</span> Delaware, États-Unis</p>
               </div>
             </div>
 
             {/* Directeur de publication */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30">
-                  <Shield className="h-6 w-6 text-emerald-400" />
+                <div className="p-3 rounded-xl bg-[#22c55e]/10 border border-[#22c55e]/20">
+                  <Shield className="h-6 w-6 text-[#22c55e]" />
                 </div>
-                <h2 className="text-2xl font-bold">Directeur de la publication</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Directeur de la publication</h2>
               </div>
-              <div className="space-y-4 text-muted-foreground">
-                <p><span className="font-semibold text-foreground">Nom :</span> Yannis Bizriche </p>
-                <p><span className="font-semibold text-foreground">Qualité :</span> Président</p>
+              <div className="space-y-4 text-gray-600">
+                <p><span className="font-semibold text-gray-900">Nom :</span> Yannis Bizriche</p>
+                <p><span className="font-semibold text-gray-900">Qualité :</span> Président</p>
               </div>
             </div>
 
-            {/* Contact */}
-            
-
             {/* Hébergeur */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/30">
-                  <Server className="h-6 w-6 text-blue-400" />
+                <div className="p-3 rounded-xl bg-[#22c55e]/10 border border-[#22c55e]/20">
+                  <Server className="h-6 w-6 text-[#22c55e]" />
                 </div>
-                <h2 className="text-2xl font-bold">Hébergement</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Hébergement</h2>
               </div>
-              <div className="space-y-4 text-muted-foreground">
-                <p><span className="font-semibold text-foreground">Hébergeur :</span>Hébergeur : ​IONOS SARL</p>
-                <p><span className="font-semibold text-foreground">Adresse :</span> ​7, place de la Gare, BP 70109, 57200 Sarreguemines Cedex, France</p>
-                <p><span className="font-semibold text-foreground">Site web :</span> ​ionos.fr</p>
+              <div className="space-y-4 text-gray-600">
+                <p><span className="font-semibold text-gray-900">Hébergeur :</span> IONOS SARL</p>
+                <p><span className="font-semibold text-gray-900">Adresse :</span> 7, place de la Gare, BP 70109, 57200 Sarreguemines Cedex, France</p>
+                <p><span className="font-semibold text-gray-900">Site web :</span> ionos.fr</p>
               </div>
             </div>
 
             {/* Propriété intellectuelle */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
-              <h2 className="text-2xl font-bold mb-6">Propriété intellectuelle</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.
-                </p>
-                <p>
-                  La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.
-                </p>
-                <p>
-                  Les marques et logos figurant sur ce site sont des marques déposées. Toute reproduction totale ou partielle de ces marques ou de ces logos, effectuée à partir des éléments du site sans l'autorisation expresse de IMPARTIAL Studio est donc prohibée.
-                </p>
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Propriété intellectuelle</h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
+                <p>La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.</p>
+                <p>Les marques et logos figurant sur ce site sont des marques déposées. Toute reproduction totale ou partielle de ces marques ou de ces logos, effectuée à partir des éléments du site sans l'autorisation expresse de MY BUSINESS ASSISTANT est donc prohibée.</p>
               </div>
             </div>
 
             {/* Données personnelles */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
-              <h2 className="text-2xl font-bold mb-6">Protection des données personnelles</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition aux données personnelles vous concernant.
-                </p>
-                <p>
-                  Pour exercer ces droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à l'adresse suivante : contact@impartial.studio
-                </p>
-                <p>
-                  Pour plus d'informations sur la gestion de vos données personnelles, veuillez consulter notre politique de confidentialité.
-                </p>
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Protection des données personnelles</h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, de suppression et d'opposition aux données personnelles vous concernant.</p>
+                <p>Pour exercer ces droits ou pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à l'adresse suivante : contact@mybusinessassistant.com</p>
+                <p>Pour plus d'informations sur la gestion de vos données personnelles, veuillez consulter notre politique de confidentialité.</p>
               </div>
             </div>
 
             {/* Limitation de responsabilité */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
-              <h2 className="text-2xl font-bold mb-6">Limitation de responsabilité</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  IMPARTIAL Studio s'efforce d'assurer au mieux de ses possibilités l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, IMPARTIAL Studio ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site.
-                </p>
-                <p>
-                  En conséquence, IMPARTIAL Studio décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
-                </p>
-                <p>
-                  IMPARTIAL Studio ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès ou de l'utilisation du site, y compris l'inaccessibilité, les pertes de données, détériorations, destructions ou virus qui pourraient affecter l'équipement informatique de l'utilisateur.
-                </p>
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Limitation de responsabilité</h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>MY BUSINESS ASSISTANT s'efforce d'assurer au mieux de ses possibilités l'exactitude et la mise à jour des informations diffusées sur ce site. Cependant, MY BUSINESS ASSISTANT ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site.</p>
+                <p>En conséquence, MY BUSINESS ASSISTANT décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.</p>
+                <p>MY BUSINESS ASSISTANT ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès ou de l'utilisation du site.</p>
               </div>
             </div>
 
             {/* Liens hypertextes */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
-              <h2 className="text-2xl font-bold mb-6">Liens hypertextes</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  Le site peut contenir des liens hypertextes vers d'autres sites. IMPARTIAL Studio n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu ou aux éventuels collectes et transmissions de données personnelles effectuées par ces sites.
-                </p>
-                <p>
-                  La création de liens hypertextes vers le site impartial.studio est soumise à l'accord préalable du directeur de la publication.
-                </p>
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Liens hypertextes</h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>Le site peut contenir des liens hypertextes vers d'autres sites. MY BUSINESS ASSISTANT n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu.</p>
+                <p>La création de liens hypertextes vers le site mybusinessassistant.com est soumise à l'accord préalable du directeur de la publication.</p>
               </div>
             </div>
 
             {/* Droit applicable */}
-            <div className="p-8 rounded-2xl bg-glass-dark/80 backdrop-blur-xl border border-white/10">
-              <h2 className="text-2xl font-bold mb-6">Droit applicable et juridiction compétente</h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  Les présentes mentions légales sont régies par le droit français. En cas de litige et à défaut d'accord amiable, le litige sera porté devant les tribunaux français conformément aux règles de compétence en vigueur.
-                </p>
+            <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200">
+              <h2 className="text-2xl font-bold mb-6 text-gray-900">Droit applicable et juridiction compétente</h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>Les présentes mentions légales sont régies par le droit français. En cas de litige et à défaut d'accord amiable, le litige sera porté devant les tribunaux français conformément aux règles de compétence en vigueur.</p>
               </div>
             </div>
 
             {/* Mise à jour */}
-            <div className="text-center text-sm text-muted-foreground">
+            <div className="text-center text-sm text-gray-500">
               <p>Dernière mise à jour : Décembre 2025</p>
             </div>
-
           </div>
         </div>
       </section>
-    </Layout>;
+    </Layout>
+  );
 };
 export default MentionsLegales;

@@ -28,8 +28,6 @@ const modules = [
       "Notifications et alertes centralisées",
     ],
     image: dashboardImg,
-    color: "from-violet-500/20 to-purple-600/20",
-    accentColor: "text-violet-400",
   },
   {
     id: "clients",
@@ -46,8 +44,6 @@ const modules = [
       "Import/Export CSV",
     ],
     image: clientsImg,
-    color: "from-blue-500/20 to-cyan-600/20",
-    accentColor: "text-blue-400",
   },
   {
     id: "dossiers",
@@ -64,8 +60,6 @@ const modules = [
       "URL de preview pour les projets web",
     ],
     image: dossiersImg,
-    color: "from-emerald-500/20 to-green-600/20",
-    accentColor: "text-emerald-400",
   },
   {
     id: "facturation",
@@ -83,8 +77,6 @@ const modules = [
       "Historique d'envoi et logs email",
     ],
     image: facturationImg,
-    color: "from-amber-500/20 to-orange-600/20",
-    accentColor: "text-amber-400",
   },
   {
     id: "messagerie",
@@ -101,8 +93,6 @@ const modules = [
       "Accessible depuis l'espace admin, client et salarié",
     ],
     image: messagerieImg,
-    color: "from-purple-500/20 to-pink-600/20",
-    accentColor: "text-purple-400",
   },
   {
     id: "support",
@@ -119,8 +109,6 @@ const modules = [
       "Badge de compteur dans la navigation admin",
     ],
     image: supportImg,
-    color: "from-rose-500/20 to-red-600/20",
-    accentColor: "text-rose-400",
   },
   {
     id: "stock",
@@ -138,8 +126,6 @@ const modules = [
       "Accessible aux salariés pour les mises à jour terrain",
     ],
     image: stockImg,
-    color: "from-cyan-500/20 to-teal-600/20",
-    accentColor: "text-cyan-400",
   },
   {
     id: "analyse",
@@ -156,8 +142,6 @@ const modules = [
       "Panier moyen et taux de conversion",
     ],
     image: analyseImg,
-    color: "from-indigo-500/20 to-violet-600/20",
-    accentColor: "text-indigo-400",
   },
 ];
 
@@ -165,23 +149,22 @@ export default function Fonctionnalites() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-neon-violet/5 via-transparent to-transparent" />
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 relative bg-white">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <ScrollReveal variant="fadeInUp">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-6">
                 Fonctionnalités
               </p>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.1}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 tracking-tight text-gray-900">
                 Tous les outils pour{" "}
                 <span className="font-medium text-gradient-neon">piloter votre activité</span>
               </h1>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.2}>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 font-light leading-relaxed max-w-2xl mx-auto">
                 MBA regroupe 8 modules complémentaires pour gérer vos clients, vos projets, votre facturation et votre équipe. Activez uniquement ceux dont vous avez besoin.
               </p>
             </ScrollReveal>
@@ -189,14 +172,14 @@ export default function Fonctionnalites() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
                 <Link
                   to="/contact?subject=Demo%20MBA"
-                  className="btn-gradient inline-flex items-center gap-2 px-8 py-4 text-white font-semibold rounded-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#22c55e] text-white font-semibold rounded-full shadow-[0_4px_14px_rgba(34,197,94,0.40)] hover:bg-[#16a34a] transition-colors"
                 >
                   Demander une démo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/#offres"
-                  className="glass-button px-8 py-4 font-semibold rounded-xl hover:border-neon-violet/50"
+                  className="px-8 py-4 font-semibold rounded-full border border-gray-200 text-gray-900 hover:border-[#22c55e]/50 hover:text-[#22c55e] transition-colors"
                 >
                   Voir les offres
                 </Link>
@@ -209,15 +192,13 @@ export default function Fonctionnalites() {
       {/* Module Sections */}
       {modules.map((mod, index) => {
         const isReversed = index % 2 !== 0;
+        const bgClass = index % 2 === 0 ? "bg-gray-50" : "bg-white";
         return (
           <section
             key={mod.id}
             id={mod.id}
-            className="py-16 md:py-24 relative"
+            className={`py-16 md:py-24 relative ${bgClass}`}
           >
-            {/* Subtle background gradient */}
-            <div className={`absolute inset-0 bg-gradient-to-r ${mod.color} opacity-30`} />
-
             <div className="container mx-auto px-6 relative z-10">
               <div
                 className={`flex flex-col ${
@@ -228,23 +209,23 @@ export default function Fonctionnalites() {
                 <div className="flex-1 space-y-6">
                   <ScrollReveal variant="fadeInUp">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
-                        <mod.icon className={`h-5 w-5 ${mod.accentColor}`} />
+                      <div className="w-10 h-10 rounded-xl bg-[#22c55e]/10 flex items-center justify-center">
+                        <mod.icon className="h-5 w-5 text-[#22c55e]" />
                       </div>
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                      <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
                         {mod.subtitle}
                       </p>
                     </div>
                   </ScrollReveal>
 
                   <ScrollReveal variant="fadeInUp" delay={0.1}>
-                    <h2 className="text-3xl md:text-4xl font-light tracking-tight">
+                    <h2 className="text-3xl md:text-4xl font-light tracking-tight text-gray-900">
                       {mod.title}
                     </h2>
                   </ScrollReveal>
 
                   <ScrollReveal variant="fadeInUp" delay={0.15}>
-                    <p className="text-muted-foreground font-light leading-relaxed">
+                    <p className="text-gray-600 font-light leading-relaxed">
                       {mod.description}
                     </p>
                   </ScrollReveal>
@@ -253,8 +234,8 @@ export default function Fonctionnalites() {
                     <ul className="space-y-3 pt-2">
                       {mod.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-3">
-                          <Check className={`h-5 w-5 flex-shrink-0 mt-0.5 ${mod.accentColor}`} />
-                          <span className="text-sm text-foreground/90">{feature}</span>
+                          <Check className="h-5 w-5 flex-shrink-0 mt-0.5 text-[#22c55e]" />
+                          <span className="text-sm text-gray-700">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -265,12 +246,10 @@ export default function Fonctionnalites() {
                 <div className="flex-1 w-full">
                   <ScrollReveal variant={isReversed ? "fadeInLeft" : "fadeInRight"} delay={0.2}>
                     <motion.div
-                      className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/30"
+                      className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-xl"
                       whileHover={{ scale: 1.02, y: -4 }}
                       transition={{ duration: 0.4 }}
                     >
-                      {/* Glass reflection overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-white/[0.08] z-10 pointer-events-none" />
                       <img
                         src={mod.image}
                         alt={`Interface ${mod.title} — MBA`}
@@ -287,27 +266,27 @@ export default function Fonctionnalites() {
       })}
 
       {/* Bottom CTA */}
-      <section className="py-24 relative">
+      <section className="py-24 relative bg-white">
         <div className="container mx-auto px-6 relative z-10">
           <ScrollReveal variant="scaleIn">
-            <div className="max-w-3xl mx-auto text-center glass-ultra glass-noise p-12 md:p-16 rounded-3xl">
-              <h2 className="text-3xl md:text-4xl font-light mb-4 tracking-tight">
+            <div className="max-w-3xl mx-auto text-center bg-gray-50 border border-gray-200 p-12 md:p-16 rounded-3xl shadow-lg">
+              <h2 className="text-3xl md:text-4xl font-light mb-4 tracking-tight text-gray-900">
                 Prêt à tout <span className="font-medium text-gradient-neon">centraliser ?</span>
               </h2>
-              <p className="text-muted-foreground font-light mb-8 max-w-lg mx-auto">
+              <p className="text-gray-600 font-light mb-8 max-w-lg mx-auto">
                 Choisissez votre plan, activez vos modules et simplifiez votre gestion dès aujourd'hui.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/contact?subject=Demo%20MBA"
-                  className="btn-gradient inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-semibold rounded-xl"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#22c55e] text-white font-semibold rounded-full shadow-[0_4px_14px_rgba(34,197,94,0.40)] hover:bg-[#16a34a] transition-colors"
                 >
                   Demander une démo
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/#offres"
-                  className="glass-button inline-flex items-center justify-center px-8 py-4 font-semibold rounded-xl hover:border-neon-violet/50"
+                  className="inline-flex items-center justify-center px-8 py-4 font-semibold rounded-full border border-gray-200 text-gray-900 hover:border-[#22c55e]/50 hover:text-[#22c55e] transition-colors"
                 >
                   Voir les offres
                 </Link>
