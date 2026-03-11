@@ -47,7 +47,7 @@ export function HeroPremium() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <img src={logoMba} alt="My Business Assistant" className="h-14 sm:h-16 md:h-20 w-auto" />
+              <img src={logoMba} alt="My Business Assistant" className="h-28 sm:h-32 md:h-40 w-auto" />
             </motion.div>
 
             {/* Main headline */}
