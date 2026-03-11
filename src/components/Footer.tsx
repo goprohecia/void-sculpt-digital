@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Cookie } from "lucide-react";
+import logoMba from "@/assets/logo-mba.png";
 
 export function Footer() {
   const openCookieSettings = () => {
