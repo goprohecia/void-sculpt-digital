@@ -1,34 +1,27 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { ScrollReveal, SectionTransition, ParallaxBackground } from "@/components/animations";
+import { ScrollReveal, SectionTransition } from "@/components/animations";
 
 export function CTAFinal() {
   return (
-    <section id="contact">
+    <section id="contact" className="bg-white">
       <SectionTransition className="py-24 md:py-32 relative overflow-hidden" parallaxStrength={0.08} scaleOnScroll>
-        <ParallaxBackground speed={0.3}>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#22c55e]/10 via-emerald-600/10 to-[#14532d]/10" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] lg:w-[800px] h-[400px] md:h-[600px] lg:h-[800px] bg-[#22c55e]/15 rounded-full blur-[200px]" />
-        </ParallaxBackground>
-        <div className="absolute top-0 right-0 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-emerald-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-[#14532d]/10 rounded-full blur-[100px]" />
-
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             <ScrollReveal variant="scaleIn" duration={0.8}>
-              <div className="glass-ultra glass-noise text-center relative overflow-hidden p-10 md:p-16 lg:p-20">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/10 via-transparent to-emerald-600/10 rounded-[inherit]" />
+              <div className="text-center relative overflow-hidden p-10 md:p-16 lg:p-20 rounded-2xl border border-gray-200 bg-gray-50">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/5 via-transparent to-emerald-600/5 rounded-[inherit]" />
                 <div className="relative z-10">
                   <ScrollReveal variant="fadeInUp" delay={0.1}>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6 tracking-tight">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6 tracking-tight text-gray-900">
                       Prêt à simplifier votre{" "}
                       <span className="font-medium text-gradient-neon">gestion ?</span>
                     </h2>
                   </ScrollReveal>
 
                   <ScrollReveal variant="fadeInUp" delay={0.2}>
-                    <p className="text-lg md:text-xl text-muted-foreground font-light mb-10 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-lg md:text-xl text-gray-600 font-light mb-10 max-w-2xl mx-auto leading-relaxed">
                       Demandez une démo personnalisée et découvrez comment MBA peut transformer votre quotidien.
                     </p>
                   </ScrollReveal>
@@ -47,7 +40,7 @@ export function CTAFinal() {
 
                       <Link
                         to="/demo"
-                        className="glass-button inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-xl text-lg hover:border-[#22c55e]/50"
+                        className="inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-xl text-lg border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
                       >
                         Essayer la démo
                       </Link>
@@ -55,10 +48,10 @@ export function CTAFinal() {
                   </ScrollReveal>
 
                   <ScrollReveal variant="fadeIn" delay={0.5}>
-                    <div className="mt-10 pt-8 border-t border-white/10">
+                    <div className="mt-10 pt-8 border-t border-gray-200">
                       <a
                         href="mailto:contact@mybusinessassistant.fr"
-                        className="text-muted-foreground hover:text-[#22c55e] transition-colors text-sm"
+                        className="text-gray-500 hover:text-[#22c55e] transition-colors text-sm"
                       >
                         contact@mybusinessassistant.fr
                       </a>

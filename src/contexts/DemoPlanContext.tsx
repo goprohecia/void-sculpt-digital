@@ -27,7 +27,7 @@ export const DEFAULT_PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = 
 export const DEFAULT_PLAN_PRICES: Record<SubscriptionPlan, number> = {
   starter: 150,
   business: 250,
-  enterprise: 400,
+  enterprise: 500,
 };
 
 // ── Sectors aligned with landing page sector pages ──
