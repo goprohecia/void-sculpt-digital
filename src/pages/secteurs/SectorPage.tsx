@@ -99,7 +99,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" staggerDelay={0.1}>
             {useCases.map((uc) => (
               <motion.div key={uc.title} variants={staggerItemVariants}>
-                <div className="group p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-500 h-full">
+                <div className="group p-5 sm:p-8 rounded-2xl border border-gray-200 bg-gray-50 hover:border-gray-300 transition-all duration-500 h-full">
                   <div className="w-12 h-12 rounded-xl bg-[#22c55e]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                     <uc.icon className="h-5 w-5 text-[#22c55e]" />
                   </div>
