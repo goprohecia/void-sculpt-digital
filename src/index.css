@@ -10,9 +10,9 @@
        MBA V3 — DARK GREEN BACKGROUND
        ======================================== */
 
-    /* App background = #14532d */
-    --bg-app: 144 57% 20%;
-    --bg-app-deep: 150 52% 15%;
+    /* App background = very dark green */
+    --bg-app: 150 60% 10%;
+    --bg-app-deep: 150 55% 7%;
     --bg-surface: 0 0% 100%;
     --bg-surface-2: 80 6% 98%;
 
