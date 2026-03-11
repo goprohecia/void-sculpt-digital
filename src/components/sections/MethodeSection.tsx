@@ -66,14 +66,14 @@ export function MethodeSection() {
             <motion.div key={step.number} variants={staggerItemVariants}>
               <div className="group h-full p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
                 <div className="text-3xl font-light text-gradient-neon mb-4">{step.number}</div>
-                <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <step.icon className="h-4 w-4 text-violet-400" />
+                <div className="w-10 h-10 rounded-lg bg-[#22c55e]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <step.icon className="h-4 w-4 text-[#4ade80]" />
                 </div>
                 <h3 className="text-lg font-medium mb-2">{step.title}</h3>
                 <p className="text-sm text-muted-foreground mb-4">{step.description}</p>
                 <div className="pt-4 border-t border-white/5">
                   <p className="text-xs text-muted-foreground">Résultat</p>
-                  <p className="text-sm font-medium text-violet-400">{step.deliverable}</p>
+                  <p className="text-sm font-medium text-[#4ade80]">{step.deliverable}</p>
                 </div>
               </div>
             </motion.div>
