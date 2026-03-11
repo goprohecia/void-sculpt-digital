@@ -199,7 +199,7 @@ export default function Fonctionnalites() {
             id={mod.id}
             className={`py-16 md:py-24 relative ${bgClass}`}
           >
-            <div className="container mx-auto px-6 relative z-10">
+            <div className="container mx-auto px-4 sm:px-6 relative z-10">
               <div
                 className={`flex flex-col ${
                   isReversed ? "lg:flex-row-reverse" : "lg:flex-row"
