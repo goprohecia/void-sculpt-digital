@@ -847,16 +847,19 @@ export default function AdminSettings() {
 
       case "modules":
         return (
-          <AdminModulesSection
-            plan={plan}
-            modulesLimit={modulesLimit}
-            enabledModules={enabledModules}
-            clientVisibleModules={clientVisibleModules}
-            employeeVisibleModules={employeeVisibleModules}
-            getModuleLabel={getModuleLabel}
-            updateSetting={updateSetting}
-            canCustomizeSpaces={canCustomizeSpaces}
-          />
+          <div className="space-y-6">
+            <AdminModulesSection
+              plan={plan}
+              modulesLimit={modulesLimit}
+              enabledModules={enabledModules}
+              clientVisibleModules={clientVisibleModules}
+              employeeVisibleModules={employeeVisibleModules}
+              getModuleLabel={getModuleLabel}
+              updateSetting={updateSetting}
+              canCustomizeSpaces={canCustomizeSpaces}
+            />
+            {canCustomizeSpaces && <CustomSpacesManager />}
+          </div>
         );
 
       case "timeline":
