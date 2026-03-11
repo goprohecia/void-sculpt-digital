@@ -67,7 +67,7 @@ export function SuperAdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-[#0f3d20] border-t border-white/10">
+      <SidebarFooter className="p-4 bg-[#082b14] border-t border-white/10">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
             {user?.nom?.charAt(0) || "S"}
