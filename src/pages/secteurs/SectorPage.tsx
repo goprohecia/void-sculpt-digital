@@ -28,6 +28,7 @@ interface SectorPageProps {
 export default function SectorPage({ sectorLabel, title, subtitle, heroImage, useCases, modules }: SectorPageProps) {
   return (
     <Layout>
+      <div className="bg-[#F6F5F2]">
       {/* Hero */}
       <section className="relative min-h-[55svh] flex items-center overflow-hidden pt-24">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
