@@ -4,14 +4,14 @@ import { ArrowRight, Users, FolderOpen, Receipt, MessageSquare, LifeBuoy, Packag
 import { Layout } from "@/components/Layout";
 import { ScrollReveal, StaggerContainer, staggerItemVariants } from "@/components/animations";
 
-import dashboardImg from "@/assets/screenshots/dashboard.jpg";
-import clientsImg from "@/assets/screenshots/clients.jpg";
-import dossiersImg from "@/assets/screenshots/dossiers.jpg";
-import facturationImg from "@/assets/screenshots/facturation.jpg";
-import messagerieImg from "@/assets/screenshots/messagerie.jpg";
-import supportImg from "@/assets/screenshots/support.jpg";
-import stockImg from "@/assets/screenshots/stock.jpg";
-import analyseImg from "@/assets/screenshots/analyse.jpg";
+import dashboardImg from "@/assets/screenshots/dashboard.png";
+import clientsImg from "@/assets/screenshots/clients.png";
+import dossiersImg from "@/assets/screenshots/dossiers.png";
+import facturationImg from "@/assets/screenshots/facturation.png";
+import messagerieImg from "@/assets/screenshots/messagerie.png";
+import supportImg from "@/assets/screenshots/support.png";
+import stockImg from "@/assets/screenshots/stock.png";
+import analyseImg from "@/assets/screenshots/analyse.png";
 
 const modules = [
   {
