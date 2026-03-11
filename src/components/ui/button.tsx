@@ -9,12 +9,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground font-semibold rounded-[var(--radius-xl)] shadow-[0_4px_14px_rgba(22,163,74,0.35)] hover:bg-mba-green-700 hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(22,163,74,0.4)] active:translate-y-0 active:shadow-sm",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-[var(--radius-xl)]",
-        outline: "border border-border bg-transparent text-foreground font-medium rounded-[var(--radius-xl)] hover:bg-mba-green-50 hover:border-primary hover:text-primary",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-[var(--radius-xl)]",
-        ghost: "hover:bg-mba-green-50 hover:text-primary rounded-md",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "bg-[#22c55e] text-white font-semibold rounded-[var(--radius-full,9999px)] shadow-[0_4px_14px_rgba(34,197,94,0.40)] hover:bg-[#16a34a] hover:-translate-y-px hover:shadow-[0_6px_20px_rgba(34,197,94,0.45)] active:translate-y-0 active:shadow-sm",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-[var(--radius-full,9999px)]",
+        outline: "border-[1.5px] border-[#e4e8df] bg-white text-[#4a5e46] font-medium rounded-[var(--radius-full,9999px)] hover:bg-[#f0fdf4] hover:border-[#22c55e] hover:text-[#22c55e]",
+        secondary: "bg-white text-[#4a5e46] border border-[#e4e8df] hover:bg-[#f0fdf4] rounded-[var(--radius-full,9999px)]",
+        ghost: "hover:bg-[#f0fdf4] hover:text-[#16a34a] rounded-[var(--radius-sm)]",
+        link: "text-[#22c55e] underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-5 py-2",

@@ -100,39 +100,39 @@ export default function AdminLogin() {
     <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{
-        backgroundColor: "hsl(90 14% 95%)",
-        backgroundImage: "radial-gradient(circle, hsl(142 72% 42% / 0.05) 1px, transparent 1px)",
-        backgroundSize: "24px 24px",
+        backgroundColor: "#14532d",
+        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
       }}
     >
       <div className="w-full max-w-[440px] space-y-6">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-mba-green-500 to-mba-green-900 bg-clip-text text-transparent">
-            MBA
+          <h1 className="text-4xl font-extrabold text-[#14532d]" style={{ fontFamily: "'Syne', 'Inter', sans-serif", WebkitTextStroke: "0", color: "white" }}>
+            <span style={{ background: "linear-gradient(90deg, #22c55e, #4ade80)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>MBA</span>
           </h1>
-          <p className="text-sm text-muted-foreground">My Business Assistant</p>
+          <p className="text-sm text-white/60">My Business Assistant</p>
         </div>
 
         {/* Verified banner */}
         {verified && (
-          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-mba-green-100 bg-mba-green-50 p-4">
-            <CheckCircle className="h-5 w-5 text-primary shrink-0" />
-            <p className="text-sm text-foreground">Votre compte a été vérifié avec succès ! Vous pouvez maintenant vous connecter.</p>
+          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-[#bbf7d0] bg-white p-4 shadow-[var(--shadow-card)]">
+            <CheckCircle className="h-5 w-5 text-[#22c55e] shrink-0" />
+            <p className="text-sm text-[#1a2318]">Votre compte a été vérifié avec succès ! Vous pouvez maintenant vous connecter.</p>
           </div>
         )}
 
         {/* Form Card */}
-        <div className="bg-card rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] border border-border p-8 space-y-5">
+        <div className="bg-white rounded-[var(--radius-xl)] shadow-[0_24px_64px_rgba(0,0,0,0.3)] border border-white/15 p-10 space-y-5">
           <div className="text-center space-y-1">
-            <h2 className="text-2xl font-bold text-foreground">Connectez-vous</h2>
-            <p className="text-sm text-muted-foreground">Accédez à votre espace de gestion</p>
+            <h2 className="text-2xl font-bold text-[#1a2318]">Connectez-vous</h2>
+            <p className="text-sm text-[#9ca3af]">Accédez à votre espace de gestion</p>
           </div>
 
           {/* Google Sign In */}
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 h-11 rounded-[var(--radius-xl)] border border-border bg-card hover:shadow-[var(--shadow-md)] transition-all text-sm font-medium text-foreground"
+            className="w-full flex items-center justify-center gap-3 h-11 rounded-[var(--radius-full,9999px)] border-[1.5px] border-[#e4e8df] bg-white hover:shadow-[0_4px_16px_rgba(0,0,0,0.10)] transition-all text-sm font-medium text-[#1a2318]"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -145,48 +145,48 @@ export default function AdminLogin() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
+              <span className="w-full border-t border-[#e4e8df]" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-card px-2 text-muted-foreground">ou</span>
+              <span className="bg-white px-2 text-[#9ca3af]">ou</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Email</label>
+              <label className="text-[13px] font-medium text-[#4a5e46]">Email</label>
               <Input
                 type="email"
                 placeholder="votre@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-11 bg-secondary border-border rounded-[var(--radius-md)] focus:border-primary focus:ring-primary/10"
+                className="h-11 bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] focus:border-[#22c55e] focus:ring-[3px] focus:ring-[rgba(34,197,94,0.15)]"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">Mot de passe</label>
+              <label className="text-[13px] font-medium text-[#4a5e46]">Mot de passe</label>
               <div className="relative">
                 <Input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-11 bg-secondary border-border rounded-[var(--radius-md)] pr-10 focus:border-primary focus:ring-primary/10"
+                  className="h-11 bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] pr-10 focus:border-[#22c55e] focus:ring-[3px] focus:ring-[rgba(34,197,94,0.15)]"
                   required
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#1a2318]">
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p className="text-sm text-[#dc2626]">{error}</p>}
             <div className="flex justify-end">
-              <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/forgot-password" className="text-xs text-[#9ca3af] hover:text-[#22c55e] transition-colors">
                 Mot de passe oublié ?
               </Link>
             </div>
-            <Button type="submit" className="w-full h-11 gap-2">
+            <Button type="submit" className="w-full h-12 gap-2 text-[15px]">
               <LogIn className="h-4 w-4" />
               Se connecter
             </Button>
@@ -196,34 +196,34 @@ export default function AdminLogin() {
           <div className="space-y-3">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t border-border" />
+                <span className="w-full border-t border-[#e4e8df]" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-card px-2 text-muted-foreground">Comptes de démonstration</span>
+                <span className="bg-white px-2 text-[#9ca3af]">Comptes de démonstration</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <button onClick={() => fillDemo("admin")} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
-                <p className="text-xs font-semibold text-primary">Admin</p>
-                <p className="text-[10px] text-muted-foreground">admin@mba.demo</p>
+              <button onClick={() => fillDemo("admin")} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
+                <p className="text-xs font-bold text-[#14532d]">Admin</p>
+                <p className="text-[10px] text-[#9ca3af]">admin@mba.demo</p>
               </button>
-              <button onClick={() => fillDemo("employee")} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
-                <p className="text-xs font-semibold text-primary">Salarié</p>
-                <p className="text-[10px] text-muted-foreground">employee@mba.demo</p>
+              <button onClick={() => fillDemo("employee")} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
+                <p className="text-xs font-bold text-[#14532d]">Salarié</p>
+                <p className="text-[10px] text-[#9ca3af]">employee@mba.demo</p>
               </button>
-              <button onClick={() => fillDemo("client")} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
-                <p className="text-xs font-semibold text-primary">Client</p>
-                <p className="text-[10px] text-muted-foreground">client@mba.demo</p>
+              <button onClick={() => fillDemo("client")} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
+                <p className="text-xs font-bold text-[#14532d]">Client</p>
+                <p className="text-[10px] text-[#9ca3af]">client@mba.demo</p>
               </button>
-              <button onClick={() => { setEmail("superadmin@mba.demo"); setPassword("demo2026"); setError(""); }} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
-                <p className="text-xs font-semibold text-primary">Super Admin</p>
-                <p className="text-[10px] text-muted-foreground">superadmin@mba.demo</p>
+              <button onClick={() => { setEmail("superadmin@mba.demo"); setPassword("demo2026"); setError(""); }} className="bg-[#f7f8f5] border-[1.5px] border-[#e4e8df] rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
+                <p className="text-xs font-bold text-[#14532d]">Super Admin</p>
+                <p className="text-[10px] text-[#9ca3af]">superadmin@mba.demo</p>
               </button>
             </div>
             <div className="text-center pt-1 space-y-2">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[#9ca3af]">
                 Pas encore de compte ?{" "}
-                <Link to="/signup" className="text-primary hover:underline font-medium">Créer un compte client</Link>
+                <Link to="/signup" className="text-[#22c55e] hover:underline font-medium">Créer un compte client</Link>
               </p>
             </div>
           </div>

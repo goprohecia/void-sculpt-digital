@@ -53,26 +53,26 @@ export function ClientSidebar() {
   };
 
   return (
-    <Sidebar variant="floating" collapsible="icon" className="!bg-[#0c3b1e] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.20)" }}>
-      <SidebarHeader className="p-5 pb-4 border-b border-white/10">
+    <Sidebar variant="floating" collapsible="icon" className="!bg-white !border-none" style={{ boxShadow: "var(--shadow-sidebar)" }}>
+      <SidebarHeader className="p-5 pb-4 border-b border-[#e4e8df]">
         <Link to="/client" className="flex items-center gap-2">
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <div className="h-8 w-8 rounded-lg bg-[#22c55e] flex items-center justify-center">
-              <span className="text-[#14532d] font-extrabold text-sm">{clientInitials}</span>
+            <div className="h-8 w-8 rounded-lg bg-[#14532d] flex items-center justify-center">
+              <span className="text-[#22c55e] font-extrabold text-sm">{clientInitials}</span>
             </div>
           )}
           <div>
-            <p className="text-sm font-bold text-white">{clientName}</p>
-            <p className="text-[11px] text-white/40">Espace client · {wl.brandShort}</p>
+            <p className="text-sm font-bold text-[#1a2318]">{clientName}</p>
+            <p className="text-[11px] text-[#9ca3af]">Espace client · {wl.brandShort}</p>
           </div>
         </Link>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/40 px-5 py-3">Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-[#9ca3af] px-5 py-3">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
@@ -82,16 +82,16 @@ export function ClientSidebar() {
                     <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                       <Link
                         to={item.url}
-                        className={`flex items-center gap-3 py-[10px] px-5 border-l-[3px] transition-all duration-[120ms] ${
+                        className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                           active
-                            ? "bg-white/[0.15] text-white font-semibold border-l-[#4ade80]"
-                            : "text-white/[0.80] border-l-transparent hover:bg-white/[0.10] hover:text-white"
+                            ? "bg-[#14532d] text-white font-bold border-l-[#22c55e] rounded-r-[var(--radius-sm)] mr-2 shadow-[0_2px_8px_rgba(20,83,45,0.25)]"
+                            : "text-[#4a5e46] border-l-transparent hover:bg-[#f0fdf4] hover:text-[#1a2318]"
                         }`}
                       >
-                        <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#4ade80]" : "opacity-70"}`} />
+                        <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#22c55e]" : "opacity-65"}`} />
                         <span className="flex-1">{item.title}</span>
                         {item.badge ? (
-                          <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-[#4ade80] text-[10px] font-bold text-[#14532d]">
+                          <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-[#22c55e] text-[10px] font-bold text-[#14532d]">
                             {item.badge}
                           </span>
                         ) : null}
@@ -105,19 +105,19 @@ export function ClientSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-[#082b14] border-t border-white/10">
+      <SidebarFooter className="p-4 bg-[#f7f8f5] border-t border-[#e4e8df]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
+          <div className="h-9 w-9 rounded-full bg-[#14532d] flex items-center justify-center text-sm font-extrabold text-[#22c55e]">
             {clientInitials?.charAt(0) || "C"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold truncate text-white">{user?.nom || clientName}</p>
-            <p className="text-[11px] text-white/[0.45] capitalize">{user?.role || "client"}</p>
+            <p className="text-[13px] font-semibold truncate text-[#1a2318]">{user?.nom || clientName}</p>
+            <p className="text-[11px] text-[#9ca3af] capitalize">{user?.role || "client"}</p>
           </div>
         </div>
         <button
           onClick={async () => { logout(); await supabase.auth.signOut(); navigate("/client/login", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-white/40 hover:text-white/80 transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-[#9ca3af] hover:text-[#dc2626] transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>

@@ -36,20 +36,20 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full" style={{ background: "#14532d" }}>
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Topbar */}
-          <header className="h-16 flex items-center px-8 gap-4 bg-card border-b border-border shadow-[0_1px_8px_rgba(20,83,45,0.06)]">
-            <SidebarTrigger className="text-muted-foreground hover:text-foreground hover:bg-mba-green-50 rounded-[var(--radius-sm)] p-2 transition-colors" />
+          {/* Topbar — white */}
+          <header className="h-16 flex items-center px-8 gap-4 bg-white border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
+            <SidebarTrigger className="text-[#9ca3af] hover:text-[#1a2318] hover:bg-[#f0fdf4] rounded-[var(--radius-sm)] p-2 transition-colors" />
 
             {/* Search */}
             <div className="relative w-[300px] hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9ca3af]" />
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-xl)] bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-[rgba(22,163,74,0.12)] transition-all"
+                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-full,9999px)] bg-[#f7f8f5] border border-[#e4e8df] text-sm text-[#1a2318] placeholder:text-[#9ca3af] focus:outline-none focus:border-[#22c55e] focus:ring-[3px] focus:ring-[rgba(34,197,94,0.15)] transition-all"
               />
             </div>
 
@@ -64,57 +64,57 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             {isDemo ? (
               <Select value={plan} onValueChange={(v) => updatePlan.mutate(v as SubscriptionPlan)}>
-                <SelectTrigger className="w-auto h-8 gap-2 border border-[#bbf7d0] bg-mba-green-100 text-xs font-semibold text-[#15803d] px-3 rounded-[var(--radius-xl)] font-mono">
+                <SelectTrigger className="w-auto h-8 gap-2 border border-[#bbf7d0] bg-[#dcfce7] text-xs font-semibold text-[#15803d] px-3 rounded-[var(--radius-full,9999px)] font-mono">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {(Object.entries(PLAN_INFO) as [SubscriptionPlan, typeof PLAN_INFO.starter][]).map(([key, info]) => (
                     <SelectItem key={key} value={key}>
                       <span className="font-semibold">{info.label}</span>
-                      <span className="text-muted-foreground ml-1.5">{info.price}€/mois</span>
+                      <span className="text-[#9ca3af] ml-1.5">{info.price}€/mois</span>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             ) : (
-              <span className="text-xs px-3 py-1 rounded-full bg-mba-green-100 text-[#15803d] border border-[#bbf7d0] font-medium">
+              <span className="text-xs px-3 py-1 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#bbf7d0] font-medium">
                 Connecté
               </span>
             )}
 
             {/* Separator */}
-            <div className="h-6 w-px bg-border" />
+            <div className="h-6 w-px bg-[#e4e8df]" />
 
             {/* User avatar */}
             <div className="flex items-center gap-2">
-              <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-sm font-semibold text-primary-foreground">
+              <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
                 {initials}
               </div>
               <div className="hidden md:block">
-                <p className="text-[14px] font-semibold text-foreground leading-tight">{user?.nom || "Admin"}</p>
-                <p className="text-[11px] text-muted-foreground capitalize">{user?.role || "admin"}</p>
+                <p className="text-[13px] font-semibold text-[#1a2318] leading-tight">{user?.nom || "Admin"}</p>
+                <p className="text-[11px] text-[#9ca3af] capitalize">{user?.role || "admin"}</p>
               </div>
             </div>
           </header>
 
-          <main className="flex-1 p-6 md:p-8 overflow-auto">
+          <main className="flex-1 p-7 overflow-auto">
             {plan !== "enterprise" && showBanner && (
-              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-mba-green-50 p-4 flex items-center gap-3 relative">
+              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-white p-4 flex items-center gap-3 relative shadow-[var(--shadow-card)]">
                 <button
                   onClick={() => setShowBanner(false)}
-                  className="absolute top-2 right-2 p-1 rounded-md hover:bg-mba-green-100 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute top-2 right-2 p-1 rounded-md hover:bg-[#f0fdf4] text-[#9ca3af] hover:text-[#1a2318] transition-colors"
                   aria-label="Masquer"
                 >
                   <X className="h-4 w-4" />
                 </button>
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Sparkles className="h-5 w-5 text-primary" />
+                <div className="h-10 w-10 rounded-full bg-[#dcfce7] flex items-center justify-center shrink-0">
+                  <Sparkles className="h-5 w-5 text-[#22c55e]" />
                 </div>
                 <div className="flex-1 min-w-0 pr-6">
-                  <p className="text-sm font-semibold text-foreground">
-                    Vous êtes en plan <span className="font-bold text-primary">{PLAN_INFO[plan].label}</span> — débloquez {plan === "starter" ? "plus de modules et fonctionnalités" : "tous les modules, l'IA et les espaces personnalisés"}
+                  <p className="text-sm font-semibold text-[#1a2318]">
+                    Vous êtes en plan <span className="font-bold text-[#22c55e]">{PLAN_INFO[plan].label}</span> — débloquez {plan === "starter" ? "plus de modules et fonctionnalités" : "tous les modules, l'IA et les espaces personnalisés"}
                   </p>
-                  <p className="text-[13px] text-muted-foreground mt-0.5">
+                  <p className="text-[13px] text-[#4a5e46] mt-0.5">
                     {plan === "starter"
                       ? `Passez en Business (${PLAN_INFO.business.price}€/mois) ou Enterprise (${PLAN_INFO.enterprise.price}€/mois)`
                       : `Passez en Enterprise (${PLAN_INFO.enterprise.price}€/mois) pour un accès illimité`}
@@ -122,7 +122,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 </div>
                 <a
                   href="/contact?subject=Upgrade%20abonnement%20MBA"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline shrink-0"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#22c55e] hover:underline shrink-0"
                 >
                   Passer au supérieur
                   <ArrowUpRight className="h-4 w-4" />
