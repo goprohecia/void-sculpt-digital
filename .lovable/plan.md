@@ -1,42 +1,27 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan : Remplacer les icones par des photos dans ServicesSection
 
-## Modifications
+### Contexte
+La `ServicesSection` (affichee sur la page d'accueil) utilise des icones Lucide pour illustrer chaque secteur. La `CiblesSection` (aussi sur la page d'accueil, plus bas) utilise deja des photos. L'utilisateur veut le meme traitement photo pour `ServicesSection`.
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+### Modifications - `src/components/sections/ServicesSection.tsx`
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+1. **Importer les 21 images** depuis `src/assets/sectors/` (meme imports que `CiblesSection`) et supprimer les imports Lucide.
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+2. **Restructurer les donnees** : remplacer `icon` par `image` dans chaque secteur, en mappant aux images correspondantes (devImg, designerImg, cabinetsImg, etc.).
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+3. **Refondre le design des cartes** :
+   - Passer d'une carte compacte avec icone a une carte avec photo (style similaire a `CiblesSection` : image en haut ~h-40, texte en dessous).
+   - Garder la grille `grid-cols-2 sm:grid-cols-3 lg:grid-cols-5` pour 5 cartes par ligne.
+   - Hover : zoom image (`scale-1.08`), fleche qui apparait, bordure verte.
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+4. **Animations au scroll** :
+   - Utiliser des `cardVariants` avec framer-motion pour un stagger d'entree (opacity + translateY + scale) au viewport.
+   - Chaque categorie a son propre groupe d'animation avec delai progressif.
 
-## Details techniques
+5. **Importer `ArrowRight`** de lucide-react pour l'indicateur hover sur les cartes.
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+### Resultat
+Les cartes secteur auront le meme style visuel que celles de `CiblesSection` : photo + titre + description + animation d'entree au scroll + hover interactif. Un seul fichier modifie.
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
