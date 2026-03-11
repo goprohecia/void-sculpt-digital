@@ -1,18 +1,7 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
-  FolderOpen,
-  MessageSquare,
-  CalendarDays,
-  UserCircle,
-  LogOut,
-  Package,
-  Users,
-  Receipt,
-  Bell,
-  Mail,
-  LifeBuoy,
-  BarChart3,
+  LayoutDashboard, FolderOpen, MessageSquare, CalendarDays, UserCircle,
+  LogOut, Package, Users, Receipt, Bell, Mail, LifeBuoy, BarChart3,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,18 +9,10 @@ import { useAppSettings } from "@/hooks/use-app-settings";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { getSectorRoleLabel } from "@/data/sectorModules";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarSeparator,
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
+  SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
 
 export function EmployeeSidebar() {
@@ -76,13 +57,13 @@ export function EmployeeSidebar() {
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-              <span className="text-primary font-bold text-sm">{wl.brandShort}</span>
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">{wl.brandShort}</span>
             </div>
           )}
           <div>
-            <p className="text-sm font-semibold">{wl.brandName}</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm font-bold text-foreground">{wl.brandName}</p>
+            <p className="text-[11px] text-muted-foreground">
               {getSectorRoleLabel(demoSector, "employee") ? `Espace ${getSectorRoleLabel(demoSector, "employee")}` : "Espace salarié"}
             </p>
           </div>
@@ -93,38 +74,47 @@ export function EmployeeSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-semibold text-muted-foreground">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                    <Link to={item.url} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span className="flex-1">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navItems.map((item) => {
+                const active = isActive(item.url);
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
+                      <Link
+                        to={item.url}
+                        className={`flex items-center gap-3 transition-all duration-120 rounded-r-[var(--radius-sm)] ${
+                          active
+                            ? "bg-mba-green-50 text-primary font-semibold border-l-[3px] border-primary pl-[calc(0.75rem-3px)]"
+                            : "text-muted-foreground hover:bg-mba-green-50 hover:text-primary"
+                        }`}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span className="flex-1">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
-        <SidebarSeparator className="mb-3" />
+      <SidebarFooter className="p-4 bg-secondary border-t border-border">
         <div className="flex items-center gap-3 mb-3">
-          <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <span className="text-xs font-semibold text-primary">{initials}</span>
-          </div>
+          <Avatar className="h-9 w-9">
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">{initials}</AvatarFallback>
+          </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user?.nom}</p>
+            <p className="text-sm font-bold truncate text-foreground">{user?.nom}</p>
             <p className="text-xs text-muted-foreground capitalize">{user?.role || "salarié"}</p>
           </div>
         </div>
         <button
           onClick={async () => { logout(); await supabase.auth.signOut(); navigate("/client/login", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-mba-green-50 transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>

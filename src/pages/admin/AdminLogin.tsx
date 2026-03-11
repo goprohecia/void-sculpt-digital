@@ -20,7 +20,6 @@ export default function AdminLogin() {
   const [searchParams] = useSearchParams();
   const verified = searchParams.get("verified") === "1";
 
-  // Check if returning from Google OAuth with incomplete profile
   useEffect(() => {
     if (isAuthenticated) {
       const dest = user?.role === "superadmin" ? "/superadmin" : user?.role === "employee" ? "/employee" : user?.role === "client" ? "/client" : "/admin";
@@ -60,7 +59,6 @@ export default function AdminLogin() {
       return;
     }
 
-    // Block admin email from client login
     if (email.toLowerCase() === "admin@mybusinessassistant.com") {
       setError("Ce compte est réservé à l'espace administrateur");
       return;
@@ -99,28 +97,42 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-6">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        backgroundColor: "hsl(90 14% 95%)",
+        backgroundImage: "radial-gradient(circle, hsl(142 72% 42% / 0.05) 1px, transparent 1px)",
+        backgroundSize: "24px 24px",
+      }}
+    >
+      <div className="w-full max-w-[440px] space-y-6">
         {/* Logo */}
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold">My Business Assistant</h1>
-          <p className="text-sm text-muted-foreground">Connectez-vous à votre espace</p>
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-mba-green-500 to-mba-green-900 bg-clip-text text-transparent">
+            MBA
+          </h1>
+          <p className="text-sm text-muted-foreground">My Business Assistant</p>
         </div>
 
         {/* Verified banner */}
         {verified && (
-          <div className="flex items-center gap-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4">
-            <CheckCircle className="h-5 w-5 text-green-400 shrink-0" />
-            <p className="text-sm text-green-300">Votre compte a été vérifié avec succès ! Vous pouvez maintenant vous connecter.</p>
+          <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-mba-green-100 bg-mba-green-50 p-4">
+            <CheckCircle className="h-5 w-5 text-primary shrink-0" />
+            <p className="text-sm text-foreground">Votre compte a été vérifié avec succès ! Vous pouvez maintenant vous connecter.</p>
           </div>
         )}
 
-        {/* Form */}
-        <div className="glass-card p-8 space-y-5">
+        {/* Form Card */}
+        <div className="bg-card rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] border border-border p-8 space-y-5">
+          <div className="text-center space-y-1">
+            <h2 className="text-2xl font-bold text-foreground">Connectez-vous</h2>
+            <p className="text-sm text-muted-foreground">Accédez à votre espace de gestion</p>
+          </div>
+
           {/* Google Sign In */}
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 h-11 rounded-lg border border-border bg-background hover:bg-muted/50 transition-colors text-sm font-medium"
+            className="w-full flex items-center justify-center gap-3 h-11 rounded-[var(--radius-xl)] border border-border bg-card hover:shadow-[var(--shadow-md)] transition-all text-sm font-medium text-foreground"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -142,13 +154,27 @@ export default function AdminLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Email</label>
-              <Input type="email" placeholder="votre@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className="glass-input border-0 h-11" required />
+              <label className="text-sm font-medium text-foreground">Email</label>
+              <Input
+                type="email"
+                placeholder="votre@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-11 bg-secondary border-border rounded-[var(--radius-md)] focus:border-primary focus:ring-primary/10"
+                required
+              />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Mot de passe</label>
+              <label className="text-sm font-medium text-foreground">Mot de passe</label>
               <div className="relative">
-                <Input type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="glass-input border-0 h-11 pr-10" required />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 bg-secondary border-border rounded-[var(--radius-md)] pr-10 focus:border-primary focus:ring-primary/10"
+                  required
+                />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -177,20 +203,20 @@ export default function AdminLogin() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <button onClick={() => fillDemo("admin")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
+              <button onClick={() => fillDemo("admin")} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
                 <p className="text-xs font-semibold text-primary">Admin</p>
                 <p className="text-[10px] text-muted-foreground">admin@mba.demo</p>
               </button>
-              <button onClick={() => fillDemo("employee")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
-                <p className="text-xs font-semibold text-amber-400">Salarié</p>
+              <button onClick={() => fillDemo("employee")} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
+                <p className="text-xs font-semibold text-primary">Salarié</p>
                 <p className="text-[10px] text-muted-foreground">employee@mba.demo</p>
               </button>
-              <button onClick={() => fillDemo("client")} className="glass-button p-3 text-left space-y-1 hover:border-primary/30">
-                <p className="text-xs font-semibold text-neon-blue">Client</p>
+              <button onClick={() => fillDemo("client")} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
+                <p className="text-xs font-semibold text-primary">Client</p>
                 <p className="text-[10px] text-muted-foreground">client@mba.demo</p>
               </button>
-              <button onClick={() => { setEmail("superadmin@mba.demo"); setPassword("demo2026"); setError(""); }} className="glass-button p-3 text-left space-y-1 hover:border-amber-500/30 border-amber-500/20">
-                <p className="text-xs font-semibold text-amber-500">Super Admin</p>
+              <button onClick={() => { setEmail("superadmin@mba.demo"); setPassword("demo2026"); setError(""); }} className="bg-secondary border border-border rounded-[var(--radius-md)] p-3 text-left space-y-1 hover:border-primary transition-colors">
+                <p className="text-xs font-semibold text-primary">Super Admin</p>
                 <p className="text-[10px] text-muted-foreground">superadmin@mba.demo</p>
               </button>
             </div>

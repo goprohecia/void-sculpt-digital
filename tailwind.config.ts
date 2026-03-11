@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        display: ['Montserrat', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -50,7 +51,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Neon colors
+        // MBA Green scale
+        "mba-green": {
+          50: "hsl(var(--green-50))",
+          100: "hsl(var(--green-100))",
+          500: "hsl(var(--green-500))",
+          600: "hsl(var(--green-600))",
+          700: "hsl(var(--green-700))",
+          900: "hsl(var(--green-900))",
+        },
+        // Neon colors (landing page)
         neon: {
           red: "hsl(var(--neon-red))",
           green: "hsl(var(--neon-green))",
