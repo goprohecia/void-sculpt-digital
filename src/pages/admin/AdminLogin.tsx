@@ -106,7 +106,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-[400px] space-y-5">
         {/* Logo */}
         <div className="text-center space-y-1.5">
-          <img src={logoMba} alt="MBA" className="h-10 mx-auto" />
+          <img src={logoMba} alt="MBA" className="h-20 mx-auto" />
           <p className="text-xs text-[#9ca3af] tracking-wide">My Business Assistant</p>
         </div>
 
