@@ -110,7 +110,7 @@ export function Header() {
               />
               <motion.span
                 className={`text-base sm:text-lg md:text-xl font-bold hidden sm:block transition-colors duration-300 ${
-                  isScrolled ? "text-gray-900" : "text-white"
+                  heroOverlay ? "text-white" : "text-gray-900"
                 }`}
                 whileHover={{ scale: 1.05 }}
               >
