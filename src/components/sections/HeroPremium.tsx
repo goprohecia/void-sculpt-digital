@@ -27,13 +27,27 @@ export function HeroPremium() {
   const gradientY = useTransform(smoothMouseY, [-0.5, 0.5], ["40%", "60%"]);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[#F6F5F2]">
-      {/* Subtle overlay effect */}
-      <div className="absolute inset-0 z-[1] pointer-events-none">
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src={heroBgVideo} type="video/mp4" />
+      </video>
+
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/50 z-[1]" />
+
+      {/* Subtle radial glow */}
+      <div className="absolute inset-0 z-[2] pointer-events-none">
         <motion.div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.04) 0%, transparent 60%)`,
+            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.08) 0%, transparent 60%)`,
           }}
         />
       </div>
