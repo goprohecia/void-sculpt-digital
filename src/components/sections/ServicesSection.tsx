@@ -112,8 +112,8 @@ export function ServicesSection() {
               >
                 {group.sectors.map((sector) => {
                   const content = (
-                    <div className="group h-full p-5 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500">
-                      <div className={`w-10 h-10 rounded-xl ${group.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <div className="group h-full p-5 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500 text-center sm:text-left">
+                      <div className={`w-10 h-10 rounded-xl ${group.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 mx-auto sm:mx-0`}>
                         <sector.icon className={`h-4 w-4 ${group.color}`} />
                       </div>
                       <h4 className="text-sm font-medium mb-1.5 text-gray-900">{sector.title}</h4>
