@@ -3,13 +3,12 @@ import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Layers } from "lucide-react";
+import { Settings, User, Building2, Bell } from "lucide-react";
 import { useClients } from "@/hooks/use-clients";
 import { useClientId } from "@/hooks/use-client-id";
 import { ProfileTab } from "@/components/client/settings/ProfileTab";
 import { CompanyTab } from "@/components/client/settings/CompanyTab";
 import { NotificationsTab } from "@/components/client/settings/NotificationsTab";
-import { ModulesTab } from "@/components/client/settings/ModulesTab";
 
 export default function ClientSettings() {
   const { clientId, isLoading: clientLoading } = useClientId();
