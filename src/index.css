@@ -275,9 +275,18 @@
   .mba-app main > * h3 {
     color: #ffffff;
   }
-  .mba-app main > * p.text-muted-foreground,
-  .mba-app main > * .text-muted-foreground {
+  .mba-app main > * > .text-muted-foreground,
+  .mba-app main > * > * > .text-muted-foreground,
+  .mba-app main > * > p.text-muted-foreground {
     color: rgba(255,255,255,0.60);
+  }
+  /* But restore inside white surfaces */
+  .mba-app .glass-card .text-muted-foreground,
+  .mba-app .mba-card .text-muted-foreground,
+  .mba-app main [class*="bg-white"] .text-muted-foreground,
+  .mba-app main .bg-muted .text-muted-foreground,
+  .mba-app main .rounded-\[var\(--radius-lg\)\] .text-muted-foreground {
+    color: #9ca3af !important;
   }
   /* Icons next to page titles */
   .mba-app main > * h1 .text-primary,
@@ -299,11 +308,6 @@
   .mba-app [data-radix-scroll-area-viewport] p,
   .mba-app [data-radix-scroll-area-viewport] span {
     color: inherit;
-  }
-  .mba-app .glass-card .text-muted-foreground,
-  .mba-app [class*="bg-white"] .text-muted-foreground,
-  .mba-app main .rounded-\[var\(--radius-lg\)\] .text-muted-foreground {
-    color: #9ca3af !important;
   }
   .mba-app .glass-card .text-foreground,
   .mba-app [class*="bg-white"] .text-foreground {
@@ -335,6 +339,68 @@
   .mba-app main .rounded-\[var\(--radius-lg\)\] p,
   .mba-app main .rounded-\[var\(--radius-lg\)\] span {
     color: inherit;
+  }
+
+  /* Glass-button in admin → white surface buttons */
+  .mba-app main .glass-button {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e4e8df !important;
+    border-radius: 8px !important;
+    color: #1a2318 !important;
+    box-shadow: none !important;
+  }
+  .mba-app main .glass-button::before,
+  .mba-app main .glass-button::after {
+    display: none !important;
+  }
+  .mba-app main .glass-button:hover {
+    background: #f0fdf4 !important;
+    border-color: #22c55e !important;
+    color: #15803d !important;
+  }
+
+  /* Glass-input in admin → white input */
+  .mba-app main .glass-input {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e4e8df !important;
+    border-radius: 8px !important;
+    color: #1a2318 !important;
+    box-shadow: none !important;
+  }
+  .mba-app main .glass-input::before,
+  .mba-app main .glass-input::after {
+    display: none !important;
+  }
+  .mba-app main .glass-input:focus {
+    border-color: #22c55e !important;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15) !important;
+  }
+  .mba-app main .glass-input::placeholder {
+    color: #9ca3af !important;
+  }
+
+  /* All inputs in admin — ensure white bg */
+  .mba-app main input:not([type="checkbox"]):not([type="radio"]),
+  .mba-app main textarea {
+    background-color: #ffffff;
+    color: #1a2318;
+    border-color: #e4e8df;
+  }
+  .mba-app main input::placeholder,
+  .mba-app main textarea::placeholder {
+    color: #9ca3af;
+  }
+
+  /* Filter buttons using bg-muted/* on dark bg */
+  .mba-app main button.bg-muted\/30,
+  .mba-app main button.bg-muted\/50 {
+    background-color: #ffffff !important;
+    border: 1px solid #e4e8df;
+    color: #1a2318 !important;
   }
 
   /* Select triggers in admin — white background */
