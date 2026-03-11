@@ -7,17 +7,17 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { ScrollReveal, SectionTransition } from "@/components/animations";
 
 const subjectOptions = [
-  "Demande de démo",
-  "Question sur les offres",
-  "Support technique",
-  "Autre",
-];
+"Demande de démo",
+"Question sur les offres",
+"Support technique",
+"Autre"];
+
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 30 });
@@ -48,7 +48,7 @@ const Contact = () => {
   useEffect(() => {
     const subject = searchParams.get("subject");
     if (subject) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         subject: decodeURIComponent(subject)
       }));
@@ -65,7 +65,7 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     toast({
       title: "Message envoyé !",
       description: "Nous vous recontacterons dans les plus brefs délais."
@@ -81,23 +81,23 @@ const Contact = () => {
         <motion.div
           className="absolute inset-0 opacity-40"
           style={{
-            background: `radial-gradient(ellipse 80% 60% at ${gradientX} ${gradientY}, hsl(142 71% 45% / 0.08), transparent 70%)`,
-          }}
-        />
+            background: `radial-gradient(ellipse 80% 60% at ${gradientX} ${gradientY}, hsl(142 71% 45% / 0.08), transparent 70%)`
+          }} />
+        
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <motion.div
             className="max-w-3xl mx-auto text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-          >
+            transition={{ duration: 1.2 }}>
+            
             <motion.p
               className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+              transition={{ duration: 0.8, delay: 0.2 }}>
+              
               Contact
             </motion.p>
 
@@ -105,17 +105,17 @@ const Contact = () => {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-8 tracking-tight leading-[1.1] text-gray-900"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Demandez votre <span className="font-medium text-gradient-neon">démo MBA.</span>
+              transition={{ duration: 0.8, delay: 0.3 }}>
+              
+              Demandez votre <span className="font-medium text-gradient-neon">
+
+
+
+              </span>
             </motion.h1>
 
-            <motion.p
-              className="text-lg md:text-xl text-gray-600 leading-relaxed font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-            >
+            <motion.p className="text-lg md:text-xl text-gray-600 leading-relaxed font-light" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }}>
+              
               Découvrez comment MBA peut transformer la gestion de votre activité.
             </motion.p>
           </motion.div>
@@ -189,15 +189,15 @@ const Contact = () => {
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                       <label htmlFor="name" className="block text-sm text-gray-600 mb-2">Nom complet *</label>
                       <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400"
-                        placeholder="John Doe" />
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400"
+                      placeholder="John Doe" />
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
                       <label htmlFor="email" className="block text-sm text-gray-600 mb-2">Email *</label>
                       <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400"
-                        placeholder="john@example.com" />
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400"
+                      placeholder="john@example.com" />
                     </motion.div>
                   </div>
 
@@ -205,18 +205,18 @@ const Contact = () => {
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
                       <label htmlFor="company" className="block text-sm text-gray-600 mb-2">Entreprise</label>
                       <input type="text" id="company" name="company" value={formData.company} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400"
-                        placeholder="Votre entreprise" />
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors placeholder:text-gray-400"
+                      placeholder="Votre entreprise" />
                     </motion.div>
 
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
                       <label htmlFor="subject" className="block text-sm text-gray-600 mb-2">Sujet *</label>
                       <select id="subject" name="subject" required value={formData.subject} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors appearance-none">
+                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors appearance-none">
                         <option value="" disabled className="text-gray-400">Choisir un sujet</option>
-                        {subjectOptions.map(opt => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
+                        {subjectOptions.map((opt) =>
+                        <option key={opt} value={opt}>{opt}</option>
+                        )}
                       </select>
                     </motion.div>
                   </div>
@@ -224,24 +224,24 @@ const Contact = () => {
                   <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                     <label htmlFor="message" className="block text-sm text-gray-600 mb-2">Message *</label>
                     <textarea id="message" name="message" required rows={6} value={formData.message} onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors resize-none placeholder:text-gray-400"
-                      placeholder="Décrivez votre activité et vos besoins..." />
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 focus:border-[#22c55e]/50 focus:outline-none focus:ring-0 transition-colors resize-none placeholder:text-gray-400"
+                    placeholder="Décrivez votre activité et vos besoins..." />
                   </motion.div>
 
                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
                     <motion.button type="submit" disabled={isLoading}
-                      className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-                      whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    className="group relative inline-flex items-center gap-3 px-8 py-4 text-sm font-medium tracking-wide uppercase overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <span className="absolute inset-0 bg-[#22c55e] rounded-full" />
                       <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <span className="relative text-white">
                         {isLoading ? "Envoi en cours..." : "Envoyer le message"}
                       </span>
-                      {isLoading ? (
-                        <Loader2 className="relative h-4 w-4 text-white animate-spin" />
-                      ) : (
-                        <Send className="relative h-4 w-4 text-white group-hover:translate-x-1 transition-all duration-300" />
-                      )}
+                      {isLoading ?
+                      <Loader2 className="relative h-4 w-4 text-white animate-spin" /> :
+
+                      <Send className="relative h-4 w-4 text-white group-hover:translate-x-1 transition-all duration-300" />
+                      }
                     </motion.button>
                   </motion.div>
                 </form>
@@ -272,15 +272,15 @@ const Contact = () => {
                   height="600"
                   frameBorder="0"
                   title="Calendly"
-                  className="bg-white sm:h-[700px]"
-                />
+                  className="bg-white sm:h-[700px]" />
+                
               </div>
             </ScrollReveal>
           </div>
         </div>
       </SectionTransition>
-    </Layout>
-  );
+    </Layout>);
+
 };
 
 export default Contact;
