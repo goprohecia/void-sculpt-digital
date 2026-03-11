@@ -502,6 +502,25 @@
   .pricing-card-custom { @apply border-tier-custom/50 hover:border-tier-custom hover:neon-glow-gold; }
 
   .divider-premium { height: 1px; background: linear-gradient(90deg, transparent, hsl(var(--green-600) / 0.3) 20%, hsl(var(--green-600) / 0.5) 50%, hsl(var(--green-600) / 0.3) 80%, transparent); }
+
+  /* ========================================
+     DIALOG / SHEET — force white in app
+     ======================================== */
+  .mba-app [role="dialog"] {
+    background-color: #ffffff !important;
+    color: #1a2318 !important;
+  }
+  .mba-app [role="dialog"] label,
+  .mba-app [role="dialog"] .text-muted-foreground {
+    color: #6b7280 !important;
+  }
+  .mba-app [role="dialog"] h1,
+  .mba-app [role="dialog"] h2,
+  .mba-app [role="dialog"] h3,
+  .mba-app [role="dialog"] p,
+  .mba-app [role="dialog"] span {
+    color: inherit;
+  }
 }
 
 @layer utilities {
