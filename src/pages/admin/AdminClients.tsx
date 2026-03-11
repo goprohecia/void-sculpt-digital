@@ -462,14 +462,14 @@ export default function AdminClients() {
 
       {/* Edit dialog */}
       <Dialog open={!!editingClient} onOpenChange={(open) => !open && setEditingClient(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Modifier le client</DialogTitle>
             <DialogDescription>Modifiez les informations du client ci-dessous.</DialogDescription>
           </DialogHeader>
           {editingClient && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Prénom</label>
                   <Input value={editingClient.prenom} onChange={(e) => setEditingClient({ ...editingClient, prenom: e.target.value })} className="h-9" />
