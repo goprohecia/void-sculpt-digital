@@ -177,7 +177,7 @@ export function AdminSidebar() {
             <Collapsible key={group.label} open={isOpen} onOpenChange={() => toggleGroup(group.label)}>
               <SidebarGroup>
                 <CollapsibleTrigger asChild>
-                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 flex items-center gap-1.5 cursor-pointer hover:text-white/50 transition-colors select-none px-5 py-3">
+                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/40 flex items-center gap-1.5 cursor-pointer hover:text-white/60 transition-colors select-none px-5 py-3">
                     <GroupIcon className="h-3.5 w-3.5" />
                     <span className="flex-1">{group.label}</span>
                     <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isOpen ? "" : "-rotate-90"}`} />
