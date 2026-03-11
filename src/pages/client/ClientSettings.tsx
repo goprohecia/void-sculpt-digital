@@ -32,11 +32,10 @@ export default function ClientSettings() {
 
           <motion.div variants={staggerItem}>
             <Tabs defaultValue="profil" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="profil" className="gap-1.5"><User className="h-3.5 w-3.5" /> Profil</TabsTrigger>
                 <TabsTrigger value="entreprise" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Entreprise</TabsTrigger>
                 <TabsTrigger value="notifications" className="gap-1.5"><Bell className="h-3.5 w-3.5" /> Notifications</TabsTrigger>
-                <TabsTrigger value="modules" className="gap-1.5"><Layers className="h-3.5 w-3.5" /> Mes modules</TabsTrigger>
               </TabsList>
 
               <TabsContent value="profil">
