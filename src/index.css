@@ -309,11 +309,6 @@
   .mba-app [data-radix-scroll-area-viewport] span {
     color: inherit;
   }
-  .mba-app .glass-card .text-muted-foreground,
-  .mba-app [class*="bg-white"] .text-muted-foreground,
-  .mba-app main .rounded-\[var\(--radius-lg\)\] .text-muted-foreground {
-    color: #9ca3af !important;
-  }
   .mba-app .glass-card .text-foreground,
   .mba-app [class*="bg-white"] .text-foreground {
     color: hsl(var(--text-primary));
