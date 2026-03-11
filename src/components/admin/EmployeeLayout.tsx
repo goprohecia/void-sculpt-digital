@@ -7,6 +7,8 @@ import { EmployeeSidebar } from "./EmployeeSidebar";
 import { AdminPageTransition } from "./AdminPageTransition";
 import { NotificationPanel } from "./NotificationPanel";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Search } from "lucide-react";
 
 interface EmployeeLayoutProps {
   children: React.ReactNode;
@@ -23,12 +25,10 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
       setSupabaseUser(session?.user ?? null);
       setLoading(false);
     });
-
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSupabaseUser(session?.user ?? null);
       setLoading(false);
     });
-
     return () => subscription.unsubscribe();
   }, []);
 
@@ -38,22 +38,26 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
   const employeeNotifications = getNotificationsByEmployee(employeeId);
 
   if (loading) return null;
+  if (!isDemoEmployee && !isRealAuth) return <Navigate to="/client/login" replace />;
+  if (isDemoAuth && demoUser?.role !== "employee" && !isRealAuth) return <Navigate to="/admin" replace />;
 
-  if (!isDemoEmployee && !isRealAuth) {
-    return <Navigate to="/client/login" replace />;
-  }
-
-  if (isDemoAuth && demoUser?.role !== "employee" && !isRealAuth) {
-    return <Navigate to="/admin" replace />;
-  }
+  const initials = demoUser?.nom?.split(" ").map((n: string) => n[0]).join("").slice(0, 2) || "SA";
 
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <EmployeeSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center px-4 gap-4 mx-4 mt-3 rounded-2xl glass-card glass-noise border border-white/10">
-            <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
+          <header className="h-16 flex items-center px-8 gap-4 bg-card border-b border-border">
+            <SidebarTrigger className="text-muted-foreground hover:text-foreground hover:bg-mba-green-50 rounded-lg p-2 transition-colors" />
+            <div className="relative w-80 hidden md:block">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Rechercher..."
+                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-xl)] bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/10 transition-all"
+              />
+            </div>
             <div className="flex-1" />
             <NotificationPanel
               notifications={employeeNotifications}
@@ -61,17 +65,21 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
               onMarkRead={markNotificationRead}
             />
             {isDemoEmployee && (
-              <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+              <span className="text-xs px-3 py-1 rounded-full bg-mba-green-100 text-mba-green-700 font-medium">
                 Mode démo
               </span>
             )}
             {isRealAuth && !isDemoEmployee && (
-              <span className="text-xs text-muted-foreground">
-                {supabaseUser.email}
-              </span>
+              <span className="text-xs text-muted-foreground">{supabaseUser.email}</span>
             )}
+            <div className="h-6 w-px bg-border" />
+            <Avatar className="h-9 w-9">
+              <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
           </header>
-          <main className="flex-1 p-4 md:p-6 overflow-auto">
+          <main className="flex-1 p-6 md:p-8 overflow-auto">
             <AdminPageTransition>{children}</AdminPageTransition>
           </main>
         </div>
