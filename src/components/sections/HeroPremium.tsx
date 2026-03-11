@@ -35,7 +35,7 @@ export function HeroPremium() {
         <motion.div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,92,246,0.03) 0%, transparent 60%)`,
+            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.04) 0%, transparent 60%)`,
           }}
         />
         <motion.div
@@ -106,7 +106,7 @@ export function HeroPremium() {
                   className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden"
                 >
                   <span className="absolute inset-0 bg-white rounded-full" />
-                  <span className="absolute inset-0 bg-gradient-to-r from-neon-violet to-violet-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <span className="relative text-background group-hover:text-white transition-colors duration-500">
                     Essayer gratuitement
                   </span>

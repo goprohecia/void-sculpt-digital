@@ -70,7 +70,7 @@ export function Footer() {
             </ul>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors"
+              className="inline-flex items-center gap-2 mt-6 text-sm font-medium text-[#4ade80] hover:text-[#22c55e] transition-colors"
             >
               Nous contacter
               <ArrowRight className="h-3 w-3" />

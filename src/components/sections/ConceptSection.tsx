@@ -14,7 +14,7 @@ export function ConceptSection() {
     <section id="concept">
       <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
         <ParallaxBackground speed={0.15}>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#22c55e]/5 to-transparent" />
         </ParallaxBackground>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -39,9 +39,9 @@ export function ConceptSection() {
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-16" staggerDelay={0.1} delayStart={0.3}>
             {espaces.map((e) => (
               <motion.div key={e.label} variants={staggerItemVariants}>
-                <div className="group h-full p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-neon-violet/20 transition-all duration-500 text-center">
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                    <e.icon className="h-5 w-5 text-neon-violet" />
+                <div className="group h-full p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-[#22c55e]/20 transition-all duration-500 text-center">
+                  <div className="w-12 h-12 rounded-xl bg-[#22c55e]/10 flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
+                    <e.icon className="h-5 w-5 text-[#22c55e]" />
                   </div>
                   <h3 className="text-base font-medium mb-2">{e.label}</h3>
                   <p className="text-sm text-muted-foreground">{e.desc}</p>

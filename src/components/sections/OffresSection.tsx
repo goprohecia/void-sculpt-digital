@@ -85,10 +85,10 @@ const tierStyles = {
     check: "text-white/60",
   },
   business: {
-    border: "border-neon-violet/40 hover:border-neon-violet/60",
-    badge: "bg-neon-violet/20 text-neon-violet",
-    glow: "shadow-[0_0_60px_-10px_rgba(139,92,246,0.3)]",
-    check: "text-neon-violet",
+    border: "border-[#22c55e]/40 hover:border-[#22c55e]/60",
+    badge: "bg-[#22c55e]/20 text-[#22c55e]",
+    glow: "shadow-[0_0_60px_-10px_rgba(34,197,94,0.3)]",
+    check: "text-[#22c55e]",
   },
   enterprise: {
     border: "border-amber-500/30 hover:border-amber-500/50",
@@ -116,9 +116,9 @@ export function OffresSection() {
     <section id="offres">
       <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
         <ParallaxBackground speed={0.15}>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
-          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-violet-600/10 rounded-full blur-[180px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-purple-600/8 rounded-full blur-[150px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#22c55e]/5 to-transparent" />
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#22c55e]/10 rounded-full blur-[180px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-emerald-600/8 rounded-full blur-[150px]" />
         </ParallaxBackground>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -147,7 +147,7 @@ export function OffresSection() {
                 <button
                   onClick={() => setIsAnnual(false)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    !isAnnual ? "bg-neon-violet text-white shadow-lg shadow-neon-violet/30" : "text-muted-foreground hover:text-foreground"
+                    !isAnnual ? "bg-[#22c55e] text-white shadow-lg shadow-[#22c55e]/30" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Mensuel
@@ -155,7 +155,7 @@ export function OffresSection() {
                 <button
                   onClick={() => setIsAnnual(true)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
-                    isAnnual ? "bg-neon-violet text-white shadow-lg shadow-neon-violet/30" : "text-muted-foreground hover:text-foreground"
+                    isAnnual ? "bg-[#22c55e] text-white shadow-lg shadow-[#22c55e]/30" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Annuel
@@ -184,7 +184,7 @@ export function OffresSection() {
                     >
                       {/* Recommended Badge */}
                       {pack.recommended && (
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-neon-violet text-white text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-neon-violet/30">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-[#22c55e] text-white text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-[#22c55e]/30">
                           <Star className="h-3 w-3 fill-current" />
                           Recommandé
                         </div>
@@ -206,7 +206,7 @@ export function OffresSection() {
                           <span className="text-muted-foreground text-sm">{priceLabel} HT</span>
                         </div>
                         <p className="text-sm text-muted-foreground font-light mt-1 flex items-center gap-1.5">
-                          <Zap className="h-3.5 w-3.5 text-neon-violet" />
+                          <Zap className="h-3.5 w-3.5 text-[#22c55e]" />
                           {pack.modulesLimit}
                         </p>
                         <p className="text-xs text-muted-foreground/70 mt-0.5">{pack.engagement}</p>
@@ -231,7 +231,7 @@ export function OffresSection() {
                       <Link
                         to={`/contact?subject=Abonnement%20MBA%20-%20${encodeURIComponent(pack.name)}`}
                         className={`w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 ${
-                          pack.recommended ? "btn-gradient text-white" : "glass-button hover:border-neon-violet/50"
+                          pack.recommended ? "btn-gradient text-white" : "glass-button hover:border-[#22c55e]/50"
                         }`}
                       >
                         {pack.tier === "enterprise" ? "Nous contacter" : "Commencer maintenant"}
@@ -256,7 +256,7 @@ export function OffresSection() {
                     key={i}
                     className="flex flex-col items-center gap-2 p-4 rounded-xl glass-card glass-noise border border-white/10"
                   >
-                    <item.icon className="h-5 w-5 text-neon-violet" />
+                    <item.icon className="h-5 w-5 text-[#22c55e]" />
                     <span className="text-xs text-center text-muted-foreground">{item.label}</span>
                   </div>
                 ))}

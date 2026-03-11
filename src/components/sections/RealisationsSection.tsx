@@ -4,17 +4,17 @@ import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition,
 
 const modules = [
   { icon: LayoutDashboard, title: "Vue d'ensemble", description: "Dashboard centralisé avec KPIs et vue globale de votre activité.", color: "text-white" },
-  { icon: Users, title: "Gestion clients", description: "Fiches clients complètes, tags, segmentation et historique.", color: "text-neon-violet" },
-  { icon: UserCheck, title: "Salariés", description: "Gestion des équipes, droits d'accès et assignation aux dossiers.", color: "text-indigo-400" },
-  { icon: FolderOpen, title: "Dossiers", description: "Suivi des projets, échéances, assignation aux salariés.", color: "text-blue-400" },
+  { icon: Users, title: "Gestion clients", description: "Fiches clients complètes, tags, segmentation et historique.", color: "text-[#22c55e]" },
+  { icon: UserCheck, title: "Salariés", description: "Gestion des équipes, droits d'accès et assignation aux dossiers.", color: "text-[#4ade80]" },
+  { icon: FolderOpen, title: "Dossiers", description: "Suivi des projets, échéances, assignation aux salariés.", color: "text-emerald-400" },
   { icon: Receipt, title: "Facturation", description: "Devis, factures, relances automatiques et signature électronique.", color: "text-emerald-400" },
   { icon: MessageSquare, title: "Messagerie", description: "Communication centralisée entre admin, clients et équipes.", color: "text-amber-400" },
-  { icon: CalendarDays, title: "Rendez-vous", description: "Prise de rendez-vous en ligne, synchronisation calendrier.", color: "text-sky-400" },
+  { icon: CalendarDays, title: "Rendez-vous", description: "Prise de rendez-vous en ligne, synchronisation calendrier.", color: "text-[#4ade80]" },
   { icon: Bell, title: "Relances", description: "Relances automatiques par email, suivi des échéances de paiement.", color: "text-orange-400" },
-  { icon: Mail, title: "Emails", description: "Templates personnalisables, historique d'envois et logs.", color: "text-pink-400" },
+  { icon: Mail, title: "Emails", description: "Templates personnalisables, historique d'envois et logs.", color: "text-emerald-300" },
   { icon: LifeBuoy, title: "Support", description: "Tickets de support avec suivi des priorités et résolutions.", color: "text-rose-400" },
   { icon: Package, title: "Stock", description: "Gestion des produits, fournisseurs, mouvements et alertes.", color: "text-cyan-400" },
-  { icon: BarChart3, title: "Analyse", description: "Tableaux de bord, KPIs et rapports de performance.", color: "text-purple-400" },
+  { icon: BarChart3, title: "Analyse", description: "Tableaux de bord, KPIs et rapports de performance.", color: "text-[#22c55e]" },
 ];
 
 export function RealisationsSection() {
@@ -22,8 +22,8 @@ export function RealisationsSection() {
     <section id="fonctionnalites">
       <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
         <ParallaxBackground speed={0.2}>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-violet/5 to-transparent" />
-          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-violet-600/8 rounded-full blur-[180px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#22c55e]/5 to-transparent" />
+          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-[#22c55e]/8 rounded-full blur-[180px]" />
         </ParallaxBackground>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -52,7 +52,7 @@ export function RealisationsSection() {
             {modules.map((mod) => (
               <motion.div key={mod.title} variants={staggerItemVariants}>
                 <div className="group h-full p-6 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
-                  <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-12 h-12 rounded-xl bg-[#22c55e]/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <mod.icon className={`h-5 w-5 ${mod.color}`} />
                   </div>
                   <h3 className="text-base font-medium mb-2">{mod.title}</h3>
