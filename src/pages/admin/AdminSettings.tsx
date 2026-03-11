@@ -1233,10 +1233,10 @@ export default function AdminSettings() {
             <div className="flex flex-col md:flex-row gap-6">
               {/* Vertical sidebar navigation */}
               <nav className="md:w-56 shrink-0">
-                <div className="md:sticky md:top-6 space-y-5">
+                <div className="md:sticky md:top-6 bg-white rounded-xl border border-[#e4e8df] p-4 shadow-sm space-y-5">
                   {SETTINGS_NAV.map((group) => (
                     <div key={group.group}>
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5 px-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af] mb-1.5 px-3">
                         {group.group}
                       </p>
                       <div className="space-y-0.5">
@@ -1249,11 +1249,11 @@ export default function AdminSettings() {
                               onClick={() => setActiveTab(item.key)}
                               className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
                                 isActive
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
+                                  ? "bg-[#f0fdf4] text-[#16a34a]"
+                                  : "text-[#6b7280] hover:text-[#1a2318] hover:bg-[#f7f8f5]"
                               }`}
                             >
-                              <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-primary" : ""}`} />
+                              <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#16a34a]" : ""}`} />
                               {item.label}
                             </button>
                           );
