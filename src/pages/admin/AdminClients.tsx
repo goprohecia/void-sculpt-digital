@@ -654,9 +654,9 @@ export default function AdminClients() {
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreateDialog(false)}>Annuler</Button>
-            <Button onClick={handleCreateClient} className="gap-1.5"><UserPlus className="h-3.5 w-3.5" /> Créer</Button>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => setShowCreateDialog(false)} className="w-full sm:w-auto">Annuler</Button>
+            <Button onClick={handleCreateClient} className="gap-1.5 w-full sm:w-auto"><UserPlus className="h-3.5 w-3.5" /> Créer</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
