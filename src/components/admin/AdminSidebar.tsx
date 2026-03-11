@@ -102,7 +102,7 @@ export function AdminSidebar() {
 
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
-    GROUPS.forEach((g) => { initial[g.label] = groupHasActive(g.keys) || g.label === "Principal"; });
+    GROUPS.forEach((g) => { initial[g.label] = true; });
     return initial;
   });
 
