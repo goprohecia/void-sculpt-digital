@@ -5,6 +5,7 @@ import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
+import logoMba from "@/assets/logo-mba.png";
 
 const navItems = [
   { title: "Vue d'ensemble", url: "/superadmin", icon: LayoutDashboard },
