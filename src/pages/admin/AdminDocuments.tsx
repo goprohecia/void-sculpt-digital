@@ -212,7 +212,7 @@ export default function AdminDocuments() {
                         <p className="text-xs text-muted-foreground">{doc.taille} · {doc.dateAjout}{doc.client && ` · ${doc.client}`}</p>
                       </div>
                       <Badge variant="outline" className="text-[10px] shrink-0">{doc.dossier}</Badge>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                      <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                         <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Renommer" onClick={() => { setRenameDoc(doc); setRenameName(doc.nom); }}>
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>
