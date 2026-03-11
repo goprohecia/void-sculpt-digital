@@ -55,7 +55,7 @@ export function SuperAdminSidebar() {
                             : "text-white/[0.80] border-l-transparent hover:bg-white/[0.10] hover:text-white"
                         }`}
                       >
-                        <item.icon className={`h-4 w-4 ${active ? "text-[#4ade80]" : "opacity-60"}`} />
+                        <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#4ade80]" : "opacity-70"}`} />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
