@@ -164,6 +164,7 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
           </ScrollReveal>
         </div>
       </SectionTransition>
+      </div>
     </Layout>
   );
 }
