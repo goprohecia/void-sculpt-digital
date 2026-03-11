@@ -4,34 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { getSectorRoleLabel } from "@/data/sectorModules";
 import {
-  LayoutDashboard,
-  Users,
-  FolderOpen,
-  MessageSquare,
-  Receipt,
-  Bell,
-  Mail,
-  BarChart3,
-  LifeBuoy,
-  Settings,
-  LogOut,
-  CalendarDays,
-  Package,
-  CheckSquare,
-  Calendar,
-  FileText,
-  FolderClosed,
-  Timer,
-  Zap,
-  StickyNote,
-  Target,
-  Bot,
-  Building2,
-  Briefcase,
-  Wrench,
-  ClipboardList,
-  ChevronDown,
-  Truck,
+  LayoutDashboard, Users, FolderOpen, MessageSquare, Receipt, Bell, Mail,
+  BarChart3, LifeBuoy, Settings, LogOut, CalendarDays, Package, CheckSquare,
+  Calendar, FileText, FolderClosed, Timer, Zap, StickyNote, Target, Bot,
+  Building2, Briefcase, Wrench, ClipboardList, ChevronDown, Truck,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
@@ -45,17 +21,8 @@ import { Sparkles } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarSeparator,
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
+  SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
 
@@ -64,11 +31,7 @@ const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournis
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
-type GroupConfig = {
-  label: string;
-  icon: LucideIcon;
-  keys: string[];
-};
+type GroupConfig = { label: string; icon: LucideIcon; keys: string[] };
 
 const GROUPS: GroupConfig[] = [
   { label: "Principal", icon: Building2, keys: principalKeys },
@@ -118,7 +81,6 @@ export function AdminSidebar() {
     { title: getModuleLabel("parametres"), url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // Filter by enabled modules, sector visibility, then plan-specific module list
   const enabledItems = allNavItems
     .filter((item) => enabledModules.includes(item.moduleKey))
     .filter((item) => !isModuleHidden(item.moduleKey));
@@ -135,7 +97,6 @@ export function AdminSidebar() {
     return location.pathname.startsWith(url);
   };
 
-  // Determine which groups have an active route (for default open)
   const groupHasActive = (keys: string[]) =>
     navItems.some((item) => keys.includes(item.moduleKey) && isActive(item.url));
 
@@ -149,21 +110,31 @@ export function AdminSidebar() {
     setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
 
   const renderItems = (items: typeof navItems) =>
-    items.map((item) => (
-      <SidebarMenuItem key={item.title}>
-        <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-          <Link to={item.url} className="flex items-center gap-3">
-            <item.icon className="h-4 w-4" />
-            <span className="flex-1">{item.title}</span>
-            {item.badge ? (
-              <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground px-1">
-                {item.badge}
-              </span>
-            ) : null}
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    ));
+    items.map((item) => {
+      const active = isActive(item.url);
+      return (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
+            <Link
+              to={item.url}
+              className={`flex items-center gap-3 transition-all duration-120 rounded-r-[var(--radius-sm)] ${
+                active
+                  ? "bg-mba-green-50 text-primary font-semibold border-l-[3px] border-primary pl-[calc(0.75rem-3px)]"
+                  : "text-muted-foreground hover:bg-mba-green-50 hover:text-primary"
+              }`}
+            >
+              <item.icon className="h-4 w-4" />
+              <span className="flex-1">{item.title}</span>
+              {item.badge ? (
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground px-1">
+                  {item.badge}
+                </span>
+              ) : null}
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      );
+    });
 
   return (
     <Sidebar variant="floating" collapsible="icon">
@@ -172,9 +143,11 @@ export function AdminSidebar() {
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <p className="text-lg font-bold tracking-tight">{wl.brandShort}</p>
+            <p className="text-xl font-extrabold bg-gradient-to-r from-mba-green-500 to-mba-green-900 bg-clip-text text-transparent tracking-tight">
+              {wl.brandShort}
+            </p>
           )}
-          <p className="text-xs text-muted-foreground">
+          <p className="text-[11px] text-muted-foreground">
             {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}
           </p>
         </Link>
@@ -185,7 +158,7 @@ export function AdminSidebar() {
         <select
           value={demoSector || ""}
           onChange={(e) => setDemoSector(e.target.value ? (e.target.value as SectorKey) : null)}
-          className="w-full h-8 rounded-md bg-muted/50 border border-border/50 px-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring truncate"
+          className="w-full h-8 rounded-[var(--radius-md)] bg-secondary border border-border px-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary truncate transition-colors"
         >
           <option value="">— Générique —</option>
           {SECTORS.map((s) => (
@@ -207,7 +180,7 @@ export function AdminSidebar() {
             <Collapsible key={group.label} open={isOpen} onOpenChange={() => toggleGroup(group.label)}>
               <SidebarGroup>
                 <CollapsibleTrigger asChild>
-                  <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70 flex items-center gap-1.5 cursor-pointer hover:text-muted-foreground transition-colors select-none">
+                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-semibold text-muted-foreground flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors select-none">
                     <GroupIcon className="h-3.5 w-3.5" />
                     <span className="flex-1">{group.label}</span>
                     <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isOpen ? "" : "-rotate-90"}`} />
@@ -223,11 +196,10 @@ export function AdminSidebar() {
           );
         })}
 
-        {/* Custom Spaces - Enterprise only */}
         {isEnterprise && spaces.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground/70 flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+            <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-semibold text-muted-foreground flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
               Espaces personnalisés
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -236,7 +208,7 @@ export function AdminSidebar() {
                   <SidebarMenuItem key={space.id}>
                     <SidebarMenuButton tooltip={space.name}>
                       <span className="flex items-center gap-3">
-                        <span className="h-2 w-2 rounded-full bg-amber-400/60" />
+                        <span className="h-2 w-2 rounded-full bg-primary/60" />
                         <span>{space.name}</span>
                       </span>
                     </SidebarMenuButton>
@@ -248,22 +220,21 @@ export function AdminSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
-        <SidebarSeparator className="mb-3" />
+      <SidebarFooter className="p-4 bg-secondary border-t border-border">
         <div className="flex items-center gap-3 mb-3">
           <Avatar className="h-9 w-9">
-            <AvatarFallback className="bg-primary/20 text-primary text-sm font-semibold">
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
               {user?.nom?.charAt(0) || "U"}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user?.nom || "My Business Assistant"}</p>
+            <p className="text-sm font-bold truncate text-foreground">{user?.nom || "My Business Assistant"}</p>
             <p className="text-xs text-muted-foreground capitalize">{user?.role || "Admin"}</p>
           </div>
         </div>
         <button
           onClick={() => { logout(); supabase.auth.signOut(); navigate("/admin/access", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-mba-green-50 transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>
