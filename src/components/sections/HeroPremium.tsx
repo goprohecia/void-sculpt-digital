@@ -3,6 +3,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { LineReveal } from "@/components/animations";
+import logoMba from "@/assets/logo-mba.png";
 
 export function HeroPremium() {
   const mouseX = useMotionValue(0);
