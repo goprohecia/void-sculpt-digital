@@ -551,13 +551,13 @@ export default function AdminClients() {
 
       {/* Create client dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Nouveau client</DialogTitle>
             <DialogDescription>Renseignez les informations du nouveau client.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Prénom *</label>
                 <Input value={newClient.prenom} onChange={(e) => setNewClient({ ...newClient, prenom: e.target.value })} className="h-9" />
