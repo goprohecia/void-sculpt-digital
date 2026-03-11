@@ -21,7 +21,7 @@ export const PLAN_LIMITS: Record<SubscriptionPlan, number | null> = {
 export const PLAN_INFO: Record<SubscriptionPlan, { label: string; price: number; color: string }> = {
   starter: { label: "Starter", price: 150, color: "text-muted-foreground" },
   business: { label: "Business", price: 250, color: "text-neon-blue" },
-  enterprise: { label: "Enterprise", price: 400, color: "text-amber-400" },
+  enterprise: { label: "Enterprise", price: 500, color: "text-amber-400" },
 };
 
 export const PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = {
