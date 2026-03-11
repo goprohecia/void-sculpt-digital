@@ -96,7 +96,7 @@ export default function AdminNotes() {
               <Filter className="h-4 w-4" /> Filtres :
             </div>
             <Select value={filterAuteur} onValueChange={setFilterAuteur}>
-              <SelectTrigger className="w-40 h-8 text-xs">
+              <SelectTrigger className="w-full sm:w-40 h-8 text-xs">
                 <SelectValue placeholder="Auteur" />
               </SelectTrigger>
               <SelectContent>
