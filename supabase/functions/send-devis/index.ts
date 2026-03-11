@@ -3,7 +3,7 @@ import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
-const LOGO_URL = "https://aikmzznnmyfbjbomwakq.supabase.co/storage/v1/object/public/email-assets/logo-impartial.png";
+const LOGO_URL = "https://usulfquilneqlcyuwdof.supabase.co/storage/v1/object/public/email-assets/logo-mba.png";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
