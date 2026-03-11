@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ScrollReveal, StaggerContainer, SectionTransition, ParallaxBackground } from "@/components/animations";
+import { ScrollReveal, StaggerContainer, SectionTransition } from "@/components/animations";
 
 const faqs = [
   {
@@ -49,20 +49,16 @@ const faqItemVariants = {
 
 export function FAQ() {
   return (
-    <SectionTransition className="py-24 relative" parallaxStrength={0.05}>
-      <ParallaxBackground speed={0.15}>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#22c55e]/5 to-transparent" />
-      </ParallaxBackground>
-
+    <SectionTransition className="py-24 relative bg-white" parallaxStrength={0.05}>
       <div className="container mx-auto px-4 relative">
         <div className="text-center mb-16">
           <ScrollReveal variant="fadeInUp">
-            <h2 className="text-3xl md:text-4xl font-light mb-4">
+            <h2 className="text-3xl md:text-4xl font-light mb-4 text-gray-900">
               Questions <span className="font-medium text-gradient-neon">Fréquentes</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <p className="text-muted-foreground font-light max-w-2xl mx-auto">
+            <p className="text-gray-600 font-light max-w-2xl mx-auto">
               Tout ce que vous devez savoir sur MBA et son fonctionnement.
             </p>
           </ScrollReveal>
@@ -75,12 +71,12 @@ export function FAQ() {
                 <motion.div key={index} variants={faqItemVariants}>
                   <AccordionItem
                     value={`item-${index}`}
-                    className="glass-card glass-noise rounded-xl px-6 data-[state=open]:border-[#22c55e]/30 transition-all duration-300 hover:border-[#22c55e]/20"
+                    className="rounded-xl px-6 border border-gray-200 bg-gray-50 data-[state=open]:border-[#22c55e]/30 transition-all duration-300 hover:border-[#22c55e]/20"
                   >
-                    <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-[#22c55e] hover:no-underline transition-colors">
+                    <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-[#22c55e] hover:no-underline transition-colors text-gray-900">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                    <AccordionContent className="text-gray-600 pb-5 leading-relaxed">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
@@ -92,12 +88,12 @@ export function FAQ() {
 
         <ScrollReveal variant="fadeInUp" delay={0.5}>
           <div className="text-center mt-12">
-            <p className="text-muted-foreground mb-4">
+            <p className="text-gray-600 mb-4">
               Vous avez une autre question ?
             </p>
             <motion.a
               href="/contact?subject=Question%20MBA"
-              className="inline-flex items-center gap-2 text-[#22c55e] hover:text-[#4ade80] font-medium transition-colors"
+              className="inline-flex items-center gap-2 text-[#22c55e] hover:text-[#16a34a] font-medium transition-colors"
               whileHover={{ x: 5 }}
               transition={{ duration: 0.2 }}
             >

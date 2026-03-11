@@ -39,7 +39,7 @@ function NavLinkItem({
         to={to}
         onClick={handleClick}
         className={`relative font-medium transition-colors duration-200 hover:text-[#22c55e] px-2 py-1 ${
-          isActive ? "text-[#22c55e]" : "text-foreground"
+          isActive ? "text-[#22c55e]" : "text-gray-700"
         }`}
       >
         <motion.span className="relative z-10" whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
@@ -79,14 +79,13 @@ export function Header() {
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "glass-nav glass-noise border-b border-white/10 py-0"
+          ? "bg-white/90 backdrop-blur-xl border-b border-gray-200 py-0 shadow-sm"
           : "bg-transparent border-b border-transparent py-2"
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
       <div className="container mx-auto px-4">
         <nav
@@ -105,7 +104,7 @@ export function Header() {
                 transition={{ duration: 0.3 }}
               />
               <motion.span
-                className="text-base sm:text-lg md:text-xl font-bold text-gradient-premium hidden sm:block"
+                className="text-base sm:text-lg md:text-xl font-bold text-gray-900 hidden sm:block"
                 whileHover={{ scale: 1.05 }}
               >
                 MY BUSINESS ASSISTANT
@@ -127,7 +126,7 @@ export function Header() {
             <MagneticButton as="div" strength={0.25}>
               <Link
                 to="/contact?subject=Demo%20MBA"
-                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-[#22c55e]/30 transition-colors"
+                className="px-5 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
               >
                 Essayer MBA
               </Link>
@@ -135,7 +134,7 @@ export function Header() {
             <MagneticButton as="div" strength={0.15}>
               <Link
                 to="/client/login"
-                className="glass-button px-5 py-2.5 text-sm font-medium rounded-xl hover:border-[#22c55e]/30 transition-colors"
+                className="px-5 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
               >
                 Connexion
               </Link>
@@ -145,7 +144,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
             <motion.button
-              className="glass-button p-2 sm:p-2.5"
+              className="p-2 sm:p-2.5 border border-gray-300 rounded-xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -177,7 +176,7 @@ export function Header() {
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <motion.div
-                className="glass-surface glass-noise rounded-2xl p-4 mt-2"
+                className="rounded-2xl p-4 mt-2 border border-gray-200 bg-white shadow-lg"
                 initial="closed"
                 animate="open"
                 variants={{
@@ -220,7 +219,7 @@ export function Header() {
                   <Link
                     to="/contact?subject=Demo%20MBA"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="mt-4 glass-button px-6 py-3 font-medium rounded-xl text-center block relative z-10"
+                    className="mt-4 px-6 py-3 font-medium rounded-xl text-center block relative z-10 border border-gray-300 text-gray-900"
                   >
                     Essayer MBA
                   </Link>
@@ -230,7 +229,7 @@ export function Header() {
                   <Link
                     to="/client/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="mt-3 glass-button px-6 py-3 font-medium rounded-xl text-center block relative z-10"
+                    className="mt-3 px-6 py-3 font-medium rounded-xl text-center block relative z-10 border border-gray-300 text-gray-900"
                   >
                     Connexion
                   </Link>

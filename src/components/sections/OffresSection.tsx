@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Check, ArrowRight, Star, Zap, Shield, Users, Globe, FileSignature, CreditCard, Headphones, CalendarDays, RefreshCw } from "lucide-react";
-import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, ParallaxBackground, Hover3DCard } from "@/components/animations";
+import { ScrollReveal, StaggerContainer, staggerItemVariants, SectionTransition, Hover3DCard } from "@/components/animations";
 
 type Tier = "starter" | "business" | "enterprise";
 
@@ -79,22 +79,22 @@ const packs: Pack[] = [
 
 const tierStyles = {
   starter: {
-    border: "border-white/20 hover:border-white/40",
-    badge: "bg-white/10 text-white/80",
+    border: "border-gray-200 hover:border-gray-300",
+    badge: "bg-gray-100 text-gray-600",
     glow: "",
-    check: "text-white/60",
+    check: "text-gray-500",
   },
   business: {
     border: "border-[#22c55e]/40 hover:border-[#22c55e]/60",
-    badge: "bg-[#22c55e]/20 text-[#22c55e]",
-    glow: "shadow-[0_0_60px_-10px_rgba(34,197,94,0.3)]",
+    badge: "bg-[#22c55e]/10 text-[#22c55e]",
+    glow: "shadow-[0_0_60px_-10px_rgba(34,197,94,0.15)]",
     check: "text-[#22c55e]",
   },
   enterprise: {
-    border: "border-amber-500/30 hover:border-amber-500/50",
-    badge: "bg-amber-500/15 text-amber-400",
-    glow: "shadow-[0_0_60px_-10px_rgba(245,158,11,0.2)]",
-    check: "text-amber-400",
+    border: "border-amber-400/30 hover:border-amber-400/50",
+    badge: "bg-amber-500/10 text-amber-600",
+    glow: "shadow-[0_0_60px_-10px_rgba(245,158,11,0.1)]",
+    check: "text-amber-500",
   },
 };
 
@@ -113,41 +113,35 @@ export function OffresSection() {
   const [isAnnual, setIsAnnual] = useState(false);
 
   return (
-    <section id="offres">
+    <section id="offres" className="bg-white">
       <SectionTransition className="py-24 md:py-32 relative" parallaxStrength={0.05}>
-        <ParallaxBackground speed={0.15}>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#22c55e]/5 to-transparent" />
-          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#22c55e]/10 rounded-full blur-[180px]" />
-          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-emerald-600/8 rounded-full blur-[150px]" />
-        </ParallaxBackground>
-
         <div className="container mx-auto px-4 relative z-10">
           {/* Header */}
           <div className="text-center mb-16 md:mb-20 max-w-3xl mx-auto">
             <ScrollReveal variant="fadeInUp">
-              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-6">
                 Nos offres
               </p>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.1}>
-              <h2 className="text-3xl md:text-4xl font-light mb-6">
+              <h2 className="text-3xl md:text-4xl font-light mb-6 text-gray-900">
                 Un CRM modulaire.{" "}
                 <span className="font-medium text-gradient-neon">À votre image.</span>
               </h2>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.2}>
-              <p className="text-muted-foreground font-light mb-8">
+              <p className="text-gray-600 font-light mb-8">
                 Choisissez votre plan, activez vos modules, gérez votre activité. Simple.
               </p>
             </ScrollReveal>
 
             {/* Annual/Monthly toggle */}
             <ScrollReveal variant="fadeInUp" delay={0.3}>
-              <div className="inline-flex items-center gap-3 rounded-full glass-card glass-noise px-2 py-1.5">
+              <div className="inline-flex items-center gap-3 rounded-full border border-gray-200 bg-gray-50 px-2 py-1.5">
                 <button
                   onClick={() => setIsAnnual(false)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    !isAnnual ? "bg-[#22c55e] text-white shadow-lg shadow-[#22c55e]/30" : "text-muted-foreground hover:text-foreground"
+                    !isAnnual ? "bg-[#22c55e] text-white shadow-lg shadow-[#22c55e]/30" : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
                   Mensuel
@@ -155,11 +149,11 @@ export function OffresSection() {
                 <button
                   onClick={() => setIsAnnual(true)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
-                    isAnnual ? "bg-[#22c55e] text-white shadow-lg shadow-[#22c55e]/30" : "text-muted-foreground hover:text-foreground"
+                    isAnnual ? "bg-[#22c55e] text-white shadow-lg shadow-[#22c55e]/30" : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
                   Annuel
-                  <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold">
+                  <span className="text-xs px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 font-bold">
                     -2 mois
                   </span>
                 </button>
@@ -178,7 +172,7 @@ export function OffresSection() {
                 <motion.div key={pack.name} variants={staggerItemVariants} className="h-full">
                   <Hover3DCard rotateStrength={4} className="h-full">
                     <div
-                      className={`relative h-full glass-card glass-noise rounded-2xl p-8 md:p-10 transition-all duration-500 ${styles.border} ${styles.glow} ${
+                      className={`relative h-full rounded-2xl bg-white p-8 md:p-10 transition-all duration-500 border ${styles.border} ${styles.glow} ${
                         pack.recommended ? "lg:-translate-y-4 lg:scale-[1.02]" : ""
                       }`}
                     >
@@ -195,33 +189,33 @@ export function OffresSection() {
                         <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 ${styles.badge}`}>
                           {pack.name}
                         </div>
-                        <h3 className="text-xl md:text-2xl font-bold mb-2">{pack.tagline}</h3>
-                        <p className="text-muted-foreground">{pack.description}</p>
+                        <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-900">{pack.tagline}</h3>
+                        <p className="text-gray-600">{pack.description}</p>
                       </div>
 
                       {/* Price */}
-                      <div className="mb-8 pb-8 border-b border-white/10">
+                      <div className="mb-8 pb-8 border-b border-gray-200">
                         <div className="flex items-baseline gap-1">
-                          <span className="text-3xl md:text-4xl font-light tracking-tight">{price}€</span>
-                          <span className="text-muted-foreground text-sm">{priceLabel} HT</span>
+                          <span className="text-3xl md:text-4xl font-light tracking-tight text-gray-900">{price}€</span>
+                          <span className="text-gray-500 text-sm">{priceLabel} HT</span>
                         </div>
-                        <p className="text-sm text-muted-foreground font-light mt-1 flex items-center gap-1.5">
+                        <p className="text-sm text-gray-600 font-light mt-1 flex items-center gap-1.5">
                           <Zap className="h-3.5 w-3.5 text-[#22c55e]" />
                           {pack.modulesLimit}
                         </p>
-                        <p className="text-xs text-muted-foreground/70 mt-0.5">{pack.engagement}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">{pack.engagement}</p>
                       </div>
 
                       {/* Features */}
                       <div className="mb-8">
-                        <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                        <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
                           Inclus
                         </p>
                         <ul className="space-y-3">
                           {pack.features.map((feature, i) => (
                             <li key={i} className="flex items-start gap-3">
                               <Check className={`h-5 w-5 flex-shrink-0 mt-0.5 ${styles.check}`} />
-                              <span className="text-sm text-foreground/90">{feature}</span>
+                              <span className="text-sm text-gray-700">{feature}</span>
                             </li>
                           ))}
                         </ul>
@@ -231,7 +225,9 @@ export function OffresSection() {
                       <Link
                         to={`/contact?subject=Abonnement%20MBA%20-%20${encodeURIComponent(pack.name)}`}
                         className={`w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 ${
-                          pack.recommended ? "btn-gradient text-white" : "glass-button hover:border-[#22c55e]/50"
+                          pack.recommended
+                            ? "btn-gradient text-white"
+                            : "border border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
                         }`}
                       >
                         {pack.tier === "enterprise" ? "Nous contacter" : "Commencer maintenant"}
@@ -247,17 +243,17 @@ export function OffresSection() {
           {/* Included in all plans */}
           <ScrollReveal variant="fadeInUp" delay={0.5}>
             <div className="mt-16 md:mt-20 text-center max-w-4xl mx-auto">
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-8">
+              <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-8">
                 Inclus dans toutes les offres
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {includedForAll.map((item, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl glass-card glass-noise border border-white/10"
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 bg-gray-50"
                   >
                     <item.icon className="h-5 w-5 text-[#22c55e]" />
-                    <span className="text-xs text-center text-muted-foreground">{item.label}</span>
+                    <span className="text-xs text-center text-gray-600">{item.label}</span>
                   </div>
                 ))}
               </div>
