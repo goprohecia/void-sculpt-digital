@@ -503,7 +503,7 @@ export default function AdminClients() {
                 <label className="text-xs font-medium text-muted-foreground">Adresse</label>
                 <Input value={editingClient.adresse || ""} onChange={(e) => setEditingClient({ ...editingClient, adresse: e.target.value })} className="h-9" />
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-muted-foreground">Code postal</label>
                   <Input value={editingClient.codePostal || ""} onChange={(e) => setEditingClient({ ...editingClient, codePostal: e.target.value })} className="h-9" />
