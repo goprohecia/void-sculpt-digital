@@ -1,7 +1,6 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Building2, CreditCard, BarChart3, Settings, LogOut, Layers, MapPin } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
@@ -28,19 +27,17 @@ export function SuperAdminSidebar() {
   };
 
   return (
-    <Sidebar variant="floating" collapsible="icon">
-      <SidebarHeader className="p-5 pb-4">
+    <Sidebar variant="floating" collapsible="icon" className="!bg-[#14532d] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.15)" }}>
+      <SidebarHeader className="p-5 pb-4 border-b border-white/10">
         <Link to="/superadmin" className="flex flex-col items-center text-center gap-1">
-          <p className="text-xl font-extrabold bg-gradient-to-r from-mba-green-500 to-mba-green-900 bg-clip-text text-transparent">MBA</p>
-          <p className="text-[11px] text-muted-foreground">Super Administration</p>
+          <p className="text-[22px] font-extrabold text-[#4ade80] tracking-tight">MBA</p>
+          <p className="text-[11px] text-white/40">Super Administration</p>
         </Link>
       </SidebarHeader>
 
-      <SidebarSeparator />
-
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-semibold text-muted-foreground">
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 px-5 py-3">
             Gestion globale
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -52,13 +49,13 @@ export function SuperAdminSidebar() {
                     <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                       <Link
                         to={item.url}
-                        className={`flex items-center gap-3 transition-all duration-120 rounded-r-[var(--radius-sm)] ${
+                        className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                           active
-                            ? "bg-mba-green-50 text-primary font-semibold border-l-[3px] border-primary pl-[calc(0.75rem-3px)]"
-                            : "text-muted-foreground hover:bg-mba-green-50 hover:text-primary"
+                            ? "bg-white/[0.12] text-white font-semibold border-l-[#4ade80]"
+                            : "text-white/[0.65] border-l-transparent hover:bg-white/[0.07] hover:text-white"
                         }`}
                       >
-                        <item.icon className="h-4 w-4" />
+                        <item.icon className={`h-4 w-4 ${active ? "text-[#4ade80]" : "opacity-60"}`} />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -70,21 +67,19 @@ export function SuperAdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-secondary border-t border-border">
+      <SidebarFooter className="p-4 bg-[#0f3d20] border-t border-white/10">
         <div className="flex items-center gap-3 mb-3">
-          <Avatar className="h-9 w-9">
-            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
-              {user?.nom?.charAt(0) || "S"}
-            </AvatarFallback>
-          </Avatar>
+          <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
+            {user?.nom?.charAt(0) || "S"}
+          </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold truncate text-foreground">{user?.nom || "Super Admin"}</p>
-            <p className="text-xs text-muted-foreground">Super Admin</p>
+            <p className="text-[13px] font-semibold truncate text-white">{user?.nom || "Super Admin"}</p>
+            <p className="text-[11px] text-white/[0.45]">Super Admin</p>
           </div>
         </div>
         <button
           onClick={() => { logout(); navigate("/client/login", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-mba-green-50 transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-white/40 hover:text-white/80 transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>

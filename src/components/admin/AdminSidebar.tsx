@@ -18,7 +18,6 @@ import { useSubscription } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Sparkles } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
@@ -117,16 +116,16 @@ export function AdminSidebar() {
           <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
             <Link
               to={item.url}
-              className={`flex items-center gap-3 transition-all duration-120 rounded-r-[var(--radius-sm)] ${
+              className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                 active
-                  ? "bg-mba-green-50 text-primary font-semibold border-l-[3px] border-primary pl-[calc(0.75rem-3px)]"
-                  : "text-muted-foreground hover:bg-mba-green-50 hover:text-primary"
+                  ? "bg-white/[0.12] text-white font-semibold border-l-[#4ade80]"
+                  : "text-white/[0.65] border-l-transparent hover:bg-white/[0.07] hover:text-white"
               }`}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon className={`h-4 w-4 ${active ? "text-[#4ade80]" : "opacity-60"}`} />
               <span className="flex-1">{item.title}</span>
               {item.badge ? (
-                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground px-1">
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-[#4ade80] text-[10px] font-bold text-[#14532d] px-1">
                   {item.badge}
                 </span>
               ) : null}
@@ -137,28 +136,28 @@ export function AdminSidebar() {
     });
 
   return (
-    <Sidebar variant="floating" collapsible="icon">
-      <SidebarHeader className="p-5 pb-4">
+    <Sidebar variant="floating" collapsible="icon" className="!bg-[#14532d] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.15)" }}>
+      <SidebarHeader className="p-5 pb-4 border-b border-white/10">
         <Link to="/admin" className="flex flex-col items-center text-center gap-1">
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <p className="text-xl font-extrabold bg-gradient-to-r from-mba-green-500 to-mba-green-900 bg-clip-text text-transparent tracking-tight">
+            <p className="text-[22px] font-extrabold text-[#4ade80] tracking-tight" style={{ fontFamily: "'Inter', sans-serif" }}>
               {wl.brandShort}
             </p>
           )}
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-[11px] text-white/40">
             {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}
           </p>
         </Link>
       </SidebarHeader>
 
       {/* Sector selector */}
-      <div className="px-3 pb-2">
+      <div className="px-3 pb-2 pt-2">
         <select
           value={demoSector || ""}
           onChange={(e) => setDemoSector(e.target.value ? (e.target.value as SectorKey) : null)}
-          className="w-full h-8 rounded-[var(--radius-md)] bg-secondary border border-border px-2 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary truncate transition-colors"
+          className="w-full h-8 rounded-[var(--radius-md)] bg-black/20 border border-white/[0.12] px-2 text-xs text-white/70 focus:outline-none focus:ring-2 focus:ring-[#4ade80]/30 focus:border-[#4ade80]/40 truncate transition-colors"
         >
           <option value="">— Générique —</option>
           {SECTORS.map((s) => (
@@ -166,8 +165,6 @@ export function AdminSidebar() {
           ))}
         </select>
       </div>
-
-      <SidebarSeparator />
 
       <SidebarContent>
         {GROUPS.map((group) => {
@@ -180,7 +177,7 @@ export function AdminSidebar() {
             <Collapsible key={group.label} open={isOpen} onOpenChange={() => toggleGroup(group.label)}>
               <SidebarGroup>
                 <CollapsibleTrigger asChild>
-                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-semibold text-muted-foreground flex items-center gap-1.5 cursor-pointer hover:text-foreground transition-colors select-none">
+                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 flex items-center gap-1.5 cursor-pointer hover:text-white/50 transition-colors select-none px-5 py-3">
                     <GroupIcon className="h-3.5 w-3.5" />
                     <span className="flex-1">{group.label}</span>
                     <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isOpen ? "" : "-rotate-90"}`} />
@@ -198,8 +195,8 @@ export function AdminSidebar() {
 
         {isEnterprise && spaces.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-semibold text-muted-foreground flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 flex items-center gap-1.5 px-5">
+              <Sparkles className="h-3.5 w-3.5 text-[#4ade80]" />
               Espaces personnalisés
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -207,8 +204,8 @@ export function AdminSidebar() {
                 {spaces.map((space) => (
                   <SidebarMenuItem key={space.id}>
                     <SidebarMenuButton tooltip={space.name}>
-                      <span className="flex items-center gap-3">
-                        <span className="h-2 w-2 rounded-full bg-primary/60" />
+                      <span className="flex items-center gap-3 px-5 py-[9px] text-white/70 hover:text-white transition-colors">
+                        <span className="h-2 w-2 rounded-full bg-[#4ade80]" />
                         <span>{space.name}</span>
                       </span>
                     </SidebarMenuButton>
@@ -220,21 +217,19 @@ export function AdminSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-secondary border-t border-border">
+      <SidebarFooter className="p-4 bg-[#0f3d20] border-t border-white/10">
         <div className="flex items-center gap-3 mb-3">
-          <Avatar className="h-9 w-9">
-            <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
-              {user?.nom?.charAt(0) || "U"}
-            </AvatarFallback>
-          </Avatar>
+          <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
+            {user?.nom?.charAt(0) || "U"}
+          </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold truncate text-foreground">{user?.nom || "My Business Assistant"}</p>
-            <p className="text-xs text-muted-foreground capitalize">{user?.role || "Admin"}</p>
+            <p className="text-[13px] font-semibold truncate text-white">{user?.nom || "My Business Assistant"}</p>
+            <p className="text-[11px] text-white/[0.45] capitalize">{user?.role || "Admin"}</p>
           </div>
         </div>
         <button
           onClick={() => { logout(); supabase.auth.signOut(); navigate("/admin/access", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-mba-green-50 transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-white/40 hover:text-white/80 transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>
