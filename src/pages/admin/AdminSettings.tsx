@@ -857,59 +857,6 @@ export default function AdminSettings() {
             updateSetting={updateSetting}
             canCustomizeSpaces={canCustomizeSpaces}
           />
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Modules visibles côté client</CardTitle>
-                <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {ALL_CLIENT_MODULES.map((mod) => {
-                  const isOn = clientVisibleModules.includes(mod.key);
-                  const adminHasIt = enabledModules.includes(mod.key) || ["overview","profil","parametres","demandes","devis","factures"].includes(mod.key);
-                  return (
-                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                        {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
-                      </div>
-                      <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
-                        const next = v ? [...clientVisibleModules, mod.key] : clientVisibleModules.filter((k) => k !== mod.key);
-                        updateSetting.mutate({ key: "client_visible_modules", value: next });
-                      }} />
-                    </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Modules visibles côté salarié</CardTitle>
-                <CardDescription>Configurez les onglets accessibles dans l'espace salarié.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {ALL_EMPLOYEE_MODULES.map((mod) => {
-                  const isOn = employeeVisibleModules.includes(mod.key);
-                  const adminKeyMap: Record<string, string> = { calendrier: "rendez-vous" };
-                  const adminKey = adminKeyMap[mod.key] || mod.key;
-                  const adminHasIt = enabledModules.includes(adminKey) || ["overview","profil"].includes(mod.key);
-                  return (
-                    <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                        {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
-                      </div>
-                      <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
-                        const next = v ? [...employeeVisibleModules, mod.key] : employeeVisibleModules.filter((k) => k !== mod.key);
-                        updateSetting.mutate({ key: "employee_visible_modules", value: next });
-                      }} />
-                    </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
-
         );
 
       case "timeline":
