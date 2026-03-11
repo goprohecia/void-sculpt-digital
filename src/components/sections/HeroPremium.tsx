@@ -115,7 +115,7 @@ export function HeroPremium() {
 
               <Link
                 to="/#offres"
-                className="text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
+                className="text-xs sm:text-sm font-medium text-white/60 hover:text-white transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
               >
                 Découvrir les offres
               </Link>
