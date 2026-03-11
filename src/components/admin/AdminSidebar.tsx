@@ -176,7 +176,7 @@ export function AdminSidebar() {
         </select>
       </div>
 
-      <SidebarContent ref={scrollRef} onScroll={handleScroll}>
+      <SidebarContent ref={setScrollRef} onScroll={handleScroll}>
         {GROUPS.map((group) => {
           const items = navItems.filter((item) => group.keys.includes(item.moduleKey));
           if (items.length === 0) return null;
