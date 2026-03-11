@@ -507,7 +507,7 @@
      DIALOG / SHEET — force white in app
      ======================================== */
   .mba-app [role="dialog"] {
-    background-color: #ffffff !important;
+    background-color: #F6F5F2 !important;
     color: #1a2318 !important;
   }
   .mba-app [role="dialog"] label,
