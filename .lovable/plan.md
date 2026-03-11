@@ -1,42 +1,51 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan: Alternating green/white sections + Enterprise price update to 500€
 
-## Modifications
+### Current situation
+The entire public website has a dark green background (`--background: 150 60% 10%`) for all sections, making everything blend together. The user wants alternating backgrounds: green section → white section → green section → white section, with text/card colors adapting logically for contrast.
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+### Section order and proposed background alternation
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+| # | Section | Background | Text/Cards adaptation |
+|---|---------|-----------|----------------------|
+| 1 | HeroPremium | **Dark green** (keep) | White text (keep) |
+| 2 | ProofStrip | **Dark green** (keep, part of hero) | Green icons, white text (keep) |
+| 3 | ConceptSection | **White** (#ffffff) | Dark text, cards with light gray bg + green borders |
+| 4 | ServicesSection (Secteurs) | **Dark green** | White text, dark glass cards (keep) |
+| 5 | RealisationsSection (Fonctionnalités) | **White** | Dark text, white cards with subtle borders |
+| 6 | OffresSection | **Dark green** | Keep current style (glass cards on dark) |
+| 7 | CiblesSection | **White** | Dark text, light cards |
+| 8 | MethodeSection | **Dark green** | White text, dark cards |
+| 9 | ArgumentsSection | **White** | Dark text, light borders |
+| 10 | FAQ | **Dark green** | White text, glass cards |
+| 11 | CTAFinal | **White** | Dark text, green accents |
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+### Adaptation rules for white sections
+- Section wrapper: `bg-white`
+- Headings: dark text (`text-gray-900`)
+- Subtitle text: `text-gray-600` instead of `text-muted-foreground`
+- Cards: `bg-[#f7f8f5]` or `bg-gray-50` with `border-gray-200`, no glass effects
+- Green accents (`text-[#22c55e]`) remain for icons and highlights
+- `text-gradient-neon` stays green (works on both backgrounds)
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+### Enterprise price update: 400 → 500€
+Files to update:
+- `src/components/sections/OffresSection.tsx`: `priceMonthly: 500`, `priceAnnual: 4200` (500×10 = 5000 or 500×12×0.83 = ~4980, keeping -2 months logic → 500×10 = 5000)
+- `src/contexts/DemoPlanContext.tsx`: `enterprise: 500`
+- `src/hooks/use-subscription.ts`: `enterprise: { ...price: 500 }`
+- `src/pages/client/ClientUpgrade.tsx`: uses `DEFAULT_PLAN_PRICES` so auto-updates
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+### Files to modify
+1. **ConceptSection.tsx** — white bg, dark text, light cards
+2. **RealisationsSection.tsx** — white bg, dark text, light cards
+3. **CiblesSection.tsx** — white bg, dark text, light cards
+4. **ArgumentsSection.tsx** — white bg, dark text, light borders
+5. **CTAFinal.tsx** — white bg, dark text
+6. **ServicesSection.tsx** — keep dark, ensure contrast
+7. **MethodeSection.tsx** — keep dark, ensure contrast
+8. **FAQ.tsx** — keep dark green
+9. **OffresSection.tsx** — keep dark, update Enterprise price to 500€
+10. **DemoPlanContext.tsx** — enterprise price → 500
+11. **use-subscription.ts** — enterprise price → 500
 
-## Details techniques
-
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
-
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
