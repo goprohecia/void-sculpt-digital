@@ -67,11 +67,10 @@ export function AdminModulesSection({
   const showSwapSystem = !isEnterprise && modulesLimit !== null;
 
   const handleSwapComplete = (removed: string, added: string) => {
-    // Update enabled modules via settings
     const next = enabledModules.filter((m) => m !== removed).concat(added);
     updateSetting.mutate({ key: "enabled_modules", value: next });
     setSwapsRemaining((prev) => Math.max(0, prev - 1));
-    toast.success(`Module "${getModuleLabel(removed)}" retiré → "${getModuleLabel(added)}" activé`);
+    toast.success(`Module "${capitalize(getModuleLabel(removed))}" retiré → "${capitalize(getModuleLabel(added))}" activé`);
   };
 
   return (
@@ -162,7 +161,7 @@ export function AdminModulesSection({
             return (
               <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                 <div className="flex items-center gap-2">
-                  <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
+                  <p className={`text-sm font-medium ${atLimit ? "text-muted-foreground" : ""}`}>{capitalize(getModuleLabel(mod.key))}</p>
                   {atLimit && (
                     <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">
                       {showSwapSystem ? "Swap requis" : "Upgrade"}
@@ -172,7 +171,7 @@ export function AdminModulesSection({
                 <Switch checked={isOn} disabled={isAlwaysOn || atLimit} onCheckedChange={(v) => {
                   const next = v ? [...enabledModules, mod.key] : enabledModules.filter((k) => k !== mod.key);
                   updateSetting.mutate({ key: "enabled_modules", value: next });
-                  toast.success(`Module "${getModuleLabel(mod.key)}" ${v ? "activé" : "désactivé"}`);
+                  toast.success(`Module "${capitalize(getModuleLabel(mod.key))}" ${v ? "activé" : "désactivé"}`);
                 }} />
               </div>
             );
@@ -180,32 +179,6 @@ export function AdminModulesSection({
           {modulesLimit !== null && enabledModules.filter(k => !SYSTEM_MODULES.includes(k)).length >= modulesLimit && (
             <UpgradeBanner currentPlan={plan} requiredPlan={plan === "starter" ? "business" : "enterprise"} feature="Plus de modules" className="mt-4" />
           )}
-        </CardContent>
-      </Card>
-
-      {/* Client-visible modules */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Modules visibles côté client</CardTitle>
-          <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {ALL_CLIENT_MODULES.map((mod) => {
-            const isOn = clientVisibleModules.includes(mod.key);
-            const adminHasIt = enabledModules.includes(mod.key) || ["overview","profil","parametres","demandes","devis","factures"].includes(mod.key);
-            return (
-              <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
-                <div className="flex items-center gap-2">
-                  <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
-                  {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
-                </div>
-                <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
-                  const next = v ? [...clientVisibleModules, mod.key] : clientVisibleModules.filter((k) => k !== mod.key);
-                  updateSetting.mutate({ key: "client_visible_modules", value: next });
-                }} />
-              </div>
-            );
-          })}
         </CardContent>
       </Card>
 
@@ -224,12 +197,38 @@ export function AdminModulesSection({
             return (
               <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
                 <div className="flex items-center gap-2">
-                  <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{getModuleLabel(mod.key)}</p>
+                  <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{capitalize(getModuleLabel(mod.key))}</p>
                   {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
                 </div>
                 <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
                   const next = v ? [...employeeVisibleModules, mod.key] : employeeVisibleModules.filter((k) => k !== mod.key);
                   updateSetting.mutate({ key: "employee_visible_modules", value: next });
+                }} />
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+
+      {/* Client-visible modules */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Modules visibles côté client</CardTitle>
+          <CardDescription>Configurez les onglets accessibles dans l'espace client.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {ALL_CLIENT_MODULES.map((mod) => {
+            const isOn = clientVisibleModules.includes(mod.key);
+            const adminHasIt = enabledModules.includes(mod.key) || ["overview","profil","parametres","demandes","devis","factures"].includes(mod.key);
+            return (
+              <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+                <div className="flex items-center gap-2">
+                  <p className={`text-sm font-medium ${!adminHasIt ? "text-muted-foreground" : ""}`}>{capitalize(getModuleLabel(mod.key))}</p>
+                  {!adminHasIt && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground border-muted-foreground/30">Désactivé côté admin</Badge>}
+                </div>
+                <Switch checked={isOn} disabled={!adminHasIt} onCheckedChange={(v) => {
+                  const next = v ? [...clientVisibleModules, mod.key] : clientVisibleModules.filter((k) => k !== mod.key);
+                  updateSetting.mutate({ key: "client_visible_modules", value: next });
                 }} />
               </div>
             );
