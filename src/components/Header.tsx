@@ -63,6 +63,7 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const isHomepage = location.pathname === "/";
 
   const isActive = (path: string) => {
     if (path.startsWith("/#")) {
