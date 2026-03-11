@@ -302,7 +302,7 @@ export default function AdminPipeline() {
               return (
                 <Card
                   key={etape.key}
-                  className={`bg-muted/10 transition-all ${isOver ? "ring-2 ring-primary ring-offset-2 ring-offset-background" : ""}`}
+                  className={`bg-white border border-[#e4e8df] transition-all ${isOver ? "ring-2 ring-primary ring-offset-2 ring-offset-[#14532d]" : ""}`}
                   onDragOver={(e) => handleDragOver(e, etape.key)}
                   onDragLeave={handleDragLeave}
                   onDrop={(e) => handleDrop(e, etape.key)}
