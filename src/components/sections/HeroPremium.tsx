@@ -3,6 +3,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { LineReveal } from "@/components/animations";
+import logoMba from "@/assets/logo-mba.png";
 
 export function HeroPremium() {
   const mouseX = useMotionValue(0);
@@ -39,21 +40,14 @@ export function HeroPremium() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center">
-            {/* Small brand identifier */}
+            {/* Logo */}
             <motion.div
-              className="overflow-hidden mb-10 md:mb-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-10 md:mb-12 flex justify-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <motion.p
-                className="text-xs uppercase tracking-[0.3em] text-gray-400"
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                MY BUSINESS ASSISTANT
-              </motion.p>
+              <img src={logoMba} alt="My Business Assistant" className="h-14 sm:h-16 md:h-20 w-auto" />
             </motion.div>
 
             {/* Main headline */}

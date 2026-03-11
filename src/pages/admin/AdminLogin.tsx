@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
-import logoHero from "@/assets/logo-hero.png";
+import logoMba from "@/assets/logo-mba.png";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -106,7 +106,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-[400px] space-y-5">
         {/* Logo */}
         <div className="text-center space-y-1.5">
-          <img src={logoHero} alt="MBA" className="h-10 mx-auto" />
+          <img src={logoMba} alt="MBA" className="h-10 mx-auto" />
           <p className="text-xs text-[#9ca3af] tracking-wide">My Business Assistant</p>
         </div>
 
