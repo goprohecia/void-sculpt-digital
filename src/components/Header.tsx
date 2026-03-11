@@ -106,7 +106,9 @@ export function Header() {
                 transition={{ duration: 0.3 }}
               />
               <motion.span
-                className="text-base sm:text-lg md:text-xl font-bold text-gray-900 hidden sm:block"
+                className={`text-base sm:text-lg md:text-xl font-bold hidden sm:block transition-colors duration-300 ${
+                  isScrolled ? "text-gray-900" : "text-white"
+                }`}
                 whileHover={{ scale: 1.05 }}
               >
                 MY BUSINESS ASSISTANT
