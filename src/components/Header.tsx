@@ -79,14 +79,13 @@ export function Header() {
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "glass-nav glass-noise border-b border-white/10 py-0"
+          ? "bg-white/90 backdrop-blur-xl border-b border-gray-200 py-0 shadow-sm"
           : "bg-transparent border-b border-transparent py-2"
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
       <div className="container mx-auto px-4">
         <nav

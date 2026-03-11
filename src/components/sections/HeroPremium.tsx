@@ -25,24 +25,14 @@ export function HeroPremium() {
   const gradientY = useTransform(smoothMouseY, [-0.5, 0.5], ["40%", "60%"]);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-      {/* Subtle mirror/reflection overlay effect */}
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-white">
+      {/* Subtle overlay effect */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/[0.03] via-transparent to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white/[0.02] to-transparent" />
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04)_0%,transparent_40%,transparent_60%,rgba(255,255,255,0.02)_100%)]" />
-        <div className="absolute top-0 left-0 w-1/4 h-1/4 bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
         <motion.div
           className="absolute inset-0"
           style={{
             background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.04) 0%, transparent 60%)`,
           }}
-        />
-        <motion.div
-          className="absolute inset-0 bg-[linear-gradient(105deg,transparent_45%,rgba(255,255,255,0.02)_48%,rgba(255,255,255,0.04)_50%,rgba(255,255,255,0.02)_52%,transparent_55%)]"
-          animate={{ backgroundPosition: ["200% 0%", "-200% 0%"] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          style={{ backgroundSize: "200% 100%" }}
         />
       </div>
 
@@ -57,7 +47,7 @@ export function HeroPremium() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <motion.p
-                className="text-xs uppercase tracking-[0.3em] text-muted-foreground"
+                className="text-xs uppercase tracking-[0.3em] text-gray-400"
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
@@ -67,7 +57,7 @@ export function HeroPremium() {
             </motion.div>
 
             {/* Main headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-10 md:mb-12 tracking-tight leading-[1.15]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-10 md:mb-12 tracking-tight leading-[1.15] text-gray-900">
               <LineReveal lines={["Votre CRM. Votre métier."]} delay={0.4} lineClassName="block pb-1" />
               <div className="mt-2 overflow-hidden pb-1">
                 <motion.span
@@ -84,7 +74,7 @@ export function HeroPremium() {
             {/* Subtitle */}
             <div className="overflow-hidden mb-10 md:mb-12">
               <motion.p
-                className="text-sm sm:text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
+                className="text-sm sm:text-base md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
@@ -105,18 +95,18 @@ export function HeroPremium() {
                   to="/contact?subject=Demo%20MBA"
                   className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden"
                 >
-                  <span className="absolute inset-0 bg-white rounded-full" />
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="relative text-background group-hover:text-white transition-colors duration-500">
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] rounded-full" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#16a34a] to-[#22c55e] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="relative text-white">
                     Essayer gratuitement
                   </span>
-                  <ArrowRight className="relative h-3.5 w-3.5 sm:h-4 sm:w-4 text-background group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                  <ArrowRight className="relative h-3.5 w-3.5 sm:h-4 sm:w-4 text-white group-hover:translate-x-1 transition-all duration-300" />
                 </Link>
               </motion.div>
 
               <Link
                 to="/#offres"
-                className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
+                className="text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
               >
                 Découvrir les offres
               </Link>

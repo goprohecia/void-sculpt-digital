@@ -25,7 +25,7 @@ interface SectorGroup {
 const sectorGroups: SectorGroup[] = [
   {
     category: "Tech & Digital",
-    color: "text-blue-400",
+    color: "text-blue-500",
     bg: "bg-blue-500/10",
     sectors: [
       { icon: Code, title: "Développeur freelance", description: "Gestion de projets, clients et facturation pour développeurs indépendants.", href: "/secteurs/developpeur" },
@@ -37,7 +37,7 @@ const sectorGroups: SectorGroup[] = [
   },
   {
     category: "Services & Conseil",
-    color: "text-emerald-400",
+    color: "text-emerald-500",
     bg: "bg-emerald-500/10",
     sectors: [
       { icon: Briefcase, title: "Consultant (marketing, RH)", description: "Missions, propositions commerciales et suivi client.", href: "/secteurs/consultant" },
@@ -49,7 +49,7 @@ const sectorGroups: SectorGroup[] = [
   },
   {
     category: "Commerce & Événementiel",
-    color: "text-amber-400",
+    color: "text-amber-500",
     bg: "bg-amber-500/10",
     sectors: [
       { icon: ShoppingBag, title: "Gérant de boutique", description: "Stock, ventes, fiches clients et caisse.", href: "/secteurs/boutique" },
@@ -61,7 +61,7 @@ const sectorGroups: SectorGroup[] = [
   },
   {
     category: "Autres secteurs",
-    color: "text-violet-400",
+    color: "text-violet-500",
     bg: "bg-violet-500/10",
     sectors: [
       { icon: Wrench, title: "Garages & Carrosseries", description: "Véhicules, devis, pièces détachées et suivi d'atelier.", href: "/secteurs/garages" },
@@ -76,20 +76,20 @@ const sectorGroups: SectorGroup[] = [
 
 export function ServicesSection() {
   return (
-    <section id="secteurs" className="py-24 relative">
+    <section id="secteurs" className="py-24 relative bg-white">
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <ScrollReveal variant="fadeInUp">
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-6">Secteurs</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-6">Secteurs</p>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.1}>
-            <h2 className="text-3xl md:text-4xl font-light mb-6">
+            <h2 className="text-3xl md:text-4xl font-light mb-6 text-gray-900">
               Adapté à votre{" "}
               <span className="font-medium text-gradient-neon">secteur d'activité</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal variant="fadeInUp" delay={0.2}>
-            <p className="text-muted-foreground font-light">
+            <p className="text-gray-600 font-light">
               MBA s'adapte aux besoins spécifiques de chaque métier. Ils gèrent tous leur business avec 4-5 outils différents — MBA centralise tout en un seul endroit.
             </p>
           </ScrollReveal>
@@ -112,12 +112,12 @@ export function ServicesSection() {
               >
                 {group.sectors.map((sector) => {
                   const content = (
-                    <div className="group h-full p-5 rounded-2xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-all duration-500">
+                    <div className="group h-full p-5 rounded-2xl border border-gray-200 bg-gray-50 hover:border-[#22c55e]/30 transition-all duration-500">
                       <div className={`w-10 h-10 rounded-xl ${group.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                         <sector.icon className={`h-4 w-4 ${group.color}`} />
                       </div>
-                      <h4 className="text-sm font-medium mb-1.5">{sector.title}</h4>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{sector.description}</p>
+                      <h4 className="text-sm font-medium mb-1.5 text-gray-900">{sector.title}</h4>
+                      <p className="text-xs text-gray-600 leading-relaxed">{sector.description}</p>
                     </div>
                   );
 
