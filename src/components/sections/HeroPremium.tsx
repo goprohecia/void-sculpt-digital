@@ -66,7 +66,7 @@ export function HeroPremium() {
             </motion.div>
 
             {/* Main headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-10 md:mb-12 tracking-tight leading-[1.15] text-gray-900">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-light mb-10 md:mb-12 tracking-tight leading-[1.15] text-white">
               <LineReveal lines={["Votre CRM. Votre métier."]} delay={0.4} lineClassName="block pb-1" />
               <div className="mt-2 overflow-hidden pb-1">
                 <motion.span
