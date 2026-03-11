@@ -127,7 +127,7 @@ const Contact = () => {
       {/* Contact Section */}
       <SectionTransition className="py-20 relative bg-white">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16 max-w-6xl mx-auto">
             {/* Contact Info */}
             <div className="lg:col-span-1 space-y-8">
               <ScrollReveal variant="fadeInLeft">
