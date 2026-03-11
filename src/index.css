@@ -7,29 +7,29 @@
 @layer base {
   :root {
     /* ========================================
-       MBA LIGHT THEME — GREEN IDENTITY
+       MBA V2 PREMIUM — GREEN IDENTITY
        ======================================== */
-    --bg-app: 90 14% 95%;
+    --bg-app: 80 10% 93%;
     --bg-surface: 0 0% 100%;
-    --bg-surface-2: 80 10% 97%;
+    --bg-surface-2: 70 8% 96%;
 
-    --background: 90 14% 95%;
-    --foreground: 100 18% 12%;
+    --background: 80 10% 93%;
+    --foreground: 105 18% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 100 18% 12%;
+    --card-foreground: 105 18% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 100 18% 12%;
+    --popover-foreground: 105 18% 12%;
 
     --primary: 142 72% 42%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 90 10% 94%;
-    --secondary-foreground: 100 18% 12%;
+    --secondary: 70 8% 96%;
+    --secondary-foreground: 105 18% 12%;
 
-    --muted: 80 10% 94%;
-    --muted-foreground: 100 12% 56%;
+    --muted: 70 8% 94%;
+    --muted-foreground: 108 12% 56%;
 
     --accent: 142 72% 42%;
     --accent-foreground: 0 0% 100%;
@@ -37,29 +37,32 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 80 18% 87%;
-    --input: 80 18% 87%;
+    --border: 80 16% 88%;
+    --input: 80 16% 88%;
     --ring: 142 72% 42%;
 
     --radius: 0.75rem;
 
     /* MBA Green Scale */
+    --green-950: 144 57% 20%;
     --green-900: 144 57% 20%;
     --green-700: 142 63% 30%;
     --green-600: 142 72% 42%;
     --green-500: 142 71% 56%;
+    --green-400: 141 69% 68%;
     --green-100: 141 79% 93%;
     --green-50: 138 76% 97%;
 
     /* Text */
-    --text-primary: 100 18% 12%;
+    --text-primary: 105 18% 12%;
     --text-secondary: 112 15% 32%;
     --text-muted: 108 12% 56%;
 
     /* Shadows */
     --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.09);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.13);
+    --shadow-card: 0 2px 8px rgba(20,83,45,0.06), 0 1px 2px rgba(0,0,0,0.04);
 
     /* Radius tokens */
     --radius-sm: 8px;
@@ -102,15 +105,15 @@
     --tier-pro: 142 72% 42%;
     --tier-custom: 45 93% 55%;
 
-    /* Sidebar — light */
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 100 18% 12%;
-    --sidebar-primary: 142 72% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 138 76% 97%;
-    --sidebar-accent-foreground: 142 72% 42%;
-    --sidebar-border: 80 18% 87%;
-    --sidebar-ring: 142 72% 42%;
+    /* Sidebar — dark green premium */
+    --sidebar-background: 144 57% 20%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 141 69% 68%;
+    --sidebar-primary-foreground: 144 57% 20%;
+    --sidebar-accent: 141 69% 68%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 100% / 0.10;
+    --sidebar-ring: 141 69% 68%;
   }
 }
 
@@ -224,7 +227,7 @@
     background: hsl(var(--bg-surface));
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-card);
     transition: all 200ms ease;
   }
 
@@ -233,9 +236,10 @@
   }
 
   .mba-card-hero {
-    background: hsl(var(--green-900));
+    background: hsl(var(--green-950));
     border: none;
     border-radius: var(--radius-xl);
+    box-shadow: 0 8px 32px rgba(20,83,45,0.35);
     color: white;
   }
 

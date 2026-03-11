@@ -10,7 +10,6 @@ import { NotificationPanel } from "./NotificationPanel";
 import { AdminPageTransition } from "./AdminPageTransition";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -41,16 +40,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Topbar */}
-          <header className="h-16 flex items-center px-8 gap-4 bg-card border-b border-border">
-            <SidebarTrigger className="text-muted-foreground hover:text-foreground hover:bg-mba-green-50 rounded-lg p-2 transition-colors" />
+          <header className="h-16 flex items-center px-8 gap-4 bg-card border-b border-border shadow-[0_1px_8px_rgba(20,83,45,0.06)]">
+            <SidebarTrigger className="text-muted-foreground hover:text-foreground hover:bg-mba-green-50 rounded-[var(--radius-sm)] p-2 transition-colors" />
 
             {/* Search */}
-            <div className="relative w-80 hidden md:block">
+            <div className="relative w-[300px] hidden md:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-xl)] bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-primary/10 transition-all"
+                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-xl)] bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-[rgba(22,163,74,0.12)] transition-all"
               />
             </div>
 
@@ -65,7 +64,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             {isDemo ? (
               <Select value={plan} onValueChange={(v) => updatePlan.mutate(v as SubscriptionPlan)}>
-                <SelectTrigger className="w-auto h-8 gap-2 border border-border bg-mba-green-100 text-xs font-semibold text-mba-green-700 px-3 rounded-[var(--radius-xl)]">
+                <SelectTrigger className="w-auto h-8 gap-2 border border-[#bbf7d0] bg-mba-green-100 text-xs font-semibold text-[#15803d] px-3 rounded-[var(--radius-xl)] font-mono">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -78,7 +77,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 </SelectContent>
               </Select>
             ) : (
-              <span className="text-xs px-3 py-1 rounded-full bg-mba-green-100 text-mba-green-700 font-medium">
+              <span className="text-xs px-3 py-1 rounded-full bg-mba-green-100 text-[#15803d] border border-[#bbf7d0] font-medium">
                 Connecté
               </span>
             )}
@@ -88,13 +87,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             {/* User avatar */}
             <div className="flex items-center gap-2">
-              <Avatar className="h-9 w-9">
-                <AvatarFallback className="bg-primary text-primary-foreground text-sm font-semibold">
-                  {initials}
-                </AvatarFallback>
-              </Avatar>
+              <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-sm font-semibold text-primary-foreground">
+                {initials}
+              </div>
               <div className="hidden md:block">
-                <p className="text-[13px] font-medium text-foreground leading-tight">{user?.nom || "Admin"}</p>
+                <p className="text-[14px] font-semibold text-foreground leading-tight">{user?.nom || "Admin"}</p>
                 <p className="text-[11px] text-muted-foreground capitalize">{user?.role || "admin"}</p>
               </div>
             </div>
@@ -102,7 +99,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
           <main className="flex-1 p-6 md:p-8 overflow-auto">
             {plan !== "enterprise" && showBanner && (
-              <div className="mb-4 rounded-[var(--radius-lg)] border border-primary/20 bg-mba-green-50 p-4 flex items-center gap-3 relative">
+              <div className="mb-4 rounded-[var(--radius-lg)] border-[1.5px] border-[#bbf7d0] bg-mba-green-50 p-4 flex items-center gap-3 relative">
                 <button
                   onClick={() => setShowBanner(false)}
                   className="absolute top-2 right-2 p-1 rounded-md hover:bg-mba-green-100 text-muted-foreground hover:text-foreground transition-colors"
@@ -114,10 +111,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   <Sparkles className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0 pr-6">
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-sm font-semibold text-foreground">
                     Vous êtes en plan <span className="font-bold text-primary">{PLAN_INFO[plan].label}</span> — débloquez {plan === "starter" ? "plus de modules et fonctionnalités" : "tous les modules, l'IA et les espaces personnalisés"}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-[13px] text-muted-foreground mt-0.5">
                     {plan === "starter"
                       ? `Passez en Business (${PLAN_INFO.business.price}€/mois) ou Enterprise (${PLAN_INFO.enterprise.price}€/mois)`
                       : `Passez en Enterprise (${PLAN_INFO.enterprise.price}€/mois) pour un accès illimité`}
