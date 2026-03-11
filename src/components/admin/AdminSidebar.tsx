@@ -24,6 +24,7 @@ import {
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
+import logoMba from "@/assets/logo-mba.png";
 
 const principalKeys = ["overview", "clients", "employees", "dossiers"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
@@ -142,9 +143,7 @@ export function AdminSidebar() {
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <p className="text-[22px] font-extrabold text-[#14532d] tracking-tight" style={{ fontFamily: "'Syne', 'Inter', sans-serif" }}>
-              {wl.brandShort}
-            </p>
+            <img src={logoMba} alt="MBA" className="h-9 w-auto object-contain" />
           )}
           <p className="text-[11px] text-[#9ca3af]">
             {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}

@@ -13,6 +13,7 @@ import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent,
   SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, SidebarSeparator,
 } from "@/components/ui/sidebar";
+import logoMba from "@/assets/logo-mba.png";
 
 export function EmployeeSidebar() {
   const location = useLocation();
@@ -56,9 +57,7 @@ export function EmployeeSidebar() {
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <div className="h-8 w-8 rounded-lg bg-[#14532d] flex items-center justify-center">
-              <span className="text-[#22c55e] font-extrabold text-sm">{wl.brandShort}</span>
-            </div>
+            <img src={logoMba} alt="MBA" className="h-8 w-auto object-contain" />
           )}
           <div>
             <p className="text-sm font-bold text-[#1a2318]">{wl.brandName}</p>
