@@ -104,18 +104,20 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
       </div>
       <div className="flex items-start justify-between">
         <div className="space-y-2">
-          <p className="text-[13px] text-[#9ca3af]">{title}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-[13px] text-[#9ca3af]">{title}</p>
+            {trend && (
+              <span className={cn(
+                "text-[10px] font-semibold px-1.5 py-0.5 rounded-full",
+                trend.value >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#dc2626]"
+              )}>
+                {trend.value >= 0 ? "+" : ""}{trend.value}% {trend.label}
+              </span>
+            )}
+          </div>
           <p className="text-[34px] font-extrabold tracking-tight text-[#1a2318]">
             <AnimatedValue value={value} />
           </p>
-          {trend && (
-            <p className={cn(
-              "text-xs font-medium",
-              trend.value >= 0 ? "text-[#22c55e]" : "text-[#dc2626]"
-            )}>
-              {trend.value >= 0 ? "+" : ""}{trend.value}% {trend.label}
-            </p>
-          )}
         </div>
         <motion.div
           initial={{ scale: 0, rotate: -45 }}
