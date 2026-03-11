@@ -156,7 +156,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
             <motion.button
-              className="p-2 sm:p-2.5 border border-gray-300 rounded-xl"
+              className={`p-2 sm:p-2.5 border rounded-xl ${isScrolled ? "border-gray-300" : "border-white/30 text-white"}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
