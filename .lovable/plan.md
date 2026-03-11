@@ -1,42 +1,30 @@
 
-# Sidebar flottant avec glassmorphisme
 
-## Objectif
-Transformer la sidebar admin (et les sidebars client/employe) en un element flottant avec l'effet de glassmorphisme identique aux cartes du dashboard, comme sur la reference partagee.
+## Plan : Remplacer le logo MBA partout par le nouveau logo uploadé
 
-## Modifications
+### 1. Copier le nouveau logo
 
-### 1. AdminSidebar - Activer le mode flottant
-- Passer `variant="floating"` et `collapsible="icon"` au composant `<Sidebar>` 
-- Retirer la classe `border-r border-border/50` (le mode floating gere ses propres bordures)
+- Copier `user-uploads://Design_sans_titre_6.png` vers `src/assets/logo-mba.png` (écrase l'ancien)
+- Copier aussi vers `public/pwa-192x192.png` et `public/pwa-512x512.png` (icônes PWA)
+- Copier vers `public/favicon.ico` (ou `.png`) et mettre à jour `index.html` avec un `<link rel="icon">`
 
-### 2. Sidebar UI component - Appliquer le glassmorphisme
-- Dans `src/components/ui/sidebar.tsx`, remplacer le style du conteneur interne en mode `floating` :
-  - Remplacer `bg-sidebar` + `border-sidebar-border` par les classes `glass-card glass-noise`
-  - Ajouter un `border-radius` plus genereux (`rounded-2xl` au lieu de `rounded-lg`)
-  - Supprimer le `bg-sidebar` par defaut pour laisser le glass transparaitre
+### 2. Aucun changement de code nécessaire pour les composants React
 
-### 3. AdminLayout - Ajuster le layout
-- Ajouter un padding a gauche sur le conteneur principal pour que la sidebar flottante ait de l'espace
-- Appliquer aussi le glass-nav sur le header de maniere coherente
-- Ajuster le gap/padding pour que tout soit visuellement aligne
+Les 17 fichiers qui importent `logo-mba.png` (Header, Footer, sidebars, login, signup, loading screen, hero, legal pages, demo tour, layouts) référencent tous `@/assets/logo-mba.png`. En écrasant ce fichier, tous les composants utiliseront automatiquement le nouveau logo sans modification de code.
 
-### 4. Variables CSS sidebar
-- Modifier `--sidebar-background` dans `index.css` pour qu'il soit transparent (le glassmorphisme prend le relai)
+### 3. Favicon
 
-### 5. ClientSidebar et EmployeeSidebar
-- Appliquer les memes changements (`variant="floating"`) pour la coherence entre les 3 espaces
+- Ajouter `<link rel="icon" href="/favicon.png" type="image/png">` dans `index.html`
+- Copier le logo vers `public/favicon.png`
 
-## Details techniques
+### 4. Edge functions (emails)
 
-Fichiers modifies :
-- `src/components/ui/sidebar.tsx` : style du conteneur floating avec classes glass
-- `src/components/admin/AdminSidebar.tsx` : `variant="floating"` + `collapsible="icon"`
-- `src/components/admin/ClientSidebar.tsx` : idem
-- `src/components/admin/EmployeeSidebar.tsx` : idem
-- `src/components/admin/AdminLayout.tsx` : ajustement padding/layout
-- `src/components/admin/ClientLayout.tsx` : idem si necessaire
-- `src/components/admin/EmployeeLayout.tsx` : idem si necessaire
-- `src/index.css` : eventuel ajustement des variables sidebar
+Les 10 edge functions utilisent un `LOGO_URL` pointant vers un storage externe (`logo-impartial.png`). Ce logo est hébergé en externe — il faudrait uploader le nouveau logo sur le storage et mettre à jour l'URL dans les 10 fonctions. Cependant, l'URL actuelle pointe vers un autre projet Supabase, donc on ne peut pas modifier le fichier distant. On peut néanmoins mettre à jour les fonctions pour pointer vers une nouvelle URL si le logo est uploadé dans le storage du projet actuel.
 
-Le resultat sera une sidebar detachee du bord gauche, avec coins arrondis, fond semi-transparent avec blur, et effet de glassmorphisme identique aux cards du dashboard.
+### Fichiers à modifier
+- `src/assets/logo-mba.png` — remplacer par le nouveau logo
+- `public/pwa-192x192.png` — remplacer par le nouveau logo
+- `public/pwa-512x512.png` — remplacer par le nouveau logo  
+- `public/favicon.png` — nouveau fichier
+- `index.html` — ajouter lien favicon
+
