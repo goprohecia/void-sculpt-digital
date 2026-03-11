@@ -17,10 +17,12 @@ function NavLinkItem({
   to,
   children,
   isActive,
+  isScrolled,
 }: {
   to: string;
   children: React.ReactNode;
   isActive: boolean;
+  isScrolled: boolean;
 }) {
   const handleClick = (e: React.MouseEvent) => {
     if (to.startsWith("/#")) {
@@ -39,7 +41,7 @@ function NavLinkItem({
         to={to}
         onClick={handleClick}
         className={`relative font-medium transition-colors duration-200 hover:text-[#22c55e] px-2 py-1 ${
-          isActive ? "text-[#22c55e]" : "text-gray-700"
+          isActive ? "text-[#22c55e]" : isScrolled ? "text-gray-700" : "text-white/90"
         }`}
       >
         <motion.span className="relative z-10" whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
@@ -104,7 +106,9 @@ export function Header() {
                 transition={{ duration: 0.3 }}
               />
               <motion.span
-                className="text-base sm:text-lg md:text-xl font-bold text-gray-900 hidden sm:block"
+                className={`text-base sm:text-lg md:text-xl font-bold hidden sm:block transition-colors duration-300 ${
+                  isScrolled ? "text-gray-900" : "text-white"
+                }`}
                 whileHover={{ scale: 1.05 }}
               >
                 MY BUSINESS ASSISTANT
@@ -115,7 +119,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
-              <NavLinkItem key={item.href} to={item.href} isActive={isActive(item.href)}>
+              <NavLinkItem key={item.href} to={item.href} isActive={isActive(item.href)} isScrolled={isScrolled}>
                 {item.name}
               </NavLinkItem>
             ))}
@@ -126,7 +130,11 @@ export function Header() {
             <MagneticButton as="div" strength={0.25}>
               <Link
                 to="/contact?subject=Demo%20MBA"
-                className="px-5 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
+                className={`px-5 py-2.5 text-sm font-medium rounded-xl border transition-colors ${
+                  isScrolled
+                    ? "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
+                    : "border-white/30 text-white hover:border-white/60"
+                }`}
               >
                 Essayer MBA
               </Link>
@@ -134,7 +142,11 @@ export function Header() {
             <MagneticButton as="div" strength={0.15}>
               <Link
                 to="/client/login"
-                className="px-5 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-900 hover:border-[#22c55e]/50 transition-colors"
+                className={`px-5 py-2.5 text-sm font-medium rounded-xl border transition-colors ${
+                  isScrolled
+                    ? "border-gray-300 text-gray-900 hover:border-[#22c55e]/50"
+                    : "border-white/30 text-white hover:border-white/60"
+                }`}
               >
                 Connexion
               </Link>
@@ -144,7 +156,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <div className="lg:hidden flex items-center">
             <motion.button
-              className="p-2 sm:p-2.5 border border-gray-300 rounded-xl"
+              className={`p-2 sm:p-2.5 border rounded-xl ${isScrolled ? "border-gray-300" : "border-white/30 text-white"}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
