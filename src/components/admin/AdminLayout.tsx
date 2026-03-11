@@ -36,7 +36,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full" style={{ background: "#14532d" }}>
+      <div className="mba-app min-h-screen flex w-full" style={{ background: "#14532d" }}>
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           {/* Topbar — white */}
