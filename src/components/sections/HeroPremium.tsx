@@ -34,8 +34,8 @@ export function HeroPremium() {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
+        className="absolute inset-0 w-full h-full object-cover z-0">
+        
         <source src={heroBgVideo} type="video/mp4" />
       </video>
 
@@ -47,9 +47,9 @@ export function HeroPremium() {
         <motion.div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.08) 0%, transparent 60%)`,
-          }}
-        />
+            background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(34,197,94,0.08) 0%, transparent 60%)`
+          }} />
+        
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -60,8 +60,8 @@ export function HeroPremium() {
               className="mb-10 md:mb-12 flex justify-center"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            >
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}>
+              
               <img src={logoMba} alt="My Business Assistant" className="h-28 sm:h-32 md:h-40 w-auto" />
             </motion.div>
 
@@ -73,8 +73,8 @@ export function HeroPremium() {
                   className="block font-medium text-gradient-neon"
                   initial={{ y: "110%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-                >
+                  transition={{ duration: 0.7, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}>
+                  
                   Votre assistant.
                 </motion.span>
               </div>
@@ -86,9 +86,9 @@ export function HeroPremium() {
                 className="text-sm sm:text-base md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-light px-2 sm:px-0"
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              >
-                La plateforme de gestion modulaire pour les entreprises de services. Clients, dossiers, facturation — tout en un.
+                transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}>
+                
+                La plateforme de gestion modulaire pour les entreprises de services. Clients, dossiers, facturation  tout en un.
               </motion.p>
             </div>
 
@@ -97,13 +97,13 @@ export function HeroPremium() {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
+              transition={{ duration: 0.6, delay: 1 }}>
+              
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   to="/contact?subject=Demo%20MBA"
-                  className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden"
-                >
+                  className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wide uppercase overflow-hidden">
+                  
                   <span className="absolute inset-0 bg-gradient-to-r from-[#22c55e] to-[#16a34a] rounded-full" />
                   <span className="absolute inset-0 bg-gradient-to-r from-[#16a34a] to-[#22c55e] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <span className="relative text-white">
@@ -115,14 +115,14 @@ export function HeroPremium() {
 
               <Link
                 to="/#offres"
-                className="text-xs sm:text-sm font-medium text-white/60 hover:text-white transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4"
-              >
+                className="text-xs sm:text-sm font-medium text-white/60 hover:text-white transition-colors duration-300 px-4 sm:px-6 py-3 sm:py-4">
+                
                 Découvrir les offres
               </Link>
             </motion.div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
