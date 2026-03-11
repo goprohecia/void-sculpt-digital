@@ -180,7 +180,7 @@ const Contact = () => {
             {/* Contact Form */}
             <div className="lg:col-span-2">
               <ScrollReveal variant="fadeInRight">
-                <form onSubmit={handleSubmit} className="p-8 md:p-10 rounded-3xl border border-gray-200 bg-gray-50">
+                <form onSubmit={handleSubmit} className="p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-gray-200 bg-gray-50">
                   <h2 className="text-sm uppercase tracking-[0.2em] text-gray-500 mb-8">
                     Demandez une démo
                   </h2>
