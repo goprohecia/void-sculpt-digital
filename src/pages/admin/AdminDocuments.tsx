@@ -262,7 +262,7 @@ export default function AdminDocuments() {
 
         {/* Import Dialog */}
         <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-[95vw] sm:max-w-md max-h-[85dvh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Importer des fichiers</DialogTitle>
             </DialogHeader>
