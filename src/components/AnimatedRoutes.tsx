@@ -154,7 +154,7 @@ export function AnimatedRoutes() {
 
         {/* Auth routes */}
         <Route path="/client/login" element={<AdminLogin />} />
-        <Route path="/admin/access" element={<AdminOnlyLogin />} />
+        
         <Route path="/signup" element={<ClientSignup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

@@ -244,7 +244,7 @@ export function AdminSidebar() {
           </div>
         </div>
         <button
-          onClick={() => { logout(); supabase.auth.signOut(); navigate("/admin/access", { replace: true }); }}
+          onClick={() => { logout(); supabase.auth.signOut(); navigate("/client/login", { replace: true }); }}
           className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-[#9ca3af] hover:text-[#dc2626] transition-colors"
         >
           <LogOut className="h-4 w-4" />
