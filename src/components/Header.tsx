@@ -176,7 +176,7 @@ export function Header() {
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <motion.div
-                className="glass-surface glass-noise rounded-2xl p-4 mt-2"
+                className="rounded-2xl p-4 mt-2 border border-gray-200 bg-white shadow-lg"
                 initial="closed"
                 animate="open"
                 variants={{
