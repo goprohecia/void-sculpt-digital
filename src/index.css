@@ -475,8 +475,8 @@
   @keyframes gradient-flow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
   @keyframes shine-sweep { 0%, 100% { background-position: -200% 0; } 50% { background-position: 200% 0; } }
 
-  .text-gradient-violet { @apply bg-gradient-to-r from-blue-400 via-sky-500 to-blue-600 bg-clip-text text-transparent; }
-  .border-gradient-neon { border-image: linear-gradient(135deg, hsl(var(--neon-violet)), hsl(var(--neon-blue)), hsl(var(--neon-green))) 1; }
+  .text-gradient-violet { @apply bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 bg-clip-text text-transparent; }
+  .border-gradient-neon { border-image: linear-gradient(135deg, hsl(var(--neon-violet)), hsl(var(--neon-green)), hsl(var(--neon-blue))) 1; }
 
   /* ========================================
      BADGE & BUTTONS (landing page)
