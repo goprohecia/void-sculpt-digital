@@ -184,8 +184,8 @@ export default function AdminDocuments() {
           </div>
 
           {/* Filters */}
-          <div className="flex gap-3 items-center flex-wrap">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center flex-wrap">
+            <div className="relative w-full sm:flex-1 sm:max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input placeholder="Rechercher un fichier..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
             </div>
