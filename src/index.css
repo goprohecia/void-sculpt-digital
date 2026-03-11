@@ -444,8 +444,8 @@
   /* ========================================
      GRADIENT TEXT (landing page)
      ======================================== */
-  .text-gradient-neon { @apply bg-gradient-to-r from-blue-400 via-sky-500 to-blue-400 bg-clip-text text-transparent; }
-  .text-gradient-premium { background: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(215 50% 90%) 25%, hsl(215 85% 70%) 50%, hsl(200 100% 80%) 75%, hsl(0 0% 100%) 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-flow 6s ease infinite; }
+  .text-gradient-neon { @apply bg-gradient-to-r from-green-400 via-emerald-500 to-green-400 bg-clip-text text-transparent; }
+  .text-gradient-premium { background: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(142 50% 90%) 25%, hsl(142 71% 60%) 50%, hsl(141 69% 75%) 75%, hsl(0 0% 100%) 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient-flow 6s ease infinite; }
 
   .text-logo-gradient {
     background: linear-gradient(90deg, #3b82f6 0%, #2563eb 14%, #22d3ee 28%, #10b981 42%, #ef4444 56%, #3b82f6 70%, #2563eb 84%, #22d3ee 100%);
