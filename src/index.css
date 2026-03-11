@@ -105,11 +105,11 @@
     --tier-pro: 142 72% 42%;
     --tier-custom: 45 93% 55%;
 
-    /* Sidebar — dark green premium */
-    --sidebar-background: 144 57% 20%;
+    /* Sidebar — darker green premium */
+    --sidebar-background: 147 62% 13%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 141 69% 68%;
-    --sidebar-primary-foreground: 144 57% 20%;
+    --sidebar-primary-foreground: 147 62% 13%;
     --sidebar-accent: 141 69% 68%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.10;
