@@ -113,10 +113,10 @@ export default function SectorPage({ sectorLabel, title, subtitle, heroImage, us
       </SectionTransition>
 
       {/* Recommended Modules */}
-      <SectionTransition className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
+      <SectionTransition className="py-16 sm:py-24 relative">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <ScrollReveal variant="fadeInUp">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12 sm:mb-16">
               <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-6">Modules</p>
               <h2 className="text-3xl md:text-4xl font-light text-gray-900">
                 Modules <span className="font-medium text-[#16a34a]">recommandés</span>
