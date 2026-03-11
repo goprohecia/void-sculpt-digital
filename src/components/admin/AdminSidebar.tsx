@@ -112,16 +112,19 @@ export function AdminSidebar() {
   const toggleGroup = (label: string) =>
     setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
 
-  // Preserve sidebar scroll position across navigations
+  // Preserve sidebar scroll position across navigations (module-level backup)
   const scrollRef = useRef<HTMLDivElement>(null);
-  const savedScrollTop = useRef(0);
-  const handleScroll = useCallback(() => {
-    if (scrollRef.current) savedScrollTop.current = scrollRef.current.scrollTop;
+
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    _savedScrollTop = e.currentTarget.scrollTop;
   }, []);
-  const setScrollRef = useCallback((node: HTMLDivElement | null) => {
-    (scrollRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-    if (node) requestAnimationFrame(() => { node.scrollTop = savedScrollTop.current; });
-  }, []);
+
+  // Restore scroll after remount
+  useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = _savedScrollTop;
+    }
+  });
 
   const renderItems = (items: typeof navItems) =>
     items.map((item) => {
