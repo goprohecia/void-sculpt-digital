@@ -158,7 +158,7 @@ export default function Fonctionnalites() {
               </p>
             </ScrollReveal>
             <ScrollReveal variant="fadeInUp" delay={0.1}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 tracking-tight text-gray-900">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-light mb-6 tracking-tight text-gray-900">
                 Tous les outils pour{" "}
                 <span className="font-medium text-gradient-neon">piloter votre activité</span>
               </h1>
