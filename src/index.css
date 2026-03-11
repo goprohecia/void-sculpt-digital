@@ -83,7 +83,7 @@
     --neon-white: 0 0% 100%;
     --neon-violet: 142 71% 45%;
 
-    /* Glass tokens (kept for landing page) */
+    /* Glass tokens (landing page — green tinted) */
     --glass-alpha: 0.08;
     --glass-blur: 28px;
     --glass-saturation: 1.3;
@@ -92,19 +92,19 @@
     --glass-radius: 1.5rem;
     --glass-noise-opacity: 0.035;
     --glass-highlight: 0.12;
-    --glass-bg: 215 25% 12%;
-    --glass-border: 215 40% 40%;
+    --glass-bg: 150 30% 12%;
+    --glass-border: 142 40% 35%;
     --glass-highlight-color: 0 0% 100%;
-    --glass-shadow-diffuse: 0 25px 60px -20px hsl(215 50% 15% / 0.5);
+    --glass-shadow-diffuse: 0 25px 60px -20px hsl(150 50% 10% / 0.5);
     --glass-shadow-sharp: 0 10px 40px hsl(0 0% 0% / 0.35);
-    --glass-shadow-glow: 0 0 80px -15px hsl(215 85% 55% / 0.3);
+    --glass-shadow-glow: 0 0 80px -15px hsl(142 71% 45% / 0.3);
     --glass-shadow-inner: inset 0 1px 1px hsl(0 0% 100% / 0.08);
-    --accent-luxe: 215 90% 60%;
-    --accent-luxe-secondary: 200 100% 60%;
-    --accent-luxe-tertiary: 190 85% 55%;
-    --atmosphere-primary: 215 85% 55%;
-    --atmosphere-secondary: 200 100% 50%;
-    --atmosphere-tertiary: 190 80% 55%;
+    --accent-luxe: 142 72% 42%;
+    --accent-luxe-secondary: 142 63% 55%;
+    --accent-luxe-tertiary: 141 69% 68%;
+    --atmosphere-primary: 142 71% 45%;
+    --atmosphere-secondary: 142 63% 55%;
+    --atmosphere-tertiary: 141 69% 68%;
 
     /* Card tiers */
     --tier-start: 0 0% 70%;
