@@ -313,9 +313,9 @@ export default function AdminDocuments() {
                 <Input placeholder="Nom du client" value={importClient} onChange={(e) => setImportClient(e.target.value)} />
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setImportDialogOpen(false)}>Annuler</Button>
-              <Button onClick={handleImport} disabled={selectedFiles.length === 0}>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setImportDialogOpen(false)} className="w-full sm:w-auto">Annuler</Button>
+              <Button onClick={handleImport} disabled={selectedFiles.length === 0} className="w-full sm:w-auto">
                 Importer {selectedFiles.length > 0 && `(${selectedFiles.length})`}
               </Button>
             </DialogFooter>
