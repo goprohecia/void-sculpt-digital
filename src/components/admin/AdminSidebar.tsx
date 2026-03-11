@@ -109,6 +109,17 @@ export function AdminSidebar() {
   const toggleGroup = (label: string) =>
     setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
 
+  // Preserve sidebar scroll position across navigations
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const savedScrollTop = useRef(0);
+  const handleScroll = useCallback(() => {
+    if (scrollRef.current) savedScrollTop.current = scrollRef.current.scrollTop;
+  }, []);
+  const setScrollRef = useCallback((node: HTMLDivElement | null) => {
+    (scrollRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+    if (node) requestAnimationFrame(() => { node.scrollTop = savedScrollTop.current; });
+  }, []);
+
   const renderItems = (items: typeof navItems) =>
     items.map((item) => {
       const active = isActive(item.url);
