@@ -51,7 +51,7 @@ export function FAQ() {
   return (
     <SectionTransition className="py-24 relative" parallaxStrength={0.05}>
       <ParallaxBackground speed={0.15}>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-red/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#22c55e]/5 to-transparent" />
       </ParallaxBackground>
 
       <div className="container mx-auto px-4 relative">
@@ -75,9 +75,9 @@ export function FAQ() {
                 <motion.div key={index} variants={faqItemVariants}>
                   <AccordionItem
                     value={`item-${index}`}
-                    className="glass-card glass-noise rounded-xl px-6 data-[state=open]:border-neon-red/30 transition-all duration-300 hover:border-neon-red/20"
+                    className="glass-card glass-noise rounded-xl px-6 data-[state=open]:border-[#22c55e]/30 transition-all duration-300 hover:border-[#22c55e]/20"
                   >
-                    <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-neon-red hover:no-underline transition-colors">
+                    <AccordionTrigger className="text-left text-lg font-medium py-5 hover:text-[#22c55e] hover:no-underline transition-colors">
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
@@ -97,7 +97,7 @@ export function FAQ() {
             </p>
             <motion.a
               href="/contact?subject=Question%20MBA"
-              className="inline-flex items-center gap-2 text-neon-red hover:text-neon-red/80 font-medium transition-colors"
+              className="inline-flex items-center gap-2 text-[#22c55e] hover:text-[#4ade80] font-medium transition-colors"
               whileHover={{ x: 5 }}
               transition={{ duration: 0.2 }}
             >

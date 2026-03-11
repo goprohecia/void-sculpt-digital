@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { ScrollReveal, SectionTransition, ParallaxBackground } from "@/components/animations";
 
@@ -8,17 +8,17 @@ export function CTAFinal() {
     <section id="contact">
       <SectionTransition className="py-24 md:py-32 relative overflow-hidden" parallaxStrength={0.08} scaleOnScroll>
         <ParallaxBackground speed={0.3}>
-          <div className="absolute inset-0 bg-gradient-to-r from-neon-violet/10 via-purple-600/10 to-blue-600/10" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] lg:w-[800px] h-[400px] md:h-[600px] lg:h-[800px] bg-violet-600/15 rounded-full blur-[200px]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#22c55e]/10 via-emerald-600/10 to-[#14532d]/10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[600px] lg:w-[800px] h-[400px] md:h-[600px] lg:h-[800px] bg-[#22c55e]/15 rounded-full blur-[200px]" />
         </ParallaxBackground>
-        <div className="absolute top-0 right-0 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-purple-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-blue-500/10 rounded-full blur-[100px]" />
+        <div className="absolute top-0 right-0 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-emerald-500/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-[200px] md:w-[300px] lg:w-[400px] h-[200px] md:h-[300px] lg:h-[400px] bg-[#14532d]/10 rounded-full blur-[100px]" />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             <ScrollReveal variant="scaleIn" duration={0.8}>
               <div className="glass-ultra glass-noise text-center relative overflow-hidden p-10 md:p-16 lg:p-20">
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-violet/10 via-transparent to-purple-600/10 rounded-[inherit]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/10 via-transparent to-emerald-600/10 rounded-[inherit]" />
                 <div className="relative z-10">
                   <ScrollReveal variant="fadeInUp" delay={0.1}>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-light mb-6 tracking-tight">
@@ -47,7 +47,7 @@ export function CTAFinal() {
 
                       <Link
                         to="/demo"
-                        className="glass-button inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-xl text-lg hover:border-neon-violet/50"
+                        className="glass-button inline-flex items-center justify-center gap-3 px-8 py-4 font-semibold rounded-xl text-lg hover:border-[#22c55e]/50"
                       >
                         Essayer la démo
                       </Link>
@@ -58,7 +58,7 @@ export function CTAFinal() {
                     <div className="mt-10 pt-8 border-t border-white/10">
                       <a
                         href="mailto:contact@mybusinessassistant.fr"
-                        className="text-muted-foreground hover:text-neon-violet transition-colors text-sm"
+                        className="text-muted-foreground hover:text-[#22c55e] transition-colors text-sm"
                       >
                         contact@mybusinessassistant.fr
                       </a>
