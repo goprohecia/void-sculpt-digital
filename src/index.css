@@ -270,21 +270,44 @@
   }
 
   /* Page-level text on dark green background */
-  .mba-app main > div > div > h1,
-  .mba-app main > div > div > div > h1,
-  .mba-app main > div > div > div > div > h1,
-  .mba-app .mba-page-title {
-    color: #ffffff !important;
+  .mba-app main > * h1 {
+    color: #ffffff;
   }
-  .mba-app .mba-page-title + p,
-  .mba-app main > div > div > div > p.text-muted-foreground,
-  .mba-app main > div > div > p.text-muted-foreground {
-    color: rgba(255,255,255,0.60) !important;
+  .mba-app main > * p.text-muted-foreground {
+    color: rgba(255,255,255,0.60);
+  }
+  .mba-app main > * .text-muted-foreground {
+    color: rgba(255,255,255,0.60);
+  }
+  /* Inside white cards, restore dark text */
+  .mba-app .glass-card h1,
+  .mba-app .glass-card h2,
+  .mba-app .glass-card h3,
+  .mba-app .glass-card p,
+  .mba-app .glass-card span,
+  .mba-app .glass-card td,
+  .mba-app .glass-card th,
+  .mba-app .mba-card h1,
+  .mba-app .mba-card p,
+  .mba-app [class*="bg-white"] h1,
+  .mba-app [class*="bg-white"] p {
+    color: inherit;
+  }
+  .mba-app .glass-card .text-muted-foreground {
+    color: hsl(var(--text-muted));
+  }
+  .mba-app .glass-card .text-foreground {
+    color: hsl(var(--text-primary));
+  }
+
+  /* Icons next to page titles */
+  .mba-app main > * h1 .text-primary {
+    color: #22c55e;
   }
 
   /* Select triggers in admin — white background */
   .mba-app select,
-  .mba-app [data-radix-select-trigger] {
+  .mba-app button[role="combobox"] {
     background: #ffffff !important;
     border-color: #e4e8df !important;
     color: #1a2318 !important;
