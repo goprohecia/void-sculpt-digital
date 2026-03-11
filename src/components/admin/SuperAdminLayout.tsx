@@ -18,29 +18,29 @@ export function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full" style={{ background: "#14532d" }}>
         <SuperAdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-16 flex items-center px-8 gap-4 bg-card border-b border-border shadow-[0_1px_8px_rgba(20,83,45,0.06)]">
-            <SidebarTrigger className="text-muted-foreground hover:text-foreground hover:bg-mba-green-50 rounded-[var(--radius-sm)] p-2 transition-colors" />
+          <header className="h-16 flex items-center px-8 gap-4 bg-white border-b border-[#e4e8df] shadow-[0_1px_8px_rgba(0,0,0,0.06)]">
+            <SidebarTrigger className="text-[#9ca3af] hover:text-[#1a2318] hover:bg-[#f0fdf4] rounded-[var(--radius-sm)] p-2 transition-colors" />
             <div className="relative w-[300px] hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9ca3af]" />
               <input
                 type="text"
                 placeholder="Rechercher..."
-                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-xl)] bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-[3px] focus:ring-[rgba(22,163,74,0.12)] transition-all"
+                className="w-full h-9 pl-9 pr-4 rounded-[var(--radius-full,9999px)] bg-[#f7f8f5] border border-[#e4e8df] text-sm text-[#1a2318] placeholder:text-[#9ca3af] focus:outline-none focus:border-[#22c55e] focus:ring-[3px] focus:ring-[rgba(34,197,94,0.15)] transition-all"
               />
             </div>
             <div className="flex-1" />
-            <span className="text-xs px-3 py-1 rounded-full bg-mba-green-100 text-[#15803d] border border-[#bbf7d0] font-medium">
+            <span className="text-xs px-3 py-1 rounded-full bg-[#dcfce7] text-[#15803d] border border-[#bbf7d0] font-medium">
               Super Admin MBA
             </span>
-            <div className="h-6 w-px bg-border" />
-            <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-sm font-semibold text-primary-foreground">
+            <div className="h-6 w-px bg-[#e4e8df]" />
+            <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
               {user?.nom?.charAt(0) || "S"}
             </div>
           </header>
-          <main className="flex-1 p-6 md:p-8 overflow-auto">
+          <main className="flex-1 p-7 overflow-auto">
             <AdminPageTransition>{children}</AdminPageTransition>
           </main>
         </div>

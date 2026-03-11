@@ -116,16 +116,16 @@ export function AdminSidebar() {
           <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
             <Link
               to={item.url}
-              className={`flex items-center gap-3 py-[10px] px-5 border-l-[3px] transition-all duration-[120ms] ${
+              className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                 active
-                  ? "bg-white/[0.15] text-white font-semibold border-l-[#4ade80]"
-                  : "text-white/[0.80] border-l-transparent hover:bg-white/[0.10] hover:text-white"
+                  ? "bg-[#14532d] text-white font-bold border-l-[#22c55e] rounded-r-[var(--radius-sm)] mr-2 shadow-[0_2px_8px_rgba(20,83,45,0.25)]"
+                  : "text-[#4a5e46] border-l-transparent hover:bg-[#f0fdf4] hover:text-[#1a2318]"
               }`}
             >
-              <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#4ade80]" : "opacity-70"}`} />
+              <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#22c55e]" : "opacity-65"}`} />
               <span className="flex-1">{item.title}</span>
               {item.badge ? (
-                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-[#4ade80] text-[10px] font-bold text-[#14532d] px-1">
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-[#22c55e] text-[10px] font-bold text-[#14532d] px-1">
                   {item.badge}
                 </span>
               ) : null}
@@ -136,17 +136,17 @@ export function AdminSidebar() {
     });
 
   return (
-    <Sidebar variant="floating" collapsible="icon" className="!bg-[#0c3b1e] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.20)" }}>
-      <SidebarHeader className="p-5 pb-4 border-b border-white/10">
+    <Sidebar variant="floating" collapsible="icon" className="!bg-white !border-r !border-[#e4e8df] !border-none" style={{ boxShadow: "var(--shadow-sidebar)" }}>
+      <SidebarHeader className="p-5 pb-4 border-b border-[#e4e8df]">
         <Link to="/admin" className="flex flex-col items-center text-center gap-1">
           {wl.logoUrl ? (
             <img src={wl.logoUrl} alt={wl.brandName} className="h-8 object-contain" />
           ) : (
-            <p className="text-[22px] font-extrabold text-[#4ade80] tracking-tight" style={{ fontFamily: "'Inter', sans-serif" }}>
+            <p className="text-[22px] font-extrabold text-[#14532d] tracking-tight" style={{ fontFamily: "'Syne', 'Inter', sans-serif" }}>
               {wl.brandShort}
             </p>
           )}
-          <p className="text-[11px] text-white/40">
+          <p className="text-[11px] text-[#9ca3af]">
             {getSectorRoleLabel(demoSector, "admin") ? `Espace ${getSectorRoleLabel(demoSector, "admin")}` : wl.brandName}
           </p>
         </Link>
@@ -157,7 +157,7 @@ export function AdminSidebar() {
         <select
           value={demoSector || ""}
           onChange={(e) => setDemoSector(e.target.value ? (e.target.value as SectorKey) : null)}
-          className="w-full h-8 rounded-[var(--radius-md)] bg-black/20 border border-white/[0.12] px-2 text-xs text-white/70 focus:outline-none focus:ring-2 focus:ring-[#4ade80]/30 focus:border-[#4ade80]/40 truncate transition-colors"
+          className="w-full h-8 rounded-[var(--radius-md)] bg-[#f7f8f5] border border-[#e4e8df] px-2 text-xs text-[#4a5e46] focus:outline-none focus:ring-2 focus:ring-[#22c55e]/30 focus:border-[#22c55e]/40 truncate transition-colors"
         >
           <option value="">— Générique —</option>
           {SECTORS.map((s) => (
@@ -177,7 +177,7 @@ export function AdminSidebar() {
             <Collapsible key={group.label} open={isOpen} onOpenChange={() => toggleGroup(group.label)}>
               <SidebarGroup>
                 <CollapsibleTrigger asChild>
-                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/40 flex items-center gap-1.5 cursor-pointer hover:text-white/60 transition-colors select-none px-5 py-3">
+                  <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-[#9ca3af] flex items-center gap-1.5 cursor-pointer hover:text-[#4a5e46] transition-colors select-none px-5 py-3">
                     <GroupIcon className="h-3.5 w-3.5" />
                     <span className="flex-1">{group.label}</span>
                     <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isOpen ? "" : "-rotate-90"}`} />
@@ -195,8 +195,8 @@ export function AdminSidebar() {
 
         {isEnterprise && spaces.length > 0 && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/30 flex items-center gap-1.5 px-5">
-              <Sparkles className="h-3.5 w-3.5 text-[#4ade80]" />
+            <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-[#9ca3af] flex items-center gap-1.5 px-5">
+              <Sparkles className="h-3.5 w-3.5 text-[#22c55e]" />
               Espaces personnalisés
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -204,8 +204,8 @@ export function AdminSidebar() {
                 {spaces.map((space) => (
                   <SidebarMenuItem key={space.id}>
                     <SidebarMenuButton tooltip={space.name}>
-                      <span className="flex items-center gap-3 px-5 py-[9px] text-white/70 hover:text-white transition-colors">
-                        <span className="h-2 w-2 rounded-full bg-[#4ade80]" />
+                      <span className="flex items-center gap-3 px-5 py-[9px] text-[#4a5e46] hover:text-[#14532d] transition-colors">
+                        <span className="h-2 w-2 rounded-full bg-[#22c55e]" />
                         <span>{space.name}</span>
                       </span>
                     </SidebarMenuButton>
@@ -217,19 +217,19 @@ export function AdminSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-[#082b14] border-t border-white/10">
+      <SidebarFooter className="p-4 bg-[#f7f8f5] border-t border-[#e4e8df]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
+          <div className="h-9 w-9 rounded-full bg-[#14532d] flex items-center justify-center text-sm font-extrabold text-[#22c55e]">
             {user?.nom?.charAt(0) || "U"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold truncate text-white">{user?.nom || "My Business Assistant"}</p>
-            <p className="text-[11px] text-white/[0.45] capitalize">{user?.role || "Admin"}</p>
+            <p className="text-[13px] font-semibold truncate text-[#1a2318]">{user?.nom || "My Business Assistant"}</p>
+            <p className="text-[11px] text-[#9ca3af] capitalize">{user?.role || "Admin"}</p>
           </div>
         </div>
         <button
           onClick={() => { logout(); supabase.auth.signOut(); navigate("/admin/access", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-white/40 hover:text-white/80 transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-[#9ca3af] hover:text-[#dc2626] transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>

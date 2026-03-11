@@ -27,17 +27,17 @@ export function SuperAdminSidebar() {
   };
 
   return (
-    <Sidebar variant="floating" collapsible="icon" className="!bg-[#0c3b1e] !border-none" style={{ boxShadow: "4px 0 24px rgba(0,0,0,0.20)" }}>
-      <SidebarHeader className="p-5 pb-4 border-b border-white/10">
+    <Sidebar variant="floating" collapsible="icon" className="!bg-white !border-none" style={{ boxShadow: "var(--shadow-sidebar)" }}>
+      <SidebarHeader className="p-5 pb-4 border-b border-[#e4e8df]">
         <Link to="/superadmin" className="flex flex-col items-center text-center gap-1">
-          <p className="text-[22px] font-extrabold text-[#4ade80] tracking-tight">MBA</p>
-          <p className="text-[11px] text-white/40">Super Administration</p>
+          <p className="text-[22px] font-extrabold text-[#14532d] tracking-tight" style={{ fontFamily: "'Syne', 'Inter', sans-serif" }}>MBA</p>
+          <p className="text-[11px] text-[#9ca3af]">Super Administration</p>
         </Link>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-white/40 px-5 py-3">
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-[#9ca3af] px-5 py-3">
             Gestion globale
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -49,13 +49,13 @@ export function SuperAdminSidebar() {
                     <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
                       <Link
                         to={item.url}
-                        className={`flex items-center gap-3 py-[10px] px-5 border-l-[3px] transition-all duration-[120ms] ${
+                        className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                           active
-                            ? "bg-white/[0.15] text-white font-semibold border-l-[#4ade80]"
-                            : "text-white/[0.80] border-l-transparent hover:bg-white/[0.10] hover:text-white"
+                            ? "bg-[#14532d] text-white font-bold border-l-[#22c55e] rounded-r-[var(--radius-sm)] mr-2 shadow-[0_2px_8px_rgba(20,83,45,0.25)]"
+                            : "text-[#4a5e46] border-l-transparent hover:bg-[#f0fdf4] hover:text-[#1a2318]"
                         }`}
                       >
-                        <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#4ade80]" : "opacity-70"}`} />
+                        <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#22c55e]" : "opacity-65"}`} />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -67,19 +67,19 @@ export function SuperAdminSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 bg-[#082b14] border-t border-white/10">
+      <SidebarFooter className="p-4 bg-[#f7f8f5] border-t border-[#e4e8df]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="h-9 w-9 rounded-full bg-[#22c55e] flex items-center justify-center text-sm font-extrabold text-[#14532d]">
+          <div className="h-9 w-9 rounded-full bg-[#14532d] flex items-center justify-center text-sm font-extrabold text-[#22c55e]">
             {user?.nom?.charAt(0) || "S"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold truncate text-white">{user?.nom || "Super Admin"}</p>
-            <p className="text-[11px] text-white/[0.45]">Super Admin</p>
+            <p className="text-[13px] font-semibold truncate text-[#1a2318]">{user?.nom || "Super Admin"}</p>
+            <p className="text-[11px] text-[#9ca3af]">Super Admin</p>
           </div>
         </div>
         <button
           onClick={() => { logout(); navigate("/client/login", { replace: true }); }}
-          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-white/40 hover:text-white/80 transition-colors"
+          className="flex w-full items-center gap-2 rounded-[var(--radius-sm)] px-2 py-1.5 text-sm text-[#9ca3af] hover:text-[#dc2626] transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Déconnexion</span>

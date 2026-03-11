@@ -51,6 +51,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // App background
+        app: {
+          bg: "#14532d",
+          bgDeep: "#0f3d20",
+        },
         // MBA Green scale
         "mba-green": {
           50: "hsl(var(--green-50))",

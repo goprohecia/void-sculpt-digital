@@ -19,7 +19,7 @@ const colorMap = {
   violet: { bg: "bg-[#f3e8ff]", text: "text-[#7c3aed]" },
   amber: { bg: "bg-[#fff7ed]", text: "text-[#ea580c]" },
   rose: { bg: "bg-[#ffe4e6]", text: "text-[#be123c]" },
-  primary: { bg: "bg-mba-green-100", text: "text-primary" },
+  primary: { bg: "bg-[#dcfce7]", text: "text-[#22c55e]" },
 };
 
 function AnimatedValue({ value }: { value: string | number }) {
@@ -52,13 +52,14 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
       <motion.div
         initial={{ opacity: 0, y: 16, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        whileHover={{ y: -3, boxShadow: "0 12px 40px rgba(20,83,45,0.50)" }}
+        whileHover={{ y: -3, boxShadow: "0 12px 40px rgba(0,0,0,0.35)" }}
         transition={{ duration: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
         className={cn(
           "p-6 rounded-[var(--radius-xl)] relative overflow-hidden cursor-default",
-          "bg-[#14532d] text-white shadow-[0_8px_32px_rgba(20,83,45,0.35)]",
+          "bg-[#0f3d20] text-white shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
           className
         )}
+        style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)" }}
       >
         <div className="absolute top-4 right-4">
           <div className="h-8 w-8 rounded-full border-[1.5px] border-white/25 flex items-center justify-center">
@@ -67,14 +68,14 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
         </div>
         <div className="space-y-2">
           <div className="rounded-xl p-2.5 bg-white/[0.12] w-fit">
-            <Icon className="h-6 w-6 text-white" />
+            <Icon className="h-6 w-6 text-[#22c55e]" />
           </div>
-          <p className="text-[13px] text-white/[0.65]">{title}</p>
+          <p className="text-[13px] text-white/60">{title}</p>
           <p className="text-[38px] font-extrabold tracking-[-1px]">
             <AnimatedValue value={value} />
           </p>
           {trend && (
-            <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/[0.15] text-white">
+            <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[rgba(34,197,94,0.20)] text-[#4ade80]">
               {trend.value >= 0 ? "+" : ""}{trend.value}% {trend.label}
             </span>
           )}
@@ -91,26 +92,26 @@ export function DashboardKPI({ title, value, icon: Icon, trend, iconColor = "pri
       transition={{ duration: 0.18, ease: "easeOut" }}
       className={cn(
         "p-6 rounded-[var(--radius-xl)] relative overflow-hidden cursor-default",
-        "bg-card border border-border shadow-[0_2px_8px_rgba(20,83,45,0.06),0_1px_2px_rgba(0,0,0,0.04)]",
-        "hover:shadow-[var(--shadow-lg)] transition-shadow duration-200",
+        "bg-white border border-white/20 shadow-[var(--shadow-card)]",
+        "hover:shadow-[var(--shadow-card-hover)] transition-shadow duration-200",
         className
       )}
     >
       <div className="absolute top-4 right-4">
-        <div className="h-8 w-8 rounded-full border border-border flex items-center justify-center">
-          <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+        <div className="h-8 w-8 rounded-full border border-[#e4e8df] flex items-center justify-center">
+          <ArrowUpRight className="h-4 w-4 text-[#9ca3af]" />
         </div>
       </div>
       <div className="flex items-start justify-between">
         <div className="space-y-2">
-          <p className="text-[13px] text-muted-foreground">{title}</p>
-          <p className="text-[34px] font-extrabold tracking-tight text-foreground">
+          <p className="text-[13px] text-[#9ca3af]">{title}</p>
+          <p className="text-[34px] font-extrabold tracking-tight text-[#1a2318]">
             <AnimatedValue value={value} />
           </p>
           {trend && (
             <p className={cn(
               "text-xs font-medium",
-              trend.value >= 0 ? "text-[#16a34a]" : "text-destructive"
+              trend.value >= 0 ? "text-[#22c55e]" : "text-[#dc2626]"
             )}>
               {trend.value >= 0 ? "+" : ""}{trend.value}% {trend.label}
             </p>
