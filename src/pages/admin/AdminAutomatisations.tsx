@@ -364,7 +364,7 @@ export default function AdminAutomatisations() {
 
         {/* Edit dialog */}
         <Dialog open={!!editId} onOpenChange={(o) => { if (!o) setEditId(null); }}>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[85dvh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Modifier la règle</DialogTitle>
               <DialogDescription>Modifiez les paramètres de cette automatisation.</DialogDescription>
