@@ -1,5 +1,8 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useLayoutEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+
+// Module-level: survives component unmount/remount
+let _savedScrollTop = 0;
 import { supabase } from "@/integrations/supabase/client";
 import { SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { getSectorRoleLabel } from "@/data/sectorModules";
@@ -109,16 +112,19 @@ export function AdminSidebar() {
   const toggleGroup = (label: string) =>
     setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
 
-  // Preserve sidebar scroll position across navigations
+  // Preserve sidebar scroll position across navigations (module-level backup)
   const scrollRef = useRef<HTMLDivElement>(null);
-  const savedScrollTop = useRef(0);
-  const handleScroll = useCallback(() => {
-    if (scrollRef.current) savedScrollTop.current = scrollRef.current.scrollTop;
+
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    _savedScrollTop = e.currentTarget.scrollTop;
   }, []);
-  const setScrollRef = useCallback((node: HTMLDivElement | null) => {
-    (scrollRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-    if (node) requestAnimationFrame(() => { node.scrollTop = savedScrollTop.current; });
-  }, []);
+
+  // Restore scroll after remount
+  useLayoutEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = _savedScrollTop;
+    }
+  });
 
   const renderItems = (items: typeof navItems) =>
     items.map((item) => {
@@ -176,7 +182,7 @@ export function AdminSidebar() {
         </select>
       </div>
 
-      <SidebarContent ref={setScrollRef} onScroll={handleScroll}>
+      <SidebarContent ref={scrollRef} onScroll={handleScroll}>
         {GROUPS.map((group) => {
           const items = navItems.filter((item) => group.keys.includes(item.moduleKey));
           if (items.length === 0) return null;

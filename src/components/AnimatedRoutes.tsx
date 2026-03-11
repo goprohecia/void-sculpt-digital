@@ -111,9 +111,18 @@ export function AnimatedRoutes() {
   const location = useLocation();
   useScrollToTop();
 
+  // Use stable keys for layout-wrapped routes so the sidebar doesn't unmount/remount
+  const getRouteKey = (pathname: string) => {
+    if (pathname.startsWith("/admin")) return "admin";
+    if (pathname.startsWith("/client")) return "client";
+    if (pathname.startsWith("/employee")) return "employee";
+    if (pathname.startsWith("/superadmin")) return "superadmin";
+    return pathname;
+  };
+
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
+      <Routes location={location} key={getRouteKey(location.pathname)}>
         {/* Public */}
         <Route path="/" element={<Index />} />
         <Route path="/fonctionnalites" element={<Fonctionnalites />} />
