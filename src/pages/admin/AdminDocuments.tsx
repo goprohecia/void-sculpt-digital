@@ -166,18 +166,18 @@ export default function AdminDocuments() {
     <AdminLayout>
       <AdminPageTransition>
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <FolderOpen className="h-6 w-6 text-primary" /> Documents
               </h1>
               <p className="text-muted-foreground text-sm">{stats.total} fichiers · {stats.taille} · {stats.dossiers} dossiers</p>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" className="gap-1.5" onClick={() => setFolderDialogOpen(true)}>
-                <FolderPlus className="h-4 w-4" /> Nouveau dossier
+            <div className="flex gap-2 self-start">
+              <Button variant="outline" className="gap-1.5 text-xs sm:text-sm" onClick={() => setFolderDialogOpen(true)}>
+                <FolderPlus className="h-4 w-4" /> <span className="hidden sm:inline">Nouveau</span> dossier
               </Button>
-              <Button className="gap-1.5" onClick={() => { setImportDossier(dossiers[0]); setImportDialogOpen(true); }}>
+              <Button className="gap-1.5 text-xs sm:text-sm" onClick={() => { setImportDossier(dossiers[0]); setImportDialogOpen(true); }}>
                 <Upload className="h-4 w-4" /> Importer
               </Button>
             </div>
