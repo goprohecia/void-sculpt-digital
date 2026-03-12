@@ -123,7 +123,12 @@ export default function SuperAdminDashboard() {
             <h1 className="text-2xl font-bold">Dashboard MBA</h1>
             <p className="text-muted-foreground text-sm">Vue d'ensemble de l'activité globale et des revenus</p>
           </div>
-          <PeriodFilter value={period} onChange={setPeriod} />
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditPdf}>
+              <FileDown className="h-4 w-4" /> Rapport d'audit
+            </Button>
+            <PeriodFilter value={period} onChange={setPeriod} />
+          </div>
         </div>
 
         {/* KPIs */}
