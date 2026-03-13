@@ -126,7 +126,10 @@ export default function SuperAdminDashboard() {
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditPdf}>
-              <FileDown className="h-4 w-4" /> Rapport d'audit
+              <FileDown className="h-4 w-4" /> Audit PDF
+            </Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditHtml}>
+              <FileDown className="h-4 w-4" /> Audit HTML
             </Button>
             <PeriodFilter value={period} onChange={setPeriod} />
           </div>
