@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent, BarChart3, FileDown } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { generateAuditPdf } from "@/lib/generateAuditPdf";
+import { generateAuditHtml } from "@/lib/generateAuditHtml";
 import { SECTORS } from "@/contexts/DemoPlanContext";
 
 type Period = "6m" | "12m" | "annee";
@@ -125,7 +126,10 @@ export default function SuperAdminDashboard() {
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditPdf}>
-              <FileDown className="h-4 w-4" /> Rapport d'audit
+              <FileDown className="h-4 w-4" /> Audit PDF
+            </Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditHtml}>
+              <FileDown className="h-4 w-4" /> Audit HTML
             </Button>
             <PeriodFilter value={period} onChange={setPeriod} />
           </div>
