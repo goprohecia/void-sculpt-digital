@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, ArrowUpRight, Percent, BarChart3, FileDown } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { generateAuditPdf } from "@/lib/generateAuditPdf";
+import { generateAuditHtml } from "@/lib/generateAuditHtml";
 import { SECTORS } from "@/contexts/DemoPlanContext";
 
 type Period = "6m" | "12m" | "annee";
