@@ -1128,6 +1128,9 @@ export default function AdminSettings() {
       case "suivi-client":
         return <StepNotificationSettings />;
 
+      case "roles":
+        return <RolesPermissionsSettings />;
+
       default:
         return null;
     }
