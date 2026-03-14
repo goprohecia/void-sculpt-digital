@@ -1134,6 +1134,9 @@ export default function AdminSettings() {
       case "roles":
         return <RolesPermissionsSettings />;
 
+      case "emails":
+        return <BrevoConfigSettings />;
+
       default:
         return null;
     }
