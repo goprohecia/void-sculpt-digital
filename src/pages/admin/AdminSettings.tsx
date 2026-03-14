@@ -30,6 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSettings";
+import { BrevoConfigSettings } from "@/components/admin/BrevoConfigSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
   "overview", "dossiers", "calendrier", "messagerie", "facturation",
@@ -675,6 +676,7 @@ export default function AdminSettings() {
     { group: "Avancé", items: [
       { key: "reservation", label: "Réservation", icon: CalendarDays },
       { key: "whitelabel", label: "White Label", icon: Palette },
+      { key: "emails", label: "Emails (Brevo)", icon: Mail },
       { key: "notifications", label: "Notifications", icon: Bell },
       { key: "suivi-client", label: "Suivi client", icon: Mail },
     ]},
@@ -1131,6 +1133,9 @@ export default function AdminSettings() {
 
       case "roles":
         return <RolesPermissionsSettings />;
+
+      case "emails":
+        return <BrevoConfigSettings />;
 
       default:
         return null;
