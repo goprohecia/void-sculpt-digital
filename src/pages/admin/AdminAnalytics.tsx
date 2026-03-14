@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
+import { startOfMonth } from "date-fns";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
@@ -20,6 +21,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { useObjectifs } from "@/hooks/use-objectifs";
 import { useServiceCategories } from "@/hooks/use-service-categories";
+import { AnalyticsDatePicker, type DateRange } from "@/components/admin/AnalyticsDatePicker";
+import { useAnalyticsData } from "@/hooks/use-analytics-data";
+import { useMetierVocabulary } from "@/hooks/use-metier-vocabulary";
 import {
   ResponsiveContainer,
   LineChart,
@@ -64,12 +68,19 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function AdminAnalytics() {
   const isMobile = useIsMobile();
   const [exporting, setExporting] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: startOfMonth(new Date()),
+    to: new Date(),
+  });
+
   const { isDemo } = useIsDemo();
   const { factures } = useFactures();
   const { demandes } = useDemandes();
   const { clients } = useClients();
   const { dossiers: allDossiers } = useDossiers();
   const { tickets } = useTickets();
+  const analytics = useAnalyticsData(dateRange);
+  const vocab = useMetierVocabulary();
 
   const donneesMensuelles = isDemo ? mockDonneesMensuelles : [];
 
@@ -103,6 +114,13 @@ export default function AdminAnalytics() {
   const totalEncaissements = dataWithObjectifs.reduce((acc, d) => acc + d.encaissements, 0);
   const totalDossiers = dataWithObjectifs.reduce((acc, d) => acc + d.dossiers, 0);
   const totalNouveauxClients = dataWithObjectifs.reduce((acc, d) => acc + d.nouveauxClients, 0);
+
+  // Use real analytics data when not in demo mode
+  const effectiveTotalCA = isDemo ? totalCA : analytics.kpis.caTotal;
+  const effectiveTotalDossiers = isDemo ? totalDossiers : analytics.kpis.totalDossiers;
+  const effectiveTotalClients = isDemo ? totalNouveauxClients : analytics.kpis.nouveauxClients;
+  const effectiveEncaissements = isDemo ? totalEncaissements : analytics.kpis.caTotal;
+  const effectiveDepensesTotal = isDemo ? undefined : analytics.kpis.totalDepenses;
 
   // Dynamic payment distribution
   const paymentDistribution = useMemo(() => [
@@ -282,12 +300,14 @@ export default function AdminAnalytics() {
 
       const doc = new jsPDF();
       const now = new Date().toLocaleDateString("fr-FR");
+      const periodFrom = dateRange.from.toLocaleDateString("fr-FR");
+      const periodTo = dateRange.to.toLocaleDateString("fr-FR");
 
       doc.setFontSize(20);
       doc.text("Rapport Analytique — My Business Assistant", 14, 20);
       doc.setFontSize(10);
       doc.setTextColor(120);
-      doc.text(`Généré le ${now}`, 14, 28);
+      doc.text(`Généré le ${now} — Période : ${periodFrom} au ${periodTo}`, 14, 28);
 
       doc.setFontSize(14);
       doc.setTextColor(40);
@@ -398,15 +418,20 @@ export default function AdminAnalytics() {
     <AdminLayout>
       <AdminPageTransition>
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <BarChart3 className="h-6 w-6 text-primary" />
-                Analyse
-              </h1>
-              <p className="text-white/60 text-sm">Données analytiques 2026</p>
+          <motion.div variants={staggerItem} className="flex flex-col gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h1 className="text-2xl font-bold flex items-center gap-2">
+                  <BarChart3 className="h-6 w-6 text-primary" />
+                  Analyse
+                </h1>
+                <p className="text-muted-foreground text-sm">Données analytiques filtrées par période</p>
+              </div>
+              {analytics.isLoading && <Loader2 className="h-5 w-5 animate-spin text-primary" />}
             </div>
-            <div className="flex flex-wrap gap-2 self-start">
+            <AnalyticsDatePicker value={dateRange} onChange={setDateRange} />
+          </motion.div>
+          <motion.div variants={staggerItem} className="flex flex-wrap gap-2">
               <AIContextButton
                 label="Analyse IA"
                 context={`analyse - CA total: ${totalCA}€, Encaissements: ${totalEncaissements}€, ${totalDossiers} dossiers, ${totalNouveauxClients} nouveaux clients. Factures: ${factures.filter(f => f.statut === "payee").length} payées, ${factures.filter(f => f.statut === "en_retard").length} en retard.`}
@@ -477,22 +502,21 @@ export default function AdminAnalytics() {
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Ventes/Type</span><span className="sm:hidden">V/T</span>
               </button>
-            </div>
           </motion.div>
 
           {/* KPIs */}
           <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={staggerContainer} initial="initial" animate="animate">
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="CA total 2026" value={`${(totalCA / 1000).toFixed(0)}k €`} icon={Euro} />
+              <DashboardKPI title="CA encaissé" value={`${(effectiveTotalCA / 1000).toFixed(0)}k €`} icon={Euro} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Encaissements" value={`${(totalEncaissements / 1000).toFixed(0)}k €`} icon={TrendingUp} />
+              <DashboardKPI title={`${vocab.dossiersLabel} ouverts`} value={isDemo ? totalDossiers : analytics.kpis.dossiersOuverts} icon={FolderOpen} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux dossiers" value={totalDossiers} icon={FolderOpen} />
+              <DashboardKPI title={`${vocab.dossiersLabel} clôturés`} value={isDemo ? 0 : analytics.kpis.dossiersClotures} icon={CheckCircle} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux clients" value={totalNouveauxClients} icon={Users} />
+              <DashboardKPI title="Clients actifs" value={isDemo ? totalNouveauxClients : analytics.kpis.clientsActifs} icon={Users} />
             </motion.div>
           </motion.div>
 
