@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       ai_conversations: {
         Row: {
+          compte_id: string | null
           created_at: string
           id: string
           model: string
@@ -24,6 +25,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          compte_id?: string | null
           created_at?: string
           id?: string
           model?: string
@@ -32,6 +34,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          compte_id?: string | null
           created_at?: string
           id?: string
           model?: string
@@ -43,6 +46,7 @@ export type Database = {
       }
       ai_messages: {
         Row: {
+          compte_id: string | null
           content: string
           conversation_id: string
           created_at: string
@@ -50,6 +54,7 @@ export type Database = {
           role: string
         }
         Insert: {
+          compte_id?: string | null
           content: string
           conversation_id: string
           created_at?: string
@@ -57,6 +62,7 @@ export type Database = {
           role?: string
         }
         Update: {
+          compte_id?: string | null
           content?: string
           conversation_id?: string
           created_at?: string
@@ -75,18 +81,21 @@ export type Database = {
       }
       app_settings: {
         Row: {
+          compte_id: string | null
           id: string
           key: string
           updated_at: string
           value: Json
         }
         Insert: {
+          compte_id?: string | null
           id?: string
           key: string
           updated_at?: string
           value?: Json
         }
         Update: {
+          compte_id?: string | null
           id?: string
           key?: string
           updated_at?: string
@@ -97,6 +106,7 @@ export type Database = {
       bon_commande_lignes: {
         Row: {
           bon_commande_id: string
+          compte_id: string | null
           created_at: string
           id: string
           prix_unitaire: number
@@ -105,6 +115,7 @@ export type Database = {
         }
         Insert: {
           bon_commande_id: string
+          compte_id?: string | null
           created_at?: string
           id?: string
           prix_unitaire?: number
@@ -113,6 +124,7 @@ export type Database = {
         }
         Update: {
           bon_commande_id?: string
+          compte_id?: string | null
           created_at?: string
           id?: string
           prix_unitaire?: number
@@ -138,6 +150,7 @@ export type Database = {
       }
       bons_commande: {
         Row: {
+          compte_id: string | null
           created_at: string
           date_commande: string
           date_livraison_prevue: string | null
@@ -150,6 +163,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          compte_id?: string | null
           created_at?: string
           date_commande?: string
           date_livraison_prevue?: string | null
@@ -162,6 +176,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          compte_id?: string | null
           created_at?: string
           date_commande?: string
           date_livraison_prevue?: string | null
@@ -187,6 +202,7 @@ export type Database = {
         Row: {
           budget_complementaire: string
           commentaires_admin: string | null
+          compte_id: string | null
           contexte: string
           contraintes_techniques: string
           created_at: string
@@ -207,6 +223,7 @@ export type Database = {
         Insert: {
           budget_complementaire?: string
           commentaires_admin?: string | null
+          compte_id?: string | null
           contexte?: string
           contraintes_techniques?: string
           created_at?: string
@@ -227,6 +244,7 @@ export type Database = {
         Update: {
           budget_complementaire?: string
           commentaires_admin?: string | null
+          compte_id?: string | null
           contexte?: string
           contraintes_techniques?: string
           created_at?: string
@@ -259,6 +277,7 @@ export type Database = {
           action: string
           auteur: string
           cahier_id: string
+          compte_id: string | null
           date: string
           description: string
           id: string
@@ -267,6 +286,7 @@ export type Database = {
           action: string
           auteur: string
           cahier_id: string
+          compte_id?: string | null
           date?: string
           description?: string
           id?: string
@@ -275,6 +295,7 @@ export type Database = {
           action?: string
           auteur?: string
           cahier_id?: string
+          compte_id?: string | null
           date?: string
           description?: string
           id?: string
@@ -292,18 +313,21 @@ export type Database = {
       client_tags: {
         Row: {
           client_id: string
+          compte_id: string | null
           created_at: string
           id: string
           tag_id: string
         }
         Insert: {
           client_id: string
+          compte_id?: string | null
           created_at?: string
           id?: string
           tag_id: string
         }
         Update: {
           client_id?: string
+          compte_id?: string | null
           created_at?: string
           id?: string
           tag_id?: string
@@ -329,6 +353,7 @@ export type Database = {
         Row: {
           adresse: string | null
           code_postal: string | null
+          compte_id: string | null
           created_at: string
           date_creation: string
           email: string
@@ -349,6 +374,7 @@ export type Database = {
         Insert: {
           adresse?: string | null
           code_postal?: string | null
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           email: string
@@ -369,6 +395,7 @@ export type Database = {
         Update: {
           adresse?: string | null
           code_postal?: string | null
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           email?: string
@@ -392,6 +419,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           dernier_message: string
           id: string
@@ -402,6 +430,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           dernier_message?: string
           id?: string
@@ -412,6 +441,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           dernier_message?: string
           id?: string
@@ -432,6 +462,7 @@ export type Database = {
       custom_spaces: {
         Row: {
           base_role: string
+          compte_id: string | null
           created_at: string
           enabled_modules: Json
           id: string
@@ -441,6 +472,7 @@ export type Database = {
         }
         Insert: {
           base_role?: string
+          compte_id?: string | null
           created_at?: string
           enabled_modules?: Json
           id?: string
@@ -450,6 +482,7 @@ export type Database = {
         }
         Update: {
           base_role?: string
+          compte_id?: string | null
           created_at?: string
           enabled_modules?: Json
           id?: string
@@ -464,6 +497,7 @@ export type Database = {
           budget: string | null
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           date_creation: string
           date_mise_a_jour: string
@@ -479,6 +513,7 @@ export type Database = {
           budget?: string | null
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           date_mise_a_jour?: string
@@ -494,6 +529,7 @@ export type Database = {
           budget?: string | null
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           date_mise_a_jour?: string
@@ -519,6 +555,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           date_emission: string
           date_signature: string | null
@@ -538,6 +575,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           date_emission?: string
           date_signature?: string | null
@@ -557,6 +595,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           date_emission?: string
           date_signature?: string | null
@@ -601,6 +640,7 @@ export type Database = {
         Row: {
           annee: number
           ca_total: number
+          compte_id: string | null
           conversion: number
           created_at: string
           dossiers: number
@@ -615,6 +655,7 @@ export type Database = {
         Insert: {
           annee?: number
           ca_total?: number
+          compte_id?: string | null
           conversion?: number
           created_at?: string
           dossiers?: number
@@ -629,6 +670,7 @@ export type Database = {
         Update: {
           annee?: number
           ca_total?: number
+          compte_id?: string | null
           conversion?: number
           created_at?: string
           dossiers?: number
@@ -644,6 +686,7 @@ export type Database = {
       }
       dossier_timeline: {
         Row: {
+          compte_id: string | null
           created_at: string
           current_step: number
           dossier_id: string
@@ -654,6 +697,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          compte_id?: string | null
           created_at?: string
           current_step?: number
           dossier_id: string
@@ -664,6 +708,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          compte_id?: string | null
           created_at?: string
           current_step?: number
           dossier_id?: string
@@ -694,6 +739,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           date_creation: string
           date_echeance: string | null
@@ -711,6 +757,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           date_echeance?: string | null
@@ -728,6 +775,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           date_echeance?: string | null
@@ -762,6 +810,7 @@ export type Database = {
       email_logs: {
         Row: {
           client_id: string | null
+          compte_id: string | null
           contenu: string
           date_envoi: string
           destinataire: string
@@ -772,6 +821,7 @@ export type Database = {
         }
         Insert: {
           client_id?: string | null
+          compte_id?: string | null
           contenu?: string
           date_envoi?: string
           destinataire: string
@@ -782,6 +832,7 @@ export type Database = {
         }
         Update: {
           client_id?: string | null
+          compte_id?: string | null
           contenu?: string
           date_envoi?: string
           destinataire?: string
@@ -802,6 +853,7 @@ export type Database = {
       }
       email_templates: {
         Row: {
+          compte_id: string | null
           contenu: string
           created_at: string
           id: string
@@ -811,6 +863,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          compte_id?: string | null
           contenu?: string
           created_at?: string
           id?: string
@@ -820,6 +873,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          compte_id?: string | null
           contenu?: string
           created_at?: string
           id?: string
@@ -833,6 +887,7 @@ export type Database = {
       employees: {
         Row: {
           acces_modules: Json
+          compte_id: string | null
           created_at: string
           date_embauche: string | null
           email: string
@@ -847,6 +902,7 @@ export type Database = {
         }
         Insert: {
           acces_modules?: Json
+          compte_id?: string | null
           created_at?: string
           date_embauche?: string | null
           email?: string
@@ -861,6 +917,7 @@ export type Database = {
         }
         Update: {
           acces_modules?: Json
+          compte_id?: string | null
           created_at?: string
           date_embauche?: string | null
           email?: string
@@ -878,6 +935,7 @@ export type Database = {
       events_manuels: {
         Row: {
           client_id: string | null
+          compte_id: string | null
           created_at: string
           date: string
           description: string | null
@@ -890,6 +948,7 @@ export type Database = {
         }
         Insert: {
           client_id?: string | null
+          compte_id?: string | null
           created_at?: string
           date: string
           description?: string | null
@@ -902,6 +961,7 @@ export type Database = {
         }
         Update: {
           client_id?: string | null
+          compte_id?: string | null
           created_at?: string
           date?: string
           description?: string | null
@@ -933,6 +993,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           date_echeance: string
           date_emission: string
@@ -948,6 +1009,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           date_echeance: string
           date_emission?: string
@@ -963,6 +1025,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           date_echeance?: string
           date_emission?: string
@@ -1002,6 +1065,7 @@ export type Database = {
       fournisseurs: {
         Row: {
           adresse: string | null
+          compte_id: string | null
           created_at: string
           email: string | null
           id: string
@@ -1015,6 +1079,7 @@ export type Database = {
         }
         Insert: {
           adresse?: string | null
+          compte_id?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -1028,6 +1093,7 @@ export type Database = {
         }
         Update: {
           adresse?: string | null
+          compte_id?: string | null
           created_at?: string
           email?: string | null
           id?: string
@@ -1043,6 +1109,7 @@ export type Database = {
       }
       messages: {
         Row: {
+          compte_id: string | null
           contenu: string
           conversation_id: string
           created_at: string
@@ -1051,6 +1118,7 @@ export type Database = {
           role: string
         }
         Insert: {
+          compte_id?: string | null
           contenu: string
           conversation_id: string
           created_at?: string
@@ -1059,6 +1127,7 @@ export type Database = {
           role: string
         }
         Update: {
+          compte_id?: string | null
           contenu?: string
           conversation_id?: string
           created_at?: string
@@ -1079,6 +1148,7 @@ export type Database = {
       notifications: {
         Row: {
           client_id: string | null
+          compte_id: string | null
           created_at: string
           date: string
           description: string
@@ -1091,6 +1161,7 @@ export type Database = {
         }
         Insert: {
           client_id?: string | null
+          compte_id?: string | null
           created_at?: string
           date?: string
           description?: string
@@ -1103,6 +1174,7 @@ export type Database = {
         }
         Update: {
           client_id?: string | null
+          compte_id?: string | null
           created_at?: string
           date?: string
           description?: string
@@ -1125,18 +1197,21 @@ export type Database = {
       }
       objectifs_mensuels: {
         Row: {
+          compte_id: string | null
           id: string
           mois: string
           objectif: number
           updated_at: string
         }
         Insert: {
+          compte_id?: string | null
           id?: string
           mois: string
           objectif: number
           updated_at?: string
         }
         Update: {
+          compte_id?: string | null
           id?: string
           mois?: string
           objectif?: number
@@ -1146,18 +1221,21 @@ export type Database = {
       }
       preview_visits: {
         Row: {
+          compte_id: string | null
           date: string
           device: string
           dossier_id: string
           id: string
         }
         Insert: {
+          compte_id?: string | null
           date?: string
           device?: string
           dossier_id: string
           id?: string
         }
         Update: {
+          compte_id?: string | null
           date?: string
           device?: string
           dossier_id?: string
@@ -1175,6 +1253,7 @@ export type Database = {
       }
       product_categories: {
         Row: {
+          compte_id: string | null
           couleur: string | null
           created_at: string
           description: string | null
@@ -1183,6 +1262,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          compte_id?: string | null
           couleur?: string | null
           created_at?: string
           description?: string | null
@@ -1191,6 +1271,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          compte_id?: string | null
           couleur?: string | null
           created_at?: string
           description?: string | null
@@ -1203,6 +1284,7 @@ export type Database = {
       produits: {
         Row: {
           categorie_id: string | null
+          compte_id: string | null
           created_at: string
           description: string | null
           fournisseur_id: string | null
@@ -1220,6 +1302,7 @@ export type Database = {
         }
         Insert: {
           categorie_id?: string | null
+          compte_id?: string | null
           created_at?: string
           description?: string | null
           fournisseur_id?: string | null
@@ -1237,6 +1320,7 @@ export type Database = {
         }
         Update: {
           categorie_id?: string | null
+          compte_id?: string | null
           created_at?: string
           description?: string | null
           fournisseur_id?: string | null
@@ -1300,6 +1384,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           date_prochaine: string | null
           date_relance: string
@@ -1314,6 +1399,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           date_prochaine?: string | null
           date_relance?: string
@@ -1328,6 +1414,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           date_prochaine?: string | null
           date_relance?: string
@@ -1360,6 +1447,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           date_envoi: string
           doc_reference: string
           doc_type: string
@@ -1368,6 +1456,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           date_envoi?: string
           doc_reference: string
           doc_type: string
@@ -1376,6 +1465,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           date_envoi?: string
           doc_reference?: string
           doc_type?: string
@@ -1393,6 +1483,7 @@ export type Database = {
       }
       service_categories: {
         Row: {
+          compte_id: string | null
           couleur: string
           created_at: string
           id: string
@@ -1401,6 +1492,7 @@ export type Database = {
           ordre: number
         }
         Insert: {
+          compte_id?: string | null
           couleur?: string
           created_at?: string
           id?: string
@@ -1409,6 +1501,7 @@ export type Database = {
           ordre?: number
         }
         Update: {
+          compte_id?: string | null
           couleur?: string
           created_at?: string
           id?: string
@@ -1420,6 +1513,7 @@ export type Database = {
       }
       stock_mouvements: {
         Row: {
+          compte_id: string | null
           created_at: string
           effectue_par: string | null
           id: string
@@ -1430,6 +1524,7 @@ export type Database = {
           type: string
         }
         Insert: {
+          compte_id?: string | null
           created_at?: string
           effectue_par?: string | null
           id?: string
@@ -1440,6 +1535,7 @@ export type Database = {
           type: string
         }
         Update: {
+          compte_id?: string | null
           created_at?: string
           effectue_par?: string | null
           id?: string
@@ -1500,18 +1596,21 @@ export type Database = {
       }
       tags: {
         Row: {
+          compte_id: string | null
           couleur: string | null
           created_at: string
           id: string
           nom: string
         }
         Insert: {
+          compte_id?: string | null
           couleur?: string | null
           created_at?: string
           id?: string
           nom: string
         }
         Update: {
+          compte_id?: string | null
           couleur?: string | null
           created_at?: string
           id?: string
@@ -1521,6 +1620,7 @@ export type Database = {
       }
       ticket_messages: {
         Row: {
+          compte_id: string | null
           contenu: string
           created_at: string
           date: string
@@ -1529,6 +1629,7 @@ export type Database = {
           ticket_id: string
         }
         Insert: {
+          compte_id?: string | null
           contenu: string
           created_at?: string
           date?: string
@@ -1537,6 +1638,7 @@ export type Database = {
           ticket_id: string
         }
         Update: {
+          compte_id?: string | null
           contenu?: string
           created_at?: string
           date?: string
@@ -1558,6 +1660,7 @@ export type Database = {
         Row: {
           client_id: string
           client_nom: string
+          compte_id: string | null
           created_at: string
           date_creation: string
           date_mise_a_jour: string
@@ -1572,6 +1675,7 @@ export type Database = {
         Insert: {
           client_id: string
           client_nom: string
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           date_mise_a_jour?: string
@@ -1586,6 +1690,7 @@ export type Database = {
         Update: {
           client_id?: string
           client_nom?: string
+          compte_id?: string | null
           created_at?: string
           date_creation?: string
           date_mise_a_jour?: string
@@ -1609,6 +1714,7 @@ export type Database = {
       }
       timeline_templates: {
         Row: {
+          compte_id: string | null
           created_at: string
           id: string
           is_default: boolean
@@ -1618,6 +1724,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          compte_id?: string | null
           created_at?: string
           id?: string
           is_default?: boolean
@@ -1627,6 +1734,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          compte_id?: string | null
           created_at?: string
           id?: string
           is_default?: boolean
@@ -1660,6 +1768,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_user_compte_id: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
