@@ -79,6 +79,74 @@ export type Database = {
           },
         ]
       }
+      annonce_lecture: {
+        Row: {
+          annonce_id: string
+          date_lecture: string
+          user_id: string
+        }
+        Insert: {
+          annonce_id: string
+          date_lecture?: string
+          user_id: string
+        }
+        Update: {
+          annonce_id?: string
+          date_lecture?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "annonce_lecture_annonce_id_fkey"
+            columns: ["annonce_id"]
+            isOneToOne: false
+            referencedRelation: "annonces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      annonces: {
+        Row: {
+          cible_filtre_json: Json | null
+          cible_type: string
+          compte_id: string | null
+          contenu: string
+          created_at: string
+          date_creation: string
+          date_expiration: string | null
+          id: string
+          statut: string
+          titre: string
+          updated_at: string
+        }
+        Insert: {
+          cible_filtre_json?: Json | null
+          cible_type?: string
+          compte_id?: string | null
+          contenu?: string
+          created_at?: string
+          date_creation?: string
+          date_expiration?: string | null
+          id?: string
+          statut?: string
+          titre: string
+          updated_at?: string
+        }
+        Update: {
+          cible_filtre_json?: Json | null
+          cible_type?: string
+          compte_id?: string | null
+          contenu?: string
+          created_at?: string
+          date_creation?: string
+          date_expiration?: string | null
+          id?: string
+          statut?: string
+          titre?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           compte_id: string | null
@@ -1312,6 +1380,10 @@ export type Database = {
           created_at: string
           date: string
           id: string
+          media_name: string | null
+          media_size: number | null
+          media_type: string | null
+          media_url: string | null
           role: string
         }
         Insert: {
@@ -1321,6 +1393,10 @@ export type Database = {
           created_at?: string
           date?: string
           id?: string
+          media_name?: string | null
+          media_size?: number | null
+          media_type?: string | null
+          media_url?: string | null
           role: string
         }
         Update: {
@@ -1330,6 +1406,10 @@ export type Database = {
           created_at?: string
           date?: string
           id?: string
+          media_name?: string | null
+          media_size?: number | null
+          media_type?: string | null
+          media_url?: string | null
           role?: string
         }
         Relationships: [
