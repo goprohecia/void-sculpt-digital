@@ -310,6 +310,45 @@ export type Database = {
           },
         ]
       }
+      client_dossier: {
+        Row: {
+          client_id: string
+          compte_id: string | null
+          date_liaison: string
+          dossier_id: string
+          id: string
+        }
+        Insert: {
+          client_id: string
+          compte_id?: string | null
+          date_liaison?: string
+          dossier_id: string
+          id?: string
+        }
+        Update: {
+          client_id?: string
+          compte_id?: string | null
+          date_liaison?: string
+          dossier_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_dossier_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_dossier_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_tags: {
         Row: {
           client_id: string
@@ -683,6 +722,48 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      dossier_employe: {
+        Row: {
+          compte_id: string | null
+          date_assignation: string
+          dossier_id: string
+          employe_id: string
+          id: string
+          role_sur_dossier: string
+        }
+        Insert: {
+          compte_id?: string | null
+          date_assignation?: string
+          dossier_id: string
+          employe_id: string
+          id?: string
+          role_sur_dossier?: string
+        }
+        Update: {
+          compte_id?: string | null
+          date_assignation?: string
+          dossier_id?: string
+          employe_id?: string
+          id?: string
+          role_sur_dossier?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossier_employe_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossier_employe_employe_id_fkey"
+            columns: ["employe_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       dossier_timeline: {
         Row: {
