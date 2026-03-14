@@ -214,7 +214,7 @@ export default function AdminEmails() {
 
   // ── Mass email filtered recipients ──
   const massRecipients = useMemo(() => {
-    let list = clients.filter((c) => !c.emailOptOut);
+    let list = clients;
     if (massFilterStatut.length > 0) {
       list = list.filter((c) => massFilterStatut.includes(c.statut));
     }
