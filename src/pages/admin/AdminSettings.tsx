@@ -10,6 +10,8 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp, Shield } from "lucide-react";
+import { WhiteLabelPreview } from "@/components/admin/WhiteLabelPreview";
+import { AVAILABLE_FONTS } from "@/hooks/use-white-label";
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { StepNotificationSettings } from "@/components/admin/StepNotificationSettings";
 import { BookingSettingsTab } from "@/components/admin/BookingSettingsTab";
@@ -543,6 +545,7 @@ export default function AdminSettings() {
     footerText: "",
     hidePoweredBy: true,
     customCss: "",
+    fontFamily: "",
   });
   const [wlInitialized, setWlInitialized] = useState(false);
 
@@ -611,7 +614,7 @@ export default function AdminSettings() {
     setSaving(true);
     try {
       // Persist white label for WL sections
-      const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé"];
+      const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé", "Police"];
       if (wlSections.includes(section)) {
         updateWhiteLabel(whiteLabel);
       }
@@ -886,209 +889,264 @@ export default function AdminSettings() {
 
       case "whitelabel":
         return isEnterprise ? (
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2"><Image className="h-4 w-4" /> Identité visuelle</CardTitle>
-                <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-brand">Nom de la marque</Label>
-                    <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
-                    <p className="text-xs text-muted-foreground">Remplace "My Business Assistant" partout.</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-short">Abréviation</Label>
-                    <Input id="wl-short" value={whiteLabel.brandShort} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandShort: e.target.value }))} placeholder="MBA" maxLength={5} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-footer">Texte du footer</Label>
-                    <Input id="wl-footer" value={whiteLabel.footerText} onChange={(e) => setWhiteLabel((s) => ({ ...s, footerText: e.target.value }))} />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-logo" className="flex items-center gap-1.5"><Upload className="h-3.5 w-3.5" /> URL du logo</Label>
-                    <Input id="wl-logo" placeholder="https://example.com/logo.png" value={whiteLabel.logoUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, logoUrl: e.target.value }))} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-favicon" className="flex items-center gap-1.5"><Image className="h-3.5 w-3.5" /> URL du favicon</Label>
-                    <Input id="wl-favicon" placeholder="https://example.com/favicon.ico" value={whiteLabel.faviconUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, faviconUrl: e.target.value }))} />
-                  </div>
-                </div>
-                {whiteLabel.logoUrl && (
-                  <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
-                    <p className="text-xs text-muted-foreground mb-2">Aperçu du logo :</p>
-                    <img src={whiteLabel.logoUrl} alt="Logo preview" className="h-12 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                  </div>
-                )}
-                <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
-                  <div>
-                    <p className="text-sm font-medium">Masquer "Powered by MBA"</p>
-                    <p className="text-xs text-muted-foreground">Supprime toute mention MBA de l'interface.</p>
-                  </div>
-                  <Switch checked={whiteLabel.hidePoweredBy} onCheckedChange={(v) => setWhiteLabel((s) => ({ ...s, hidePoweredBy: v }))} />
-                </div>
-                <div className="flex justify-end pt-2">
-                  <Button onClick={() => handleSave("Identité visuelle")} disabled={saving} className="gap-2">
-                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                    Enregistrer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2"><Palette className="h-4 w-4" /> Couleurs personnalisées</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {([
-                    { key: "primaryColor" as const, label: "Couleur primaire" },
-                    { key: "accentColor" as const, label: "Couleur d'accent" },
-                    { key: "bgColor" as const, label: "Fond principal" },
-                  ]).map(({ key, label }) => (
-                    <div key={key} className="space-y-2">
-                      <Label>{label}</Label>
-                      <div className="flex items-center gap-3">
-                        <input type="color" value={whiteLabel[key]} onChange={(e) => setWhiteLabel((s) => ({ ...s, [key]: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
-                        <Input value={whiteLabel[key]} onChange={(e) => setWhiteLabel((s) => ({ ...s, [key]: e.target.value }))} className="font-mono text-sm" />
-                      </div>
+          <div className="flex gap-6">
+            {/* Left: settings cards */}
+            <div className="flex-1 min-w-0 space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Image className="h-4 w-4" /> Identité visuelle</CardTitle>
+                  <CardDescription>Personnalisez l'apparence de votre plateforme avec votre marque.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-brand">Nom de la marque</Label>
+                      <Input id="wl-brand" value={whiteLabel.brandName} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandName: e.target.value }))} placeholder="Votre marque" />
+                      <p className="text-xs text-muted-foreground">Remplace "My Business Assistant" partout.</p>
                     </div>
-                  ))}
-                </div>
-                <div className="p-4 rounded-xl border border-border/30 space-y-3">
-                  <p className="text-xs text-muted-foreground font-medium">Aperçu</p>
-                  <div className="flex gap-3 items-center">
-                    <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.primaryColor }} />
-                    <div className="h-12 w-12 rounded-lg" style={{ backgroundColor: whiteLabel.accentColor }} />
-                    <div className="h-12 w-12 rounded-lg border border-border" style={{ backgroundColor: whiteLabel.bgColor }} />
-                    <div className="flex-1 h-12 rounded-lg flex items-center px-4 text-sm font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
-                      {whiteLabel.brandName || "Bouton primaire"}
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-short">Abréviation</Label>
+                      <Input id="wl-short" value={whiteLabel.brandShort} onChange={(e) => setWhiteLabel((s) => ({ ...s, brandShort: e.target.value }))} placeholder="MBA" maxLength={5} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-footer">Texte du footer</Label>
+                      <Input id="wl-footer" value={whiteLabel.footerText} onChange={(e) => setWhiteLabel((s) => ({ ...s, footerText: e.target.value }))} />
                     </div>
                   </div>
-                </div>
-                <div className="flex justify-end pt-2">
-                  <Button onClick={() => handleSave("Couleurs")} disabled={saving} className="gap-2">
-                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                    Enregistrer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2"><Globe className="h-4 w-4" /> Domaine personnalisé</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="space-y-2">
-                  <Label htmlFor="wl-domain">Nom de domaine</Label>
-                  <Input id="wl-domain" placeholder="app.monentreprise.com" value={whiteLabel.customDomain} onChange={(e) => setWhiteLabel((s) => ({ ...s, customDomain: e.target.value }))} />
-                  <p className="text-xs text-muted-foreground">Configurez un enregistrement CNAME pointant vers notre plateforme.</p>
-                </div>
-                {whiteLabel.customDomain && (
-                  <div className="p-4 rounded-lg bg-muted/20 border border-border/30 space-y-2">
-                    <p className="text-xs font-medium text-muted-foreground">Configuration DNS requise :</p>
-                    <div className="font-mono text-xs bg-background/50 rounded-md p-3 space-y-1">
-                      <p><span className="text-primary">Type:</span> CNAME</p>
-                      <p><span className="text-primary">Nom:</span> {whiteLabel.customDomain.split('.')[0]}</p>
-                      <p><span className="text-primary">Valeur:</span> app.mba-platform.com</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-logo" className="flex items-center gap-1.5"><Upload className="h-3.5 w-3.5" /> URL du logo</Label>
+                      <Input id="wl-logo" placeholder="https://example.com/logo.png" value={whiteLabel.logoUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, logoUrl: e.target.value }))} />
                     </div>
-                    <Badge variant="outline" className="text-amber-500 border-amber-500/30">En attente de vérification</Badge>
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-favicon" className="flex items-center gap-1.5"><Image className="h-3.5 w-3.5" /> URL du favicon</Label>
+                      <Input id="wl-favicon" placeholder="https://example.com/favicon.ico" value={whiteLabel.faviconUrl} onChange={(e) => setWhiteLabel((s) => ({ ...s, faviconUrl: e.target.value }))} />
+                    </div>
                   </div>
-                )}
-                <div className="flex justify-end pt-2">
-                  <Button onClick={() => handleSave("Domaine")} disabled={saving} className="gap-2">
-                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                    Enregistrer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2"><Mail className="h-4 w-4" /> Emails personnalisés</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-sender-name">Nom de l'expéditeur</Label>
-                    <Input id="wl-sender-name" value={whiteLabel.senderName} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderName: e.target.value }))} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-sender-email">Email de l'expéditeur</Label>
-                    <Input id="wl-sender-email" type="email" value={whiteLabel.senderEmail} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderEmail: e.target.value }))} />
-                  </div>
-                </div>
-                <div className="flex justify-end pt-2">
-                  <Button onClick={() => handleSave("Emails")} disabled={saving} className="gap-2">
-                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                    Enregistrer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2"><Type className="h-4 w-4" /> Page de connexion</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-login-title">Titre de la page</Label>
-                    <Input id="wl-login-title" value={whiteLabel.loginTitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginTitle: e.target.value }))} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wl-login-sub">Sous-titre</Label>
-                    <Input id="wl-login-sub" value={whiteLabel.loginSubtitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginSubtitle: e.target.value }))} />
-                  </div>
-                </div>
-                <div className="p-6 rounded-xl border border-border/30 text-center space-y-3" style={{ backgroundColor: whiteLabel.bgColor }}>
-                  <p className="text-xs text-muted-foreground font-medium mb-4">Aperçu page de connexion</p>
-                  {whiteLabel.logoUrl ? (
-                    <img src={whiteLabel.logoUrl} alt="Logo" className="h-10 mx-auto object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-                  ) : (
-                    <div className="h-10 w-10 rounded-lg mx-auto flex items-center justify-center text-sm font-bold" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
-                      {whiteLabel.brandName?.charAt(0) || "M"}
+                  {whiteLabel.logoUrl && (
+                    <div className="p-4 rounded-lg bg-muted/20 border border-border/30">
+                      <p className="text-xs text-muted-foreground mb-2">Aperçu du logo :</p>
+                      <img src={whiteLabel.logoUrl} alt="Logo preview" className="h-12 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
                     </div>
                   )}
-                  <p className="text-base font-semibold" style={{ color: "#fff" }}>{whiteLabel.loginTitle}</p>
-                  <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{whiteLabel.loginSubtitle}</p>
-                  <div className="max-w-xs mx-auto space-y-2 mt-2">
-                    <div className="h-9 rounded-md bg-white/10 border border-white/10" />
-                    <div className="h-9 rounded-md bg-white/10 border border-white/10" />
-                    <div className="h-9 rounded-md flex items-center justify-center text-xs font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>Se connecter</div>
+                  <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-muted/20 border border-border/30">
+                    <div>
+                      <p className="text-sm font-medium">Masquer "Powered by MBA"</p>
+                      <p className="text-xs text-muted-foreground">Supprime toute mention MBA de l'interface.</p>
+                    </div>
+                    <Switch checked={whiteLabel.hidePoweredBy} onCheckedChange={(v) => setWhiteLabel((s) => ({ ...s, hidePoweredBy: v }))} />
                   </div>
-                </div>
-                <div className="flex justify-end pt-2">
-                  <Button onClick={() => handleSave("Page de connexion")} disabled={saving} className="gap-2">
-                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                    Enregistrer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="flex justify-end pt-2">
+                    <Button onClick={() => handleSave("Identité visuelle")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Enregistrer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2"><Settings className="h-4 w-4" /> CSS personnalisé (avancé)</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea rows={8} placeholder={`:root {\n  --primary: 240 5.9% 50%;\n  --radius: 0.75rem;\n}`} value={whiteLabel.customCss} onChange={(e) => setWhiteLabel((s) => ({ ...s, customCss: e.target.value }))} className="font-mono text-xs" />
-                <div className="flex justify-end pt-2">
-                  <Button onClick={() => handleSave("CSS personnalisé")} disabled={saving} className="gap-2">
-                    {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
-                    Appliquer
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Font picker - Enterprise only */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Type className="h-4 w-4" /> Police d'écriture</CardTitle>
+                  <CardDescription>Choisissez la typographie de votre plateforme.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Preload all fonts for preview */}
+                  {AVAILABLE_FONTS.map((f) => (
+                    <link key={f.key} rel="stylesheet" href={f.url} />
+                  ))}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {AVAILABLE_FONTS.map((font) => (
+                      <button
+                        key={font.key}
+                        onClick={() => setWhiteLabel((s) => ({ ...s, fontFamily: font.key }))}
+                        className={`p-4 rounded-xl border-2 text-left transition-all duration-150 ${
+                          whiteLabel.fontFamily === font.key
+                            ? "border-primary bg-primary/5 shadow-sm"
+                            : "border-border/40 hover:border-border hover:bg-muted/30"
+                        }`}
+                      >
+                        <p className="text-lg font-semibold" style={{ fontFamily: `'${font.key}', sans-serif` }}>
+                          {font.label}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: `'${font.key}', sans-serif` }}>
+                          Aa Bb Cc 123
+                        </p>
+                      </button>
+                    ))}
+                    {/* Reset option */}
+                    <button
+                      onClick={() => setWhiteLabel((s) => ({ ...s, fontFamily: "" }))}
+                      className={`p-4 rounded-xl border-2 text-left transition-all duration-150 ${
+                        !whiteLabel.fontFamily
+                          ? "border-primary bg-primary/5 shadow-sm"
+                          : "border-border/40 hover:border-border hover:bg-muted/30"
+                      }`}
+                    >
+                      <p className="text-lg font-semibold">Par défaut</p>
+                      <p className="text-xs text-muted-foreground mt-1">Police système</p>
+                    </button>
+                  </div>
+                  <div className="flex justify-end pt-2 gap-2">
+                    <Button variant="outline" onClick={() => setWhiteLabel((s) => ({ ...s, fontFamily: wlConfig.fontFamily || "" }))} className="gap-2">
+                      Annuler
+                    </Button>
+                    <Button onClick={() => handleSave("Police")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Enregistrer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Palette className="h-4 w-4" /> Couleurs personnalisées</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {([
+                      { key: "primaryColor" as const, label: "Couleur primaire" },
+                      { key: "accentColor" as const, label: "Couleur d'accent" },
+                      { key: "bgColor" as const, label: "Fond principal" },
+                    ]).map(({ key, label }) => (
+                      <div key={key} className="space-y-2">
+                        <Label>{label}</Label>
+                        <div className="flex items-center gap-3">
+                          <input type="color" value={whiteLabel[key]} onChange={(e) => setWhiteLabel((s) => ({ ...s, [key]: e.target.value }))} className="h-10 w-14 rounded-lg border border-border cursor-pointer" />
+                          <Input value={whiteLabel[key]} onChange={(e) => setWhiteLabel((s) => ({ ...s, [key]: e.target.value }))} className="font-mono text-sm" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-end pt-2 gap-2">
+                    <Button variant="outline" onClick={() => setWhiteLabel((s) => ({ ...s, primaryColor: wlConfig.primaryColor, accentColor: wlConfig.accentColor, bgColor: wlConfig.bgColor }))} className="gap-2">
+                      Annuler
+                    </Button>
+                    <Button onClick={() => handleSave("Couleurs")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Enregistrer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Globe className="h-4 w-4" /> Domaine personnalisé</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="wl-domain">Nom de domaine</Label>
+                    <Input id="wl-domain" placeholder="app.monentreprise.com" value={whiteLabel.customDomain} onChange={(e) => setWhiteLabel((s) => ({ ...s, customDomain: e.target.value }))} />
+                    <p className="text-xs text-muted-foreground">Configurez un enregistrement CNAME pointant vers notre plateforme.</p>
+                  </div>
+                  {whiteLabel.customDomain && (
+                    <div className="p-4 rounded-lg bg-muted/20 border border-border/30 space-y-2">
+                      <p className="text-xs font-medium text-muted-foreground">Configuration DNS requise :</p>
+                      <div className="font-mono text-xs bg-background/50 rounded-md p-3 space-y-1">
+                        <p><span className="text-primary">Type:</span> CNAME</p>
+                        <p><span className="text-primary">Nom:</span> {whiteLabel.customDomain.split('.')[0]}</p>
+                        <p><span className="text-primary">Valeur:</span> app.mba-platform.com</p>
+                      </div>
+                      <Badge variant="outline" className="text-amber-500 border-amber-500/30">En attente de vérification</Badge>
+                    </div>
+                  )}
+                  <div className="flex justify-end pt-2">
+                    <Button onClick={() => handleSave("Domaine")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Enregistrer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Mail className="h-4 w-4" /> Emails personnalisés</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-sender-name">Nom de l'expéditeur</Label>
+                      <Input id="wl-sender-name" value={whiteLabel.senderName} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderName: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-sender-email">Email de l'expéditeur</Label>
+                      <Input id="wl-sender-email" type="email" value={whiteLabel.senderEmail} onChange={(e) => setWhiteLabel((s) => ({ ...s, senderEmail: e.target.value }))} />
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-2">
+                    <Button onClick={() => handleSave("Emails")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Enregistrer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Type className="h-4 w-4" /> Page de connexion</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-login-title">Titre de la page</Label>
+                      <Input id="wl-login-title" value={whiteLabel.loginTitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginTitle: e.target.value }))} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="wl-login-sub">Sous-titre</Label>
+                      <Input id="wl-login-sub" value={whiteLabel.loginSubtitle} onChange={(e) => setWhiteLabel((s) => ({ ...s, loginSubtitle: e.target.value }))} />
+                    </div>
+                  </div>
+                  <div className="p-6 rounded-xl border border-border/30 text-center space-y-3" style={{ backgroundColor: whiteLabel.bgColor }}>
+                    <p className="text-xs text-muted-foreground font-medium mb-4">Aperçu page de connexion</p>
+                    {whiteLabel.logoUrl ? (
+                      <img src={whiteLabel.logoUrl} alt="Logo" className="h-10 mx-auto object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+                    ) : (
+                      <div className="h-10 w-10 rounded-lg mx-auto flex items-center justify-center text-sm font-bold" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>
+                        {whiteLabel.brandName?.charAt(0) || "M"}
+                      </div>
+                    )}
+                    <p className="text-base font-semibold" style={{ color: "#fff" }}>{whiteLabel.loginTitle}</p>
+                    <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{whiteLabel.loginSubtitle}</p>
+                    <div className="max-w-xs mx-auto space-y-2 mt-2">
+                      <div className="h-9 rounded-md bg-white/10 border border-white/10" />
+                      <div className="h-9 rounded-md bg-white/10 border border-white/10" />
+                      <div className="h-9 rounded-md flex items-center justify-center text-xs font-medium" style={{ backgroundColor: whiteLabel.primaryColor, color: "#fff" }}>Se connecter</div>
+                    </div>
+                  </div>
+                  <div className="flex justify-end pt-2">
+                    <Button onClick={() => handleSave("Page de connexion")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Enregistrer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base flex items-center gap-2"><Settings className="h-4 w-4" /> CSS personnalisé (avancé)</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Textarea rows={8} placeholder={`:root {\n  --primary: 240 5.9% 50%;\n  --radius: 0.75rem;\n}`} value={whiteLabel.customCss} onChange={(e) => setWhiteLabel((s) => ({ ...s, customCss: e.target.value }))} className="font-mono text-xs" />
+                  <div className="flex justify-end pt-2">
+                    <Button onClick={() => handleSave("CSS personnalisé")} disabled={saving} className="gap-2">
+                      {saving ? <CheckCircle className="h-4 w-4 animate-pulse" /> : <Save className="h-4 w-4" />}
+                      Appliquer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right: live preview panel */}
+            <div className="hidden lg:block w-72 shrink-0">
+              <WhiteLabelPreview config={whiteLabel as any} />
+            </div>
           </div>
         ) : (
           <UpgradeBanner currentPlan={plan} requiredPlan="enterprise" feature="White Label & Personnalisation complète" />
@@ -1190,7 +1248,7 @@ export default function AdminSettings() {
               </nav>
 
               {/* Content area */}
-              <div className="flex-1 min-w-0 max-w-3xl">
+              <div className={`flex-1 min-w-0 ${activeTab === "whitelabel" ? "max-w-5xl" : "max-w-3xl"}`}>
                 <motion.div
                   key={activeTab}
                   initial={{ opacity: 0, y: 8 }}

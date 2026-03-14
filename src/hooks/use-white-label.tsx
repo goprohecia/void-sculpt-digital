@@ -20,7 +20,17 @@ export interface WhiteLabelConfig {
   footerText: string;
   hidePoweredBy: boolean;
   customCss: string;
+  fontFamily: string;
 }
+
+export const AVAILABLE_FONTS = [
+  { key: "Inter", label: "Inter", url: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" },
+  { key: "Poppins", label: "Poppins", url: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" },
+  { key: "Raleway", label: "Raleway", url: "https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" },
+  { key: "Playfair Display", label: "Playfair Display", url: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" },
+  { key: "DM Sans", label: "DM Sans", url: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" },
+  { key: "Nunito", label: "Nunito", url: "https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" },
+] as const;
 
 const DEFAULT_CONFIG: WhiteLabelConfig = {
   brandName: "My Business Assistant",
@@ -38,6 +48,7 @@ const DEFAULT_CONFIG: WhiteLabelConfig = {
   footerText: "© 2026 My Business Assistant. Tous droits réservés.",
   hidePoweredBy: true,
   customCss: "",
+  fontFamily: "",
 };
 
 const WhiteLabelContext = createContext<{
@@ -158,15 +169,42 @@ export function WhiteLabelProvider({ children }: { children: ReactNode }) {
       if (link) link.href = resolved.faviconUrl;
     }
 
+    // Google Fonts injection
+    const fontLinkId = "wl-google-font";
+    if (resolved.fontFamily) {
+      const fontConfig = AVAILABLE_FONTS.find(f => f.key === resolved.fontFamily);
+      if (fontConfig) {
+        let fontLink = document.getElementById(fontLinkId) as HTMLLinkElement | null;
+        if (!fontLink) {
+          fontLink = document.createElement("link");
+          fontLink.id = fontLinkId;
+          fontLink.rel = "stylesheet";
+          document.head.appendChild(fontLink);
+        }
+        fontLink.href = fontConfig.url;
+        root.style.setProperty("--font-family", `'${resolved.fontFamily}', sans-serif`);
+        document.body.style.fontFamily = `'${resolved.fontFamily}', sans-serif`;
+      }
+    } else {
+      const existingLink = document.getElementById(fontLinkId);
+      if (existingLink) existingLink.remove();
+      root.style.removeProperty("--font-family");
+      document.body.style.removeProperty("font-family");
+    }
+
     return () => {
       root.style.removeProperty("--primary");
       root.style.removeProperty("--primary-foreground");
       root.style.removeProperty("--accent");
       root.style.removeProperty("--background");
+      root.style.removeProperty("--font-family");
+      document.body.style.removeProperty("font-family");
       const el = document.getElementById("wl-custom-css");
       if (el) el.remove();
+      const fl = document.getElementById(fontLinkId);
+      if (fl) fl.remove();
     };
-  }, [resolved.primaryColor, resolved.accentColor, resolved.bgColor, resolved.customCss, resolved.faviconUrl]);
+  }, [resolved.primaryColor, resolved.accentColor, resolved.bgColor, resolved.customCss, resolved.faviconUrl, resolved.fontFamily]);
 
   const value = useMemo(() => ({
     config: resolved,
