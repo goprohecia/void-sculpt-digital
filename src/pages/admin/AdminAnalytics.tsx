@@ -500,22 +500,21 @@ export default function AdminAnalytics() {
               >
                 <FileSpreadsheet className="h-4 w-4" /> <span className="hidden sm:inline">Ventes/Type</span><span className="sm:hidden">V/T</span>
               </button>
-            </div>
           </motion.div>
 
           {/* KPIs */}
           <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" variants={staggerContainer} initial="initial" animate="animate">
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="CA total 2026" value={`${(totalCA / 1000).toFixed(0)}k €`} icon={Euro} />
+              <DashboardKPI title="CA encaissé" value={`${(effectiveTotalCA / 1000).toFixed(0)}k €`} icon={Euro} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Encaissements" value={`${(totalEncaissements / 1000).toFixed(0)}k €`} icon={TrendingUp} />
+              <DashboardKPI title={`${vocab.dossiersLabel} ouverts`} value={isDemo ? totalDossiers : analytics.kpis.dossiersOuverts} icon={FolderOpen} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux dossiers" value={totalDossiers} icon={FolderOpen} />
+              <DashboardKPI title={`${vocab.dossiersLabel} clôturés`} value={isDemo ? 0 : analytics.kpis.dossiersClotures} icon={CheckCircle} />
             </motion.div>
             <motion.div variants={staggerItem}>
-              <DashboardKPI title="Nouveaux clients" value={totalNouveauxClients} icon={Users} />
+              <DashboardKPI title="Clients actifs" value={isDemo ? totalNouveauxClients : analytics.kpis.clientsActifs} icon={Users} />
             </motion.div>
           </motion.div>
 
