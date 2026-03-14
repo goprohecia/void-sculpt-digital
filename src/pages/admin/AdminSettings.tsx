@@ -614,7 +614,7 @@ export default function AdminSettings() {
     setSaving(true);
     try {
       // Persist white label for WL sections
-      const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé"];
+      const wlSections = ["Identité visuelle", "Couleurs", "Domaine", "Emails", "Page de connexion", "CSS personnalisé", "Police"];
       if (wlSections.includes(section)) {
         updateWhiteLabel(whiteLabel);
       }
