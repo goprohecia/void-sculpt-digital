@@ -169,15 +169,42 @@ export function WhiteLabelProvider({ children }: { children: ReactNode }) {
       if (link) link.href = resolved.faviconUrl;
     }
 
+    // Google Fonts injection
+    const fontLinkId = "wl-google-font";
+    if (resolved.fontFamily) {
+      const fontConfig = AVAILABLE_FONTS.find(f => f.key === resolved.fontFamily);
+      if (fontConfig) {
+        let fontLink = document.getElementById(fontLinkId) as HTMLLinkElement | null;
+        if (!fontLink) {
+          fontLink = document.createElement("link");
+          fontLink.id = fontLinkId;
+          fontLink.rel = "stylesheet";
+          document.head.appendChild(fontLink);
+        }
+        fontLink.href = fontConfig.url;
+        root.style.setProperty("--font-family", `'${resolved.fontFamily}', sans-serif`);
+        document.body.style.fontFamily = `'${resolved.fontFamily}', sans-serif`;
+      }
+    } else {
+      const existingLink = document.getElementById(fontLinkId);
+      if (existingLink) existingLink.remove();
+      root.style.removeProperty("--font-family");
+      document.body.style.removeProperty("font-family");
+    }
+
     return () => {
       root.style.removeProperty("--primary");
       root.style.removeProperty("--primary-foreground");
       root.style.removeProperty("--accent");
       root.style.removeProperty("--background");
+      root.style.removeProperty("--font-family");
+      document.body.style.removeProperty("font-family");
       const el = document.getElementById("wl-custom-css");
       if (el) el.remove();
+      const fl = document.getElementById(fontLinkId);
+      if (fl) fl.remove();
     };
-  }, [resolved.primaryColor, resolved.accentColor, resolved.bgColor, resolved.customCss, resolved.faviconUrl]);
+  }, [resolved.primaryColor, resolved.accentColor, resolved.bgColor, resolved.customCss, resolved.faviconUrl, resolved.fontFamily]);
 
   const value = useMemo(() => ({
     config: resolved,
