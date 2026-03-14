@@ -68,12 +68,19 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function AdminAnalytics() {
   const isMobile = useIsMobile();
   const [exporting, setExporting] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: startOfMonth(new Date()),
+    to: new Date(),
+  });
+
   const { isDemo } = useIsDemo();
   const { factures } = useFactures();
   const { demandes } = useDemandes();
   const { clients } = useClients();
   const { dossiers: allDossiers } = useDossiers();
   const { tickets } = useTickets();
+  const analytics = useAnalyticsData(dateRange);
+  const vocab = useMetierVocabulary();
 
   const donneesMensuelles = isDemo ? mockDonneesMensuelles : [];
 
