@@ -10,6 +10,7 @@ import { MobileBottomNav } from "./MobileBottomNav";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Search } from "lucide-react";
 import logoMba from "@/assets/logo-mba.png";
+import { AnnouncementPopup } from "@/components/messaging/AnnouncementPopup";
 
 interface EmployeeLayoutProps {
   children: React.ReactNode;
