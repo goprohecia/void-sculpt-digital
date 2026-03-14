@@ -48,6 +48,7 @@ const DEFAULT_CONFIG: WhiteLabelConfig = {
   footerText: "© 2026 My Business Assistant. Tous droits réservés.",
   hidePoweredBy: true,
   customCss: "",
+  fontFamily: "",
 };
 
 const WhiteLabelContext = createContext<{
