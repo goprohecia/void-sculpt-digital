@@ -262,6 +262,7 @@ export default function AdminDossierDetail() {
                     <SelectItem value="en_attente">En attente</SelectItem>
                     <SelectItem value="en_cours">En cours</SelectItem>
                     <SelectItem value="termine">Terminé</SelectItem>
+                    <SelectItem value="archive">Archivé</SelectItem>
                     <SelectItem value="annule">Annulé</SelectItem>
                   </SelectContent>
                 </Select>
