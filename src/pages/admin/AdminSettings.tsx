@@ -676,6 +676,7 @@ export default function AdminSettings() {
     { group: "Avancé", items: [
       { key: "reservation", label: "Réservation", icon: CalendarDays },
       { key: "whitelabel", label: "White Label", icon: Palette },
+      { key: "emails", label: "Emails (Brevo)", icon: Mail },
       { key: "notifications", label: "Notifications", icon: Bell },
       { key: "suivi-client", label: "Suivi client", icon: Mail },
     ]},
