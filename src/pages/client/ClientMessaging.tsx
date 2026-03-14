@@ -14,12 +14,17 @@ import { toast } from "sonner";
 import { MessageMediaUpload, MessageMediaInline } from "@/components/messaging/MessageMediaUpload";
 
 export default function ClientMessaging() {
-  const { clientId, isLoading: clientLoading } = useClientId();
+  const { clientId, isLoading: clientLoading, isDemo } = useClientId();
   const { getConversationsByClient } = useConversations();
+  const queryClient = useQueryClient();
   const mesConversations = clientId ? getConversationsByClient(clientId) : [];
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
   const [showList, setShowList] = useState(true);
+  const [pendingMedia, setPendingMedia] = useState<any>(null);
+  const [mediaUploading, setMediaUploading] = useState(false);
+  const [mediaProgress, setMediaProgress] = useState(0);
+  const [mediaResult, setMediaResult] = useState<any>(null);
 
   const activeConv = selectedConv ?? mesConversations[0] ?? null;
 
