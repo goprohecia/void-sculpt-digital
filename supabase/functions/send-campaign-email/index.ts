@@ -4,6 +4,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 const LOGO_URL = "https://usulfquilneqlcyuwdof.supabase.co/storage/v1/object/public/email-assets/logo-mba.png";
+const MASS_THRESHOLD = 6;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -30,7 +31,8 @@ async function sendViaBrevo(
   recipient: { email: string; prenom?: string },
   subject: string,
   htmlContent: string,
-  tags?: string[]
+  tags?: string[],
+  attachments?: { name: string; url: string }[]
 ) {
   const body: any = {
     sender: { name: brevoConfig.sender_name, email: brevoConfig.sender_email },
@@ -39,8 +41,11 @@ async function sendViaBrevo(
     htmlContent,
   };
   if (tags?.length) body.tags = tags;
-  // Add unsubscribe header for RGPD
   body.headers = { "List-Unsubscribe": `<mailto:${brevoConfig.sender_email}?subject=unsubscribe>` };
+
+  if (attachments?.length) {
+    body.attachment = attachments.map((a) => ({ url: a.url, name: a.name }));
+  }
 
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
@@ -105,22 +110,19 @@ serve(async (req) => {
   );
 
   try {
-    const { recipients, subject, message, test, tags } = await req.json();
+    const { recipients, subject, message, test, tags, attachments } = await req.json();
 
-    // Get tenant's Brevo config
-    const { data: compteData } = await serviceClient.rpc("get_user_compte_id");
-    // Try fetching brevo config for this admin's compte
+    // Get Brevo config
     const brevoConfig = await getBrevoConfig(serviceClient, user.id);
 
-    // Test mode: just validate the API key
+    // Test mode
     if (test) {
       if (!brevoConfig) {
         return new Response(
-          JSON.stringify({ error: "Brevo n'est pas configuré. Ajoutez votre clé API dans Paramètres > Emails." }),
+          JSON.stringify({ error: "Brevo n'est pas configuré." }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      // Call Brevo account endpoint to validate key
       const res = await fetch("https://api.brevo.com/v3/account", {
         headers: { "api-key": brevoConfig.api_key, Accept: "application/json" },
       });
@@ -159,7 +161,8 @@ serve(async (req) => {
     const errors: string[] = [];
     const skipped = recipients.length - filteredRecipients.length;
 
-    const useBrevo = !!brevoConfig;
+    // Smart routing: >=MASS_THRESHOLD recipients → Brevo if available, else Resend
+    const useBrevo = !!brevoConfig && filteredRecipients.length >= MASS_THRESHOLD;
 
     for (const r of filteredRecipients) {
       try {
@@ -190,14 +193,29 @@ serve(async (req) => {
 </html>`;
 
         if (useBrevo) {
-          await sendViaBrevo(brevoConfig, r, subject, htmlContent, tags);
+          await sendViaBrevo(brevoConfig, r, subject, htmlContent, tags, attachments);
         } else {
-          await resend.emails.send({
+          const resendOpts: any = {
             from: "Impartial <studio@impartialgames.com>",
             to: [r.email],
             subject,
             html: htmlContent,
-          });
+          };
+          // Resend attachments: fetch content from URL
+          if (attachments?.length) {
+            resendOpts.attachments = [];
+            for (const att of attachments) {
+              try {
+                const fileRes = await fetch(att.url);
+                if (fileRes.ok) {
+                  const buffer = await fileRes.arrayBuffer();
+                  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+                  resendOpts.attachments.push({ filename: att.name, content: base64 });
+                }
+              } catch { /* skip failed attachment */ }
+            }
+          }
+          await resend.emails.send(resendOpts);
         }
         sent++;
       } catch (e: any) {
