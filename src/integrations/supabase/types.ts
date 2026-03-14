@@ -437,6 +437,7 @@ export type Database = {
           created_at: string
           date_creation: string
           email: string
+          email_opt_out: boolean
           entreprise: string
           id: string
           nom: string
@@ -458,6 +459,7 @@ export type Database = {
           created_at?: string
           date_creation?: string
           email: string
+          email_opt_out?: boolean
           entreprise?: string
           id?: string
           nom: string
@@ -479,6 +481,7 @@ export type Database = {
           created_at?: string
           date_creation?: string
           email?: string
+          email_opt_out?: boolean
           entreprise?: string
           id?: string
           nom?: string
@@ -928,6 +931,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      email_events: {
+        Row: {
+          campagne_id: string | null
+          compte_id: string | null
+          created_at: string
+          date_event: string
+          email_destinataire: string
+          id: string
+          metadata: Json | null
+          type_event: string
+        }
+        Insert: {
+          campagne_id?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_event?: string
+          email_destinataire: string
+          id?: string
+          metadata?: Json | null
+          type_event: string
+        }
+        Update: {
+          campagne_id?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_event?: string
+          email_destinataire?: string
+          id?: string
+          metadata?: Json | null
+          type_event?: string
+        }
+        Relationships: []
       }
       email_logs: {
         Row: {
