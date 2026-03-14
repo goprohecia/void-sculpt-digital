@@ -234,6 +234,29 @@ export function AdminSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 bg-[#f7f8f5] border-t border-[#e4e8df]">
+        {/* Plan badge */}
+        <div className="mb-3 flex items-center justify-between">
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
+            plan === "enterprise"
+              ? "bg-amber-100 text-amber-700"
+              : plan === "business"
+                ? "bg-blue-100 text-blue-700"
+                : "bg-gray-100 text-gray-600"
+          }`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${
+              plan === "enterprise" ? "bg-amber-500" : plan === "business" ? "bg-blue-500" : "bg-gray-400"
+            }`} />
+            Offre {PLAN_INFO[plan]?.label || plan}
+          </span>
+          {plan !== "enterprise" && (
+            <Link
+              to="/admin/upgrade"
+              className="text-[11px] font-medium text-primary hover:underline flex items-center gap-0.5"
+            >
+              Upgrader <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          )}
+        </div>
         <div className="flex items-center gap-3 mb-3">
           <div className="h-9 w-9 rounded-full bg-[#14532d] flex items-center justify-center text-sm font-extrabold text-[#22c55e]">
             {user?.nom?.charAt(0) || "U"}
