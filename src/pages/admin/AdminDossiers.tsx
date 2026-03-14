@@ -51,12 +51,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
 
-const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
+const statusFilters: { key: "tous" | DossierStatus | "archive"; label: string }[] = [
   { key: "tous", label: "Tous" },
   { key: "en_cours", label: "En cours" },
   { key: "termine", label: "Terminés" },
   { key: "en_attente", label: "En attente" },
   { key: "annule", label: "Annulés" },
+  { key: "archive" as any, label: "Archivés" },
 ];
 
 export default function AdminDossiers() {
