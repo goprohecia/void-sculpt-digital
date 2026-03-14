@@ -34,6 +34,11 @@ export default function AdminMessaging() {
   const [showNewConv, setShowNewConv] = useState(false);
   const [newConvForm, setNewConvForm] = useState({ recipientId: "", sujet: "", message: "" });
   const [creating, setCreating] = useState(false);
+  const [pendingMedia, setPendingMedia] = useState<any>(null);
+  const [mediaUploading, setMediaUploading] = useState(false);
+  const [mediaProgress, setMediaProgress] = useState(0);
+  const [mediaResult, setMediaResult] = useState<any>(null);
+  const uploadRef = useRef<any>(null);
 
   // Get sector-specific labels
   const clientsLabel = getModuleLabel("clients");
