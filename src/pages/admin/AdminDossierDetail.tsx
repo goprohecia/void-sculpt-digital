@@ -411,7 +411,12 @@ export default function AdminDossierDetail() {
             />
           )}
 
-          {/* Timeline */}
+          {/* DB-backed team panel (N-to-N) */}
+          <motion.div variants={staggerItem}>
+            <DossierTeamPanel dossierId={dossier.id} />
+          </motion.div>
+
+
           {dossier.statut !== "annule" && (
             <motion.div className="glass-card p-5" variants={staggerItem}>
               <div className="flex items-center justify-between mb-4">
