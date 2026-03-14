@@ -158,8 +158,10 @@ export function RolesPermissionsSettings() {
                       : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                   }`}
                 >
-                  <span>{role.nom}</span>
-                  <div className="flex items-center gap-1">
+                  <div className="flex flex-col items-start">
+                    <span>{role.nom}</span>
+                    <span className="text-[10px] text-muted-foreground">{getEmployeeCount(role.id)} salarié{getEmployeeCount(role.id) > 1 ? "s" : ""}</span>
+                  </div>
                     {selectedRoleId !== role.id && (
                       <button
                         onClick={(e) => {
