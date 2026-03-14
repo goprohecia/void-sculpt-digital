@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
+import { startOfMonth } from "date-fns";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
@@ -20,6 +21,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "sonner";
 import { useObjectifs } from "@/hooks/use-objectifs";
 import { useServiceCategories } from "@/hooks/use-service-categories";
+import { AnalyticsDatePicker, type DateRange } from "@/components/admin/AnalyticsDatePicker";
+import { useAnalyticsData } from "@/hooks/use-analytics-data";
+import { useMetierVocabulary } from "@/hooks/use-metier-vocabulary";
 import {
   ResponsiveContainer,
   LineChart,
