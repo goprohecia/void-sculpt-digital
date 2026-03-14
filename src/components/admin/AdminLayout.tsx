@@ -12,6 +12,8 @@ import { MobileBottomNav } from "./MobileBottomNav";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AnnouncementPopup } from "@/components/messaging/AnnouncementPopup";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { OnboardingWizard } from "@/components/onboarding/OnboardingWizard";
+import { useOnboardingStatus } from "@/hooks/use-onboarding";
 import logoMba from "@/assets/logo-mba.png";
 
 interface AdminLayoutProps {
@@ -23,6 +25,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const { isDemo, isLoading, supabaseUserId } = useIsDemo();
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useNotificationsData();
   const { plan, updatePlan } = useSubscription();
+  const { isOnboardingComplete, isLoading: onboardingLoading, markComplete } = useOnboardingStatus();
   const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
@@ -38,6 +41,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const initials = user?.nom?.charAt(0) || "U";
 
   return (
+    <>
+      {!isOnboardingComplete && !onboardingLoading && (
+        <OnboardingWizard onComplete={markComplete} />
+      )}
     <SidebarProvider>
       <div className="mba-app min-h-screen flex w-full" style={{ background: "hsl(150, 60%, 10%)" }}>
         <AdminSidebar />
@@ -140,5 +147,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <AnnouncementPopup />
       </div>
     </SidebarProvider>
+    </>
   );
 }

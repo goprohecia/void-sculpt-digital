@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp, Shield } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp, Shield, RotateCcw } from "lucide-react";
 import { WhiteLabelPreview } from "@/components/admin/WhiteLabelPreview";
 import { AVAILABLE_FONTS } from "@/hooks/use-white-label";
+import { useOnboardingStatus } from "@/hooks/use-onboarding";
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { StepNotificationSettings } from "@/components/admin/StepNotificationSettings";
 import { BookingSettingsTab } from "@/components/admin/BookingSettingsTab";
@@ -529,6 +530,8 @@ export default function AdminSettings() {
   const { getModuleLabel } = useDemoPlan();
   const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
   const { config: wlConfig, updateConfig: updateWhiteLabel } = useWhiteLabel();
+  const { resetOnboarding } = useOnboardingStatus();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [whiteLabel, setWhiteLabel] = useState({
     brandName: "",
     brandShort: "",
@@ -668,6 +671,7 @@ export default function AdminSettings() {
       { key: "profil", label: "Profil", icon: User },
       { key: "entreprise", label: "Entreprise", icon: Building2 },
       { key: "facturation", label: "Facturation", icon: Receipt },
+      { key: "compte", label: "Compte", icon: RotateCcw },
     ]},
     { group: "Organisation", items: [
       { key: "tags", label: "Tags", icon: Tag },
@@ -1194,6 +1198,59 @@ export default function AdminSettings() {
 
       case "emails":
         return <BrevoConfigSettings />;
+
+      case "compte":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <RotateCcw className="h-4 w-4" /> Configuration initiale
+              </CardTitle>
+              <CardDescription>Relancez le questionnaire d'onboarding pour reconfigurer la structure de votre compte.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {!showResetConfirm ? (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowResetConfirm(true)}
+                  className="gap-2 text-amber-600 border-amber-300 hover:bg-amber-50"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Relancer la configuration initiale
+                </Button>
+              ) : (
+                <div className="p-4 rounded-xl border-2 border-amber-300 bg-amber-50/50 space-y-3">
+                  <p className="text-sm font-medium text-amber-800">
+                    ⚠️ Cette action réinitialisera les rôles et la structure de votre compte.
+                  </p>
+                  <p className="text-xs text-amber-700">
+                    Vos données clients et dossiers ne seront pas affectées. Seuls les rôles et la configuration métier seront recréés.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={async () => {
+                        await resetOnboarding();
+                        setShowResetConfirm(false);
+                        toast.success("Configuration réinitialisée. L'assistant va se relancer.");
+                      }}
+                    >
+                      Confirmer la réinitialisation
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowResetConfirm(false)}
+                    >
+                      Annuler
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        );
 
       default:
         return null;
