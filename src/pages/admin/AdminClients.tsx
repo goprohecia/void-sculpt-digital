@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { ClientTagManager, ClientTagBadges } from "@/components/admin/ClientTagManager";
 import { useTags, useClientTags } from "@/hooks/use-produits";
 import { supabase } from "@/integrations/supabase/client";
+import { ClientDossiersLinked } from "@/components/admin/ClientDossiersLinked";
 
 const SEGMENTS = [
   { value: "tous", label: "Tous" },
