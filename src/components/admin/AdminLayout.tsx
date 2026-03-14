@@ -41,6 +41,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const initials = user?.nom?.charAt(0) || "U";
 
   return (
+    <>
+      {!isOnboardingComplete && !onboardingLoading && (
+        <OnboardingWizard onComplete={markComplete} />
+      )}
     <SidebarProvider>
       <div className="mba-app min-h-screen flex w-full" style={{ background: "hsl(150, 60%, 10%)" }}>
         <AdminSidebar />
