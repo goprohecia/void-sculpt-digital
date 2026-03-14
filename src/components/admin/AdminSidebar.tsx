@@ -17,7 +17,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
-import { useSubscription } from "@/hooks/use-subscription";
+import { useSubscription, PLAN_INFO } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Sparkles } from "lucide-react";
