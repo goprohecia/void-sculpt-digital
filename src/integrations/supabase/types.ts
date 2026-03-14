@@ -103,6 +103,47 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_permissions: {
+        Row: {
+          ancienne_valeur: boolean | null
+          compte_id: string | null
+          date_modification: string
+          id: string
+          nouvelle_valeur: boolean
+          permission_code: string
+          role_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ancienne_valeur?: boolean | null
+          compte_id?: string | null
+          date_modification?: string
+          id?: string
+          nouvelle_valeur: boolean
+          permission_code: string
+          role_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ancienne_valeur?: boolean | null
+          compte_id?: string | null
+          date_modification?: string
+          id?: string
+          nouvelle_valeur?: boolean
+          permission_code?: string
+          role_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bon_commande_lignes: {
         Row: {
           bon_commande_id: string
@@ -965,6 +1006,45 @@ export type Database = {
         }
         Relationships: []
       }
+      employe_role: {
+        Row: {
+          compte_id: string | null
+          date_assignation: string
+          employe_id: string
+          id: string
+          role_id: string
+        }
+        Insert: {
+          compte_id?: string | null
+          date_assignation?: string
+          employe_id: string
+          id?: string
+          role_id: string
+        }
+        Update: {
+          compte_id?: string | null
+          date_assignation?: string
+          employe_id?: string
+          id?: string
+          role_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employe_role_employe_id_fkey"
+            columns: ["employe_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "employe_role_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           acces_modules: Json
@@ -1300,6 +1380,27 @@ export type Database = {
         }
         Relationships: []
       }
+      permissions: {
+        Row: {
+          categorie: string
+          code: string
+          description_lisible: string
+          id: string
+        }
+        Insert: {
+          categorie?: string
+          code: string
+          description_lisible?: string
+          id?: string
+        }
+        Update: {
+          categorie?: string
+          code?: string
+          description_lisible?: string
+          id?: string
+        }
+        Relationships: []
+      }
       preview_visits: {
         Row: {
           compte_id: string | null
@@ -1523,6 +1624,63 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      role_permissions: {
+        Row: {
+          permission_id: string
+          role_id: string
+          valeur: boolean
+        }
+        Insert: {
+          permission_id: string
+          role_id: string
+          valeur?: boolean
+        }
+        Update: {
+          permission_id?: string
+          role_id?: string
+          valeur?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_permission_id_fkey"
+            columns: ["permission_id"]
+            isOneToOne: false
+            referencedRelation: "permissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      roles: {
+        Row: {
+          compte_id: string | null
+          date_creation: string
+          description: string | null
+          id: string
+          nom: string
+        }
+        Insert: {
+          compte_id?: string | null
+          date_creation?: string
+          description?: string | null
+          id?: string
+          nom: string
+        }
+        Update: {
+          compte_id?: string | null
+          date_creation?: string
+          description?: string | null
+          id?: string
+          nom?: string
+        }
+        Relationships: []
       }
       send_logs: {
         Row: {
@@ -1849,6 +2007,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_permission: {
+        Args: { _permission_code: string; _user_id: string }
+        Returns: boolean
+      }
       get_user_compte_id: { Args: never; Returns: string }
       has_role: {
         Args: {

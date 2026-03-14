@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp, Shield } from "lucide-react";
 import { TimelineTemplateEditor } from "@/components/admin/TimelineTemplateEditor";
 import { StepNotificationSettings } from "@/components/admin/StepNotificationSettings";
 import { BookingSettingsTab } from "@/components/admin/BookingSettingsTab";
@@ -29,6 +29,7 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
   "overview", "dossiers", "calendrier", "messagerie", "facturation",
@@ -669,6 +670,7 @@ export default function AdminSettings() {
       { key: "services", label: "Services", icon: BarChart3 },
       { key: "modules", label: "Modules", icon: Puzzle },
       { key: "timeline", label: "Timeline", icon: Clock },
+      { key: "roles", label: "Rôles & Droits", icon: Shield },
     ]},
     { group: "Avancé", items: [
       { key: "reservation", label: "Réservation", icon: CalendarDays },
@@ -1126,6 +1128,9 @@ export default function AdminSettings() {
 
       case "suivi-client":
         return <StepNotificationSettings />;
+
+      case "roles":
+        return <RolesPermissionsSettings />;
 
       default:
         return null;
