@@ -135,26 +135,71 @@ export default function ClientMessaging() {
                             className={cn(
                               "max-w-[80%] rounded-2xl px-4 py-2.5 text-sm",
                               msg.role === "client"
-                                ? "ml-auto bg-[hsl(200,100%,50%)]/20 text-foreground rounded-br-md"
+                                ? "ml-auto bg-primary/20 text-foreground rounded-br-md"
                                 : "bg-muted/40 text-foreground rounded-bl-md"
                             )}
                           >
                             <p>{msg.contenu}</p>
+                            <MessageMediaInline
+                              mediaUrl={(msg as any).media_url}
+                              mediaType={(msg as any).media_type}
+                              mediaName={(msg as any).media_name}
+                              mediaSize={(msg as any).media_size}
+                            />
                             <p className="text-[10px] text-muted-foreground mt-1">{msg.date}</p>
                           </div>
                         ))}
                       </div>
 
-                      <div className="p-3 border-t border-border/30 flex gap-2">
-                        <textarea
-                          value={replyText}
-                          onChange={(e) => setReplyText(e.target.value)}
-                          placeholder="Votre message..."
-                          className="flex-1 glass-input border-0 resize-none min-h-[40px] max-h-[100px] p-2.5 text-sm"
-                          rows={1}
-                        />
-                        <button className="glass-button p-2.5 text-[hsl(200,100%,60%)] hover:text-white hover:bg-[hsl(200,100%,50%)] transition-colors">
-                          <Send className="h-4 w-4" />
+                      <div className="p-3 border-t border-border/30 relative">
+                        <div className="flex gap-2">
+                          <MessageMediaUpload
+                            onMediaReady={setMediaResult}
+                            pending={pendingMedia}
+                            setPending={setPendingMedia}
+                            uploading={mediaUploading}
+                            setUploading={setMediaUploading}
+                            progress={mediaProgress}
+                            setProgress={setMediaProgress}
+                          />
+                          <textarea
+                            value={replyText}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            placeholder="Votre message..."
+                            className="flex-1 glass-input border-0 resize-none min-h-[40px] max-h-[100px] p-2.5 text-sm"
+                            rows={1}
+                          />
+                          <button
+                            disabled={mediaUploading || (!replyText.trim() && !pendingMedia)}
+                            onClick={async () => {
+                              if (!activeConv || isDemo) { toast.info("Mode démo"); return; }
+                              let media = mediaResult;
+                              if (pendingMedia && !media) {
+                                const hiddenInput = document.querySelector('[data-upload-fn]') as any;
+                                if (hiddenInput?.__uploadFn) {
+                                  media = await hiddenInput.__uploadFn();
+                                  if (!media && !replyText.trim()) return;
+                                }
+                              }
+                              const { error } = await supabase.from("messages").insert({
+                                conversation_id: activeConv.id,
+                                contenu: replyText.trim() || (media ? `📎 ${media.name}` : ""),
+                                role: "client",
+                                date: new Date().toISOString(),
+                                ...(media ? { media_url: media.url, media_type: media.type, media_name: media.name, media_size: media.size } : {}),
+                              } as any);
+                              if (error) { toast.error(error.message); return; }
+                              setReplyText("");
+                              setMediaResult(null);
+                              setPendingMedia(null);
+                              queryClient.invalidateQueries({ queryKey: ["conversations"] });
+                            }}
+                            className="glass-button p-2.5 text-primary hover:text-primary-foreground hover:bg-primary transition-colors disabled:opacity-50"
+                          >
+                            <Send className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
                         </button>
                       </div>
                     </>
