@@ -51,17 +51,18 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
 
-const statusFilters: { key: "tous" | DossierStatus; label: string }[] = [
+const statusFilters: { key: "tous" | DossierStatus | "archive"; label: string }[] = [
   { key: "tous", label: "Tous" },
   { key: "en_cours", label: "En cours" },
   { key: "termine", label: "Terminés" },
   { key: "en_attente", label: "En attente" },
   { key: "annule", label: "Annulés" },
+  { key: "archive" as any, label: "Archivés" },
 ];
 
 export default function AdminDossiers() {
   const [search, setSearch] = useState("");
-  const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus>("tous");
+  const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus | "archive">("tous");
   const [filterMontantMin, setFilterMontantMin] = useState("");
   const [filterMontantMax, setFilterMontantMax] = useState("");
   const [filterTag, setFilterTag] = useState("");
@@ -112,8 +113,12 @@ export default function AdminDossiers() {
         d.typePrestation.toLowerCase().includes(q)
       );
     }
-    // Status
-    if (filterStatut !== "tous") list = list.filter((d) => d.statut === filterStatut);
+    // Status - hide archived by default unless explicitly filtering for them
+    if (filterStatut === "tous") {
+      list = list.filter((d) => (d.statut as string) !== "archive");
+    } else {
+      list = list.filter((d) => (d.statut as string) === filterStatut);
+    }
     // Montant min/max
     if (filterMontantMin) list = list.filter((d) => d.montant >= parseFloat(filterMontantMin));
     if (filterMontantMax) list = list.filter((d) => d.montant <= parseFloat(filterMontantMax));

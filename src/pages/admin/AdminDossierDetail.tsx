@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import type { DossierStatus } from "@/data/mockData";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
 import { DossierTimeline } from "@/components/admin/DossierTimeline";
+import { DossierTeamPanel } from "@/components/admin/DossierTeamPanel";
 import { useSubscription } from "@/hooks/use-subscription";
 
 const etapes = ["Demande reçue", "Rendez-vous", "Cahier des charges", "Devis envoyé", "Devis accepté", "En cours", "Livraison", "Terminé"];
@@ -261,6 +262,7 @@ export default function AdminDossierDetail() {
                     <SelectItem value="en_attente">En attente</SelectItem>
                     <SelectItem value="en_cours">En cours</SelectItem>
                     <SelectItem value="termine">Terminé</SelectItem>
+                    <SelectItem value="archive">Archivé</SelectItem>
                     <SelectItem value="annule">Annulé</SelectItem>
                   </SelectContent>
                 </Select>
@@ -409,7 +411,12 @@ export default function AdminDossierDetail() {
             />
           )}
 
-          {/* Timeline */}
+          {/* DB-backed team panel (N-to-N) */}
+          <motion.div variants={staggerItem}>
+            <DossierTeamPanel dossierId={dossier.id} />
+          </motion.div>
+
+
           {dossier.statut !== "annule" && (
             <motion.div className="glass-card p-5" variants={staggerItem}>
               <div className="flex items-center justify-between mb-4">

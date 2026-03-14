@@ -1422,6 +1422,33 @@ export type Database = {
           },
         ]
       }
+      metier_vocabulaire: {
+        Row: {
+          champ: string
+          compte_id: string | null
+          created_at: string
+          id: string
+          label_custom: string
+          metier_id: string
+        }
+        Insert: {
+          champ: string
+          compte_id?: string | null
+          created_at?: string
+          id?: string
+          label_custom: string
+          metier_id: string
+        }
+        Update: {
+          champ?: string
+          compte_id?: string | null
+          created_at?: string
+          id?: string
+          label_custom?: string
+          metier_id?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           client_id: string | null

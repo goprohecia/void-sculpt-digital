@@ -13,7 +13,7 @@ import { useClients } from "@/hooks/use-clients";
 import { useDossiers } from "@/hooks/use-dossiers";
 import { useDemandes } from "@/hooks/use-demandes";
 import type { Client } from "@/data/mockData";
-import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus, Tag, Mail, Send } from "lucide-react";
+import { Search, Users, Eye, X, Building2, MapPin, Pencil, Trash2, UserCheck, UserX, Save, UserPlus, Tag, Mail, Send, FolderOpen, Archive } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { ClientTagManager, ClientTagBadges } from "@/components/admin/ClientTagManager";
 import { useTags, useClientTags } from "@/hooks/use-produits";
 import { supabase } from "@/integrations/supabase/client";
+import { ClientDossiersLinked } from "@/components/admin/ClientDossiersLinked";
 
 const SEGMENTS = [
   { value: "tous", label: "Tous" },
@@ -199,8 +200,9 @@ export default function AdminClients() {
 
   const ClientDetail = () => (
     <Tabs defaultValue="general" className="space-y-4">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="general">Général</TabsTrigger>
+        <TabsTrigger value="projets" className="gap-1.5"><FolderOpen className="h-3.5 w-3.5" /> Projets</TabsTrigger>
         <TabsTrigger value="coordonnees" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Coordonnées</TabsTrigger>
       </TabsList>
 
@@ -260,6 +262,31 @@ export default function AdminClients() {
                 <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20">
                   <div><p className="text-sm font-medium">{d.titre}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
                   <StatusBadge status={d.statut} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </TabsContent>
+
+      <TabsContent value="projets" className="space-y-6">
+        {selectedClient && <ClientDossiersLinked clientId={selectedClient.id} />}
+        
+        {/* Archived dossiers */}
+        {clientDossiers.filter(d => d.statut === ("archive" as any)).length > 0 && (
+          <div>
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-1.5">
+              <Archive className="h-3.5 w-3.5 text-muted-foreground" />
+              Historique archivé
+            </h3>
+            <div className="space-y-2">
+              {clientDossiers.filter(d => d.statut === ("archive" as any)).map((d) => (
+                <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 opacity-70">
+                  <div><p className="text-sm font-mono">{d.reference}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
+                    <StatusBadge status="termine" />
+                  </div>
                 </div>
               ))}
             </div>
