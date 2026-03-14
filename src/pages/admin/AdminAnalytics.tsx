@@ -428,8 +428,8 @@ export default function AdminAnalytics() {
               {analytics.isLoading && <Loader2 className="h-5 w-5 animate-spin text-primary" />}
             </div>
             <AnalyticsDatePicker value={dateRange} onChange={setDateRange} />
-            </div>
-            <div className="flex flex-wrap gap-2 self-start">
+          </motion.div>
+          <motion.div variants={staggerItem} className="flex flex-wrap gap-2">
               <AIContextButton
                 label="Analyse IA"
                 context={`analyse - CA total: ${totalCA}€, Encaissements: ${totalEncaissements}€, ${totalDossiers} dossiers, ${totalNouveauxClients} nouveaux clients. Factures: ${factures.filter(f => f.statut === "payee").length} payées, ${factures.filter(f => f.statut === "en_retard").length} en retard.`}
