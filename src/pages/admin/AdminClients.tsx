@@ -269,6 +269,31 @@ export default function AdminClients() {
         )}
       </TabsContent>
 
+      <TabsContent value="projets" className="space-y-6">
+        {selectedClient && <ClientDossiersLinked clientId={selectedClient.id} />}
+        
+        {/* Archived dossiers */}
+        {clientDossiers.filter(d => d.statut === ("archive" as any)).length > 0 && (
+          <div>
+            <h3 className="text-sm font-semibold mb-3 flex items-center gap-1.5">
+              <Archive className="h-3.5 w-3.5 text-muted-foreground" />
+              Historique archivé
+            </h3>
+            <div className="space-y-2">
+              {clientDossiers.filter(d => d.statut === ("archive" as any)).map((d) => (
+                <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 opacity-70">
+                  <div><p className="text-sm font-mono">{d.reference}</p><p className="text-xs text-muted-foreground">{d.typePrestation}</p></div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium">{d.montant.toLocaleString()} €</span>
+                    <StatusBadge status="termine" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </TabsContent>
+
       <TabsContent value="coordonnees" className="space-y-4">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div><p className="text-muted-foreground">Entreprise</p><p className="font-medium">{selectedClient?.entreprise || "—"}</p></div>
