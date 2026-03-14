@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { MessageMediaUpload, MessageMediaInline } from "@/components/messaging/MessageMediaUpload";
 
 type TabType = "clients" | "salaries";
 
@@ -33,6 +34,11 @@ export default function AdminMessaging() {
   const [showNewConv, setShowNewConv] = useState(false);
   const [newConvForm, setNewConvForm] = useState({ recipientId: "", sujet: "", message: "" });
   const [creating, setCreating] = useState(false);
+  const [pendingMedia, setPendingMedia] = useState<any>(null);
+  const [mediaUploading, setMediaUploading] = useState(false);
+  const [mediaProgress, setMediaProgress] = useState(0);
+  const [mediaResult, setMediaResult] = useState<any>(null);
+  const uploadRef = useRef<any>(null);
 
   // Get sector-specific labels
   const clientsLabel = getModuleLabel("clients");
@@ -223,13 +229,59 @@ export default function AdminMessaging() {
                         {activeConv.messages.map((msg) => (
                           <div key={msg.id} className={cn("max-w-[80%] rounded-2xl px-4 py-2.5 text-sm", msg.role === "admin" ? "ml-auto bg-primary/20 text-foreground rounded-br-md" : "bg-muted/40 text-foreground rounded-bl-md")}>
                             <p>{msg.contenu}</p>
+                            <MessageMediaInline
+                              mediaUrl={(msg as any).media_url}
+                              mediaType={(msg as any).media_type}
+                              mediaName={(msg as any).media_name}
+                              mediaSize={(msg as any).media_size}
+                            />
                             <p className="text-[10px] text-muted-foreground mt-1">{msg.date}</p>
                           </div>
                         ))}
                       </div>
-                      <div className="p-3 border-t border-border/30 flex gap-2">
-                        <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} placeholder="Votre message..." className="flex-1 glass-input border-0 resize-none min-h-[40px] max-h-[100px] p-2.5 text-sm" rows={1} />
-                        <button className="glass-button p-2.5 text-primary hover:text-primary-foreground hover:bg-primary transition-colors"><Send className="h-4 w-4" /></button>
+                      <div className="p-3 border-t border-border/30 relative">
+                        <div className="flex gap-2">
+                          <MessageMediaUpload
+                            onMediaReady={setMediaResult}
+                            pending={pendingMedia}
+                            setPending={setPendingMedia}
+                            uploading={mediaUploading}
+                            setUploading={setMediaUploading}
+                            progress={mediaProgress}
+                            setProgress={setMediaProgress}
+                          />
+                          <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} placeholder="Votre message..." className="flex-1 glass-input border-0 resize-none min-h-[40px] max-h-[100px] p-2.5 text-sm" rows={1} />
+                          <button
+                            disabled={mediaUploading || (!replyText.trim() && !pendingMedia)}
+                            onClick={async () => {
+                              if (!activeConv || isDemo) { toast.info("Mode démo"); return; }
+                              let media = mediaResult;
+                              // Upload pending media if not yet uploaded
+                              if (pendingMedia && !media) {
+                                const hiddenInput = document.querySelector('[data-upload-fn]') as any;
+                                if (hiddenInput?.__uploadFn) {
+                                  media = await hiddenInput.__uploadFn();
+                                  if (!media && !replyText.trim()) return;
+                                }
+                              }
+                              const { error } = await supabase.from("messages").insert({
+                                conversation_id: activeConv.id,
+                                contenu: replyText.trim() || (media ? `📎 ${media.name}` : ""),
+                                role: "admin",
+                                date: new Date().toISOString(),
+                                ...(media ? { media_url: media.url, media_type: media.type, media_name: media.name, media_size: media.size } : {}),
+                              } as any);
+                              if (error) { toast.error(error.message); return; }
+                              setReplyText("");
+                              setMediaResult(null);
+                              setPendingMedia(null);
+                              queryClient.invalidateQueries({ queryKey: ["conversations"] });
+                            }}
+                            className="glass-button p-2.5 text-primary hover:text-primary-foreground hover:bg-primary transition-colors disabled:opacity-50"
+                          >
+                            <Send className="h-4 w-4" />
+                          </button>
+                        </div>
                       </div>
                     </>
                   ) : conversations.length === 0 ? (

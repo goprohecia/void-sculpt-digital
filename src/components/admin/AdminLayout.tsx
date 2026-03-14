@@ -10,6 +10,7 @@ import { NotificationPanel } from "./NotificationPanel";
 import { AdminPageTransition } from "./AdminPageTransition";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AnnouncementPopup } from "@/components/messaging/AnnouncementPopup";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import logoMba from "@/assets/logo-mba.png";
 
@@ -136,6 +137,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </main>
         </div>
         <MobileBottomNav variant="admin" />
+        <AnnouncementPopup />
       </div>
     </SidebarProvider>
   );
