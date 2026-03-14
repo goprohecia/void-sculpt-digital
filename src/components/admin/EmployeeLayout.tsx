@@ -85,6 +85,7 @@ export function EmployeeLayout({ children }: EmployeeLayoutProps) {
           </main>
         </div>
         <MobileBottomNav variant="employee" />
+        <AnnouncementPopup />
       </div>
     </SidebarProvider>
   );
