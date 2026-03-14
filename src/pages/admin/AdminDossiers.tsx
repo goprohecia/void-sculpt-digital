@@ -62,7 +62,7 @@ const statusFilters: { key: "tous" | DossierStatus | "archive"; label: string }[
 
 export default function AdminDossiers() {
   const [search, setSearch] = useState("");
-  const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus>("tous");
+  const [filterStatut, setFilterStatut] = useState<"tous" | DossierStatus | "archive">("tous");
   const [filterMontantMin, setFilterMontantMin] = useState("");
   const [filterMontantMax, setFilterMontantMax] = useState("");
   const [filterTag, setFilterTag] = useState("");
