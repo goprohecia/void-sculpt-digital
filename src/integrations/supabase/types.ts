@@ -702,6 +702,53 @@ export type Database = {
           },
         ]
       }
+      demandes_indisponibilite: {
+        Row: {
+          commentaire_admin: string | null
+          compte_id: string | null
+          created_at: string
+          date_debut: string
+          date_fin: string
+          date_traitement: string | null
+          employe_id: string
+          id: string
+          motif: string
+          statut: string
+        }
+        Insert: {
+          commentaire_admin?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_debut: string
+          date_fin: string
+          date_traitement?: string | null
+          employe_id: string
+          id?: string
+          motif?: string
+          statut?: string
+        }
+        Update: {
+          commentaire_admin?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_debut?: string
+          date_fin?: string
+          date_traitement?: string | null
+          employe_id?: string
+          id?: string
+          motif?: string
+          statut?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demandes_indisponibilite_employe_id_fkey"
+            columns: ["employe_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devis: {
         Row: {
           client_id: string
@@ -1196,6 +1243,66 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      evenements_calendrier: {
+        Row: {
+          client_id: string | null
+          compte_id: string | null
+          created_at: string
+          date_debut: string
+          date_fin: string
+          description: string | null
+          employe_id: string | null
+          id: string
+          statut: string
+          titre: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          client_id?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_debut: string
+          date_fin: string
+          description?: string | null
+          employe_id?: string | null
+          id?: string
+          statut?: string
+          titre?: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_debut?: string
+          date_fin?: string
+          description?: string | null
+          employe_id?: string | null
+          id?: string
+          statut?: string
+          titre?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evenements_calendrier_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "evenements_calendrier_employe_id_fkey"
+            columns: ["employe_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       events_manuels: {
         Row: {
