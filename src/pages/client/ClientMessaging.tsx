@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
@@ -8,6 +8,10 @@ import { type Conversation } from "@/data/mockData";
 import { MessageSquare, Send } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { MessageMediaUpload, MessageMediaInline } from "@/components/messaging/MessageMediaUpload";
 
 export default function ClientMessaging() {
   const { clientId, isLoading: clientLoading } = useClientId();

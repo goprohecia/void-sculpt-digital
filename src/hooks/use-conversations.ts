@@ -16,12 +16,16 @@ function mapRow(row: any, messages: Message[]): Conversation {
   };
 }
 
-function mapMessage(row: any): Message {
+function mapMessage(row: any): Message & { media_url?: string; media_type?: string; media_name?: string; media_size?: number } {
   return {
     id: row.id,
     contenu: row.contenu,
     role: row.role as Message["role"],
     date: row.date,
+    media_url: row.media_url ?? undefined,
+    media_type: row.media_type ?? undefined,
+    media_name: row.media_name ?? undefined,
+    media_size: row.media_size ?? undefined,
   };
 }
 
