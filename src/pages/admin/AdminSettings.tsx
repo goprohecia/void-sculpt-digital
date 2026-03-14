@@ -669,6 +669,7 @@ export default function AdminSettings() {
       { key: "profil", label: "Profil", icon: User },
       { key: "entreprise", label: "Entreprise", icon: Building2 },
       { key: "facturation", label: "Facturation", icon: Receipt },
+      { key: "compte", label: "Compte", icon: RotateCcw },
     ]},
     { group: "Organisation", items: [
       { key: "tags", label: "Tags", icon: Tag },
