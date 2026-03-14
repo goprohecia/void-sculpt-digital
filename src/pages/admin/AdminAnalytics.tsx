@@ -300,12 +300,14 @@ export default function AdminAnalytics() {
 
       const doc = new jsPDF();
       const now = new Date().toLocaleDateString("fr-FR");
+      const periodFrom = dateRange.from.toLocaleDateString("fr-FR");
+      const periodTo = dateRange.to.toLocaleDateString("fr-FR");
 
       doc.setFontSize(20);
       doc.text("Rapport Analytique — My Business Assistant", 14, 20);
       doc.setFontSize(10);
       doc.setTextColor(120);
-      doc.text(`Généré le ${now}`, 14, 28);
+      doc.text(`Généré le ${now} — Période : ${periodFrom} au ${periodTo}`, 14, 28);
 
       doc.setFontSize(14);
       doc.setTextColor(40);
