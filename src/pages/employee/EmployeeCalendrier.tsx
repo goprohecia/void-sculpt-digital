@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { EmployeeLayout } from "@/components/admin/EmployeeLayout";
 import { AdminPageTransition } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,273 +6,273 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarDays, Plus, Trash2, CalendarIcon } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { CalendarDays, Plus, CalendarIcon, Clock, AlertCircle, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, parseISO, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addMonths, subMonths, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "@/hooks/use-toast";
-import {
-  MOCK_DISPONIBILITES,
-  type PlageHoraire,
-  type DisponibilitesHebdo,
-  type ExceptionDispo,
-  type Conge,
-} from "@/data/mockData";
+import { toast } from "sonner";
+import { useCalendarEvents, useIndisponibilites } from "@/hooks/use-calendar-events";
+import { useIsDemo } from "@/hooks/useIsDemo";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
-const JOURS_LABELS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-
-const currentDispo = MOCK_DISPONIBILITES[0]; // simule le pro connecté
+const TYPE_COLORS: Record<string, string> = {
+  travail: "bg-primary/20 text-primary border-primary/30",
+  rdv: "bg-primary/20 text-primary border-primary/30",
+  reunion: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  intervention: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  conge: "bg-red-500/20 text-red-400 border-red-500/30",
+};
 
 export default function EmployeeCalendrier() {
-  const [horaires, setHoraires] = useState<DisponibilitesHebdo>({ ...currentDispo.horaires });
-  const [exceptions, setExceptions] = useState<ExceptionDispo[]>([...currentDispo.exceptions]);
-  const [conges, setConges] = useState<Conge[]>([...currentDispo.conges]);
+  const { isDemo, supabaseUserId } = useIsDemo();
+  const { events } = useCalendarEvents();
+  const { demandes, createDemande } = useIndisponibilites();
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const [openIndispo, setOpenIndispo] = useState(false);
+  const [indispoForm, setIndispoForm] = useState({ date_debut: "", date_fin: "", motif: "" });
 
-  // -- Horaires --
-  const addPlage = (jour: number) => {
-    setHoraires(prev => ({
-      ...prev,
-      [jour]: [...(prev[jour] || []), { debut: "09:00", fin: "12:00" }],
-    }));
-  };
+  // Get current employee id
+  const { data: currentEmployee } = useQuery({
+    queryKey: ["current-employee", supabaseUserId],
+    queryFn: async () => {
+      if (!supabaseUserId) return null;
+      const { data } = await supabase.from("employees").select("id").eq("user_id", supabaseUserId).maybeSingle();
+      return data as { id: string } | null;
+    },
+    enabled: !isDemo && !!supabaseUserId,
+  });
 
-  const removePlage = (jour: number, idx: number) => {
-    setHoraires(prev => ({
-      ...prev,
-      [jour]: (prev[jour] || []).filter((_, i) => i !== idx),
-    }));
-  };
+  // Filter events for this employee only
+  const myEvents = useMemo(() => {
+    if (isDemo) return events;
+    if (!currentEmployee) return [];
+    return events.filter((e) => e.employe_id === currentEmployee.id || !e.employe_id);
+  }, [events, currentEmployee, isDemo]);
 
-  const updatePlage = (jour: number, idx: number, field: "debut" | "fin", val: string) => {
-    setHoraires(prev => ({
-      ...prev,
-      [jour]: (prev[jour] || []).map((p, i) => (i === idx ? { ...p, [field]: val } : p)),
-    }));
-  };
+  const myDemandes = useMemo(() => {
+    if (isDemo) return [];
+    if (!currentEmployee) return [];
+    return demandes.filter((d) => d.employe_id === currentEmployee.id);
+  }, [demandes, currentEmployee, isDemo]);
 
-  // -- Exceptions --
-  const [excDate, setExcDate] = useState<Date | undefined>();
-  const [excDispo, setExcDispo] = useState(false);
-  const [excDebut, setExcDebut] = useState("09:00");
-  const [excFin, setExcFin] = useState("18:00");
+  // Calendar
+  const monthStart = startOfMonth(currentMonth);
+  const monthEnd = endOfMonth(currentMonth);
+  const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+  const startDayOfWeek = (getDay(monthStart) + 6) % 7;
+  const paddedDays: (Date | null)[] = [...Array(startDayOfWeek).fill(null), ...days];
 
-  const addException = () => {
-    if (!excDate) return;
-    const dateStr = format(excDate, "yyyy-MM-dd");
-    if (exceptions.some(e => e.date === dateStr)) {
-      toast({ title: "Exception déjà existante", description: "Une exception existe déjà pour ce jour.", variant: "destructive" });
+  const getEventsForDay = (day: Date) => myEvents.filter((e) => isSameDay(parseISO(e.date_debut), day));
+  const dayEvents = selectedDay ? getEventsForDay(selectedDay) : [];
+
+  const handleSubmitIndispo = async () => {
+    if (!indispoForm.date_debut || !indispoForm.date_fin || !indispoForm.motif) {
+      toast.error("Tous les champs sont requis");
       return;
     }
-    setExceptions(prev => [
-      ...prev,
-      {
-        id: `exc-${Date.now()}`,
-        date: dateStr,
-        disponible: excDispo,
-        plages: excDispo ? [{ debut: excDebut, fin: excFin }] : undefined,
-      },
-    ]);
-    setExcDate(undefined);
-  };
-
-  // -- Congés --
-  const [congeDebut, setCongeDebut] = useState<Date | undefined>();
-  const [congeFin, setCongeFin] = useState<Date | undefined>();
-
-  const addConge = () => {
-    if (!congeDebut || !congeFin || congeFin <= congeDebut) return;
-    setConges(prev => [
-      ...prev,
-      { id: `cong-${Date.now()}`, debut: format(congeDebut, "yyyy-MM-dd"), fin: format(congeFin, "yyyy-MM-dd") },
-    ]);
-    setCongeDebut(undefined);
-    setCongeFin(undefined);
-    toast({ title: "Congé ajouté" });
+    if (!currentEmployee) {
+      toast.error("Employé non identifié");
+      return;
+    }
+    try {
+      await createDemande({
+        employe_id: currentEmployee.id,
+        date_debut: new Date(indispoForm.date_debut).toISOString(),
+        date_fin: new Date(indispoForm.date_fin).toISOString(),
+        motif: indispoForm.motif,
+      });
+      toast.success("Demande d'indisponibilité envoyée");
+      setOpenIndispo(false);
+      setIndispoForm({ date_debut: "", date_fin: "", motif: "" });
+    } catch {
+      toast.error("Erreur lors de l'envoi");
+    }
   };
 
   return (
     <EmployeeLayout>
       <AdminPageTransition>
         <div className="space-y-6">
-          <div>
-            <h1 className="text-2xl font-bold flex items-center gap-2">
-              <CalendarDays className="h-6 w-6 text-primary" />
-              Mes disponibilités
-            </h1>
-            <p className="text-muted-foreground text-sm">Gérez vos horaires, exceptions et congés</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold flex items-center gap-2">
+                <CalendarDays className="h-6 w-6 text-primary" />
+                Mon calendrier
+              </h1>
+              <p className="text-muted-foreground text-sm">Vos événements et indisponibilités</p>
+            </div>
+            <Button onClick={() => setOpenIndispo(true)} variant="outline" className="gap-1.5">
+              <AlertCircle className="h-4 w-4" /> Signaler une indisponibilité
+            </Button>
           </div>
 
-          <Tabs defaultValue="horaires">
+          <Tabs defaultValue="calendrier">
             <TabsList className="w-full sm:w-auto">
-              <TabsTrigger value="horaires">Horaires habituels</TabsTrigger>
-              <TabsTrigger value="exceptions">Exceptions</TabsTrigger>
-              <TabsTrigger value="conges">Congés</TabsTrigger>
+              <TabsTrigger value="calendrier">Calendrier</TabsTrigger>
+              <TabsTrigger value="demandes">
+                Mes demandes
+                {myDemandes.filter((d) => d.statut === "en_attente").length > 0 && (
+                  <Badge variant="secondary" className="ml-1.5 text-[10px] px-1.5 py-0">
+                    {myDemandes.filter((d) => d.statut === "en_attente").length}
+                  </Badge>
+                )}
+              </TabsTrigger>
             </TabsList>
 
-            {/* ===== HORAIRES ===== */}
-            <TabsContent value="horaires">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Plages horaires récurrentes</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {JOURS_LABELS.map((label, jour) => (
-                    <div key={jour} className="flex flex-col gap-2 p-3 rounded-lg border bg-muted/20">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium w-24">{label}</span>
-                        <Button variant="ghost" size="sm" onClick={() => addPlage(jour)}>
-                          <Plus className="h-3 w-3 mr-1" /> Ajouter
-                        </Button>
-                      </div>
-                      {(horaires[jour] || []).length === 0 && (
-                        <p className="text-xs text-muted-foreground ml-1">Fermé</p>
-                      )}
-                      {(horaires[jour] || []).map((plage, idx) => (
-                        <div key={idx} className="flex items-center gap-2 ml-1">
-                          <Input
-                            type="time"
-                            value={plage.debut}
-                            onChange={e => updatePlage(jour, idx, "debut", e.target.value)}
-                            className="w-28 h-8 text-xs"
-                          />
-                          <span className="text-xs text-muted-foreground">→</span>
-                          <Input
-                            type="time"
-                            value={plage.fin}
-                            onChange={e => updatePlage(jour, idx, "fin", e.target.value)}
-                            className="w-28 h-8 text-xs"
-                          />
-                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => removePlage(jour, idx)}>
-                            <Trash2 className="h-3 w-3 text-destructive" />
-                          </Button>
-                        </div>
+            <TabsContent value="calendrier">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-2">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
+                        ←
+                      </Button>
+                      <CardTitle className="text-base capitalize">
+                        {format(currentMonth, "MMMM yyyy", { locale: fr })}
+                      </CardTitle>
+                      <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+                        →
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-7 gap-1">
+                      {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"].map((j) => (
+                        <div key={j} className="text-center text-xs font-medium text-muted-foreground py-2">{j}</div>
                       ))}
+                      {paddedDays.map((day, i) => {
+                        if (!day) return <div key={`pad-${i}`} className="p-1 min-h-[60px]" />;
+                        const dayEvts = getEventsForDay(day);
+                        const isSelected = selectedDay && isSameDay(day, selectedDay);
+                        return (
+                          <div
+                            key={day.toISOString()}
+                            onClick={() => setSelectedDay(day)}
+                            className={cn(
+                              "p-1 min-h-[60px] rounded-lg border transition-colors cursor-pointer",
+                              isSelected
+                                ? "bg-primary/10 border-primary/50"
+                                : isToday(day)
+                                ? "border-primary/30 bg-primary/5"
+                                : "border-transparent hover:bg-muted/20"
+                            )}
+                          >
+                            <span className={cn("text-xs font-medium", isToday(day) && "text-primary")}>{format(day, "d")}</span>
+                            {dayEvts.length > 0 && (
+                              <div className="mt-0.5 flex gap-0.5">
+                                {dayEvts.slice(0, 3).map((evt) => (
+                                  <span key={evt.id} className={cn("h-1.5 w-1.5 rounded-full", evt.type === "conge" ? "bg-destructive" : "bg-primary")} />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                  </CardContent>
+                </Card>
 
-            {/* ===== EXCEPTIONS ===== */}
-            <TabsContent value="exceptions">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Exceptions ponctuelles</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex flex-wrap items-end gap-3">
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Date</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-44 justify-start text-left text-sm", !excDate && "text-muted-foreground")}>
-                            <CalendarIcon className="h-4 w-4 mr-2" />
-                            {excDate ? format(excDate, "dd MMM yyyy", { locale: fr }) : "Choisir"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={excDate} onSelect={setExcDate} className="p-3 pointer-events-auto" />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs text-muted-foreground">Disponible</label>
-                      <Switch checked={excDispo} onCheckedChange={setExcDispo} />
-                    </div>
-                    {excDispo && (
-                      <>
-                        <Input type="time" value={excDebut} onChange={e => setExcDebut(e.target.value)} className="w-28 h-9 text-sm" />
-                        <span className="text-xs text-muted-foreground">→</span>
-                        <Input type="time" value={excFin} onChange={e => setExcFin(e.target.value)} className="w-28 h-9 text-sm" />
-                      </>
-                    )}
-                    <Button size="sm" onClick={addException} disabled={!excDate}>
-                      <Plus className="h-3 w-3 mr-1" /> Ajouter
-                    </Button>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {exceptions.map(exc => (
-                      <Badge
-                        key={exc.id}
-                        variant={exc.disponible ? "default" : "destructive"}
-                        className="gap-1 text-xs py-1"
-                      >
-                        {format(new Date(exc.date), "dd MMM", { locale: fr })} — {exc.disponible ? "Disponible" : "Indisponible"}
-                        {exc.plages && exc.plages.length > 0 && ` (${exc.plages[0].debut}–${exc.plages[0].fin})`}
-                        <button onClick={() => setExceptions(prev => prev.filter(e => e.id !== exc.id))} className="ml-1 hover:text-foreground">
-                          ×
-                        </button>
-                      </Badge>
-                    ))}
-                    {exceptions.length === 0 && <p className="text-sm text-muted-foreground">Aucune exception</p>}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* ===== CONGÉS ===== */}
-            <TabsContent value="conges">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Périodes de congés</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex flex-wrap items-end gap-3">
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Début</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-44 justify-start text-left text-sm", !congeDebut && "text-muted-foreground")}>
-                            <CalendarIcon className="h-4 w-4 mr-2" />
-                            {congeDebut ? format(congeDebut, "dd MMM yyyy", { locale: fr }) : "Début"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={congeDebut} onSelect={setCongeDebut} className="p-3 pointer-events-auto" />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                    <div>
-                      <label className="text-xs text-muted-foreground mb-1 block">Fin</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-44 justify-start text-left text-sm", !congeFin && "text-muted-foreground")}>
-                            <CalendarIcon className="h-4 w-4 mr-2" />
-                            {congeFin ? format(congeFin, "dd MMM yyyy", { locale: fr }) : "Fin"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar mode="single" selected={congeFin} onSelect={setCongeFin} className="p-3 pointer-events-auto" />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                    <Button size="sm" onClick={addConge} disabled={!congeDebut || !congeFin}>
-                      <Plus className="h-3 w-3 mr-1" /> Ajouter
-                    </Button>
-                  </div>
-
-                  <div className="space-y-2 pt-2">
-                    {conges.map(c => (
-                      <div key={c.id} className="flex items-center justify-between p-2 rounded-lg border bg-muted/20">
-                        <span className="text-sm">
-                          {format(new Date(c.debut), "dd MMM yyyy", { locale: fr })} → {format(new Date(c.fin), "dd MMM yyyy", { locale: fr })}
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-sm">
+                      {selectedDay ? format(selectedDay, "EEEE d MMMM", { locale: fr }) : "Sélectionnez un jour"}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {!selectedDay && <p className="text-sm text-muted-foreground text-center py-8">Cliquez sur un jour</p>}
+                    {selectedDay && dayEvents.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">Aucun événement</p>}
+                    {dayEvents.map((evt) => (
+                      <div key={evt.id} className={cn("p-3 rounded-lg border space-y-1", TYPE_COLORS[evt.type] || TYPE_COLORS.travail)}>
+                        <p className="text-sm font-medium">{evt.titre}</p>
+                        <span className="flex items-center gap-1 text-[11px]">
+                          <Clock className="h-3 w-3" />
+                          {format(parseISO(evt.date_debut), "HH:mm")} — {format(parseISO(evt.date_fin), "HH:mm")}
                         </span>
-                        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setConges(prev => prev.filter(x => x.id !== c.id))}>
-                          <Trash2 className="h-3 w-3 text-destructive" />
-                        </Button>
+                        {evt.description && <p className="text-[11px] text-muted-foreground">{evt.description}</p>}
                       </div>
                     ))}
-                    {conges.length === 0 && <p className="text-sm text-muted-foreground">Aucun congé planifié</p>}
-                  </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="demandes">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Historique de mes demandes</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {myDemandes.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-8">Aucune demande</p>
+                  ) : (
+                    myDemandes.map((d) => (
+                      <div key={d.id} className="flex items-center justify-between p-3 rounded-lg border bg-muted/20">
+                        <div>
+                          <p className="text-sm font-medium">{d.motif}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {format(parseISO(d.date_debut), "dd MMM yyyy", { locale: fr })} → {format(parseISO(d.date_fin), "dd MMM yyyy", { locale: fr })}
+                          </p>
+                          {d.commentaire_admin && (
+                            <p className="text-xs text-muted-foreground mt-1">Commentaire : {d.commentaire_admin}</p>
+                          )}
+                        </div>
+                        <Badge variant={d.statut === "validee" ? "default" : d.statut === "refusee" ? "destructive" : "secondary"}>
+                          {d.statut === "en_attente" ? "En attente" : d.statut === "validee" ? "Validée" : "Refusée"}
+                        </Badge>
+                      </div>
+                    ))
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
         </div>
+
+        {/* Indisponibilité dialog */}
+        <Dialog open={openIndispo} onOpenChange={setOpenIndispo}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-primary" />
+                Signaler une indisponibilité
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 pt-2">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Date de début *</Label>
+                  <Input type="date" value={indispoForm.date_debut} onChange={(e) => setIndispoForm((f) => ({ ...f, date_debut: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Date de fin *</Label>
+                  <Input type="date" value={indispoForm.date_fin} onChange={(e) => setIndispoForm((f) => ({ ...f, date_fin: e.target.value }))} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Motif *</Label>
+                <Textarea
+                  value={indispoForm.motif}
+                  onChange={(e) => setIndispoForm((f) => ({ ...f, motif: e.target.value }))}
+                  placeholder="Ex: Congé maladie, rendez-vous médical, vacances..."
+                  rows={3}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpenIndispo(false)}>Annuler</Button>
+              <Button onClick={handleSubmitIndispo} className="gap-1.5">
+                <Send className="h-4 w-4" /> Envoyer la demande
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </AdminPageTransition>
     </EmployeeLayout>
   );
