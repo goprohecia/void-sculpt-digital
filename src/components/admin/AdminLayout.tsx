@@ -25,6 +25,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const { isDemo, isLoading, supabaseUserId } = useIsDemo();
   const { getNotificationsAdmin, markNotificationRead, markAllNotificationsRead } = useNotificationsData();
   const { plan, updatePlan } = useSubscription();
+  const { isOnboardingComplete, isLoading: onboardingLoading, markComplete } = useOnboardingStatus();
   const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
