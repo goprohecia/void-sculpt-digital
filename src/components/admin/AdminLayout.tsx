@@ -12,6 +12,8 @@ import { MobileBottomNav } from "./MobileBottomNav";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AnnouncementPopup } from "@/components/messaging/AnnouncementPopup";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { OnboardingWizard } from "@/components/onboarding/OnboardingWizard";
+import { useOnboardingStatus } from "@/hooks/use-onboarding";
 import logoMba from "@/assets/logo-mba.png";
 
 interface AdminLayoutProps {
