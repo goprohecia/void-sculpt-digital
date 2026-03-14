@@ -32,6 +32,7 @@ export function RolesPermissionsSettings() {
     roles,
     permissions,
     rolePermissions,
+    employeRoles,
     loading,
     getPermissionValue,
     createRole,
@@ -40,7 +41,6 @@ export function RolesPermissionsSettings() {
   } = usePermissions();
 
   const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
-  const { employeRoles } = usePermissions();
 
   // Count employees per role
   const getEmployeeCount = (roleId: string) => employeRoles.filter((er) => er.role_id === roleId).length;
