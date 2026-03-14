@@ -113,8 +113,12 @@ export default function AdminDossiers() {
         d.typePrestation.toLowerCase().includes(q)
       );
     }
-    // Status
-    if (filterStatut !== "tous") list = list.filter((d) => d.statut === filterStatut);
+    // Status - hide archived by default unless explicitly filtering for them
+    if (filterStatut === "tous") {
+      list = list.filter((d) => d.statut !== "archive");
+    } else {
+      list = list.filter((d) => d.statut === filterStatut);
+    }
     // Montant min/max
     if (filterMontantMin) list = list.filter((d) => d.montant >= parseFloat(filterMontantMin));
     if (filterMontantMax) list = list.filter((d) => d.montant <= parseFloat(filterMontantMax));
