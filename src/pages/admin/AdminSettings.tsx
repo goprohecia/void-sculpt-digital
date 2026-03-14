@@ -1248,7 +1248,7 @@ export default function AdminSettings() {
               </nav>
 
               {/* Content area */}
-              <div className="flex-1 min-w-0 max-w-3xl">
+              <div className={`flex-1 min-w-0 ${activeTab === "whitelabel" ? "max-w-5xl" : "max-w-3xl"}`}>
                 <motion.div
                   key={activeTab}
                   initial={{ opacity: 0, y: 8 }}
