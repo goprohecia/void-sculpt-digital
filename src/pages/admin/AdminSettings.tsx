@@ -30,6 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSettings";
+import { BrevoConfigSettings } from "@/components/admin/BrevoConfigSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
   "overview", "dossiers", "calendrier", "messagerie", "facturation",
