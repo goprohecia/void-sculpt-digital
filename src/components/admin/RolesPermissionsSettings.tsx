@@ -162,6 +162,7 @@ export function RolesPermissionsSettings() {
                     <span>{role.nom}</span>
                     <span className="text-[10px] text-muted-foreground">{getEmployeeCount(role.id)} salarié{getEmployeeCount(role.id) > 1 ? "s" : ""}</span>
                   </div>
+                  <div className="flex items-center gap-1">
                     {selectedRoleId !== role.id && (
                       <button
                         onClick={(e) => {
