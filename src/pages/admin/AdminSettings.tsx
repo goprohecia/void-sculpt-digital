@@ -1199,6 +1199,59 @@ export default function AdminSettings() {
       case "emails":
         return <BrevoConfigSettings />;
 
+      case "compte":
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <RotateCcw className="h-4 w-4" /> Configuration initiale
+              </CardTitle>
+              <CardDescription>Relancez le questionnaire d'onboarding pour reconfigurer la structure de votre compte.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {!showResetConfirm ? (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowResetConfirm(true)}
+                  className="gap-2 text-amber-600 border-amber-300 hover:bg-amber-50"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Relancer la configuration initiale
+                </Button>
+              ) : (
+                <div className="p-4 rounded-xl border-2 border-amber-300 bg-amber-50/50 space-y-3">
+                  <p className="text-sm font-medium text-amber-800">
+                    ⚠️ Cette action réinitialisera les rôles et la structure de votre compte.
+                  </p>
+                  <p className="text-xs text-amber-700">
+                    Vos données clients et dossiers ne seront pas affectées. Seuls les rôles et la configuration métier seront recréés.
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={async () => {
+                        await resetOnboarding();
+                        setShowResetConfirm(false);
+                        toast.success("Configuration réinitialisée. L'assistant va se relancer.");
+                      }}
+                    >
+                      Confirmer la réinitialisation
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowResetConfirm(false)}
+                    >
+                      Annuler
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        );
+
       default:
         return null;
     }
