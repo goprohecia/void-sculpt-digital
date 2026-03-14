@@ -543,6 +543,7 @@ export default function AdminSettings() {
     footerText: "",
     hidePoweredBy: true,
     customCss: "",
+    fontFamily: "",
   });
   const [wlInitialized, setWlInitialized] = useState(false);
 
