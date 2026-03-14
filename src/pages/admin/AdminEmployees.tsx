@@ -10,13 +10,15 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Users, Plus, Search, Mail, Phone, Briefcase, Send, Settings2 } from "lucide-react";
+import { Users, Plus, Search, Mail, Phone, Briefcase, Send, Settings2, Shield, Eye } from "lucide-react";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { usePermissions as useRolesData } from "@/hooks/use-permissions";
+import { EmployeeDetailPanel } from "@/components/admin/EmployeeDetailPanel";
 
 interface Employee {
   id: string;
@@ -29,6 +31,7 @@ interface Employee {
   date_embauche: string;
   created_at: string;
   acces_modules: string[];
+  user_id?: string | null;
 }
 
 const ALL_MODULES = [
@@ -53,10 +56,13 @@ export default function AdminEmployees() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [modulesOpen, setModulesOpen] = useState(false);
   const [selectedEmp, setSelectedEmp] = useState<Employee | null>(null);
+  const [detailEmp, setDetailEmp] = useState<Employee | null>(null);
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [form, setForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
   const [inviteForm, setInviteForm] = useState({ nom: "", prenom: "", email: "", telephone: "", poste: "" });
   const [capaciteMax, setCapaciteMax] = useState("");
+
+  const { roles, employeRoles } = useRolesData();
 
   const { data: employees = [] } = useQuery<Employee[]>({
     queryKey: ["employees"],
@@ -110,9 +116,26 @@ export default function AdminEmployees() {
     setSelectedModules((prev) => prev.includes(key) ? prev.filter((m) => m !== key) : [...prev, key]);
   };
 
+  const getEmployeeRole = (empId: string) => {
+    const assignment = employeRoles.find((er) => er.employe_id === empId);
+    if (!assignment) return null;
+    return roles.find((r) => r.id === assignment.role_id) || null;
+  };
+
   const filtered = employees.filter((e) =>
     `${e.prenom} ${e.nom} ${e.email} ${e.poste}`.toLowerCase().includes(search.toLowerCase())
   );
+
+  // If detail panel is open
+  if (detailEmp) {
+    return (
+      <AdminLayout>
+        <AdminPageTransition>
+          <EmployeeDetailPanel employee={detailEmp} onClose={() => setDetailEmp(null)} />
+        </AdminPageTransition>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -175,6 +198,7 @@ export default function AdminEmployees() {
                       <TableHead>Salarié</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Poste</TableHead>
+                      <TableHead>Rôle</TableHead>
                       <TableHead>Modules</TableHead>
                       <TableHead>Statut</TableHead>
                       <TableHead>Embauche</TableHead>
@@ -183,29 +207,46 @@ export default function AdminEmployees() {
                   </TableHeader>
                   <TableBody>
                     {filtered.length === 0 ? (
-                      <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Aucun salarié trouvé</TableCell></TableRow>
-                    ) : filtered.map((emp) => (
-                      <TableRow key={emp.id}>
-                        <TableCell className="font-medium">{emp.prenom} {emp.nom}</TableCell>
-                        <TableCell className="text-muted-foreground">{emp.email}</TableCell>
-                        <TableCell>{emp.poste || "—"}</TableCell>
-                        <TableCell>
-                          <div className="flex gap-1 flex-wrap max-w-[200px]">
-                            {(emp.acces_modules || []).slice(0, 3).map((m) => (
-                              <Badge key={m} variant="secondary" className="text-[10px] px-1.5">{m}</Badge>
-                            ))}
-                            {(emp.acces_modules || []).length > 3 && <Badge variant="outline" className="text-[10px] px-1.5">+{emp.acces_modules.length - 3}</Badge>}
-                          </div>
-                        </TableCell>
-                        <TableCell><Badge variant={emp.statut === "actif" ? "default" : "secondary"}>{emp.statut}</Badge></TableCell>
-                        <TableCell className="text-muted-foreground text-sm">{emp.date_embauche ? format(new Date(emp.date_embauche), "dd MMM yyyy", { locale: fr }) : "—"}</TableCell>
-                        <TableCell className="text-center">
-                          <Button size="sm" variant="ghost" onClick={() => openModulesDialog(emp)} title="Gérer les accès modules">
-                            <Settings2 className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                      <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Aucun salarié trouvé</TableCell></TableRow>
+                    ) : filtered.map((emp) => {
+                      const role = getEmployeeRole(emp.id);
+                      return (
+                        <TableRow key={emp.id} className="cursor-pointer hover:bg-muted/30" onClick={() => setDetailEmp(emp)}>
+                          <TableCell className="font-medium">{emp.prenom} {emp.nom}</TableCell>
+                          <TableCell className="text-muted-foreground">{emp.email}</TableCell>
+                          <TableCell>{emp.poste || "—"}</TableCell>
+                          <TableCell>
+                            {role ? (
+                              <Badge variant="outline" className="text-[10px] gap-1">
+                                <Shield className="h-2.5 w-2.5" /> {role.nom}
+                              </Badge>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">—</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex gap-1 flex-wrap max-w-[200px]">
+                              {(emp.acces_modules || []).slice(0, 3).map((m) => (
+                                <Badge key={m} variant="secondary" className="text-[10px] px-1.5">{m}</Badge>
+                              ))}
+                              {(emp.acces_modules || []).length > 3 && <Badge variant="outline" className="text-[10px] px-1.5">+{emp.acces_modules.length - 3}</Badge>}
+                            </div>
+                          </TableCell>
+                          <TableCell><Badge variant={emp.statut === "actif" ? "default" : "secondary"}>{emp.statut}</Badge></TableCell>
+                          <TableCell className="text-muted-foreground text-sm">{emp.date_embauche ? format(new Date(emp.date_embauche), "dd MMM yyyy", { locale: fr }) : "—"}</TableCell>
+                          <TableCell className="text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); setDetailEmp(emp); }} title="Voir la fiche">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); openModulesDialog(emp); }} title="Gérer les accès modules">
+                                <Settings2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -213,7 +254,7 @@ export default function AdminEmployees() {
           </motion.div>
         </motion.div>
 
-        {/* Modules access + capacity dialog */}
+        {/* Modules access dialog */}
         <Dialog open={modulesOpen} onOpenChange={setModulesOpen}>
           <DialogContent>
             <DialogHeader><DialogTitle>Paramètres — {selectedEmp?.prenom} {selectedEmp?.nom}</DialogTitle></DialogHeader>
@@ -232,19 +273,10 @@ export default function AdminEmployees() {
               <div className="border-t border-border/50 pt-4">
                 <Label className="text-sm font-medium">Capacité maximale de dossiers actifs</Label>
                 <p className="text-xs text-muted-foreground mb-2">Nombre max de dossiers en cours simultanés. Laisser vide = pas de limite.</p>
-                <Input
-                  type="number"
-                  min={0}
-                  placeholder="Illimité"
-                  value={capaciteMax}
-                  onChange={(e) => setCapaciteMax(e.target.value)}
-                  className="max-w-[160px]"
-                />
+                <Input type="number" min={0} placeholder="Illimité" value={capaciteMax} onChange={(e) => setCapaciteMax(e.target.value)} className="max-w-[160px]" />
               </div>
               <Button className="w-full" onClick={() => {
-                if (selectedEmp) {
-                  updateModules.mutate({ id: selectedEmp.id, modules: selectedModules });
-                }
+                if (selectedEmp) updateModules.mutate({ id: selectedEmp.id, modules: selectedModules });
               }} disabled={updateModules.isPending}>
                 {updateModules.isPending ? "Mise à jour..." : "Enregistrer"}
               </Button>
