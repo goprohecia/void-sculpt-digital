@@ -115,6 +115,13 @@ export default function AdminAnalytics() {
   const totalDossiers = dataWithObjectifs.reduce((acc, d) => acc + d.dossiers, 0);
   const totalNouveauxClients = dataWithObjectifs.reduce((acc, d) => acc + d.nouveauxClients, 0);
 
+  // Use real analytics data when not in demo mode
+  const effectiveTotalCA = isDemo ? totalCA : analytics.kpis.caTotal;
+  const effectiveTotalDossiers = isDemo ? totalDossiers : analytics.kpis.totalDossiers;
+  const effectiveTotalClients = isDemo ? totalNouveauxClients : analytics.kpis.nouveauxClients;
+  const effectiveEncaissements = isDemo ? totalEncaissements : analytics.kpis.caTotal;
+  const effectiveDepensesTotal = isDemo ? undefined : analytics.kpis.totalDepenses;
+
   // Dynamic payment distribution
   const paymentDistribution = useMemo(() => [
     { name: "Payées", value: factures.filter((f) => f.statut === "payee").length, color: "hsl(155, 100%, 45%)" },
