@@ -669,6 +669,7 @@ export default function AdminSettings() {
       { key: "services", label: "Services", icon: BarChart3 },
       { key: "modules", label: "Modules", icon: Puzzle },
       { key: "timeline", label: "Timeline", icon: Clock },
+      { key: "roles", label: "Rôles & Droits", icon: Shield },
     ]},
     { group: "Avancé", items: [
       { key: "reservation", label: "Réservation", icon: CalendarDays },
