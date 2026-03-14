@@ -20,7 +20,17 @@ export interface WhiteLabelConfig {
   footerText: string;
   hidePoweredBy: boolean;
   customCss: string;
+  fontFamily: string;
 }
+
+export const AVAILABLE_FONTS = [
+  { key: "Inter", label: "Inter", url: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" },
+  { key: "Poppins", label: "Poppins", url: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" },
+  { key: "Raleway", label: "Raleway", url: "https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" },
+  { key: "Playfair Display", label: "Playfair Display", url: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" },
+  { key: "DM Sans", label: "DM Sans", url: "https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" },
+  { key: "Nunito", label: "Nunito", url: "https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" },
+] as const;
 
 const DEFAULT_CONFIG: WhiteLabelConfig = {
   brandName: "My Business Assistant",
