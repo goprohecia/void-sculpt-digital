@@ -147,5 +147,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <AnnouncementPopup />
       </div>
     </SidebarProvider>
+    </>
   );
 }
