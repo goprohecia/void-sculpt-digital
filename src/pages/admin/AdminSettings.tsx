@@ -530,6 +530,8 @@ export default function AdminSettings() {
   const { getModuleLabel } = useDemoPlan();
   const { plan, modulesLimit, canCustomizeSpaces, canRenameModules, isEnterprise } = useSubscription();
   const { config: wlConfig, updateConfig: updateWhiteLabel } = useWhiteLabel();
+  const { resetOnboarding } = useOnboardingStatus();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [whiteLabel, setWhiteLabel] = useState({
     brandName: "",
     brandShort: "",
