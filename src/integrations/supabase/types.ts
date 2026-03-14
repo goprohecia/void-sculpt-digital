@@ -381,6 +381,42 @@ export type Database = {
           },
         ]
       }
+      campagnes_email: {
+        Row: {
+          brevo_campaign_id: string | null
+          compte_id: string | null
+          created_at: string
+          date_envoi: string
+          id: string
+          nb_destinataires: number
+          objet: string
+          source: string | null
+          statut: string
+        }
+        Insert: {
+          brevo_campaign_id?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_envoi?: string
+          id?: string
+          nb_destinataires?: number
+          objet: string
+          source?: string | null
+          statut?: string
+        }
+        Update: {
+          brevo_campaign_id?: string | null
+          compte_id?: string | null
+          created_at?: string
+          date_envoi?: string
+          id?: string
+          nb_destinataires?: number
+          objet?: string
+          source?: string | null
+          statut?: string
+        }
+        Relationships: []
+      }
       cdc_historique: {
         Row: {
           action: string
@@ -1153,6 +1189,51 @@ export type Database = {
           nom?: string
           sujet?: string
           type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      emails_planifies: {
+        Row: {
+          brevo_campaign_id: string | null
+          compte_id: string | null
+          contenu: string
+          created_at: string
+          date_envoi_planifie: string
+          destinataires_json: Json
+          id: string
+          nb_destinataires: number
+          objet: string
+          pieces_jointes: Json | null
+          statut: string
+          updated_at: string
+        }
+        Insert: {
+          brevo_campaign_id?: string | null
+          compte_id?: string | null
+          contenu?: string
+          created_at?: string
+          date_envoi_planifie: string
+          destinataires_json?: Json
+          id?: string
+          nb_destinataires?: number
+          objet: string
+          pieces_jointes?: Json | null
+          statut?: string
+          updated_at?: string
+        }
+        Update: {
+          brevo_campaign_id?: string | null
+          compte_id?: string | null
+          contenu?: string
+          created_at?: string
+          date_envoi_planifie?: string
+          destinataires_json?: Json
+          id?: string
+          nb_destinataires?: number
+          objet?: string
+          pieces_jointes?: Json | null
+          statut?: string
           updated_at?: string
         }
         Relationships: []

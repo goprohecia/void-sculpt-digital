@@ -7,6 +7,8 @@ import { useEmailLogs } from "@/hooks/use-email-logs";
 import { useEmailTemplates } from "@/hooks/use-email-templates";
 import { useClients } from "@/hooks/use-clients";
 import { useIsDemo } from "@/hooks/useIsDemo";
+import { useScheduledEmails } from "@/hooks/use-scheduled-emails";
+import { useCampaignHistory } from "@/hooks/use-campaign-history";
 import { supabase } from "@/integrations/supabase/client";
 import type { EmailLogType } from "@/contexts/DemoDataContext";
 import { exportCsv } from "@/lib/exportCsv";
@@ -14,6 +16,8 @@ import { useTags, useClientTags } from "@/hooks/use-produits";
 import {
   Mail, Download, Search, Plus, FileText, Send, Trash2, Sparkles, Loader2,
   Paperclip, X, Users, Filter, ShieldCheck, CalendarDays, CheckCircle,
+  Clock, XCircle, BarChart3, Eye, MousePointerClick, AlertTriangle,
+  ToggleLeft, ToggleRight, History,
 } from "lucide-react";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
@@ -27,6 +31,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
 import { toast } from "sonner";
 
 const BUILTIN_TYPES = [
@@ -48,7 +54,7 @@ const typeFilters: { label: string; value: EmailLogType | "all" }[] = [
 ];
 
 const ACCEPTED_FORMATS = ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.mp4";
-const MAX_TOTAL_SIZE = 25 * 1024 * 1024; // 25 MB
+const MAX_TOTAL_SIZE = 25 * 1024 * 1024;
 
 interface Attachment {
   name: string;
@@ -117,7 +123,6 @@ async function streamAiSuggest(opts: {
     }
   }
 
-  // Flush
   if (textBuffer.trim()) {
     for (let raw of textBuffer.split("\n")) {
       if (!raw) continue;
@@ -142,6 +147,8 @@ export default function AdminEmails() {
   const { isDemo } = useIsDemo();
   const { tags } = useTags();
   const { clientTags: allClientTags } = useClientTags();
+  const { scheduledEmails, cancelEmail, scheduleEmail } = useScheduledEmails();
+  const { campaigns } = useCampaignHistory();
 
   const [typeFilter, setTypeFilter] = useState<EmailLogType | "all">("all");
   const [search, setSearch] = useState("");
@@ -150,9 +157,7 @@ export default function AdminEmails() {
 
   // Compose form
   const [composeForm, setComposeForm] = useState({ destinataire: "", sujet: "", contenu: "", type: "autre", contexteAi: "" });
-  // Template form
   const [tplForm, setTplForm] = useState({ nom: "", sujet: "", contenu: "", type: "relance" });
-  // Custom types
   const [customTypes, setCustomTypes] = useState<string[]>([]);
   const [newCustomType, setNewCustomType] = useState("");
 
@@ -163,13 +168,13 @@ export default function AdminEmails() {
   const tplAbortRef = useRef<AbortController | null>(null);
   const [tplContexteAi, setTplContexteAi] = useState("");
 
-  // ── Attachments state ──
+  // Attachments
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // ── Mass email state ──
+  // Mass email state
   const [massOpen, setMassOpen] = useState(false);
   const [massSubject, setMassSubject] = useState("");
   const [massMessage, setMassMessage] = useState("");
@@ -183,7 +188,19 @@ export default function AdminEmails() {
   const [massUploadProgress, setMassUploadProgress] = useState(0);
   const massFileInputRef = useRef<HTMLInputElement>(null);
 
-  // All available types
+  // V2: Schedule toggle
+  const [massScheduleMode, setMassScheduleMode] = useState(false);
+  const [massScheduleDate, setMassScheduleDate] = useState("");
+  const [massScheduleTime, setMassScheduleTime] = useState("");
+
+  // V2: Advanced filters
+  const [massFilterInactiveDays, setMassFilterInactiveDays] = useState(0);
+  const [massFilterMontantMin, setMassFilterMontantMin] = useState("");
+  const [massFilterMontantMax, setMassFilterMontantMax] = useState("");
+
+  // Campaign detail
+  const [campaignDetailId, setCampaignDetailId] = useState<string | null>(null);
+
   const allTypes = useMemo(() => {
     const builtinValues = BUILTIN_TYPES.map((t) => t.value);
     const extras = customTypes.filter((ct) => !builtinValues.includes(ct));
@@ -212,7 +229,7 @@ export default function AdminEmails() {
     return list;
   }, [emailLogs, typeFilter, search]);
 
-  // ── Mass email filtered recipients ──
+  // Mass email filtered recipients (with V2 advanced filters)
   const massRecipients = useMemo(() => {
     let list = clients;
     if (massFilterStatut.length > 0) {
@@ -227,10 +244,20 @@ export default function AdminEmails() {
     if (massFilterDateAfter) {
       list = list.filter((c) => c.dateCreation >= massFilterDateAfter);
     }
+    // V2: Inactive days filter
+    if (massFilterInactiveDays > 0) {
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - massFilterInactiveDays);
+      const cutoffStr = cutoff.toISOString();
+      list = list.filter((c) => {
+        // Use dateCreation as proxy for last interaction
+        return c.dateCreation <= cutoffStr;
+      });
+    }
     return list;
-  }, [clients, massFilterStatut, massFilterTagId, massFilterDateAfter, allClientTags]);
+  }, [clients, massFilterStatut, massFilterTagId, massFilterDateAfter, allClientTags, massFilterInactiveDays]);
 
-  // ── Upload attachment helper ──
+  // Upload helpers
   const handleUploadAttachment = useCallback(async (
     files: FileList | null,
     currentAttachments: Attachment[],
@@ -239,31 +266,24 @@ export default function AdminEmails() {
     setUploadingState: (b: boolean) => void,
   ) => {
     if (!files || files.length === 0) return;
-
     const currentTotal = currentAttachments.reduce((s, a) => s + a.size, 0);
     const newTotal = Array.from(files).reduce((s, f) => s + f.size, 0);
     if (currentTotal + newTotal > MAX_TOTAL_SIZE) {
       toast.error("La taille totale des pièces jointes dépasse 25 Mo");
       return;
     }
-
     setUploadingState(true);
     const uploaded: Attachment[] = [];
     const total = files.length;
-
     for (let i = 0; i < total; i++) {
       const file = files[i];
       setProgress(Math.round(((i) / total) * 100));
       const path = `${Date.now()}-${file.name}`;
       const { error } = await supabase.storage.from("email-attachments").upload(path, file);
-      if (error) {
-        toast.error(`Erreur upload ${file.name}: ${error.message}`);
-        continue;
-      }
+      if (error) { toast.error(`Erreur upload ${file.name}: ${error.message}`); continue; }
       const { data: urlData } = supabase.storage.from("email-attachments").getPublicUrl(path);
       uploaded.push({ name: file.name, size: file.size, url: urlData.publicUrl, path });
     }
-
     setProgress(100);
     setAtt((prev) => [...prev, ...uploaded]);
     setUploadingState(false);
@@ -287,7 +307,6 @@ export default function AdminEmails() {
   const handleCompose = async () => {
     if (!composeForm.destinataire || !composeForm.sujet) { toast.error("Destinataire et sujet requis"); return; }
     pushEmail(composeForm.type as EmailLogType, composeForm.destinataire, composeForm.sujet, composeForm.contenu);
-
     if (!isDemo) {
       try {
         const client = clients.find((c) => c.email === composeForm.destinataire);
@@ -301,14 +320,13 @@ export default function AdminEmails() {
         });
       } catch (e) { console.error("Erreur envoi:", e); }
     }
-
     toast.success("Email envoyé");
     setComposeOpen(false);
     setComposeForm({ destinataire: "", sujet: "", contenu: "", type: "autre", contexteAi: "" });
     setAttachments([]);
   };
 
-  // ── Mass email send ──
+  // Mass email send (with V2 scheduling)
   const handleMassSend = async () => {
     if (!massSubject.trim() || !massMessage.trim()) { toast.error("Sujet et message requis"); return; }
     setMassConfirmOpen(false);
@@ -316,22 +334,41 @@ export default function AdminEmails() {
 
     try {
       const recipients = massRecipients.map((c) => ({ email: c.email, prenom: c.prenom, clientId: c.id }));
-      const { data, error } = await supabase.functions.invoke("send-campaign-email", {
-        body: {
-          recipients,
-          subject: massSubject,
-          message: massMessage,
-          attachments: massAttachments.length > 0 ? massAttachments.map((a) => ({ name: a.name, url: a.url })) : undefined,
-        },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      const provider = data?.provider === "brevo" ? "Brevo" : "Resend";
-      toast.success(`${data?.sent || recipients.length} email(s) envoyé(s) via ${provider}${data?.skipped ? ` · ${data.skipped} désinscrit(s) exclus` : ""}`);
+
+      if (massScheduleMode && massScheduleDate && massScheduleTime) {
+        // V2: Schedule for later
+        const dateEnvoi = new Date(`${massScheduleDate}T${massScheduleTime}`).toISOString();
+        await scheduleEmail.mutateAsync({
+          objet: massSubject,
+          contenu: massMessage,
+          destinataires_json: recipients,
+          date_envoi_planifie: dateEnvoi,
+          pieces_jointes: massAttachments.length > 0 ? massAttachments.map((a) => ({ name: a.name, url: a.url })) : undefined,
+        });
+        toast.success(`Email programmé pour ${new Date(dateEnvoi).toLocaleString("fr-FR")} · ${recipients.length} destinataire(s)`);
+      } else {
+        // Send immediately (existing logic)
+        const { data, error } = await supabase.functions.invoke("send-campaign-email", {
+          body: {
+            recipients,
+            subject: massSubject,
+            message: massMessage,
+            attachments: massAttachments.length > 0 ? massAttachments.map((a) => ({ name: a.name, url: a.url })) : undefined,
+          },
+        });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        const provider = data?.provider === "brevo" ? "Brevo" : "Resend";
+        toast.success(`${data?.sent || recipients.length} email(s) envoyé(s) via ${provider}${data?.skipped ? ` · ${data.skipped} désinscrit(s) exclus` : ""}`);
+      }
+
       setMassOpen(false);
       setMassSubject("");
       setMassMessage("");
       setMassAttachments([]);
+      setMassScheduleMode(false);
+      setMassScheduleDate("");
+      setMassScheduleTime("");
     } catch (e: any) {
       toast.error(e.message || "Erreur lors de l'envoi");
     } finally {
@@ -348,7 +385,7 @@ export default function AdminEmails() {
     setTplContexteAi("");
   };
 
-  // ── Compose AI ──
+  // AI handlers
   const handleAiSuggest = async () => {
     if (!composeForm.destinataire && !composeForm.sujet && !composeForm.contexteAi) {
       toast.error("Renseignez un destinataire, un sujet ou un contexte pour la suggestion IA");
@@ -378,7 +415,6 @@ export default function AdminEmails() {
     } finally { setAiLoading(false); abortRef.current = null; }
   };
 
-  // ── Template AI ──
   const handleTplAiSuggest = async () => {
     if (!tplForm.sujet && !tplContexteAi) { toast.error("Renseignez un sujet ou un contexte"); return; }
     if (isDemo) {
@@ -445,7 +481,6 @@ export default function AdminEmails() {
     </div>
   );
 
-  // ── Attachment UI block ──
   const renderAttachments = (
     atts: Attachment[],
     setAtts: (fn: (prev: Attachment[]) => Attachment[]) => void,
@@ -484,11 +519,22 @@ export default function AdminEmails() {
     </div>
   );
 
-  // ── Statut toggle for mass filter ──
   const toggleStatut = (val: string) => {
     setMassFilterStatut((prev) =>
       prev.includes(val) ? prev.filter((s) => s !== val) : [...prev, val]
     );
+  };
+
+  const statusBadge = (statut: string) => {
+    const map: Record<string, { label: string; className: string }> = {
+      planifie: { label: "Planifié", className: "bg-amber-500/10 text-amber-400 border-amber-500/20" },
+      en_cours: { label: "En cours", className: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
+      envoye: { label: "Envoyé", className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+      annule: { label: "Annulé", className: "bg-muted/30 text-muted-foreground" },
+      erreur: { label: "Erreur", className: "bg-destructive/10 text-destructive border-destructive/20" },
+    };
+    const s = map[statut] || { label: statut, className: "bg-muted/30 text-muted-foreground" };
+    return <Badge variant="outline" className={`text-[10px] ${s.className}`}>{s.label}</Badge>;
   };
 
   return (
@@ -498,7 +544,7 @@ export default function AdminEmails() {
           <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2"><Mail className="h-6 w-6 text-primary" /> Emails</h1>
-              <p className="text-muted-foreground text-sm">{emailLogs.length} email{emailLogs.length !== 1 ? "s" : ""} · {templates.length} template{templates.length !== 1 ? "s" : ""}</p>
+              <p className="text-muted-foreground text-sm">{emailLogs.length} email{emailLogs.length !== 1 ? "s" : ""} · {templates.length} template{templates.length !== 1 ? "s" : ""} · {scheduledEmails.filter(e => e.statut === "planifie").length} planifié(s)</p>
             </div>
             <div className="flex gap-2 self-start">
               <AIContextButton
@@ -518,8 +564,17 @@ export default function AdminEmails() {
             <TabsList>
               <TabsTrigger value="journal">Journal ({emailLogs.length})</TabsTrigger>
               <TabsTrigger value="templates">Templates ({templates.length})</TabsTrigger>
+              <TabsTrigger value="planifies">
+                <Clock className="h-3.5 w-3.5 mr-1" />
+                Planifiés ({scheduledEmails.filter(e => e.statut === "planifie").length})
+              </TabsTrigger>
+              <TabsTrigger value="historique">
+                <History className="h-3.5 w-3.5 mr-1" />
+                Historique ({campaigns.length})
+              </TabsTrigger>
             </TabsList>
 
+            {/* ── Journal Tab ── */}
             <TabsContent value="journal" className="space-y-4 mt-4">
               <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-3">
                 <div className="flex flex-wrap gap-1.5">
@@ -532,13 +587,13 @@ export default function AdminEmails() {
                   <Input placeholder="Rechercher…" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 h-8 text-sm" />
                 </div>
               </motion.div>
-
               <motion.div variants={staggerItem} className="glass-card p-4 sm:p-6">
                 <p className="text-xs text-muted-foreground mb-3">{filtered.length} résultat{filtered.length !== 1 ? "s" : ""}</p>
                 <EmailLogPanel emails={filtered} />
               </motion.div>
             </TabsContent>
 
+            {/* ── Templates Tab ── */}
             <TabsContent value="templates" className="space-y-4 mt-4">
               <div className="flex justify-end">
                 <Button size="sm" onClick={() => setTplOpen(true)} className="gap-1"><Plus className="h-4 w-4" /> Nouveau template</Button>
@@ -558,6 +613,131 @@ export default function AdminEmails() {
                 ))}
               </div>
             </TabsContent>
+
+            {/* ── V2: Scheduled Emails Tab ── */}
+            <TabsContent value="planifies" className="space-y-4 mt-4">
+              {scheduledEmails.length === 0 ? (
+                <AdminEmptyState icon={Clock} title="Aucun email planifié" description="Programmez un envoi de masse pour le retrouver ici." />
+              ) : (
+                <div className="space-y-3">
+                  {scheduledEmails.map((se) => (
+                    <div key={se.id} className="glass-card p-4 flex items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-sm font-medium truncate">{se.objet}</p>
+                          {statusBadge(se.statut)}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {se.nb_destinataires} destinataire{se.nb_destinataires !== 1 ? "s" : ""} · Prévu le {new Date(se.date_envoi_planifie).toLocaleString("fr-FR")}
+                        </p>
+                      </div>
+                      {se.statut === "planifie" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-destructive hover:text-destructive gap-1"
+                          onClick={() => {
+                            cancelEmail.mutate(se.id);
+                            toast.success("Email planifié annulé");
+                          }}
+                        >
+                          <XCircle className="h-3.5 w-3.5" /> Annuler
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            {/* ── V2: Campaign History Tab ── */}
+            <TabsContent value="historique" className="space-y-4 mt-4">
+              {campaigns.length === 0 ? (
+                <AdminEmptyState icon={BarChart3} title="Aucune campagne" description="L'historique de vos campagnes apparaîtra ici après l'envoi." />
+              ) : (
+                <div className="space-y-3">
+                  {/* Stats summary */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <p className="text-2xl font-bold">{campaigns.length}</p>
+                        <p className="text-xs text-muted-foreground">Campagnes</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <p className="text-2xl font-bold">{campaigns.reduce((s, c) => s + c.nb_destinataires, 0)}</p>
+                        <p className="text-xs text-muted-foreground">Emails envoyés</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <p className="text-2xl font-bold text-emerald-400">
+                          {campaigns.reduce((s, c) => s + (c.ouvertures || 0), 0)}
+                        </p>
+                        <p className="text-xs text-muted-foreground flex items-center justify-center gap-1"><Eye className="h-3 w-3" /> Ouvertures</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <p className="text-2xl font-bold text-blue-400">
+                          {campaigns.reduce((s, c) => s + (c.clics || 0), 0)}
+                        </p>
+                        <p className="text-xs text-muted-foreground flex items-center justify-center gap-1"><MousePointerClick className="h-3 w-3" /> Clics</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Campaign table */}
+                  <div className="glass-card overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border/30">
+                          <th className="text-left p-3 text-xs text-muted-foreground font-medium">Date</th>
+                          <th className="text-left p-3 text-xs text-muted-foreground font-medium">Objet</th>
+                          <th className="text-center p-3 text-xs text-muted-foreground font-medium">Envoyés</th>
+                          <th className="text-center p-3 text-xs text-muted-foreground font-medium">Ouverts</th>
+                          <th className="text-center p-3 text-xs text-muted-foreground font-medium">Cliqués</th>
+                          <th className="text-center p-3 text-xs text-muted-foreground font-medium">Bounces</th>
+                          <th className="text-center p-3 text-xs text-muted-foreground font-medium">Source</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {campaigns.map((c) => {
+                          const tauxOuv = c.nb_destinataires > 0 ? Math.round(((c.ouvertures || 0) / c.nb_destinataires) * 100) : 0;
+                          const tauxClic = c.nb_destinataires > 0 ? Math.round(((c.clics || 0) / c.nb_destinataires) * 100) : 0;
+                          return (
+                            <tr key={c.id} className="border-b border-border/10 hover:bg-muted/10 cursor-pointer" onClick={() => setCampaignDetailId(c.id)}>
+                              <td className="p-3 text-xs">{new Date(c.date_envoi).toLocaleDateString("fr-FR")}</td>
+                              <td className="p-3 font-medium truncate max-w-[200px]">{c.objet}</td>
+                              <td className="p-3 text-center">{c.nb_destinataires}</td>
+                              <td className="p-3 text-center">
+                                <span className="text-emerald-400">{c.ouvertures || 0}</span>
+                                <span className="text-muted-foreground text-[10px] ml-1">({tauxOuv}%)</span>
+                              </td>
+                              <td className="p-3 text-center">
+                                <span className="text-blue-400">{c.clics || 0}</span>
+                                <span className="text-muted-foreground text-[10px] ml-1">({tauxClic}%)</span>
+                              </td>
+                              <td className="p-3 text-center">
+                                {(c.bounces || 0) > 0 ? (
+                                  <span className="text-destructive flex items-center justify-center gap-1"><AlertTriangle className="h-3 w-3" /> {c.bounces}</span>
+                                ) : (
+                                  <span className="text-muted-foreground">0</span>
+                                )}
+                              </td>
+                              <td className="p-3 text-center">
+                                <Badge variant="outline" className="text-[10px]">{c.source === "planifie" ? "Planifié" : "Direct"}</Badge>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </TabsContent>
           </Tabs>
         </motion.div>
 
@@ -576,12 +756,10 @@ export default function AdminEmails() {
                 </Select>
               </div>
               <div className="space-y-2"><Label>Sujet *</Label><Input value={composeForm.sujet} onChange={(e) => setComposeForm((f) => ({ ...f, sujet: e.target.value }))} /></div>
-
               <div className="space-y-2">
                 <Label className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-primary" /> Contexte IA <span className="text-[10px] text-muted-foreground font-normal">(optionnel)</span></Label>
                 <Textarea value={composeForm.contexteAi} onChange={(e) => setComposeForm((f) => ({ ...f, contexteAi: e.target.value }))} rows={2} placeholder="Ex: Le client a un retard de paiement…" className="text-sm" />
               </div>
-
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label>Contenu</Label>
@@ -593,13 +771,10 @@ export default function AdminEmails() {
                   <AiOverlay loading={aiLoading} />
                 </div>
               </div>
-
-              {/* Attachments */}
               {renderAttachments(
                 attachments, setAttachments, uploading, uploadProgress, fileInputRef as any,
                 (files) => handleUploadAttachment(files, attachments, setAttachments, setUploadProgress, setUploading)
               )}
-
               {templates.length > 0 && (
                 <div className="space-y-2">
                   <Label>Utiliser un template</Label>
@@ -642,7 +817,7 @@ export default function AdminEmails() {
           </DialogContent>
         </Dialog>
 
-        {/* ── Mass Email Dialog ── */}
+        {/* ── Mass Email Dialog (V2 upgraded) ── */}
         <Dialog open={massOpen} onOpenChange={setMassOpen}>
           <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[85dvh] overflow-y-auto">
             <DialogHeader>
@@ -662,14 +837,14 @@ export default function AdminEmails() {
                 <h3 className="text-sm font-semibold flex items-center gap-1.5"><Filter className="h-4 w-4 text-primary" /> Filtrer les destinataires</h3>
 
                 <div className="grid sm:grid-cols-3 gap-4">
-                  {/* Statut filter */}
+                  {/* Statut filter (V2: + archivé) */}
                   <div className="space-y-2">
                     <Label className="text-xs">Statut</Label>
                     <div className="space-y-1.5">
-                      {["prospect", "actif", "inactif"].map((s) => (
+                      {["prospect", "actif", "inactif", "archive"].map((s) => (
                         <label key={s} className="flex items-center gap-2 text-sm cursor-pointer">
                           <Checkbox checked={massFilterStatut.includes(s)} onCheckedChange={() => toggleStatut(s)} />
-                          <span className="capitalize">{s}</span>
+                          <span className="capitalize">{s === "archive" ? "Archivé" : s}</span>
                         </label>
                       ))}
                     </div>
@@ -694,6 +869,45 @@ export default function AdminEmails() {
                   </div>
                 </div>
 
+                {/* V2: Advanced filters */}
+                <div className="grid sm:grid-cols-2 gap-4 pt-2 border-t border-border/20">
+                  <div className="space-y-2">
+                    <Label className="text-xs">Dernière interaction il y a plus de… {massFilterInactiveDays > 0 ? `${massFilterInactiveDays} jours` : ""}</Label>
+                    <Slider
+                      value={[massFilterInactiveDays]}
+                      onValueChange={([v]) => setMassFilterInactiveDays(v)}
+                      max={365}
+                      step={7}
+                      className="mt-2"
+                    />
+                    {massFilterInactiveDays > 0 && (
+                      <Button variant="ghost" size="sm" className="h-6 text-[10px]" onClick={() => setMassFilterInactiveDays(0)}>
+                        Réinitialiser
+                      </Button>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs">Montant total facturé (€)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        placeholder="Min"
+                        value={massFilterMontantMin}
+                        onChange={(e) => setMassFilterMontantMin(e.target.value)}
+                        className="h-8 text-xs"
+                      />
+                      <Input
+                        type="number"
+                        placeholder="Max"
+                        value={massFilterMontantMax}
+                        onChange={(e) => setMassFilterMontantMax(e.target.value)}
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 {/* Recipient counter */}
                 <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                   <div className="flex items-center gap-2">
@@ -709,7 +923,6 @@ export default function AdminEmails() {
                   )}
                 </div>
 
-                {/* Preview first 5 */}
                 {massRecipients.length > 0 && (
                   <div className="text-xs space-y-1">
                     <p className="text-muted-foreground">Aperçu :</p>
@@ -733,9 +946,61 @@ export default function AdminEmails() {
                 (files) => handleUploadAttachment(files, massAttachments, setMassAttachments, setMassUploadProgress, setMassUploading)
               )}
 
-              <Button className="w-full gap-2" disabled={massSending || !massSubject.trim() || !massMessage.trim() || massRecipients.length === 0}
-                onClick={() => setMassConfirmOpen(true)}>
-                <Send className="h-4 w-4" /> {massSending ? "Envoi en cours…" : `Envoyer à ${massRecipients.length} personne${massRecipients.length !== 1 ? "s" : ""}`}
+              {/* V2: Schedule toggle */}
+              <div className="glass-card p-4 space-y-3">
+                <button
+                  className="flex items-center gap-3 w-full text-left"
+                  onClick={() => setMassScheduleMode(!massScheduleMode)}
+                >
+                  {massScheduleMode ? (
+                    <ToggleRight className="h-5 w-5 text-primary" />
+                  ) : (
+                    <ToggleLeft className="h-5 w-5 text-muted-foreground" />
+                  )}
+                  <div>
+                    <p className="text-sm font-medium">{massScheduleMode ? "Envoi programmé" : "Envoyer maintenant"}</p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {massScheduleMode ? "L'email sera envoyé à la date et heure choisies" : "L'email sera envoyé immédiatement"}
+                    </p>
+                  </div>
+                </button>
+                {massScheduleMode && (
+                  <div className="flex gap-3 pt-2">
+                    <div className="flex-1 space-y-1">
+                      <Label className="text-xs">Date</Label>
+                      <Input
+                        type="date"
+                        value={massScheduleDate}
+                        onChange={(e) => setMassScheduleDate(e.target.value)}
+                        min={new Date().toISOString().slice(0, 10)}
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <Label className="text-xs">Heure</Label>
+                      <Input
+                        type="time"
+                        value={massScheduleTime}
+                        onChange={(e) => setMassScheduleTime(e.target.value)}
+                        className="h-8 text-xs"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Button
+                className="w-full gap-2"
+                disabled={massSending || !massSubject.trim() || !massMessage.trim() || massRecipients.length === 0 || (massScheduleMode && (!massScheduleDate || !massScheduleTime))}
+                onClick={() => setMassConfirmOpen(true)}
+              >
+                {massScheduleMode ? <Clock className="h-4 w-4" /> : <Send className="h-4 w-4" />}
+                {massSending
+                  ? "Envoi en cours…"
+                  : massScheduleMode
+                    ? `Programmer pour ${massRecipients.length} personne${massRecipients.length !== 1 ? "s" : ""}`
+                    : `Envoyer à ${massRecipients.length} personne${massRecipients.length !== 1 ? "s" : ""}`
+                }
               </Button>
             </div>
           </DialogContent>
@@ -745,19 +1010,69 @@ export default function AdminEmails() {
         <Dialog open={massConfirmOpen} onOpenChange={setMassConfirmOpen}>
           <DialogContent className="max-w-sm">
             <DialogHeader>
-              <DialogTitle>Confirmer l'envoi</DialogTitle>
+              <DialogTitle>{massScheduleMode ? "Confirmer la programmation" : "Confirmer l'envoi"}</DialogTitle>
             </DialogHeader>
             <p className="text-sm text-muted-foreground">
-              Vous êtes sur le point d'envoyer un email à <span className="font-semibold text-foreground">{massRecipients.length} destinataire{massRecipients.length !== 1 ? "s" : ""}</span>.
-              {massRecipients.length >= 6 && " L'envoi sera routé via Brevo."}
+              {massScheduleMode ? (
+                <>
+                  Vous programmez un email à <span className="font-semibold text-foreground">{massRecipients.length} destinataire{massRecipients.length !== 1 ? "s" : ""}</span> pour le{" "}
+                  <span className="font-semibold text-foreground">{massScheduleDate && massScheduleTime ? new Date(`${massScheduleDate}T${massScheduleTime}`).toLocaleString("fr-FR") : ""}</span>.
+                </>
+              ) : (
+                <>
+                  Vous êtes sur le point d'envoyer un email à <span className="font-semibold text-foreground">{massRecipients.length} destinataire{massRecipients.length !== 1 ? "s" : ""}</span>.
+                  {massRecipients.length >= 6 && " L'envoi sera routé via Brevo."}
+                </>
+              )}
             </p>
             <DialogFooter className="gap-2">
               <Button variant="outline" onClick={() => setMassConfirmOpen(false)}>Annuler</Button>
               <Button onClick={handleMassSend} disabled={massSending} className="gap-1.5">
-                {massSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                {massSending ? <Loader2 className="h-4 w-4 animate-spin" /> : massScheduleMode ? <Clock className="h-4 w-4" /> : <Send className="h-4 w-4" />}
                 Confirmer
               </Button>
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* ── Campaign Detail Dialog ── */}
+        <Dialog open={!!campaignDetailId} onOpenChange={() => setCampaignDetailId(null)}>
+          <DialogContent className="max-w-[95vw] sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2"><BarChart3 className="h-5 w-5 text-primary" /> Détail campagne</DialogTitle>
+            </DialogHeader>
+            {campaignDetailId && (() => {
+              const camp = campaigns.find(c => c.id === campaignDetailId);
+              if (!camp) return <p className="text-sm text-muted-foreground">Campagne introuvable</p>;
+              const tauxOuv = camp.nb_destinataires > 0 ? Math.round(((camp.ouvertures || 0) / camp.nb_destinataires) * 100) : 0;
+              const tauxClic = camp.nb_destinataires > 0 ? Math.round(((camp.clics || 0) / camp.nb_destinataires) * 100) : 0;
+              return (
+                <div className="space-y-4 pt-2">
+                  <div>
+                    <p className="text-sm font-medium">{camp.objet}</p>
+                    <p className="text-xs text-muted-foreground">{new Date(camp.date_envoi).toLocaleString("fr-FR")} · {camp.source === "planifie" ? "Planifié" : "Direct"}</p>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="text-center p-3 rounded-lg bg-muted/20">
+                      <p className="text-xl font-bold">{camp.nb_destinataires}</p>
+                      <p className="text-[10px] text-muted-foreground">Envoyés</p>
+                    </div>
+                    <div className="text-center p-3 rounded-lg bg-emerald-500/10">
+                      <p className="text-xl font-bold text-emerald-400">{camp.ouvertures || 0}</p>
+                      <p className="text-[10px] text-muted-foreground">{tauxOuv}% ouverts</p>
+                    </div>
+                    <div className="text-center p-3 rounded-lg bg-blue-500/10">
+                      <p className="text-xl font-bold text-blue-400">{camp.clics || 0}</p>
+                      <p className="text-[10px] text-muted-foreground">{tauxClic}% cliqués</p>
+                    </div>
+                    <div className="text-center p-3 rounded-lg bg-destructive/10">
+                      <p className="text-xl font-bold text-destructive">{camp.bounces || 0}</p>
+                      <p className="text-[10px] text-muted-foreground">Bounces</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </DialogContent>
         </Dialog>
       </AdminPageTransition>
