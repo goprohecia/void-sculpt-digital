@@ -32,6 +32,7 @@ export function RolesPermissionsSettings() {
     roles,
     permissions,
     rolePermissions,
+    employeRoles,
     loading,
     getPermissionValue,
     createRole,
@@ -40,6 +41,9 @@ export function RolesPermissionsSettings() {
   } = usePermissions();
 
   const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
+
+  // Count employees per role
+  const getEmployeeCount = (roleId: string) => employeRoles.filter((er) => er.role_id === roleId).length;
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newRoleName, setNewRoleName] = useState("");
   const [newRoleDesc, setNewRoleDesc] = useState("");
@@ -154,7 +158,10 @@ export function RolesPermissionsSettings() {
                       : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                   }`}
                 >
-                  <span>{role.nom}</span>
+                  <div className="flex flex-col items-start">
+                    <span>{role.nom}</span>
+                    <span className="text-[10px] text-muted-foreground">{getEmployeeCount(role.id)} salarié{getEmployeeCount(role.id) > 1 ? "s" : ""}</span>
+                  </div>
                   <div className="flex items-center gap-1">
                     {selectedRoleId !== role.id && (
                       <button
