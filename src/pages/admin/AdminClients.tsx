@@ -199,8 +199,9 @@ export default function AdminClients() {
 
   const ClientDetail = () => (
     <Tabs defaultValue="general" className="space-y-4">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="general">Général</TabsTrigger>
+        <TabsTrigger value="projets" className="gap-1.5"><FolderOpen className="h-3.5 w-3.5" /> Projets</TabsTrigger>
         <TabsTrigger value="coordonnees" className="gap-1.5"><Building2 className="h-3.5 w-3.5" /> Coordonnées</TabsTrigger>
       </TabsList>
 
