@@ -85,6 +85,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
           </main>
         </div>
         <MobileBottomNav variant="client" />
+        <AnnouncementPopup />
       </div>
     </SidebarProvider>
   );

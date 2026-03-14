@@ -137,6 +137,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </main>
         </div>
         <MobileBottomNav variant="admin" />
+        <AnnouncementPopup />
       </div>
     </SidebarProvider>
   );
