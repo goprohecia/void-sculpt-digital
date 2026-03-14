@@ -115,9 +115,9 @@ export default function AdminDossiers() {
     }
     // Status - hide archived by default unless explicitly filtering for them
     if (filterStatut === "tous") {
-      list = list.filter((d) => d.statut !== "archive");
+      list = list.filter((d) => (d.statut as string) !== "archive");
     } else {
-      list = list.filter((d) => d.statut === filterStatut);
+      list = list.filter((d) => (d.statut as string) === filterStatut);
     }
     // Montant min/max
     if (filterMontantMin) list = list.filter((d) => d.montant >= parseFloat(filterMontantMin));
