@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { CalendarDays, Plus, CalendarIcon, Clock, AlertCircle, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format, parseISO, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addMonths, subMonths, isToday, ChevronLeft, ChevronRight } from "date-fns";
+import { format, parseISO, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addMonths, subMonths, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
 import { useCalendarEvents, useIndisponibilites } from "@/hooks/use-calendar-events";
