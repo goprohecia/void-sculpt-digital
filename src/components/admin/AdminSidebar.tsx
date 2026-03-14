@@ -10,7 +10,7 @@ import {
   LayoutDashboard, Users, FolderOpen, MessageSquare, Receipt, Bell, Mail,
   BarChart3, LifeBuoy, Settings, LogOut, CalendarDays, Package, CheckSquare,
   Calendar, FileText, FolderClosed, Timer, Zap, StickyNote, Target, Bot,
-  Building2, Briefcase, Wrench, ClipboardList, ChevronDown, Truck,
+  Building2, Briefcase, Wrench, ClipboardList, ChevronDown, Truck, ArrowUpRight,
 } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
 import { useConversations } from "@/hooks/use-conversations";
