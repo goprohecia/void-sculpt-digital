@@ -70,6 +70,8 @@ export default function AdminDossiers() {
   const [filterTag, setFilterTag] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
+  const [showCreateDossier, setShowCreateDossier] = useState(false);
+  const [showCreateDemande, setShowCreateDemande] = useState(false);
   
   const { dossiers, addDossier } = useDossiers();
   const { demandes, updateDemandeStatut } = useDemandes();
