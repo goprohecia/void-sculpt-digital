@@ -325,6 +325,7 @@ const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
 };
 
 const REPARATEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Réparations", description: "Fiches clients et réparations en atelier" },
   dossiers: { label: "Réparations", description: "Fiches appareils en réparation avec diagnostic et statut" },
   employees: { label: "Techniciens", description: "Techniciens de l'atelier" },
   clients: { label: "Clients & Appareils", description: "Historique complet par client : appareils réparés, devis, factures" },
