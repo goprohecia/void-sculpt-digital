@@ -93,6 +93,7 @@ import ClientPaiement from "@/pages/client/ClientPaiement";
 import ClientSettings from "@/pages/client/ClientSettings";
 import ClientRendezVous from "@/pages/client/ClientRendezVous";
 import AdminUpgrade from "@/pages/admin/AdminUpgrade";
+import AdminCustomSpace from "@/pages/admin/AdminCustomSpace";
 
 // Employee pages
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
