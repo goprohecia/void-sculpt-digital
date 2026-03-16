@@ -310,6 +310,7 @@ const MARIAGE_OVERRIDES: SectorModulesConfig = {
 };
 
 const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Contrats", description: "Portefeuille clients et contrats de nettoyage" },
   dossiers: { label: "Contrats", description: "Contrats de nettoyage et interventions" },
   employees: { label: "Agents", description: "Équipes de nettoyage et responsables de site" },
   clients: { label: "Clients", description: "Clients B2B et syndics" },
