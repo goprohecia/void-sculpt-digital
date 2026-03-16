@@ -9,10 +9,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { UserCircle, Bell, Smartphone, Mail } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 import { toast } from "sonner";
 
 export default function EmployeeProfile() {
   const { user } = useDemoAuth();
+  const { employeeLabel } = useSectorRoleLabels();
 
   const [notifInApp, setNotifInApp] = useState(true);
   const [notifSms, setNotifSms] = useState(false);
@@ -43,13 +45,13 @@ export default function EmployeeProfile() {
                 <div className="flex items-center gap-4">
                   <div className="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center">
                     <span className="text-xl font-bold text-primary">
-                      {user?.nom?.charAt(0) || "S"}
+                      {user?.nom?.charAt(0) || employeeLabel.charAt(0)}
                     </span>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">{user?.nom || "Salarié"}</p>
+                    <p className="text-lg font-semibold">{user?.nom || employeeLabel}</p>
                     <p className="text-sm text-muted-foreground">{user?.email}</p>
-                    <p className="text-xs text-muted-foreground capitalize mt-1">Rôle : {user?.role || "salarié"}</p>
+                    <p className="text-xs text-muted-foreground capitalize mt-1">Rôle : {employeeLabel}</p>
                   </div>
                 </div>
               </CardContent>

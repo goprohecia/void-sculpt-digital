@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 import logoMba from "@/assets/logo-mba.png";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function AdminLogin() {
+  const { clientLabel, employeeLabel } = useSectorRoleLabels();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -207,8 +209,8 @@ export default function AdminLogin() {
             <div className="grid grid-cols-2 gap-2">
               {([
                 { type: "admin" as const, label: "Admin", email: "admin@mba.demo" },
-                { type: "employee" as const, label: "Salarié", email: "employee@mba.demo" },
-                { type: "client" as const, label: "Client", email: "client@mba.demo" },
+                { type: "employee" as const, label: employeeLabel, email: "employee@mba.demo" },
+                { type: "client" as const, label: clientLabel, email: "client@mba.demo" },
                 { type: "superadmin" as const, label: "Super Admin", email: "superadmin@mba.demo" },
               ]).map((d) => (
                 <button key={d.type} onClick={() => fillDemo(d.type)} className="bg-[#f7f8f5] border border-[#e4e8df] rounded-lg p-2.5 text-left hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">

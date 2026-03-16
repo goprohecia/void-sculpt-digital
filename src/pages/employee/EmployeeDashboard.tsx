@@ -4,9 +4,11 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutDashboard, FolderOpen, CalendarDays, MessageSquare } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function EmployeeDashboard() {
   const { user } = useDemoAuth();
+  const { employeeLabel } = useSectorRoleLabels();
 
   const stats = [
     { title: "Dossiers assignés", value: "5", icon: FolderOpen, color: "text-blue-400" },
@@ -21,7 +23,7 @@ export default function EmployeeDashboard() {
           <motion.div variants={staggerItem}>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <LayoutDashboard className="h-6 w-6 text-primary" />
-              Bonjour, {user?.nom || "Salarié"} 👋
+              Bonjour, {user?.nom || employeeLabel} 👋
             </h1>
             <p className="text-muted-foreground text-sm">Voici votre tableau de bord</p>
           </motion.div>

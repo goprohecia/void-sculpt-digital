@@ -22,14 +22,15 @@ import { ClientTagManager, ClientTagBadges } from "@/components/admin/ClientTagM
 import { useTags, useClientTags } from "@/hooks/use-produits";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientDossiersLinked } from "@/components/admin/ClientDossiersLinked";
-
-const SEGMENTS = [
-  { value: "tous", label: "Tous" },
-  { value: "client", label: "Clients" },
-  { value: "prospect", label: "Prospects" },
-] as const;
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function AdminClients() {
+  const { clientLabel, clientsLabel } = useSectorRoleLabels();
+  const SEGMENTS = [
+    { value: "tous", label: "Tous" },
+    { value: "client", label: clientsLabel },
+    { value: "prospect", label: "Prospects" },
+  ] as const;
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | "actif" | "inactif">("tous");
   const [filterSegment, setFilterSegment] = useState<"tous" | "client" | "prospect">("tous");
@@ -133,7 +134,7 @@ export default function AdminClients() {
           );
         }
       }
-      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé — un email d'invitation a été envoyé`);
+      toast.success(`${clientLabel} ${newClient.prenom} ${newClient.nom} créé — un email d'invitation a été envoyé`);
       setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
       setNewClientTagIds([]);
       setShowCreateDialog(false);
@@ -175,7 +176,7 @@ export default function AdminClients() {
     return seg === "prospect" ? (
       <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-amber-500/20 text-amber-400">Prospect</span>
     ) : (
-      <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400">Client</span>
+      <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400">{clientLabel}</span>
     );
   };
 
@@ -618,7 +619,7 @@ export default function AdminClients() {
                       onClick={() => setNewClient({ ...newClient, segment: s })}
                       className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${newClient.segment === s ? "bg-primary text-primary-foreground" : "glass-button"}`}
                     >
-                      {s === "client" ? "Client" : "Prospect"}
+                      {s === "client" ? clientLabel : "Prospect"}
                     </button>
                   ))}
                 </div>

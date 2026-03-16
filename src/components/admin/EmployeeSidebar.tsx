@@ -104,7 +104,7 @@ export function EmployeeSidebar() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[13px] font-semibold truncate text-[#1a2318]">{user?.nom}</p>
-            <p className="text-[11px] text-[#9ca3af] capitalize">{user?.role || "salarié"}</p>
+            <p className="text-[11px] text-[#9ca3af] capitalize">{getSectorRoleLabel(demoSector, "employee") || "salarié"}</p>
           </div>
         </div>
         <button

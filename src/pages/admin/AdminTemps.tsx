@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Timer, Play, Square, Clock, User, FolderOpen, TrendingUp, Save, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useDossiers } from "@/hooks/use-dossiers";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 interface TimeEntry {
   id: string;
@@ -34,6 +35,7 @@ const INITIAL_ENTRIES: TimeEntry[] = [
 ];
 
 export default function AdminTemps() {
+  const { employeeLabel, employeesLabel, clientLabel, clientsLabel } = useSectorRoleLabels();
   const [isRunning, setIsRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -222,18 +224,18 @@ export default function AdminTemps() {
                 </div>
                 <div className="flex gap-2">
                   <Select value={filterClient} onValueChange={setFilterClient}>
-                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="Client" /></SelectTrigger>
+                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder={clientLabel} /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Tous les clients</SelectItem>
+                      <SelectItem value="all">Tous les {clientsLabel.toLowerCase()}</SelectItem>
                       {[...new Set(entries.map((e) => e.client))].sort().map((c) => (
                         <SelectItem key={c} value={c}>{c}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                   <Select value={filterSalarie} onValueChange={setFilterSalarie}>
-                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="Salarié" /></SelectTrigger>
+                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder={employeeLabel} /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Tous les salariés</SelectItem>
+                      <SelectItem value="all">Tous les {employeesLabel.toLowerCase()}</SelectItem>
                       {[...new Set(entries.map((e) => e.salarie))].sort().map((s) => (
                         <SelectItem key={s} value={s}>{s}</SelectItem>
                       ))}

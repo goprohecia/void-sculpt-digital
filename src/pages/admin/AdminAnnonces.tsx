@@ -12,8 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function AdminAnnonces() {
+  const { clientsLabel, employeesLabel } = useSectorRoleLabels();
   const { isDemo } = useIsDemo();
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
@@ -204,8 +206,8 @@ export default function AdminAnnonces() {
                 <label className="text-sm font-medium">Destinataires</label>
                 <div className="flex gap-2">
                   {[
-                    { value: "tous_clients", label: "Tous les clients" },
-                    { value: "tous_employes", label: "Tous les employés" },
+                    { value: "tous_clients", label: `Tous les ${clientsLabel.toLowerCase()}` },
+                    { value: "tous_employes", label: `Tous les ${employeesLabel.toLowerCase()}` },
                   ].map((opt) => (
                     <button
                       key={opt.value}

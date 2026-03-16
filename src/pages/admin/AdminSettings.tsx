@@ -29,6 +29,7 @@ import { useCustomSpaces } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
+import { getSectorRoleLabel } from "@/data/sectorModules";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -43,7 +44,7 @@ const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
 
 function CustomSpacesManager() {
   const { spaces, createSpace, updateSpace, deleteSpace } = useCustomSpaces();
-  const { getModuleLabel } = useDemoPlan();
+  const { getModuleLabel, demoSector } = useDemoPlan();
   const [newName, setNewName] = useState("");
   const [newBaseRole, setNewBaseRole] = useState<"employee" | "client">("employee");
   const [newModules, setNewModules] = useState<string[]>(["overview"]);
@@ -146,7 +147,7 @@ function CustomSpacesManager() {
                     <div>
                       <p className="text-sm font-medium">{space.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        Base : {space.base_role === "employee" ? "Salarié" : "Client"} · {space.enabled_modules.length} modules
+                        Base : {space.base_role === "employee" ? (getSectorRoleLabel(demoSector, "employee") || "Salarié") : (getSectorRoleLabel(demoSector, "client") || "Client")} · {space.enabled_modules.length} modules
                       </p>
                     </div>
                   )}

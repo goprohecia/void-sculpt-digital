@@ -13,12 +13,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 type FilterStatus = "tous" | TicketStatus;
 
 export default function AdminSupport() {
   const { tickets: allTickets } = useTickets();
   const { clients } = useClients();
+  const { clientsLabel } = useSectorRoleLabels();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [initialized, setInitialized] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("tous");
@@ -100,9 +102,9 @@ export default function AdminSupport() {
               ))}
             </div>
             <Select value={filterClient} onValueChange={setFilterClient}>
-              <SelectTrigger className="w-44 h-8 text-xs bg-muted/30"><SelectValue placeholder="Tous les clients" /></SelectTrigger>
+              <SelectTrigger className="w-44 h-8 text-xs bg-muted/30"><SelectValue placeholder={`Tous les ${clientsLabel.toLowerCase()}`} /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="tous">Tous les clients</SelectItem>
+                <SelectItem value="tous">Tous les {clientsLabel.toLowerCase()}</SelectItem>
                 {clientsWithTickets.map((c) => <SelectItem key={c.id} value={c.id}>{c.nom}</SelectItem>)}
               </SelectContent>
             </Select>
