@@ -9,10 +9,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { UserCircle, Bell, Smartphone, Mail } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 import { toast } from "sonner";
 
 export default function EmployeeProfile() {
   const { user } = useDemoAuth();
+  const { employeeLabel } = useSectorRoleLabels();
 
   const [notifInApp, setNotifInApp] = useState(true);
   const [notifSms, setNotifSms] = useState(false);
