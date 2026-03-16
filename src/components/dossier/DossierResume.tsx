@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
-import type { Dossier, Facture, Devis, PreviewVisit, CahierDesCharges } from "@/data/mockData";
+import type { Dossier, Facture, Devis } from "@/data/mockData";
+import type { PreviewVisit, CahierDesCharges } from "@/contexts/DemoDataContext";
 
 interface Props {
   dossier: Dossier;
