@@ -1,13 +1,7 @@
 // ── Mock data for Salon de Coiffure / Beauté sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const COIFFURE_STEPS = [
-  "RDV pris",
-  "Acompte payé",
-  "Client arrivé",
-  "Prestation en cours",
-  "Terminé",
-  "Avis demandé",
-];
+export const COIFFURE_STEPS = getDefaultStepsForSector("coiffure");
 
 export const COIFFURE_STEP_COLORS = [
   "bg-blue-500",

@@ -1,14 +1,7 @@
 // ── Mock data for Centre Islamique sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const CENTRE_ISLAMIQUE_STEPS = [
-  "Inscription",
-  "Évaluation initiale",
-  "Niveau placé",
-  "Cours en cours",
-  "Évaluation périodique",
-  "Progression validée",
-  "Diplôme / Ijaza",
-] as const;
+export const CENTRE_ISLAMIQUE_STEPS = getDefaultStepsForSector("centre-islamique");
 
 export interface CentreProfesseur {
   id: string;

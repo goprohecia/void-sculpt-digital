@@ -1,4 +1,5 @@
 // Mock data for Cabinet de Recrutement sector
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
 export interface RecrutementMission {
   id: string;
@@ -50,15 +51,7 @@ export interface RecrutementEntretien {
   lieu: string;
 }
 
-export const RECRUTEMENT_STEPS = [
-  "Mission ouverte",
-  "Sourcing",
-  "Entretien cabinet",
-  "Candidat présenté",
-  "Entretien client",
-  "Offre faite",
-  "Intégré",
-];
+export const RECRUTEMENT_STEPS = getDefaultStepsForSector("cabinet-recrutement");
 
 export const MOCK_MISSIONS: RecrutementMission[] = [
   {

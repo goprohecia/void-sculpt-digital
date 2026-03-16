@@ -1,14 +1,7 @@
 // ── Mock data for Consultant sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const CONSULTANT_STEPS = [
-  "Mission qualifiée",
-  "Proposition envoyée",
-  "Contrat signé",
-  "Mission en cours",
-  "Livrable intermédiaire",
-  "Livrable final",
-  "Clôturée",
-];
+export const CONSULTANT_STEPS = getDefaultStepsForSector("consultant");
 
 export interface ConsultantMission {
   id: string;

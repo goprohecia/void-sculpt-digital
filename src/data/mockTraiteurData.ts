@@ -1,13 +1,6 @@
-export const TRAITEUR_STEPS = [
-  "Demande reçue",
-  "Devis envoyé",
-  "Menu validé",
-  "Contrat signé",
-  "Acompte reçu",
-  "Préparation",
-  "Livraison / Service",
-  "Solde réglé",
-];
+import { getDefaultStepsForSector } from "./sectorTimelines";
+
+export const TRAITEUR_STEPS = getDefaultStepsForSector("traiteur");
 
 export interface TraiteurCommande {
   id: string;

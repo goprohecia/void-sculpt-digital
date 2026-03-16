@@ -1,15 +1,7 @@
 // ── Mock data for Événementiel sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const EVENEMENTIEL_STEPS = [
-  "Brief reçu",
-  "Proposition envoyée",
-  "Contrat signé",
-  "Prestataires confirmés",
-  "J-7 brief final",
-  "Événement réalisé",
-  "Bilan client",
-  "Clôturé",
-];
+export const EVENEMENTIEL_STEPS = getDefaultStepsForSector("evenementiel");
 
 export interface EvenementielPrestataire {
   id: string;

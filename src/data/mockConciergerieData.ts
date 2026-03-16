@@ -1,14 +1,7 @@
 // ── Mock data for Conciergerie / Airbnb sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const CONCIERGERIE_STEPS = [
-  "Réservation confirmée",
-  "Préparation logement",
-  "Check-in effectué",
-  "Séjour en cours",
-  "Check-out",
-  "Ménage fait",
-  "Bilan propriétaire",
-];
+export const CONCIERGERIE_STEPS = getDefaultStepsForSector("conciergerie");
 
 export interface ConciergerieBien {
   id: string;

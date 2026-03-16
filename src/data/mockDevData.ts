@@ -1,15 +1,7 @@
 // ── Mock data for Développeur / Studio dev sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const DEV_STEPS = [
-  "Cahier des charges",
-  "Devis signé",
-  "Maquettes validées",
-  "Dev en cours",
-  "Recette client",
-  "Corrections",
-  "Mise en prod",
-  "Clôturé",
-];
+export const DEV_STEPS = getDefaultStepsForSector("developpeur");
 
 export type DevTicketStatus = "a_faire" | "en_cours" | "a_livrer" | "termine";
 

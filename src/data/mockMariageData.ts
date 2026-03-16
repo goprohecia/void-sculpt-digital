@@ -1,15 +1,7 @@
 // Mock data for Robe de Mariée / Haute Couture sector
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const MARIAGE_STEPS = [
-  "RDV Pris",
-  "Mesures Prises",
-  "En Confection",
-  "Essayage Intermédiaire",
-  "Essayage Final",
-  "Arrivée Boutique",
-  "Prête à Récupérer",
-  "Terminée",
-];
+export const MARIAGE_STEPS = getDefaultStepsForSector("mariage");
 
 export const MARIAGE_STEP_MESSAGES: Record<number, string> = {
   1: "Bienvenue ! Votre premier rendez-vous est confirmé. Nous avons hâte de vous accompagner dans le choix de votre robe de rêve.",

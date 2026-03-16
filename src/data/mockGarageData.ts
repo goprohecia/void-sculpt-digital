@@ -1,14 +1,7 @@
 // ── Mock data for Garage / Carrosserie sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const GARAGE_STEPS = [
-  "Véhicule reçu",
-  "Diagnostic",
-  "Devis envoyé",
-  "Devis accepté",
-  "En réparation",
-  "Prêt à récupérer",
-  "Terminé",
-] as const;
+export const GARAGE_STEPS = getDefaultStepsForSector("garages");
 
 export const GARAGE_STEP_ICONS = [
   "Car",        // Véhicule reçu

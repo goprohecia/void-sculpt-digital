@@ -1,12 +1,6 @@
-export const PHOTOGRAPHE_STEPS = [
-  "Réservation",
-  "Acompte reçu",
-  "Séance réalisée",
-  "Sélection en cours",
-  "Retouches",
-  "Galerie livrée",
-  "Solde réglé",
-];
+import { getDefaultStepsForSector } from "./sectorTimelines";
+
+export const PHOTOGRAPHE_STEPS = getDefaultStepsForSector("photographe");
 
 export interface PhotographeSeance {
   id: string;

@@ -1,15 +1,7 @@
 // Mock data for Expert-Comptable sector
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const COMPTABLE_STEPS = [
-  "Dossier ouvert",
-  "Pièces collectées",
-  "Saisie comptable",
-  "Révision",
-  "Déclaration préparée",
-  "Validée client",
-  "Envoyée aux impôts",
-  "Clôturée",
-];
+export const COMPTABLE_STEPS = getDefaultStepsForSector("expert-comptable");
 
 export interface ComptableMission {
   id: string;

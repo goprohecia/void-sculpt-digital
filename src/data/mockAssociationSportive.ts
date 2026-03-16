@@ -1,13 +1,7 @@
 // ── Mock data for Association Sportive sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const ASSOCIATION_SPORTIVE_STEPS = [
-  "Demande adhésion",
-  "Licence validée",
-  "Cotisation payée",
-  "Membre actif",
-  "Renouvellement",
-  "Membre renouvelé",
-] as const;
+export const ASSOCIATION_SPORTIVE_STEPS = getDefaultStepsForSector("association-sportive");
 
 export interface AssociationEntraineur {
   id: string;

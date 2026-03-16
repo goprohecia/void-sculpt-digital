@@ -1,14 +1,7 @@
 // ── Mock data for Nettoyage / Entreprise de propreté ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const NETTOYAGE_STEPS = [
-  "Devis envoyé",
-  "Contrat signé",
-  "Planifié",
-  "Intervention en cours",
-  "Intervention terminée",
-  "Rapport envoyé",
-  "Facturé",
-];
+export const NETTOYAGE_STEPS = getDefaultStepsForSector("nettoyage");
 
 export interface NettoyageChecklistItem {
   id: string;

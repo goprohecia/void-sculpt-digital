@@ -1,14 +1,7 @@
 // ── Mock data for DJ / Animateur sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const DJ_STEPS = [
-  "Demande reçue",
-  "Devis envoyé",
-  "Contrat signé",
-  "Acompte reçu",
-  "Événement confirmé",
-  "Prestation réalisée",
-  "Solde réglé",
-];
+export const DJ_STEPS = getDefaultStepsForSector("dj-animateur");
 
 export interface DJPrestation {
   id: string;

@@ -96,7 +96,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Séance photo",
       category: "projet",
-      steps: ["Réservation", "Acompte reçu", "Séance réalisée", "Sélection en cours", "Retouches", "Galerie livrée", "Solde réglé"],
+      steps: ["Réservation", "Acompte reçu", "Séance réalisée", "Sélection en cours", "Retouches", "Galerie livrée", "Solde"],
     },
     {
       name: "Reportage événement",
@@ -219,7 +219,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Prestation événement",
       category: "événement",
-      steps: ["Demande reçue", "Devis envoyé", "Contrat signé", "Acompte reçu", "Événement confirmé", "Prestation réalisée", "Solde réglé"],
+      steps: ["Demande reçue", "Devis envoyé", "Contrat signé", "Acompte reçu", "Événement confirmé", "Prestation réalisée", "Solde"],
     },
   ],
 
@@ -240,7 +240,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Session de formation",
       category: "formation",
-      steps: ["Inscription reçue", "Convention signée", "Acompte reçu", "Formation en cours", "Évaluation finale", "Attestation émise", "Solde réglé"],
+      steps: ["Inscription reçue", "Convention signée", "Acompte reçu", "Formation en cours", "Évaluation finale", "Attestation émise", "Solde"],
     },
     {
       name: "Formation en ligne",
@@ -315,7 +315,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Événement traiteur",
       category: "événement",
-      steps: ["Demande reçue", "Devis envoyé", "Menu validé", "Contrat signé", "Acompte reçu", "Préparation", "Livraison / Service", "Solde réglé"],
+      steps: ["Demande reçue", "Devis envoyé", "Menu validé", "Contrat signé", "Acompte reçu", "Préparation", "Livraison / Service", "Solde"],
     },
     {
       name: "Commande emporter / livraison",
@@ -367,7 +367,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Mission comptable annuelle",
       category: "gestion",
-      steps: ["Dossier ouvert", "Pièces collectées", "Saisie comptable", "Révision", "Déclaration préparée", "Validée client", "Envoyée aux impôts", "Clôturée"],
+      steps: ["Dossier ouvert", "Pièces collectées", "Saisie comptable", "Révision", "Déclaration préparée", "Validée client", "Envoyée aux impôts"],
     },
     {
       name: "Déclaration fiscale",
@@ -436,6 +436,12 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     sectorLabel: sectorLabels[key] || key,
     presets,
   }));
+}
+
+/** Get the default (first preset) steps for a given sector key */
+export function getDefaultStepsForSector(sectorKey: string): string[] {
+  const presets = SECTOR_TIMELINE_PRESETS[sectorKey];
+  return presets?.[0]?.steps || SECTOR_TIMELINE_PRESETS.generic[0].steps;
 }
 
 /** Get all unique categories used across all presets */

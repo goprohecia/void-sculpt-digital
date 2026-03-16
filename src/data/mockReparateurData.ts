@@ -1,13 +1,6 @@
-export const REPARATEUR_STEPS = [
-  "Appareil reçu",
-  "Diagnostic",
-  "Devis envoyé",
-  "Devis accepté",
-  "En réparation",
-  "Tests effectués",
-  "Prêt à récupérer",
-  "Terminé",
-];
+import { getDefaultStepsForSector } from "./sectorTimelines";
+
+export const REPARATEUR_STEPS = getDefaultStepsForSector("reparateur");
 
 export interface ReparateurFiche {
   id: string;
