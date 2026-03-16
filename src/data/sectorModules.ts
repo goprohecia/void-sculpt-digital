@@ -543,6 +543,8 @@ const ASSIGNATION_SECTORS = [
   "cabinet-avocats", // Cabinet d'Avocats
   "cabinet-recrutement", // Cabinet de Recrutement
   "expert-comptable", // Expert-Comptable
+  "centre-islamique", // Centre islamique
+  "association-sportive", // Association sportive
 ];
 
 export function isAssignationEnabled(sectorKey?: string | null): boolean {
@@ -587,6 +589,8 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
   "cabinet-avocats": { admin: "Cabinet", employee: "Avocat / Collaborateur", client: "Client" },
   "expert-comptable": { admin: "Cabinet", employee: "Collaborateur comptable", client: "Client Entreprise" },
+  "centre-islamique": { admin: "Direction", employee: "Professeur", client: "Élève" },
+  "association-sportive": { admin: "Direction du club", employee: "Entraîneur", client: "Membre" },
 };
 
 export function getSectorRoleLabel(sectorKey: string | null | undefined, role: "admin" | "employee" | "client"): string | null {

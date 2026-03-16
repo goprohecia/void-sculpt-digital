@@ -375,6 +375,22 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
       steps: ["Collecte pièces", "Saisie", "Contrôle", "Préparation déclaration", "Validation client", "Télétransmission", "Accusé de réception", "Archivage"],
     },
   ],
+
+  "centre-islamique": [
+    {
+      name: "Parcours élève Coran",
+      category: "formation",
+      steps: ["Inscription", "Évaluation initiale", "Niveau placé", "Cours en cours", "Évaluation périodique", "Progression validée", "Diplôme / Ijaza"],
+    },
+  ],
+
+  "association-sportive": [
+    {
+      name: "Adhésion membre",
+      category: "suivi",
+      steps: ["Demande adhésion", "Licence validée", "Cotisation payée", "Membre actif", "Renouvellement", "Membre renouvelé"],
+    },
+  ],
 };
 
 /** Get presets for a given sector key, falling back to generic */
@@ -411,6 +427,8 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     "auto-ecole": "Auto-École",
     "cabinet-avocats": "Cabinet d'Avocats",
     "expert-comptable": "Expert-Comptable",
+    "centre-islamique": "Centre islamique",
+    "association-sportive": "Association sportive",
   };
 
   return Object.entries(SECTOR_TIMELINE_PRESETS).map(([key, presets]) => ({

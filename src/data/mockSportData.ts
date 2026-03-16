@@ -57,7 +57,7 @@ export interface SportSeance {
 }
 
 export const MOCK_SPORT_COACHS: SportCoach[] = [
-  { id: "sc1", nom: "Kevin Dupont", specialite: "Musculation & HIIT", membresAssignes: 12, seancesSemaine: 18 },
+  { id: "sc1", nom: "Kevin Rousseau", specialite: "Musculation & HIIT", membresAssignes: 12, seancesSemaine: 18 },
   { id: "sc2", nom: "Sarah Lemoine", specialite: "Yoga & Pilates", membresAssignes: 15, seancesSemaine: 14 },
   { id: "sc3", nom: "Maxime Torres", specialite: "CrossFit & Cardio", membresAssignes: 10, seancesSemaine: 16 },
 ];
@@ -112,12 +112,12 @@ export const MOCK_SPORT_MEMBRES: SportMembre[] = [
 ];
 
 export const MOCK_SPORT_COURS: SportCours[] = [
-  { id: "cc1", nom: "HIIT Express", coach: "Kevin Dupont", jour: "Lundi", heure: "12:00", duree: 45, capacite: 20, inscrits: 18 },
+  { id: "cc1", nom: "HIIT Express", coach: "Kevin Rousseau", jour: "Lundi", heure: "12:00", duree: 45, capacite: 20, inscrits: 18 },
   { id: "cc2", nom: "Yoga Flow", coach: "Sarah Lemoine", jour: "Mardi", heure: "18:00", duree: 60, capacite: 15, inscrits: 12 },
   { id: "cc3", nom: "CrossFit WOD", coach: "Maxime Torres", jour: "Mercredi", heure: "07:00", duree: 60, capacite: 12, inscrits: 12 },
   { id: "cc4", nom: "Pilates Doux", coach: "Sarah Lemoine", jour: "Jeudi", heure: "10:00", duree: 50, capacite: 15, inscrits: 8 },
   { id: "cc5", nom: "Cardio Boxing", coach: "Maxime Torres", jour: "Vendredi", heure: "18:30", duree: 45, capacite: 20, inscrits: 16 },
-  { id: "cc6", nom: "Full Body", coach: "Kevin Dupont", jour: "Samedi", heure: "10:00", duree: 60, capacite: 20, inscrits: 14 },
+  { id: "cc6", nom: "Full Body", coach: "Kevin Rousseau", jour: "Samedi", heure: "10:00", duree: 60, capacite: 20, inscrits: 14 },
 ];
 
 export const MOCK_SPORT_SEANCES_COACH: SportSeance[] = [
@@ -139,8 +139,8 @@ export const SPORT_KPIS = {
 
 // For the client/member view
 export const MOCK_SPORT_MEMBER_SEANCES = [
-  { date: "2026-03-08", type: "Musculation", coach: "Kevin Dupont", duree: 60, notes: "Haut du corps — PR développé couché 70kg" },
-  { date: "2026-03-05", type: "HIIT", coach: "Kevin Dupont", duree: 30, notes: "Circuit 5 rounds" },
-  { date: "2026-03-03", type: "Musculation", coach: "Kevin Dupont", duree: 60, notes: "Dos + biceps" },
-  { date: "2026-02-28", type: "Cardio", coach: "Kevin Dupont", duree: 45, notes: "Rameur + vélo" },
+  { date: "2026-03-08", type: "Musculation", coach: "Kevin Rousseau", duree: 60, notes: "Haut du corps — PR développé couché 70kg" },
+  { date: "2026-03-05", type: "HIIT", coach: "Kevin Rousseau", duree: 30, notes: "Circuit 5 rounds" },
+  { date: "2026-03-03", type: "Musculation", coach: "Kevin Rousseau", duree: 60, notes: "Dos + biceps" },
+  { date: "2026-02-28", type: "Cardio", coach: "Kevin Rousseau", duree: 45, notes: "Rameur + vélo" },
 ];

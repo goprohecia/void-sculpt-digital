@@ -38,7 +38,7 @@ export interface MockMecanicien {
 }
 
 export const MOCK_MECANICIENS: MockMecanicien[] = [
-  { id: "mec-1", nom: "Dupont", prenom: "Marc", specialite: "Mécanique générale" },
+  { id: "mec-1", nom: "Bensalem", prenom: "Mohamed", specialite: "Mécanique générale" },
   { id: "mec-2", nom: "Lefèvre", prenom: "Antoine", specialite: "Carrosserie & Peinture" },
 ];
 
@@ -70,7 +70,7 @@ export const MOCK_VEHICULES: MockVehicule[] = [
     kilometrage: 45200,
     motifEntree: "Bruit au freinage",
     mecanicienId: "mec-1",
-    mecanicienNom: "Marc Dupont",
+    mecanicienNom: "Mohamed Bensalem",
     etape: 4,
     dateDepot: "2026-03-03",
     notes: "Plaquettes de frein usées, disques à vérifier",
@@ -86,7 +86,7 @@ export const MOCK_VEHICULES: MockVehicule[] = [
     kilometrage: 78300,
     motifEntree: "Révision 80 000 km",
     mecanicienId: "mec-1",
-    mecanicienNom: "Marc Dupont",
+    mecanicienNom: "Mohamed Bensalem",
     etape: 5,
     dateDepot: "2026-03-01",
     notes: "Courroie de distribution à remplacer",
@@ -134,7 +134,7 @@ export const MOCK_VEHICULES: MockVehicule[] = [
     kilometrage: 62400,
     motifEntree: "Vidange + filtres",
     mecanicienId: "mec-1",
-    mecanicienNom: "Marc Dupont",
+    mecanicienNom: "Mohamed Bensalem",
     etape: 6,
     dateDepot: "2026-02-25",
     notes: "Entretien courant, RAS",
@@ -166,7 +166,7 @@ export const MOCK_VEHICULES: MockVehicule[] = [
     kilometrage: 54800,
     motifEntree: "Climatisation HS",
     mecanicienId: "mec-1",
-    mecanicienNom: "Marc Dupont",
+    mecanicienNom: "Mohamed Bensalem",
     etape: 3,
     dateDepot: "2026-03-05",
     notes: "Recharge gaz + vérification compresseur",
