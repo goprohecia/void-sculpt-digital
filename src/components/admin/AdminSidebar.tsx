@@ -53,6 +53,8 @@ const MODULE_DESCRIPTIONS: Record<string, string> = {
   "clients-dossiers": "Gérez vos clients et leurs dossiers en un seul endroit.",
   "employees": "Gérez votre équipe, rôles et permissions.",
   "pipeline": "Suivez vos opportunités commerciales étape par étape.",
+  "dossiers": "Gérez et suivez tous vos dossiers en cours.",
+  "demandes": "Consultez et traitez les demandes de vos clients.",
   "facturation": "Créez et gérez vos factures et devis.",
   "relances": "Automatisez le suivi de vos impayés.",
   "stock": "Gérez votre inventaire et vos produits.",
