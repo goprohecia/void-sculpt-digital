@@ -79,9 +79,9 @@ export const MOCK_COLLABORATEURS_COMPTABLES: ComptableCollaborateur[] = [
 
 export const MOCK_MISSIONS: ComptableMission[] = [
   {
-    id: "mc-1", reference: "MIS-2026-001", entrepriseNom: "SARL Dupont & Fils",
+    id: "mc-1", reference: "MIS-2026-001", entrepriseNom: "SARL Girard & Fils",
     formeJuridique: "SARL", siret: "123 456 789 00012",
-    contactNom: "Pierre Dupont", email: "p.dupont@dupont-fils.fr", telephone: "06 11 22 33 44",
+    contactNom: "Patrick Girard", email: "p.girard@girard-fils.fr", telephone: "06 11 22 33 44",
     typeMission: "Tenue comptable + Bilan", etape: 4, collaborateurId: "cc-1",
     dateOuverture: "2025-01-15", prochaineEcheanceFiscale: "2026-03-15", echeanceType: "TVA mensuelle",
     honorairesMensuels: 450, honorairesAnnuels: 5400, honorairesPaies: 4050,
