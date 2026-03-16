@@ -201,7 +201,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {preset.steps.map((s, i) => (
-                        <Badge key={i} variant="outline" className="text-[8px] px-1.5 py-0">{i + 1}. {s}</Badge>
+                        <Badge key={i} variant="outline" className="text-[8px] px-1.5 py-0 text-foreground border-border">{i + 1}. {s}</Badge>
                       ))}
                     </div>
                   </div>
