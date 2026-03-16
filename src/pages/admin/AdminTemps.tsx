@@ -35,7 +35,7 @@ const INITIAL_ENTRIES: TimeEntry[] = [
 ];
 
 export default function AdminTemps() {
-  const { employeeLabel, employeesLabel } = useSectorRoleLabels();
+  const { employeeLabel, employeesLabel, clientLabel, clientsLabel } = useSectorRoleLabels();
   const [isRunning, setIsRunning] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
