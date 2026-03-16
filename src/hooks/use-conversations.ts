@@ -13,6 +13,7 @@ function mapRow(row: any, messages: Message[]): Conversation {
     nonLus: row.non_lus,
     dernierMessage: row.dernier_message?.split("T")[0] ?? "",
     messages,
+    destinataireType: row.destinataire_type ?? "admin",
   };
 }
 
