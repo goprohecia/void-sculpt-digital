@@ -320,8 +320,11 @@ export default function ClientSignup() {
                       onCheckedChange={() => toggleModule(key)}
                     />
                     <span className="text-xs text-[#1a2318]">{getSectorModuleLabel(key, selectedSector)}</span>
-                    {isRecommended && !isSelected && (
-                      <Sparkles className="h-3 w-3 text-[#22c55e]/50 ml-auto" />
+                    {isRecommended && (
+                      <span className="ml-auto flex items-center gap-0.5 text-[9px] font-medium text-[#22c55e] bg-[#f0fdf4] border border-[#bbf7d0] rounded-full px-1.5 py-0.5 whitespace-nowrap">
+                        <Sparkles className="h-2.5 w-2.5" />
+                        Recommandé
+                      </span>
                     )}
                   </label>
                 );

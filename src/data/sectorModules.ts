@@ -41,6 +41,8 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
   parametres: "Paramètres",
   fournisseurs: "Fournisseurs",
   "messagerie-groupee": "Messagerie groupée",
+  signature: "Signature",
+  abonnement: "Abonnements",
 };
 
 // ── Sector-specific overrides ──
