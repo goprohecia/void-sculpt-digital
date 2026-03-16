@@ -204,12 +204,13 @@ export function AdminModulesSection({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          {enabledAdminModules.map((mod) => {
+          {allPlanModules.map((mod) => {
             const isAlwaysOn = SYSTEM_MODULES.includes(mod.key);
+            const isEnabled = enabledModules.includes(mod.key);
             return (
-              <div key={mod.key} className="flex items-center justify-between py-2 border-b border-border/30 last:border-0">
+              <div key={mod.key} className={`flex items-center justify-between py-2 border-b border-border/30 last:border-0 ${!isEnabled ? "opacity-60" : ""}`}>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-[#16a34a]" />
+                  <CheckCircle2 className={`h-4 w-4 ${isEnabled ? "text-[#16a34a]" : "text-gray-300"}`} />
                   <p className="text-sm font-medium">{capitalize(getModuleLabel(mod.key))}</p>
                   {ALWAYS_INCLUDED.includes(mod.key) && (
                     <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-gray-400 border-gray-200">
@@ -218,10 +219,14 @@ export function AdminModulesSection({
                   )}
                 </div>
                 <Switch
-                  checked={true}
-                  disabled={isAlwaysOn}
+                  checked={isEnabled}
+                  disabled={isAlwaysOn || ALWAYS_INCLUDED.includes(mod.key)}
                   onCheckedChange={(v) => {
-                    if (!v) {
+                    if (v) {
+                      const next = [...enabledModules, mod.key];
+                      updateSetting.mutate({ key: "enabled_modules", value: next });
+                      toast.success(`Module "${capitalize(getModuleLabel(mod.key))}" activé`);
+                    } else {
                       const next = enabledModules.filter((k) => k !== mod.key);
                       updateSetting.mutate({ key: "enabled_modules", value: next });
                       toast.success(`Module "${capitalize(getModuleLabel(mod.key))}" désactivé`);
