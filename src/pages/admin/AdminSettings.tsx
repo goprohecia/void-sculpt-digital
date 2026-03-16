@@ -1339,7 +1339,7 @@ export default function AdminSettings() {
             <div className="flex flex-col md:flex-row gap-6">
               {/* Vertical sidebar navigation */}
               <nav className="md:w-56 shrink-0">
-                <div className="md:sticky md:top-6 bg-white rounded-xl border border-[#e4e8df] p-4 shadow-sm space-y-5">
+                <div className="md:sticky md:top-6 bg-[#F6F5F2] rounded-xl border border-[#e4e8df] p-4 shadow-sm space-y-5">
                   {SETTINGS_NAV.map((group) => (
                     <div key={group.group}>
                       <p className="text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af] mb-1.5 px-3">
