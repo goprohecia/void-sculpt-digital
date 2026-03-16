@@ -44,7 +44,7 @@ const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
 
 function CustomSpacesManager() {
   const { spaces, createSpace, updateSpace, deleteSpace } = useCustomSpaces();
-  const { getModuleLabel } = useDemoPlan();
+  const { getModuleLabel, demoSector } = useDemoPlan();
   const [newName, setNewName] = useState("");
   const [newBaseRole, setNewBaseRole] = useState<"employee" | "client">("employee");
   const [newModules, setNewModules] = useState<string[]>(["overview"]);
