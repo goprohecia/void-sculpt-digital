@@ -17,6 +17,7 @@ export type SectorModulesConfig = Partial<Record<string, SectorModuleOverride>>;
 // ── Default generic labels (fallback) ──
 export const GENERIC_MODULE_LABELS: Record<string, string> = {
   overview: "Vue d'ensemble",
+  "clients-dossiers": "Clients & Dossiers",
   clients: "Clients",
   employees: "Salariés",
   dossiers: "Dossiers",
