@@ -189,7 +189,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
             ))}
           </div>
           <Progress value={progressValue} className="h-2" />
-          <p className="text-center text-muted-foreground text-sm mt-2">
+          <p className="text-center text-foreground/70 text-sm mt-2">
             Étape {step + 1} sur 4
           </p>
         </div>
