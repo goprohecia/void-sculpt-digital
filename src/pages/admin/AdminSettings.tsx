@@ -180,7 +180,15 @@ function CustomSpacesManager() {
                     />
                   ) : (
                     <div>
-                      <p className="text-sm font-medium">{space.name}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium">{space.name}</p>
+                        {space.role_id && (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-amber-500/30 text-amber-600 bg-amber-500/10 gap-1">
+                            <Shield className="h-2.5 w-2.5" />
+                            Rôle lié
+                          </Badge>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground">
                         Base : {space.base_role === "employee" ? (getSectorRoleLabel(demoSector, "employee") || "Salarié") : (getSectorRoleLabel(demoSector, "client") || "Client")} · {space.enabled_modules.length} modules
                       </p>

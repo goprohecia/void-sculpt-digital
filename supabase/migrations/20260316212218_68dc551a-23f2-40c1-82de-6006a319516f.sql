@@ -1,0 +1,1 @@
+ALTER TABLE public.custom_spaces ADD COLUMN role_id uuid REFERENCES public.roles(id) ON DELETE SET NULL;

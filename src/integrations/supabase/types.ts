@@ -657,6 +657,7 @@ export type Database = {
           enabled_modules: Json
           id: string
           name: string
+          role_id: string | null
           sort_order: number
           user_id: string
         }
@@ -667,6 +668,7 @@ export type Database = {
           enabled_modules?: Json
           id?: string
           name: string
+          role_id?: string | null
           sort_order?: number
           user_id: string
         }
@@ -677,10 +679,19 @@ export type Database = {
           enabled_modules?: Json
           id?: string
           name?: string
+          role_id?: string | null
           sort_order?: number
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "custom_spaces_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       demandes: {
         Row: {
