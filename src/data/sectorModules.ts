@@ -587,6 +587,8 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
   "cabinet-avocats": { admin: "Cabinet", employee: "Avocat / Collaborateur", client: "Client" },
   "expert-comptable": { admin: "Cabinet", employee: "Collaborateur comptable", client: "Client Entreprise" },
+  "centre-islamique": { admin: "Direction", employee: "Professeur", client: "Élève" },
+  "association-sportive": { admin: "Direction du club", employee: "Entraîneur", client: "Membre" },
 };
 
 export function getSectorRoleLabel(sectorKey: string | null | undefined, role: "admin" | "employee" | "client"): string | null {
