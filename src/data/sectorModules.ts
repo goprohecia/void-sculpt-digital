@@ -133,6 +133,7 @@ const COIFFURE_OVERRIDES: SectorModulesConfig = {
 };
 
 const BOUTIQUE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Commandes", description: "Portefeuille clients et commandes" },
   dossiers: { label: "Commandes", description: "Suivi des commandes clients et fournisseurs" },
   taches: { label: "Tâches boutique", description: "Organisation quotidienne de la boutique" },
   stock: { label: "Inventaire", description: "Gestion des produits en rayon et en réserve" },
