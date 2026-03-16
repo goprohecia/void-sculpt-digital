@@ -79,6 +79,7 @@ const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
 };
 
 const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Membres & Dossiers", description: "Fichier membres et suivi d'entraînement" },
   dossiers: { label: "Suivi membre", description: "Programmes d'entraînement et suivi par membre" },
   clients: { label: "Membres", description: "Fichier membres avec abonnement et objectifs" },
   employees: { label: "Coachs", description: "Équipe de coaching et planning" },
