@@ -290,7 +290,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                           >
                             <span className="text-xl">{s.icon}</span>
                             <span className="text-xs font-medium leading-tight">{s.label}</span>
-                            <span className="text-[10px] text-muted-foreground leading-tight">
+                            <span className="text-[10px] text-white/60 leading-tight">
                               ({s.roles})
                             </span>
                           </button>
