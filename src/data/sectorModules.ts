@@ -429,6 +429,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     support: { label: "Support élèves", description: "Questions et assistance des élèves" },
   } as SectorModulesConfig,
   "cabinet-avocats": {
+    "clients-dossiers": { label: "Clients & Affaires", description: "Personnes physiques/morales et affaires judiciaires" },
     dossiers: { label: "Affaires", description: "Suivi des affaires judiciaires et contentieux" },
     taches: { label: "Échéances & Délais", description: "Délais de procédure, audiences et deadlines" },
     stock: { label: "Stock", hidden: true },
