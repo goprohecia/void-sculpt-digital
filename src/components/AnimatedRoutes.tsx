@@ -166,6 +166,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
         <Route path="/admin/dossiers/:id" element={<AdminDossierDetail />} />
+        <Route path="/admin/demandes" element={<AdminDemandes />} />
         <Route path="/admin/messagerie" element={<AdminMessaging />} />
         <Route path="/admin/facturation" element={<AdminBilling />} />
         <Route path="/admin/relances" element={<AdminReminders />} />
