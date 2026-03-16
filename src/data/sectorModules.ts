@@ -148,6 +148,7 @@ const BOUTIQUE_OVERRIDES: SectorModulesConfig = {
 };
 
 const CABINETS_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Affaires", description: "Portefeuille clients et dossiers juridiques" },
   dossiers: { label: "Affaires", description: "Suivi des affaires et dossiers juridiques" },
   taches: { label: "Échéances", description: "Délais légaux, audiences et deadlines" },
   stock: { label: "Stock", hidden: true },
