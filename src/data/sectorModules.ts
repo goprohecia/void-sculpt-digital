@@ -115,6 +115,7 @@ const BTP_OVERRIDES: SectorModulesConfig = {
 };
 
 const COIFFURE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Prestations", description: "Clients et historique des prestations" },
   dossiers: { label: "Réservations / Prestations", description: "Historique des prestations et réservations par client" },
   taches: { label: "Tâches salon", description: "Organisation quotidienne du salon" },
   documents: { label: "Fiches client", description: "Fiches techniques, colorations et préférences" },
