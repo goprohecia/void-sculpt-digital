@@ -125,7 +125,7 @@ export const MOCK_MISSIONS: ComptableMission[] = [
 ];
 
 export const MOCK_DECLARATIONS: ComptableDeclaration[] = [
-  { id: "dec-1", missionId: "mc-1", entrepriseNom: "SARL Dupont & Fils", type: "TVA CA3", periodicite: "Mensuelle", echeance: "2026-03-15", statut: "preparee", dateTransmission: null },
+  { id: "dec-1", missionId: "mc-1", entrepriseNom: "SARL Girard & Fils", type: "TVA CA3", periodicite: "Mensuelle", echeance: "2026-03-15", statut: "preparee", dateTransmission: null },
   { id: "dec-2", missionId: "mc-2", entrepriseNom: "SAS TechInno", type: "TVA CA3", periodicite: "Trimestrielle", echeance: "2026-03-31", statut: "a_preparer", dateTransmission: null },
   { id: "dec-3", missionId: "mc-3", entrepriseNom: "EI Martin Consulting", type: "Liasse 2035 (BNC)", periodicite: "Annuelle", echeance: "2026-05-15", statut: "validee", dateTransmission: null },
   { id: "dec-4", missionId: "mc-4", entrepriseNom: "SARL Boulangerie Petit", type: "IS — Liasse 2065", periodicite: "Annuelle", echeance: "2026-04-30", statut: "envoyee", dateTransmission: "2026-03-05" },
