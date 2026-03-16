@@ -98,6 +98,7 @@ const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
 };
 
 const BTP_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Chantiers", description: "Portefeuille clients et suivi de chantiers" },
   dossiers: { label: "Chantiers", description: "Suivi de chantiers, phases et avancement" },
   taches: { label: "Planning chantier", description: "Tâches par lot, sous-traitants et jalons" },
   documents: { label: "Plans & Documents", description: "Plans techniques, permis, CCTP et PV de réception" },
