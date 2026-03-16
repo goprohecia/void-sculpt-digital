@@ -119,7 +119,11 @@ export function BrevoConfigSettings() {
           <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5 shrink-0" />
           <div className="text-xs text-muted-foreground space-y-1">
             <p className="font-medium text-amber-500">Prérequis</p>
-            <p>Créez un compte sur <strong>brevo.com</strong>, puis récupérez votre clé API dans <em>Paramètres → SMTP &amp; API → Clés API</em>.</p>
+            <p>Créez un compte sur{" "}
+              <a href="https://www.brevo.com" target="_blank" rel="noopener noreferrer" className="text-primary underline inline-flex items-center gap-1">
+                brevo.com <ExternalLink className="h-3 w-3" />
+              </a>
+              , puis récupérez votre clé API dans <em>Paramètres → SMTP &amp; API → Clés API</em>.</p>
           </div>
         </div>
 
