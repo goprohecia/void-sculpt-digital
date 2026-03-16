@@ -224,9 +224,9 @@ export default function AdminTemps() {
                 </div>
                 <div className="flex gap-2">
                   <Select value={filterClient} onValueChange={setFilterClient}>
-                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="Client" /></SelectTrigger>
+                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder={clientLabel} /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Tous les clients</SelectItem>
+                      <SelectItem value="all">Tous les {clientsLabel.toLowerCase()}</SelectItem>
                       {[...new Set(entries.map((e) => e.client))].sort().map((c) => (
                         <SelectItem key={c} value={c}>{c}</SelectItem>
                       ))}
