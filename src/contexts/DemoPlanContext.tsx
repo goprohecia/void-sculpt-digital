@@ -15,7 +15,7 @@ export const ALL_MODULE_KEYS = [
   "facturation", "relances", "stock", "messagerie", "messagerie-groupee", "emails",
   "rendez-vous", "agenda", "taches", "support", "notes",
   "analyse", "rapports", "documents", "temps", "automatisations",
-  "ia", "parametres",
+  "ia", "parametres", "signature", "abonnement",
 ];
 
 // Socle fixe — always included, never counted in quota
