@@ -540,6 +540,9 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
           cahier={cdcDemandeId ? getCahierByDemande(cdcDemandeId) || null : null}
           demandeTitre={cdcDemande?.titre}
         />
+
+        <CreateDossierDialog open={showCreateDossier} onOpenChange={setShowCreateDossier} clients={clients} />
+        <CreateDemandeDialog open={showCreateDemande} onOpenChange={setShowCreateDemande} clients={clients} />
       </AdminPageTransition>
     </AdminLayout>
   );
