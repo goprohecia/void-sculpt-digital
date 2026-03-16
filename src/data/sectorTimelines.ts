@@ -438,6 +438,12 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
   }));
 }
 
+/** Get the default (first preset) steps for a given sector key */
+export function getDefaultStepsForSector(sectorKey: string): string[] {
+  const presets = SECTOR_TIMELINE_PRESETS[sectorKey];
+  return presets?.[0]?.steps || SECTOR_TIMELINE_PRESETS.generic[0].steps;
+}
+
 /** Get all unique categories used across all presets */
 export function getAllCategories(): PresetCategory[] {
   const cats = new Set<PresetCategory>();
