@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp, Shield, RotateCcw } from "lucide-react";
+import { Settings, User, Building2, Bell, Save, CheckCircle, Mail, Phone, MapPin, Lock, Eye, EyeOff, Puzzle, Receipt, Tag, Plus, Trash2, Pencil, Crown, Sparkles, Palette, Globe, Upload, Type, Image, Clock, BarChart3, GripVertical, CalendarDays, Copy, Link, ArrowRightLeft, TrendingUp, Shield, RotateCcw, ArrowDownToLine } from "lucide-react";
 import { WhiteLabelPreview } from "@/components/admin/WhiteLabelPreview";
 import { AVAILABLE_FONTS } from "@/hooks/use-white-label";
 import { useOnboardingStatus } from "@/hooks/use-onboarding";
