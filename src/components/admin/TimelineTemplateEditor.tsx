@@ -14,7 +14,11 @@ import { staggerItem } from "@/components/admin/AdminPageTransition";
 import { useDemoPlan, SECTORS } from "@/contexts/DemoPlanContext";
 import { getPresetsForSector, getAllSectorPresets, getAllCategories, PRESET_CATEGORY_LABELS, type TimelinePreset, type PresetCategory } from "@/data/sectorTimelines";
 
-export function TimelineTemplateEditor() {
+interface TimelineTemplateEditorProps {
+  filterCategory?: "livraison" | "suivi";
+}
+
+export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEditorProps) {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
   const { plan, isEnterprise } = useSubscription();
   const { demoSector } = useDemoPlan();
