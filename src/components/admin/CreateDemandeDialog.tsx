@@ -57,7 +57,7 @@ export function CreateDemandeDialog({ open, onOpenChange, clients }: Props) {
   const resetForm = () => {
     setClientId("");
     setTitre("");
-    setTypePrestation("");
+    setTypePrestation("Site web");
     setDescription("");
     setBudget("");
   };
