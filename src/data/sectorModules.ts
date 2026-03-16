@@ -415,6 +415,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   conciergerie: CONCIERGERIE_OVERRIDES,
   "cabinet-recrutement": CABINET_RECRUTEMENT_OVERRIDES,
   "auto-ecole": {
+    "clients-dossiers": { label: "Élèves & Dossiers", description: "Fiches élèves et dossiers de conduite" },
     dossiers: { label: "Dossiers élèves", description: "Fiches élèves, progression et heures de conduite" },
     taches: { label: "Leçons & Examens", description: "Planification des leçons et inscriptions aux examens" },
     stock: { label: "Véhicules", description: "Flotte de véhicules, entretiens et affectations" },
