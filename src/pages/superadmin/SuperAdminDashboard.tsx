@@ -132,6 +132,9 @@ export default function SuperAdminDashboard() {
             <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditHtml}>
               <FileDown className="h-4 w-4" /> Audit HTML
             </Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditBibleHtml}>
+              <FileDown className="h-4 w-4" /> Audit Bible v3
+            </Button>
             <PeriodFilter value={period} onChange={setPeriod} />
           </div>
         </div>
