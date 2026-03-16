@@ -163,6 +163,7 @@ const CABINETS_OVERRIDES: SectorModulesConfig = {
 };
 
 const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Comptes & Missions", description: "Comptes clients et missions social media" },
   dossiers: { label: "Missions", description: "Missions et comptes clients social media" },
   clients: { label: "Comptes clients", description: "Portefeuille de comptes clients" },
   employees: { label: "CM / Chargés de compte", description: "Équipe de community managers" },
