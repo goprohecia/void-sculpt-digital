@@ -283,7 +283,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
           <CardContent className="p-3">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium">{t.name}</p>
+                <p className="text-sm font-medium text-foreground">{t.name}</p>
                 {t.isDefault && <Badge variant="secondary" className="text-[9px]">Défaut</Badge>}
               </div>
               <div className="flex gap-1">
