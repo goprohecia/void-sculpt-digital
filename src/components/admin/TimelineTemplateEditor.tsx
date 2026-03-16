@@ -37,7 +37,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
         <UpgradeBanner
           currentPlan={plan}
           requiredPlan="enterprise"
-          feature="Personnalisation de la timeline de livraison"
+          feature={`Personnalisation de la timeline de ${filterCategory || "livraison"}`}
         />
       </motion.div>
     );
