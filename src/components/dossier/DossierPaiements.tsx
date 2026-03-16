@@ -41,43 +41,45 @@ export function DossierPaiements({ dossierId, facturesDossier, montantTotal, onM
       </div>
 
       {facturesDossier.length > 0 ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Référence</TableHead>
-              <TableHead>Montant</TableHead>
-              <TableHead>Échéance</TableHead>
-              <TableHead>Statut</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {facturesDossier.map(f => (
-              <TableRow key={f.id}>
-                <TableCell className="font-mono text-xs">{f.reference}</TableCell>
-                <TableCell className="font-medium">{f.montant.toLocaleString()} €</TableCell>
-                <TableCell className="text-sm">{new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</TableCell>
-                <TableCell>{statutIcon(f.statut)}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-1">
-                    {f.statut !== "payee" && onMarquerPayee && (
-                      <Button size="sm" variant="outline" className="gap-1 text-xs" onClick={() => { onMarquerPayee(f.id); toast.success("Marqué comme payé"); }}>
-                        <Check className="h-3 w-3" /> Payé
-                      </Button>
-                    )}
-                    {f.statut !== "payee" && (
-                      <Button size="sm" variant="ghost" className="text-xs" onClick={() => toast.success("Relance envoyée")}>
-                        <Bell className="h-3 w-3" />
-                      </Button>
-                    )}
-                  </div>
-                </TableCell>
+        <div className="rounded-lg border bg-card p-4">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Référence</TableHead>
+                <TableHead>Montant</TableHead>
+                <TableHead>Échéance</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {facturesDossier.map(f => (
+                <TableRow key={f.id}>
+                  <TableCell className="font-mono text-xs">{f.reference}</TableCell>
+                  <TableCell className="font-medium">{f.montant.toLocaleString()} €</TableCell>
+                  <TableCell className="text-sm">{new Date(f.dateEcheance).toLocaleDateString("fr-FR")}</TableCell>
+                  <TableCell>{statutIcon(f.statut)}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      {f.statut !== "payee" && onMarquerPayee && (
+                        <Button size="sm" variant="outline" className="gap-1 text-xs" onClick={() => { onMarquerPayee(f.id); toast.success("Marqué comme payé"); }}>
+                          <Check className="h-3 w-3" /> Payé
+                        </Button>
+                      )}
+                      {f.statut !== "payee" && (
+                        <Button size="sm" variant="ghost" className="text-xs" onClick={() => toast.success("Relance envoyée")}>
+                          <Bell className="h-3 w-3" />
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="rounded-lg border bg-card p-12 flex flex-col items-center justify-center text-center">
           <CreditCard className="h-12 w-12 text-muted-foreground/40 mb-3" />
           <p className="text-muted-foreground mb-3">Aucun paiement enregistré</p>
           <Button className="gap-1.5"><Plus className="h-4 w-4" /> Ajouter un versement</Button>
