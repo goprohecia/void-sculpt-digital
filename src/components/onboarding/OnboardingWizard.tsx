@@ -174,7 +174,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto text-white">
       <div className="w-full max-w-4xl my-8">
         {/* Progress */}
         <div className="mb-6">
@@ -236,7 +236,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       <h3 className="text-lg font-bold mb-1">{PLAN_LABELS[p]}</h3>
                       <p className="text-3xl font-extrabold text-primary mb-3">
                         {DEFAULT_PLAN_PRICES[p]}€
-                        <span className="text-sm font-normal text-muted-foreground">/mois</span>
+                        <span className="text-sm font-normal text-white/60">/mois</span>
                       </p>
                       <Badge variant="secondary" className="mb-3 text-xs w-fit">
                         Socle fixe inclus : Clients & Dossiers + Analyse
@@ -248,7 +248,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       </p>
                       <ul className="space-y-2 flex-1">
                         {PLAN_FEATURES[p].map((f, i) => (
-                          <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
+                          <li key={i} className="text-xs text-white/70 flex items-start gap-2">
                             <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
                             {f}
                           </li>
@@ -272,7 +272,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
               <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2">
                 {SECTOR_CATEGORIES.map((cat) => (
                   <div key={cat.title}>
-                    <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-white/80 mb-3 flex items-center gap-2">
                       <span className="text-lg">{cat.emoji}</span> {cat.title}
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -290,7 +290,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                           >
                             <span className="text-xl">{s.icon}</span>
                             <span className="text-xs font-medium leading-tight">{s.label}</span>
-                            <span className="text-[10px] text-muted-foreground leading-tight">
+                            <span className="text-[10px] text-white/60 leading-tight">
                               ({s.roles})
                             </span>
                           </button>
@@ -370,7 +370,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       variant="ghost"
                       size="sm"
                       onClick={() => setStep(0)}
-                      className="text-xs text-muted-foreground"
+                      className="text-xs text-white/60"
                     >
                       Modifier ma formule
                     </Button>
