@@ -271,6 +271,7 @@ const GARAGES_OVERRIDES: SectorModulesConfig = {
   "rendez-vous": { label: "RDV atelier", description: "Créneaux de dépôt et restitution véhicule" },
   notes: { label: "Notes mécanicien", description: "Observations techniques et historique véhicule" },
   support: { label: "Garanties", description: "Garanties pièces et main d'œuvre" },
+  "clients-dossiers": { label: "Clients & Véhicules", description: "Fiches clients et suivi des véhicules" },
   clients: { label: "Clients & Véhicules", description: "Fiches clients avec parc automobile" },
   employees: { label: "Mécaniciens", description: "Équipe de mécaniciens et techniciens" },
 };
