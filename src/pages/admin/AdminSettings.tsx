@@ -25,7 +25,7 @@ import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MOD
 import { useTags } from "@/hooks/use-produits";
 import { useServiceCategories, type ServiceCategory } from "@/hooks/use-service-categories";
 import { useSubscription } from "@/hooks/use-subscription";
-import { useCustomSpaces } from "@/hooks/use-custom-spaces";
+import { useCustomSpaces, SECTOR_SPACE_TEMPLATES } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
@@ -37,9 +37,10 @@ import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSet
 import { BrevoConfigSettings } from "@/components/admin/BrevoConfigSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
-  "overview", "dossiers", "calendrier", "messagerie", "facturation",
+  "overview", "dossiers", "clients-dossiers", "calendrier", "messagerie", "messagerie-groupee", "facturation",
   "relances", "support", "stock", "analyse", "taches", "agenda",
   "rapports", "documents", "temps", "automatisations", "notes", "pipeline", "profil",
+  "rendez-vous", "abonnement", "signature",
 ];
 
 function CustomSpacesManager() {
@@ -76,6 +77,39 @@ function CustomSpacesManager() {
         <CardDescription>Créez des espaces sur mesure au-delà d'Admin, Salarié et Client.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Sector templates */}
+        {(() => {
+          const templates = SECTOR_SPACE_TEMPLATES[demoSector] || [];
+          if (templates.length === 0) return null;
+          const sectorLabel = demoSector.replace(/-/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+          return (
+            <div className="space-y-3 p-4 rounded-xl bg-primary/5 border border-primary/20">
+              <p className="text-sm font-medium flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                Espaces recommandés pour {sectorLabel}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {templates.map((tpl) => (
+                  <button
+                    key={tpl.nom}
+                    type="button"
+                    className="text-left p-3 rounded-lg border border-border/50 bg-background hover:border-primary/50 hover:bg-primary/5 transition-colors"
+                    onClick={() => {
+                      setNewName(tpl.nom);
+                      setNewBaseRole("employee");
+                      setNewModules(tpl.modules.filter((m) => AVAILABLE_MODULE_KEYS_FOR_SPACES.includes(m)));
+                      toast.info(`Pré-remplissage : "${tpl.nom}" — modifiez si besoin puis validez.`);
+                    }}
+                  >
+                    <p className="text-sm font-medium">{tpl.nom}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{tpl.modules.length} modules · Base salarié</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Create form */}
         <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/30">
           <p className="text-sm font-medium">Nouvel espace</p>

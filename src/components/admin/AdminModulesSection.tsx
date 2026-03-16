@@ -327,7 +327,7 @@ export function AdminModulesSection({
       </Card>
 
       {canCustomizeSpaces ? null : (
-        <UpgradeBanner currentPlan={plan} requiredPlan="enterprise" feature="Espaces personnalisés & renommage de modules" />
+        <UpgradeBanner currentPlan={plan} requiredPlan="business" feature="Espaces personnalisés & renommage de modules" />
       )}
 
       {/* Swap warning & wizard */}
