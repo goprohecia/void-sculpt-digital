@@ -117,7 +117,7 @@ export const MOCK_SPORT_COURS: SportCours[] = [
   { id: "cc3", nom: "CrossFit WOD", coach: "Maxime Torres", jour: "Mercredi", heure: "07:00", duree: 60, capacite: 12, inscrits: 12 },
   { id: "cc4", nom: "Pilates Doux", coach: "Sarah Lemoine", jour: "Jeudi", heure: "10:00", duree: 50, capacite: 15, inscrits: 8 },
   { id: "cc5", nom: "Cardio Boxing", coach: "Maxime Torres", jour: "Vendredi", heure: "18:30", duree: 45, capacite: 20, inscrits: 16 },
-  { id: "cc6", nom: "Full Body", coach: "Kevin Dupont", jour: "Samedi", heure: "10:00", duree: 60, capacite: 20, inscrits: 14 },
+  { id: "cc6", nom: "Full Body", coach: "Kevin Rousseau", jour: "Samedi", heure: "10:00", duree: 60, capacite: 20, inscrits: 14 },
 ];
 
 export const MOCK_SPORT_SEANCES_COACH: SportSeance[] = [
