@@ -14,7 +14,11 @@ import { staggerItem } from "@/components/admin/AdminPageTransition";
 import { useDemoPlan, SECTORS } from "@/contexts/DemoPlanContext";
 import { getPresetsForSector, getAllSectorPresets, getAllCategories, PRESET_CATEGORY_LABELS, type TimelinePreset, type PresetCategory } from "@/data/sectorTimelines";
 
-export function TimelineTemplateEditor() {
+interface TimelineTemplateEditorProps {
+  filterCategory?: "livraison" | "suivi";
+}
+
+export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEditorProps) {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
   const { plan, isEnterprise } = useSubscription();
   const { demoSector } = useDemoPlan();
@@ -33,7 +37,7 @@ export function TimelineTemplateEditor() {
         <UpgradeBanner
           currentPlan={plan}
           requiredPlan="enterprise"
-          feature="Personnalisation de la timeline de livraison"
+          feature={`Personnalisation de la timeline de ${filterCategory || "livraison"}`}
         />
       </motion.div>
     );
@@ -105,13 +109,24 @@ export function TimelineTemplateEditor() {
 
   const isEditing = creating || !!editingId;
 
+  // Category-level filter based on prop
+  const categoryFilter = (presets: TimelinePreset[]) => {
+    if (!filterCategory) return presets;
+    if (filterCategory === "suivi") return presets.filter((p) => p.category === "suivi");
+    return presets.filter((p) => p.category !== "suivi");
+  };
+
   // Presets for current sector
   const currentSectorLabel = SECTORS.find((s) => s.key === demoSector)?.label || "Générique";
-  const sectorPresets = getPresetsForSector(demoSector);
+  const sectorPresets = categoryFilter(getPresetsForSector(demoSector));
 
   // All sectors for browsing
-  const allSectorPresets = getAllSectorPresets();
-  const allCategories = getAllCategories();
+  const allSectorPresets = getAllSectorPresets().map((s) => ({ ...s, presets: categoryFilter(s.presets) })).filter((s) => s.presets.length > 0);
+  const allCategories = getAllCategories().filter((cat) => {
+    if (!filterCategory) return true;
+    if (filterCategory === "suivi") return cat === "suivi";
+    return cat !== "suivi";
+  });
 
   // Apply both sector and category filters
   const filteredSectorPresets = allSectorPresets

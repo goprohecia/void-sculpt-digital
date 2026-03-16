@@ -912,17 +912,35 @@ export default function AdminSettings() {
 
       case "timeline":
         return (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
-              </CardTitle>
-              <CardDescription>Personnalisez les étapes de suivi de vos projets.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <TimelineTemplateEditor />
-            </CardContent>
-          </Card>
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
+                </CardTitle>
+                <CardDescription>
+                  Personnalisez les étapes de livraison de vos projets — du devis à la clôture du dossier.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TimelineTemplateEditor filterCategory="livraison" />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-primary" /> Timeline de suivi
+                </CardTitle>
+                <CardDescription>
+                  Personnalisez les étapes de suivi de vos clients — onboarding, accompagnement, renouvellement.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <TimelineTemplateEditor filterCategory="suivi" />
+              </CardContent>
+            </Card>
+          </div>
         );
 
       case "reservation":
