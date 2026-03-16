@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Timer, Play, Square, Clock, User, FolderOpen, TrendingUp, Save, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useDossiers } from "@/hooks/use-dossiers";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 interface TimeEntry {
   id: string;
