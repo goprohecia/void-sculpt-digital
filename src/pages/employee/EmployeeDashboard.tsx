@@ -4,9 +4,11 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LayoutDashboard, FolderOpen, CalendarDays, MessageSquare } from "lucide-react";
 import { useDemoAuth } from "@/contexts/DemoAuthContext";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function EmployeeDashboard() {
   const { user } = useDemoAuth();
+  const { employeeLabel } = useSectorRoleLabels();
 
   const stats = [
     { title: "Dossiers assignés", value: "5", icon: FolderOpen, color: "text-blue-400" },
