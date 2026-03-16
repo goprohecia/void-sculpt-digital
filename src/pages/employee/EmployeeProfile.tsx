@@ -45,7 +45,7 @@ export default function EmployeeProfile() {
                 <div className="flex items-center gap-4">
                   <div className="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center">
                     <span className="text-xl font-bold text-primary">
-                      {user?.nom?.charAt(0) || "S"}
+                      {user?.nom?.charAt(0) || employeeLabel.charAt(0)}
                     </span>
                   </div>
                   <div>
