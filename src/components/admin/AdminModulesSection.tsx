@@ -76,6 +76,15 @@ export function AdminModulesSection({
     [enabledModules]
   );
 
+  // All modules available in the current plan (to always show them)
+  const allPlanModules = useMemo(() => {
+    const currentPlanMods = planModules[demoPlan];
+    const planKeys = currentPlanMods === "all"
+      ? ALL_MODULE_KEYS
+      : [...SOCLE_FIXE, ...currentPlanMods];
+    return ALL_ADMIN_MODULES.filter((mod) => planKeys.includes(mod.key) && !SYSTEM_MODULES.includes(mod.key));
+  }, [demoPlan, planModules]);
+
   // Modules only in enabled list (what's in the sidebar)
   const enabledAdminModules = useMemo(
     () => ALL_ADMIN_MODULES.filter((mod) => enabledModules.includes(mod.key)),
