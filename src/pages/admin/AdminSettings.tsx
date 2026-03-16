@@ -25,7 +25,7 @@ import { useAppSettings, ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MOD
 import { useTags } from "@/hooks/use-produits";
 import { useServiceCategories, type ServiceCategory } from "@/hooks/use-service-categories";
 import { useSubscription } from "@/hooks/use-subscription";
-import { useCustomSpaces } from "@/hooks/use-custom-spaces";
+import { useCustomSpaces, SECTOR_SPACE_TEMPLATES } from "@/hooks/use-custom-spaces";
 import { UpgradeBanner } from "@/components/admin/UpgradeBanner";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
