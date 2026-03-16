@@ -86,7 +86,7 @@ export function AdminSidebar() {
   const enabledItems = allNavItems
     .filter((item) => enabledModules.includes(item.moduleKey))
     .filter((item) => !isModuleHidden(item.moduleKey));
-  const alwaysVisible = ["overview", "parametres"];
+  const alwaysVisible = SOCLE_FIXE;
   const planModules = currentPlanModules[plan];
   const navItems = planModules === "all"
     ? enabledItems

@@ -30,7 +30,7 @@ interface AdminModulesSectionProps {
 }
 
 const SYSTEM_MODULES = ["overview", "parametres"];
-const ALWAYS_INCLUDED = ["overview", "parametres", "analyse"];
+const ALWAYS_INCLUDED = SOCLE_FIXE;
 
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);

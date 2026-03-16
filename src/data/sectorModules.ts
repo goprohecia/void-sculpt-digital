@@ -445,6 +445,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     temps: { label: "Heures facturables", description: "Suivi du temps par affaire" },
   } as SectorModulesConfig,
   "expert-comptable": {
+    "clients-dossiers": { label: "Clients & Missions", description: "Portefeuille clients et missions comptables" },
     dossiers: { label: "Missions comptables", description: "Tenue comptable, bilans et déclarations fiscales" },
     taches: { label: "Échéances fiscales", description: "TVA, IS, IR, CFE et autres obligations" },
     stock: { label: "Stock", hidden: true },
