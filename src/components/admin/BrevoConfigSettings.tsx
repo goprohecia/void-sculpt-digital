@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Save, CheckCircle, Eye, EyeOff, AlertTriangle, Check, Loader2 } from "lucide-react";
+import { Mail, Save, CheckCircle, Eye, EyeOff, AlertTriangle, Check, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
