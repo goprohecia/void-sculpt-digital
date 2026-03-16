@@ -129,7 +129,7 @@ export default function AdminClients() {
           );
         }
       }
-      toast.success(`Client ${newClient.prenom} ${newClient.nom} créé — un email d'invitation a été envoyé`);
+      toast.success(`${clientLabel} ${newClient.prenom} ${newClient.nom} créé — un email d'invitation a été envoyé`);
       setNewClient({ prenom: "", nom: "", email: "", telephone: "", entreprise: "", siret: "", adresse: "", codePostal: "", ville: "", pays: "", segment: "client" });
       setNewClientTagIds([]);
       setShowCreateDialog(false);
