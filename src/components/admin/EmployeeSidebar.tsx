@@ -25,8 +25,7 @@ export function EmployeeSidebar() {
 
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/employee", icon: LayoutDashboard, moduleKey: "overview" },
-    { title: getModuleLabel("clients"), url: "/employee/clients", icon: Users, moduleKey: "clients" },
-    { title: getModuleLabel("dossiers"), url: "/employee/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: getModuleLabel("clients-dossiers"), url: "/employee/clients", icon: Users, moduleKey: "clients-dossiers" },
     { title: getModuleLabel("agenda"), url: "/employee/calendrier", icon: CalendarDays, moduleKey: "agenda" },
     { title: getModuleLabel("messagerie"), url: "/employee/messagerie", icon: MessageSquare, moduleKey: "messagerie" },
     { title: getModuleLabel("facturation"), url: "/employee/facturation", icon: Receipt, moduleKey: "facturation" },
