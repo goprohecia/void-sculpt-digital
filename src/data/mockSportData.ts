@@ -112,7 +112,7 @@ export const MOCK_SPORT_MEMBRES: SportMembre[] = [
 ];
 
 export const MOCK_SPORT_COURS: SportCours[] = [
-  { id: "cc1", nom: "HIIT Express", coach: "Kevin Dupont", jour: "Lundi", heure: "12:00", duree: 45, capacite: 20, inscrits: 18 },
+  { id: "cc1", nom: "HIIT Express", coach: "Kevin Rousseau", jour: "Lundi", heure: "12:00", duree: 45, capacite: 20, inscrits: 18 },
   { id: "cc2", nom: "Yoga Flow", coach: "Sarah Lemoine", jour: "Mardi", heure: "18:00", duree: 60, capacite: 15, inscrits: 12 },
   { id: "cc3", nom: "CrossFit WOD", coach: "Maxime Torres", jour: "Mercredi", heure: "07:00", duree: 60, capacite: 12, inscrits: 12 },
   { id: "cc4", nom: "Pilates Doux", coach: "Sarah Lemoine", jour: "Jeudi", heure: "10:00", duree: 50, capacite: 15, inscrits: 8 },
