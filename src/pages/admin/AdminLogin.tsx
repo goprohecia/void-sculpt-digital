@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input";
 import { LogIn, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
 import logoMba from "@/assets/logo-mba.png";
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function AdminLogin() {
+  const { clientLabel, employeeLabel } = useSectorRoleLabels();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

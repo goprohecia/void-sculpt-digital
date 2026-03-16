@@ -25,6 +25,12 @@ import { ClientDossiersLinked } from "@/components/admin/ClientDossiersLinked";
 import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function AdminClients() {
+  const { clientLabel, clientsLabel } = useSectorRoleLabels();
+  const SEGMENTS = [
+    { value: "tous", label: "Tous" },
+    { value: "client", label: clientsLabel },
+    { value: "prospect", label: "Prospects" },
+  ] as const;
   const [search, setSearch] = useState("");
   const [filterStatut, setFilterStatut] = useState<"tous" | "actif" | "inactif">("tous");
   const [filterSegment, setFilterSegment] = useState<"tous" | "client" | "prospect">("tous");
