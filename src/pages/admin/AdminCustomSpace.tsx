@@ -25,6 +25,7 @@ export default function AdminCustomSpace() {
         </div>
         <p className="text-muted-foreground text-sm">
           Espace personnalisé basé sur le rôle <span className="font-medium">{space.base_role === "employee" ? "Salarié" : "Client"}</span>
+          {space.role_id && <span className="ml-2 text-amber-600">· Rôle & permissions configurables dans Paramètres → Rôles & Droits</span>}
         </p>
 
         <Card>
