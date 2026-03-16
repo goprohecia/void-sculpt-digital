@@ -88,9 +88,14 @@ export function CreateDemandeDialog({ open, onOpenChange, clients }: Props) {
           </div>
           <div className="space-y-1.5">
             <Label>Type de prestation *</Label>
-            <Input value={typePrestation} onChange={(e) => setTypePrestation(e.target.value)} placeholder="Ex: Développement web" />
-          </div>
-          <div className="space-y-1.5">
+            <Select value={typePrestation} onValueChange={(v) => setTypePrestation(v as DemandePrestation)}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {(["Site web", "App mobile", "E-commerce", "Back-office", "360", "Autre"] as DemandePrestation[]).map((t) => (
+                  <SelectItem key={t} value={t}>{t}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Label>Description</Label>
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Détails de la demande..." rows={3} />
           </div>
