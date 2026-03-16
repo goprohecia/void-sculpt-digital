@@ -1,4 +1,5 @@
 // Mock data for Cabinet de Recrutement sector
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
 export interface RecrutementMission {
   id: string;
