@@ -38,7 +38,7 @@ export interface MockMecanicien {
 }
 
 export const MOCK_MECANICIENS: MockMecanicien[] = [
-  { id: "mec-1", nom: "Dupont", prenom: "Marc", specialite: "Mécanique générale" },
+  { id: "mec-1", nom: "Bensalem", prenom: "Mohamed", specialite: "Mécanique générale" },
   { id: "mec-2", nom: "Lefèvre", prenom: "Antoine", specialite: "Carrosserie & Peinture" },
 ];
 
