@@ -216,7 +216,7 @@ export function AdminSidebar() {
               }`}
             >
               <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#22c55e]" : "opacity-65"}`} />
-              <span className="flex-1">{item.title}</span>
+              <span className={`flex-1 ${active ? "!text-white" : ""}`}>{item.title}</span>
               {item.badge ? (
                 <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-[#22c55e] text-[10px] font-bold text-[#14532d] px-1">
                   {item.badge}
