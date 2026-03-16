@@ -17,8 +17,8 @@ import { toast } from "sonner";
 const statutFilters = [
   { key: "tous", label: "Toutes" },
   { key: "nouvelle", label: "Nouvelles" },
-  { key: "en_cours", label: "En cours" },
-  { key: "traitee", label: "Traitées" },
+  { key: "en_revue", label: "En revue" },
+  { key: "validee", label: "Validées" },
   { key: "refusee", label: "Refusées" },
 ];
 
