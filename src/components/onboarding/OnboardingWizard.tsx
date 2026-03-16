@@ -248,7 +248,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       </p>
                       <ul className="space-y-2 flex-1">
                         {PLAN_FEATURES[p].map((f, i) => (
-                          <li key={i} className="text-xs text-muted-foreground flex items-start gap-2">
+                          <li key={i} className="text-xs text-white/70 flex items-start gap-2">
                             <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
                             {f}
                           </li>
