@@ -11,6 +11,31 @@ export interface CustomSpace {
   sort_order: number;
 }
 
+export interface SpaceTemplate {
+  nom: string;
+  modules: string[];
+}
+
+export const SECTOR_SPACE_TEMPLATES: Record<string, SpaceTemplate[]> = {
+  mariage: [
+    { nom: "Conseillère", modules: ["clients-dossiers", "rendez-vous", "messagerie", "agenda"] },
+    { nom: "Retoucheuse", modules: ["clients-dossiers", "notes", "agenda"] },
+    { nom: "Comptabilité", modules: ["facturation", "relances", "rapports"] },
+  ],
+  btp: [
+    { nom: "Chef de chantier", modules: ["clients-dossiers", "agenda", "stock", "notes"] },
+  ],
+  conciergerie: [
+    { nom: "Agent d'entretien", modules: ["clients-dossiers", "agenda", "taches"] },
+  ],
+  "centre-islamique": [
+    { nom: "Professeur", modules: ["clients-dossiers", "agenda", "messagerie-groupee"] },
+  ],
+  "association-sportive": [
+    { nom: "Entraîneur", modules: ["clients-dossiers", "agenda", "messagerie-groupee"] },
+  ],
+};
+
 const DEMO_SPACES: CustomSpace[] = [
   { id: "demo-1", name: "Conseillère", base_role: "employee", enabled_modules: ["overview", "dossiers", "calendrier", "messagerie"], sort_order: 0 },
   { id: "demo-2", name: "Comptabilité", base_role: "employee", enabled_modules: ["overview", "facturation", "relances", "analyse"], sort_order: 1 },

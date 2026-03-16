@@ -293,7 +293,7 @@ export function AdminSidebar() {
             );
           })}
 
-          {isEnterprise && spaces.length > 0 && (
+          {(isEnterprise || isBusiness) && spaces.length > 0 && (
             <SidebarGroup>
               <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-[#9ca3af] flex items-center gap-1.5 px-5">
                 <Sparkles className="h-3.5 w-3.5 text-[#22c55e]" />

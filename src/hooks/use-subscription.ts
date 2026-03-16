@@ -111,7 +111,7 @@ export function useSubscription() {
     isEnterprise: plan === "enterprise",
     isBusiness: plan === "business",
     isStarter: plan === "starter",
-    canCustomizeSpaces: plan === "enterprise",
+    canCustomizeSpaces: plan === "business" || plan === "enterprise",
     canRenameModules: plan === "enterprise",
     canWhiteLabel: plan === "enterprise",
     updatePlan,
