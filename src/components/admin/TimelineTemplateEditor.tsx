@@ -196,7 +196,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
                 <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-white border border-border/60">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-1">
-                      <p className="text-xs font-medium">{preset.name}</p>
+                      <p className="text-xs font-medium text-foreground">{preset.name}</p>
                       <Badge variant="secondary" className="text-[8px] px-1.5 py-0">{PRESET_CATEGORY_LABELS[preset.category]}</Badge>
                     </div>
                     <div className="flex flex-wrap gap-1">
