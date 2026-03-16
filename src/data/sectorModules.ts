@@ -294,6 +294,7 @@ const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
 };
 
 const MARIAGE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Mariées & Dossiers", description: "Fiches mariées et dossiers de commande" },
   dossiers: { label: "Commandes robes", description: "Dossiers mariées, mensurations, modèle choisi" },
   taches: { label: "Retouches & Préparation", description: "Retouches et préparation des robes" },
   stock: { label: "Robes & Accessoires", description: "Robes, voiles, accessoires et bijoux" },
