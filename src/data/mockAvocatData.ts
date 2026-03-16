@@ -1,15 +1,7 @@
 // Mock data for Cabinet d'Avocats sector
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const AVOCAT_STEPS = [
-  "Consultation initiale",
-  "Mandat signé",
-  "Instruction du dossier",
-  "Échanges adverses",
-  "Audience",
-  "Délibéré",
-  "Décision rendue",
-  "Clôturé",
-];
+export const AVOCAT_STEPS = getDefaultStepsForSector("cabinet-avocats");
 
 export interface AvocatAffaire {
   id: string;

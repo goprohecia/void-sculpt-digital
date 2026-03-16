@@ -1,14 +1,7 @@
 // ── Mock data for Salle de Sport / Coach Sportif sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const SPORT_STEPS = [
-  "Inscription",
-  "Abonnement actif",
-  "Bilan initial",
-  "Programme en cours",
-  "Bilan intermédiaire",
-  "Renouvellement",
-  "Terminé",
-];
+export const SPORT_STEPS = getDefaultStepsForSector("coach-sportif");
 
 export interface SportMembre {
   id: string;

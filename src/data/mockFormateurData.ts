@@ -1,14 +1,7 @@
 // ── Mock data for Formateur / Organisme de formation ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const FORMATEUR_STEPS = [
-  "Inscription reçue",
-  "Convention signée",
-  "Acompte reçu",
-  "Formation en cours",
-  "Évaluation finale",
-  "Attestation émise",
-  "Solde réglé",
-];
+export const FORMATEUR_STEPS = getDefaultStepsForSector("formateur");
 
 export interface FormateurModule {
   id: string;

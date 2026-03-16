@@ -1,11 +1,6 @@
-export const IMMO_STEPS = [
-  "Mandat signé",
-  "Photos / Annonce",
-  "Visites en cours",
-  "Offre reçue",
-  "Compromis",
-  "Acte finalisé",
-];
+import { getDefaultStepsForSector } from "./sectorTimelines";
+
+export const IMMO_STEPS = getDefaultStepsForSector("immobilier");
 
 export const IMMO_STEP_ICONS_NAMES = [
   "FileSignature",

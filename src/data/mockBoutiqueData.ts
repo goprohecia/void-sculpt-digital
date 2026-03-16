@@ -1,13 +1,7 @@
 // ── Mock data for Boutique / Commerce sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const BOUTIQUE_STEPS = [
-  "Commande reçue",
-  "Paiement validé",
-  "Préparation",
-  "Expédié / Prêt",
-  "Récupéré / Livré",
-  "Terminé",
-];
+export const BOUTIQUE_STEPS = getDefaultStepsForSector("boutique");
 
 export interface BoutiqueProduit {
   id: string;

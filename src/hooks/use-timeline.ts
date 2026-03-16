@@ -2,17 +2,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { useRef } from "react";
+import { getDefaultStepsForSector } from "@/data/sectorTimelines";
 
-export const DEFAULT_TIMELINE_STEPS = [
-  "Demande reçue",
-  "Rendez-vous",
-  "Cahier des charges",
-  "Devis envoyé",
-  "Devis accepté",
-  "En cours",
-  "Livraison",
-  "Terminé",
-];
+export const DEFAULT_TIMELINE_STEPS = getDefaultStepsForSector("generic");
 
 export interface TimelineTemplate {
   id: string;

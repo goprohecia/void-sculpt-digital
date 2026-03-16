@@ -1,14 +1,7 @@
 // ── Mock data for Designer sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const DESIGNER_STEPS = [
-  "Brief reçu",
-  "Moodboard validé",
-  "Première proposition",
-  "Retours client",
-  "Corrections",
-  "BAT validé",
-  "Fichiers livrés",
-];
+export const DESIGNER_STEPS = getDefaultStepsForSector("designer");
 
 export type DesignerVersionStatus = "soumise" | "validee" | "corrections";
 

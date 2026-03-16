@@ -1,15 +1,7 @@
 // Mock data for Auto-École sector
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const AUTO_ECOLE_STEPS = [
-  "Inscription",
-  "Dossier NEPH",
-  "Code en cours",
-  "Heures de conduite",
-  "Examen blanc",
-  "Passage code",
-  "Passage conduite",
-  "Diplômé",
-];
+export const AUTO_ECOLE_STEPS = getDefaultStepsForSector("auto-ecole");
 
 export interface AutoEcoleEleve {
   id: string;

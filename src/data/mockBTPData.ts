@@ -1,12 +1,6 @@
-export const BTP_STEPS = [
-  "Devis envoyé",
-  "Devis accepté",
-  "Planification",
-  "Chantier en cours",
-  "Fin de chantier",
-  "Facture envoyée",
-  "Solde réglé",
-];
+import { getDefaultStepsForSector } from "./sectorTimelines";
+
+export const BTP_STEPS = getDefaultStepsForSector("btp");
 
 export interface BTPChantier {
   id: string;

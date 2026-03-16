@@ -1,14 +1,7 @@
 // ── Mock data for Community Manager sector ──
+import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const CM_STEPS = [
-  "Brief reçu",
-  "Stratégie validée",
-  "Contenus créés",
-  "Validation client",
-  "Planifié",
-  "Publié",
-  "Rapport envoyé",
-];
+export const CM_STEPS = getDefaultStepsForSector("community-manager");
 
 export type CMContentStatus = "brouillon" | "a_valider" | "valide" | "publie";
 
