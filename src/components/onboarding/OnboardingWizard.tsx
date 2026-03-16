@@ -272,7 +272,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
               <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2">
                 {SECTOR_CATEGORIES.map((cat) => (
                   <div key={cat.title}>
-                    <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-white/80 mb-3 flex items-center gap-2">
                       <span className="text-lg">{cat.emoji}</span> {cat.title}
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
