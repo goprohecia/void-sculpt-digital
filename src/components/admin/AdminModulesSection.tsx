@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Puzzle, ArrowRightLeft, Lock, TrendingUp, Sparkles, ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { ALL_ADMIN_MODULES, ALL_CLIENT_MODULES, ALL_EMPLOYEE_MODULES } from "@/hooks/use-app-settings";
-import { useDemoPlan, ALL_MODULE_KEYS, DEFAULT_PLAN_MODULES } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, ALL_MODULE_KEYS, DEFAULT_PLAN_MODULES, SOCLE_FIXE } from "@/contexts/DemoPlanContext";
 import { ModuleSwapWizard } from "@/components/client/ModuleSwapWizard";
 import { SwapWarningScreen } from "@/components/client/SwapWarningScreen";
 import { SwapUpgradeBanner } from "@/components/client/SwapUpgradeBanner";
