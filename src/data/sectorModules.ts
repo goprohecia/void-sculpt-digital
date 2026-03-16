@@ -277,6 +277,7 @@ const GARAGES_OVERRIDES: SectorModulesConfig = {
 };
 
 const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Acquéreurs & Mandats", description: "Fichier clients et portefeuille de mandats" },
   dossiers: { label: "Mandats", description: "Portefeuille de mandats de vente et location" },
   taches: { label: "Visites & Tâches", description: "Organisation des visites et tâches administratives" },
   stock: { label: "Stock", hidden: true },
