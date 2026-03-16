@@ -220,7 +220,7 @@ export function AdminModulesSection({
                 </div>
                 <Switch
                   checked={isEnabled}
-                  disabled={isAlwaysOn || ALWAYS_INCLUDED.includes(mod.key)}
+                  disabled={isIncluded}
                   onCheckedChange={(v) => {
                     if (v) {
                       const next = [...enabledModules, mod.key];
