@@ -318,7 +318,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       >
                         <Check className="h-4 w-4 text-primary" />
                         <span className="text-sm font-medium">{getModuleLabel(m)}</span>
-                        <Badge variant="secondary" className="ml-auto text-[10px]">
+                        <Badge className="ml-auto text-[10px] bg-white text-foreground font-semibold border-0">
                           Inclus
                         </Badge>
                       </div>
