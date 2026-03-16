@@ -54,8 +54,7 @@ export default function ClientSignup() {
   }, [navigate]);
 
   const getModuleLimit = (plan: SubscriptionPlan): number | null => {
-    const modules = planModules[plan];
-    return modules === "all" ? null : modules.length;
+    return QUOTA_LIMITS[plan];
   };
 
   const handleSelectPlan = (plan: SubscriptionPlan) => {
