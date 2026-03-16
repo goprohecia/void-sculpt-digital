@@ -16,7 +16,9 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
 import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import type { DossierStatus } from "@/data/mockData";
-import { Search, FolderOpen, Eye, FileText, Filter } from "lucide-react";
+import { Search, FolderOpen, Eye, FileText, Filter, Plus } from "lucide-react";
+import { CreateDossierDialog } from "@/components/admin/CreateDossierDialog";
+import { CreateDemandeDialog } from "@/components/admin/CreateDemandeDialog";
 import { GarageVehicleList } from "@/components/garage/GarageVehicleList";
 import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
 import { BTPDashboard } from "@/components/btp/BTPDashboard";
@@ -68,6 +70,8 @@ export default function AdminDossiers() {
   const [filterTag, setFilterTag] = useState("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
+  const [showCreateDossier, setShowCreateDossier] = useState(false);
+  const [showCreateDemande, setShowCreateDemande] = useState(false);
   
   const { dossiers, addDossier } = useDossiers();
   const { demandes, updateDemandeStatut } = useDemandes();
@@ -341,6 +345,11 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
             </TabsList>
 
             <TabsContent value="dossiers" className="space-y-4 mt-4">
+              <div className="flex justify-end">
+                <Button size="sm" className="gap-1.5" onClick={() => setShowCreateDossier(true)}>
+                  <Plus className="h-4 w-4" /> Nouveau dossier
+                </Button>
+              </div>
               {/* Filters */}
               <motion.div className="flex flex-col gap-3" variants={staggerItem}>
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -469,6 +478,11 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
             </TabsContent>
 
             <TabsContent value="demandes" className="space-y-4 mt-4">
+              <div className="flex justify-end">
+                <Button size="sm" className="gap-1.5" onClick={() => setShowCreateDemande(true)}>
+                  <Plus className="h-4 w-4" /> Nouvelle demande
+                </Button>
+              </div>
               <motion.div className="space-y-3" variants={staggerContainer} initial="initial" animate="animate">
                 {demandes.map((dem) => (
                   <motion.div key={dem.id} variants={staggerItem} className="glass-card p-4 space-y-3">
@@ -526,6 +540,9 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
           cahier={cdcDemandeId ? getCahierByDemande(cdcDemandeId) || null : null}
           demandeTitre={cdcDemande?.titre}
         />
+
+        <CreateDossierDialog open={showCreateDossier} onOpenChange={setShowCreateDossier} clients={clients} />
+        <CreateDemandeDialog open={showCreateDemande} onOpenChange={setShowCreateDemande} clients={clients} />
       </AdminPageTransition>
     </AdminLayout>
   );
