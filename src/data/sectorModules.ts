@@ -357,6 +357,7 @@ const TRAITEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const CABINET_RECRUTEMENT_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Entreprises & Missions", description: "Entreprises clientes et missions de recrutement" },
   dossiers: { label: "Missions", description: "Portefeuille de missions de recrutement" },
   taches: { label: "Pipeline candidats", description: "Suivi des candidats par étape" },
   stock: { label: "Stock", hidden: true },
