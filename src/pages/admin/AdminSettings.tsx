@@ -1236,6 +1236,9 @@ export default function AdminSettings() {
       case "emails":
         return <BrevoConfigSettings />;
 
+      case "calendly":
+        return <CalendlyConfigSettings />;
+
       case "compte":
         return (
           <Card>
