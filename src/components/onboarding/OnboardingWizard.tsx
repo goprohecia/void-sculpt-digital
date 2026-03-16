@@ -236,7 +236,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       <h3 className="text-lg font-bold mb-1">{PLAN_LABELS[p]}</h3>
                       <p className="text-3xl font-extrabold text-primary mb-3">
                         {DEFAULT_PLAN_PRICES[p]}€
-                        <span className="text-sm font-normal text-muted-foreground">/mois</span>
+                        <span className="text-sm font-normal text-white/60">/mois</span>
                       </p>
                       <Badge variant="secondary" className="mb-3 text-xs w-fit">
                         Socle fixe inclus : Clients & Dossiers + Analyse
