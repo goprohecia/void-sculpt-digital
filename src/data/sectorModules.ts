@@ -460,6 +460,32 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     facturation: { label: "Honoraires", description: "Forfaits mensuels et notes d'honoraires" },
     temps: { label: "Heures facturables", description: "Suivi du temps par mission" },
   } as SectorModulesConfig,
+  "centre-islamique": {
+    "clients-dossiers": { label: "Élèves & Inscriptions", description: "Fiches élèves et inscriptions aux cours" },
+    dossiers: { label: "Inscriptions", description: "Inscriptions aux programmes et suivi" },
+    employees: { label: "Professeurs", description: "Enseignants et responsables pédagogiques" },
+    clients: { label: "Élèves", description: "Élèves inscrits et familles" },
+    taches: { label: "Cours & Programmes", description: "Planification des cours et programmes" },
+    stock: { label: "Stock", hidden: true },
+    documents: { label: "Supports pédagogiques", description: "Manuels, fiches et ressources" },
+    "rendez-vous": { label: "Planning cours", description: "Créneaux de cours et événements" },
+    analyse: { label: "Dashboard Centre", description: "KPIs : élèves inscrits, assiduité, progression" },
+    notes: { label: "Notes professeur", description: "Observations et évaluations" },
+    facturation: { label: "Cotisations", description: "Cotisations et inscriptions" },
+  } as SectorModulesConfig,
+  "association-sportive": {
+    "clients-dossiers": { label: "Membres & Inscriptions", description: "Fichier membres et inscriptions" },
+    dossiers: { label: "Inscriptions", description: "Inscriptions saison et licences" },
+    employees: { label: "Entraîneurs", description: "Staff technique et entraîneurs" },
+    clients: { label: "Membres", description: "Adhérents et licenciés" },
+    taches: { label: "Entraînements & Matchs", description: "Planning entraînements et compétitions" },
+    stock: { label: "Équipement", description: "Maillots, ballons et matériel sportif" },
+    documents: { label: "Documents club", description: "Licences, certificats médicaux, statuts" },
+    "rendez-vous": { label: "Planning sportif", description: "Entraînements et rencontres" },
+    analyse: { label: "Dashboard Club", description: "KPIs : membres, résultats, cotisations" },
+    notes: { label: "Notes sportives", description: "Tactiques et observations" },
+    facturation: { label: "Cotisations", description: "Cotisations annuelles et licences" },
+  } as SectorModulesConfig,
 };
 
 // ── Helpers ──
