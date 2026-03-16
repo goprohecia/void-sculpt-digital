@@ -193,7 +193,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
             </p>
             <div className="space-y-2">
               {filteredSectorSuggestions.map((preset, idx) => (
-                <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-background/60 border border-border/30">
+                <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-white border border-border/60">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-1">
                       <p className="text-xs font-medium">{preset.name}</p>
