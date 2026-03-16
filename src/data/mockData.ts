@@ -125,6 +125,7 @@ export interface Message {
   contenu: string;
   role: MessageRole;
   date: string;
+  is_group_message?: boolean;
 }
 
 export interface Conversation {
@@ -135,6 +136,7 @@ export interface Conversation {
   messages: Message[];
   nonLus: number;
   dernierMessage: string;
+  destinataireType?: "admin" | "employe" | "groupe";
 }
 
 export interface Activite {

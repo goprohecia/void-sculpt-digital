@@ -23,6 +23,7 @@ function mapMessage(row: any): Message & { media_url?: string; media_type?: stri
     contenu: row.contenu,
     role: row.role as Message["role"],
     date: row.date,
+    is_group_message: row.is_group_message ?? false,
     media_url: row.media_url ?? undefined,
     media_type: row.media_type ?? undefined,
     media_name: row.media_name ?? undefined,
