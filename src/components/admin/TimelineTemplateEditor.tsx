@@ -248,18 +248,18 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
                 )}
                 {filteredSectorPresets.map((sector) => (
                   <div key={sector.sectorKey}>
-                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{sector.sectorLabel}</p>
+                    <p className="text-[10px] font-semibold text-foreground/70 uppercase tracking-wider mb-1.5">{sector.sectorLabel}</p>
                     <div className="space-y-1.5">
                       {sector.presets.map((preset, idx) => (
-                        <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-muted/30 border border-border/20">
+                        <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-white border border-border">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5 mb-1">
-                              <p className="text-xs font-medium">{preset.name}</p>
+                              <p className="text-xs font-medium text-foreground">{preset.name}</p>
                               <Badge variant="secondary" className="text-[8px] px-1 py-0">{PRESET_CATEGORY_LABELS[preset.category]}</Badge>
                             </div>
                             <div className="flex flex-wrap gap-0.5">
                               {preset.steps.map((s, i) => (
-                                <Badge key={i} variant="outline" className="text-[8px] px-1 py-0">{s}</Badge>
+                                <Badge key={i} variant="outline" className="text-[8px] px-1 py-0 text-foreground border-border">{s}</Badge>
                               ))}
                             </div>
                           </div>
