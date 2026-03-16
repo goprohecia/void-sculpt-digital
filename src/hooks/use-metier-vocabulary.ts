@@ -11,6 +11,8 @@ const VOCABULARY_MAP: Record<string, Record<string, string>> = {
   conciergerie: { dossier: "Séjour", dossiers: "Séjours" },
   formateur: { dossier: "Formation", dossiers: "Formations" },
   cm: { dossier: "Campagne", dossiers: "Campagnes" },
+  "centre-islamique": { dossier: "Inscription", dossiers: "Inscriptions" },
+  "association-sportive": { dossier: "Adhésion", dossiers: "Adhésions" },
   default: { dossier: "Dossier", dossiers: "Dossiers" },
 };
 
