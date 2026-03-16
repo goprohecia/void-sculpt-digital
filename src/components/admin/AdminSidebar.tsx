@@ -29,7 +29,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import logoMba from "@/assets/logo-mba.png";
 
-const principalKeys = ["overview", "clients", "employees", "dossiers"];
+const principalKeys = ["overview", "clients-dossiers", "employees"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
