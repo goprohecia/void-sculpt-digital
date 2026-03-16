@@ -189,6 +189,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/annonces" element={<AdminAnnonces />} />
         <Route path="/admin/parametres" element={<AdminSettings />} />
         <Route path="/admin/upgrade" element={<AdminUpgrade />} />
+        <Route path="/admin/espace/:spaceId" element={<AdminCustomSpace />} />
 
         {/* Client routes */}
         <Route path="/client" element={<ClientDashboard />} />
