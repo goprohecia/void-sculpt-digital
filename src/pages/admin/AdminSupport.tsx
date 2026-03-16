@@ -20,6 +20,7 @@ type FilterStatus = "tous" | TicketStatus;
 export default function AdminSupport() {
   const { tickets: allTickets } = useTickets();
   const { clients } = useClients();
+  const { clientsLabel } = useSectorRoleLabels();
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [initialized, setInitialized] = useState(false);
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("tous");
