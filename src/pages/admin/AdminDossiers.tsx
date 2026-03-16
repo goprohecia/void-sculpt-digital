@@ -345,6 +345,11 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
             </TabsList>
 
             <TabsContent value="dossiers" className="space-y-4 mt-4">
+              <div className="flex justify-end">
+                <Button size="sm" className="gap-1.5" onClick={() => setShowCreateDossier(true)}>
+                  <Plus className="h-4 w-4" /> Nouveau dossier
+                </Button>
+              </div>
               {/* Filters */}
               <motion.div className="flex flex-col gap-3" variants={staggerItem}>
                 <div className="flex flex-col sm:flex-row gap-3">
