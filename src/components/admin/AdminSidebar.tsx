@@ -89,7 +89,7 @@ export function AdminSidebar() {
   const { tickets } = useTickets();
   const { enabledModules } = useAppSettings();
   const { spaces } = useCustomSpaces();
-  const { isEnterprise, plan, currentPlanModules } = useSubscription();
+  const { isEnterprise, isBusiness, plan, currentPlanModules } = useSubscription();
   const { config: wl } = useWhiteLabel();
   const { getModuleLabel, isModuleHidden, demoSector, setDemoSector } = useDemoPlan();
 
