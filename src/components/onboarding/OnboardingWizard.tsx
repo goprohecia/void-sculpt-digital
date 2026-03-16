@@ -318,7 +318,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       >
                         <Check className="h-4 w-4 text-primary" />
                         <span className="text-sm font-medium">{getModuleLabel(m)}</span>
-                        <Badge variant="secondary" className="ml-auto text-[10px]">
+                        <Badge className="ml-auto text-[10px] bg-white text-foreground font-semibold border-0">
                           Inclus
                         </Badge>
                       </div>
@@ -332,7 +332,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                     <h3 className="text-sm font-semibold flex items-center gap-2">
                       <Zap className="h-4 w-4 text-primary" /> Modules additionnels
                     </h3>
-                    <Badge variant="outline">
+                    <Badge className="bg-primary/20 text-primary border border-primary/40 font-semibold">
                       {selectedModules.length}/{quota === null ? "∞" : quota} sélectionnés
                     </Badge>
                   </div>
