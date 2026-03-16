@@ -19,7 +19,7 @@ export const ALL_MODULE_KEYS = [
 ];
 
 // Socle fixe — always included, never counted in quota
-export const SOCLE_FIXE = ["overview", "parametres", "analyse", "clients-dossiers"];
+export const SOCLE_FIXE = ["overview", "parametres", "analyse", "clients-dossiers", "dossiers", "demandes"];
 
 // Quota limits per plan (additional modules beyond socle fixe)
 export const QUOTA_LIMITS: Record<SubscriptionPlan, number | null> = {
