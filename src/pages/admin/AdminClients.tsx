@@ -49,7 +49,6 @@ export default function AdminClients() {
   const [newClientTagIds, setNewClientTagIds] = useState<string[]>([]);
   const isMobile = useIsMobile();
   const { clients, createClient, updateClient, updateClientAsync, deleteClient } = useClients();
-  const { clientLabel, clientsLabel } = useSectorRoleLabels();
   const { getDossiersByClient } = useDossiers();
   const { getDemandesByClient } = useDemandes();
 
