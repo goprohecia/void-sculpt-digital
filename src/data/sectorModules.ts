@@ -231,6 +231,7 @@ const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Événements", description: "Portefeuille clients et organisation d'événements" },
   dossiers: { label: "Événements", description: "Organisation d'événements (congrès, galas, séminaires)" },
   employees: { label: "Chefs de projet", description: "Équipe de chefs de projet événementiel" },
   taches: { label: "Planning événement", description: "Rétroplanning et coordination des prestataires" },
