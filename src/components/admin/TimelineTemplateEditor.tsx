@@ -31,12 +31,14 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
   const [selectedBrowseSector, setSelectedBrowseSector] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  if (!isEnterprise) {
+  const hasAccess = isEnterprise || isBusiness;
+
+  if (!hasAccess) {
     return (
       <motion.div variants={staggerItem}>
         <UpgradeBanner
           currentPlan={plan}
-          requiredPlan="enterprise"
+          requiredPlan="business"
           feature={`Personnalisation de la timeline de ${filterCategory || "livraison"}`}
         />
       </motion.div>
