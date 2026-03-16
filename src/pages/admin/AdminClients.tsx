@@ -171,7 +171,7 @@ export default function AdminClients() {
     return seg === "prospect" ? (
       <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-amber-500/20 text-amber-400">Prospect</span>
     ) : (
-      <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400">Client</span>
+      <span className="text-[10px] rounded-full px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400">{clientLabel}</span>
     );
   };
 
