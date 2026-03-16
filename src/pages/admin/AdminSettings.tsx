@@ -920,34 +920,46 @@ export default function AdminSettings() {
 
       case "timeline":
         return (
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-primary" /> Timeline de livraison
-                </CardTitle>
-                <CardDescription>
-                  Personnalisez les étapes de livraison de vos projets — du devis à la clôture du dossier.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <TimelineTemplateEditor filterCategory="livraison" />
-              </CardContent>
-            </Card>
+          <div className="space-y-5">
+            <div>
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <Clock className="h-5 w-5 text-primary" /> Configuration des timelines
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Gérez les étapes de vos workflows de livraison et de suivi client.
+              </p>
+            </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-primary" /> Timeline de suivi
-                </CardTitle>
-                <CardDescription>
-                  Personnalisez les étapes de suivi de vos clients — onboarding, accompagnement, renouvellement.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <TimelineTemplateEditor filterCategory="suivi" />
-              </CardContent>
-            </Card>
+            <Tabs defaultValue="livraison" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-muted/60">
+                <TabsTrigger value="livraison" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  <ArrowDownToLine className="h-3.5 w-3.5" /> Livraison
+                </TabsTrigger>
+                <TabsTrigger value="suivi" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  <Clock className="h-3.5 w-3.5" /> Suivi
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="livraison" className="mt-4">
+                <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">Timeline de livraison</h3>
+                    <p className="text-xs text-muted-foreground">Du devis à la clôture du dossier — personnalisez chaque étape.</p>
+                  </div>
+                  <TimelineTemplateEditor filterCategory="livraison" />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="suivi" className="mt-4">
+                <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">Timeline de suivi</h3>
+                    <p className="text-xs text-muted-foreground">Onboarding, accompagnement, renouvellement — définissez vos jalons.</p>
+                  </div>
+                  <TimelineTemplateEditor filterCategory="suivi" />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         );
 
