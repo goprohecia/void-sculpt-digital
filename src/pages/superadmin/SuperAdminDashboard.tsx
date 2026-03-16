@@ -7,6 +7,7 @@ import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, A
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { generateAuditPdf } from "@/lib/generateAuditPdf";
 import { generateAuditHtml } from "@/lib/generateAuditHtml";
+import { generateAuditBibleHtml } from "@/lib/generateAuditBibleHtml";
 import { SECTORS } from "@/contexts/DemoPlanContext";
 
 type Period = "6m" | "12m" | "annee";
@@ -130,6 +131,9 @@ export default function SuperAdminDashboard() {
             </Button>
             <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditHtml}>
               <FileDown className="h-4 w-4" /> Audit HTML
+            </Button>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={generateAuditBibleHtml}>
+              <FileDown className="h-4 w-4" /> Audit Bible v3
             </Button>
             <PeriodFilter value={period} onChange={setPeriod} />
           </div>
