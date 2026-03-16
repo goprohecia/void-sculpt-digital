@@ -137,23 +137,23 @@ export default function AdminDemandes() {
                                 variant="outline"
                                 className="text-xs"
                                 onClick={() => {
-                                  updateDemandeStatut(d.id, "en_cours");
-                                  toast.success("Demande passée en cours");
+                                  updateDemandeStatut({ id: d.id, statut: "en_revue" });
+                                  toast.success("Demande passée en revue");
                                 }}
                               >
                                 Traiter
                               </Button>
                             )}
-                            {d.statut === "en_cours" && (
+                            {d.statut === "en_revue" && (
                               <Button
                                 size="sm"
                                 className="text-xs"
                                 onClick={() => {
-                                  updateDemandeStatut(d.id, "traitee");
-                                  toast.success("Demande traitée");
+                                  updateDemandeStatut({ id: d.id, statut: "validee" });
+                                  toast.success("Demande validée");
                                 }}
                               >
-                                Terminer
+                                Valider
                               </Button>
                             )}
                           </div>
