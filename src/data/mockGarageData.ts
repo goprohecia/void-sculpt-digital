@@ -70,7 +70,7 @@ export const MOCK_VEHICULES: MockVehicule[] = [
     kilometrage: 45200,
     motifEntree: "Bruit au freinage",
     mecanicienId: "mec-1",
-    mecanicienNom: "Marc Dupont",
+    mecanicienNom: "Mohamed Bensalem",
     etape: 4,
     dateDepot: "2026-03-03",
     notes: "Plaquettes de frein usées, disques à vérifier",
