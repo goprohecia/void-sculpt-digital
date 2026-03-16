@@ -86,7 +86,7 @@ export const MOCK_VEHICULES: MockVehicule[] = [
     kilometrage: 78300,
     motifEntree: "Révision 80 000 km",
     mecanicienId: "mec-1",
-    mecanicienNom: "Marc Dupont",
+    mecanicienNom: "Mohamed Bensalem",
     etape: 5,
     dateDepot: "2026-03-01",
     notes: "Courroie de distribution à remplacer",
