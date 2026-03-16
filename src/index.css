@@ -288,6 +288,7 @@
   /* But restore inside white surfaces */
   .mba-app .glass-card .text-muted-foreground,
   .mba-app .mba-card .text-muted-foreground,
+  .mba-app main .bg-card .text-muted-foreground,
   .mba-app main [class*="bg-white"] .text-muted-foreground,
   .mba-app main .bg-muted .text-muted-foreground,
   .mba-app main .rounded-\[var\(--radius-lg\)\] .text-muted-foreground {
@@ -304,6 +305,8 @@
   .mba-app .glass-card h1, .mba-app .glass-card h2, .mba-app .glass-card h3,
   .mba-app .glass-card p, .mba-app .glass-card span, .mba-app .glass-card td, .mba-app .glass-card th,
   .mba-app .mba-card h1, .mba-app .mba-card h2, .mba-app .mba-card h3, .mba-app .mba-card p,
+  .mba-app .bg-card h1, .mba-app .bg-card h2, .mba-app .bg-card h3,
+  .mba-app .bg-card p, .mba-app .bg-card span, .mba-app .bg-card td, .mba-app .bg-card th,
   .mba-app [class*="bg-white"] h1, .mba-app [class*="bg-white"] h2, .mba-app [class*="bg-white"] h3,
   .mba-app [class*="bg-white"] p, .mba-app [class*="bg-white"] span,
   .mba-app [class*="bg-white"] td, .mba-app [class*="bg-white"] th,
@@ -312,9 +315,10 @@
   .mba-app [data-radix-scroll-area-viewport] h3,
   .mba-app [data-radix-scroll-area-viewport] p,
   .mba-app [data-radix-scroll-area-viewport] span {
-    color: inherit;
+    color: hsl(var(--card-foreground));
   }
   .mba-app .glass-card .text-foreground,
+  .mba-app .bg-card .text-foreground,
   .mba-app [class*="bg-white"] .text-foreground {
     color: hsl(var(--text-primary));
   }
