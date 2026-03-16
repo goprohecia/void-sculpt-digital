@@ -232,9 +232,9 @@ export default function AdminTemps() {
                     </SelectContent>
                   </Select>
                   <Select value={filterSalarie} onValueChange={setFilterSalarie}>
-                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder="Salarié" /></SelectTrigger>
+                    <SelectTrigger className="w-40 h-8 text-xs"><SelectValue placeholder={employeeLabel} /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Tous les salariés</SelectItem>
+                      <SelectItem value="all">Tous les {employeesLabel.toLowerCase()}</SelectItem>
                       {[...new Set(entries.map((e) => e.salarie))].sort().map((s) => (
                         <SelectItem key={s} value={s}>{s}</SelectItem>
                       ))}

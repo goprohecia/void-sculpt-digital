@@ -614,7 +614,7 @@ export default function AdminClients() {
                       onClick={() => setNewClient({ ...newClient, segment: s })}
                       className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${newClient.segment === s ? "bg-primary text-primary-foreground" : "glass-button"}`}
                     >
-                      {s === "client" ? "Client" : "Prospect"}
+                      {s === "client" ? clientLabel : "Prospect"}
                     </button>
                   ))}
                 </div>

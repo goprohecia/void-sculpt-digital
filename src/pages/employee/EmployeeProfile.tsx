@@ -49,9 +49,9 @@ export default function EmployeeProfile() {
                     </span>
                   </div>
                   <div>
-                    <p className="text-lg font-semibold">{user?.nom || "Salarié"}</p>
+                    <p className="text-lg font-semibold">{user?.nom || employeeLabel}</p>
                     <p className="text-sm text-muted-foreground">{user?.email}</p>
-                    <p className="text-xs text-muted-foreground capitalize mt-1">Rôle : {user?.role || "salarié"}</p>
+                    <p className="text-xs text-muted-foreground capitalize mt-1">Rôle : {employeeLabel}</p>
                   </div>
                 </div>
               </CardContent>

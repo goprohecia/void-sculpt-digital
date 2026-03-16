@@ -206,8 +206,8 @@ export default function AdminAnnonces() {
                 <label className="text-sm font-medium">Destinataires</label>
                 <div className="flex gap-2">
                   {[
-                    { value: "tous_clients", label: "Tous les clients" },
-                    { value: "tous_employes", label: "Tous les employés" },
+                    { value: "tous_clients", label: `Tous les ${clientsLabel.toLowerCase()}` },
+                    { value: "tous_employes", label: `Tous les ${employeesLabel.toLowerCase()}` },
                   ].map((opt) => (
                     <button
                       key={opt.value}

@@ -23,7 +23,7 @@ export default function EmployeeDashboard() {
           <motion.div variants={staggerItem}>
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <LayoutDashboard className="h-6 w-6 text-primary" />
-              Bonjour, {user?.nom || "Salarié"} 👋
+              Bonjour, {user?.nom || employeeLabel} 👋
             </h1>
             <p className="text-muted-foreground text-sm">Voici votre tableau de bord</p>
           </motion.div>

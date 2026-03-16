@@ -146,7 +146,7 @@ function CustomSpacesManager() {
                     <div>
                       <p className="text-sm font-medium">{space.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        Base : {space.base_role === "employee" ? "Salarié" : "Client"} · {space.enabled_modules.length} modules
+                        Base : {space.base_role === "employee" ? (getSectorRoleLabel(demoSector, "employee") || "Salarié") : (getSectorRoleLabel(demoSector, "client") || "Client")} · {space.enabled_modules.length} modules
                       </p>
                     </div>
                   )}
