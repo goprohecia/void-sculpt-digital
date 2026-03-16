@@ -20,7 +20,7 @@ interface TimelineTemplateEditorProps {
 
 export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEditorProps) {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
-  const { plan, isEnterprise } = useSubscription();
+  const { plan, isEnterprise, isBusiness } = useSubscription();
   const { demoSector } = useDemoPlan();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
@@ -31,12 +31,14 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
   const [selectedBrowseSector, setSelectedBrowseSector] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  if (!isEnterprise) {
+  const hasAccess = isEnterprise || isBusiness;
+
+  if (!hasAccess) {
     return (
       <motion.div variants={staggerItem}>
         <UpgradeBanner
           currentPlan={plan}
-          requiredPlan="enterprise"
+          requiredPlan="business"
           feature={`Personnalisation de la timeline de ${filterCategory || "livraison"}`}
         />
       </motion.div>
@@ -145,11 +147,11 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
   return (
     <motion.div className="space-y-4" variants={staggerItem}>
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold flex items-center gap-2">
+        <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
           <Clock className="h-4 w-4 text-primary" />
           Templates de timeline
-          <Badge variant="outline" className="text-[10px] gap-1">
-            <Sparkles className="h-3 w-3" /> Enterprise
+          <Badge className="text-[10px] gap-1 bg-primary/10 text-primary border border-primary/30">
+            <Sparkles className="h-3 w-3" /> Business / Enterprise
           </Badge>
         </h3>
         {!isEditing && (
@@ -165,7 +167,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
           <Filter className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
           <button
             onClick={() => setSelectedCategory("all")}
-            className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/50"}`}
+            className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-white text-foreground border-border hover:bg-muted"}`}
           >
             Tous
           </button>
@@ -173,7 +175,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat === selectedCategory ? "all" : cat)}
-              className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/50"}`}
+              className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-white text-foreground border-border hover:bg-muted"}`}
             >
               {PRESET_CATEGORY_LABELS[cat]}
             </button>
@@ -191,15 +193,15 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
             </p>
             <div className="space-y-2">
               {filteredSectorSuggestions.map((preset, idx) => (
-                <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-background/60 border border-border/30">
+                <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-white border border-border/60">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 mb-1">
-                      <p className="text-xs font-medium">{preset.name}</p>
+                      <p className="text-xs font-medium text-foreground">{preset.name}</p>
                       <Badge variant="secondary" className="text-[8px] px-1.5 py-0">{PRESET_CATEGORY_LABELS[preset.category]}</Badge>
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {preset.steps.map((s, i) => (
-                        <Badge key={i} variant="outline" className="text-[8px] px-1.5 py-0">{i + 1}. {s}</Badge>
+                        <Badge key={i} variant="outline" className="text-[8px] px-1.5 py-0 text-foreground border-border">{i + 1}. {s}</Badge>
                       ))}
                     </div>
                   </div>
@@ -246,18 +248,18 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
                 )}
                 {filteredSectorPresets.map((sector) => (
                   <div key={sector.sectorKey}>
-                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">{sector.sectorLabel}</p>
+                    <p className="text-[10px] font-semibold text-foreground/70 uppercase tracking-wider mb-1.5">{sector.sectorLabel}</p>
                     <div className="space-y-1.5">
                       {sector.presets.map((preset, idx) => (
-                        <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-muted/30 border border-border/20">
+                        <div key={idx} className="flex items-start justify-between gap-2 p-2 rounded-lg bg-white border border-border">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5 mb-1">
-                              <p className="text-xs font-medium">{preset.name}</p>
+                              <p className="text-xs font-medium text-foreground">{preset.name}</p>
                               <Badge variant="secondary" className="text-[8px] px-1 py-0">{PRESET_CATEGORY_LABELS[preset.category]}</Badge>
                             </div>
                             <div className="flex flex-wrap gap-0.5">
                               {preset.steps.map((s, i) => (
-                                <Badge key={i} variant="outline" className="text-[8px] px-1 py-0">{s}</Badge>
+                                <Badge key={i} variant="outline" className="text-[8px] px-1 py-0 text-foreground border-border">{s}</Badge>
                               ))}
                             </div>
                           </div>
@@ -277,11 +279,11 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
 
       {/* Existing templates */}
       {!isEditing && templates.map((t) => (
-        <Card key={t.id} className="bg-muted/20 border-border/50">
+        <Card key={t.id} className="bg-white border-border shadow-sm">
           <CardContent className="p-3">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium">{t.name}</p>
+                <p className="text-sm font-medium text-foreground">{t.name}</p>
                 {t.isDefault && <Badge variant="secondary" className="text-[9px]">Défaut</Badge>}
               </div>
               <div className="flex gap-1">
@@ -297,7 +299,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
             </div>
             <div className="flex flex-wrap gap-1">
               {t.steps.map((s, i) => (
-                <Badge key={i} variant="outline" className="text-[9px]">{i + 1}. {s}</Badge>
+                <Badge key={i} variant="outline" className="text-[9px] text-foreground border-border">{i + 1}. {s}</Badge>
               ))}
             </div>
           </CardContent>
