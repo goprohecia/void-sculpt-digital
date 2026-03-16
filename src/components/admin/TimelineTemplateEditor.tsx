@@ -109,13 +109,24 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
 
   const isEditing = creating || !!editingId;
 
+  // Category-level filter based on prop
+  const categoryFilter = (presets: TimelinePreset[]) => {
+    if (!filterCategory) return presets;
+    if (filterCategory === "suivi") return presets.filter((p) => p.category === "suivi");
+    return presets.filter((p) => p.category !== "suivi");
+  };
+
   // Presets for current sector
   const currentSectorLabel = SECTORS.find((s) => s.key === demoSector)?.label || "Générique";
-  const sectorPresets = getPresetsForSector(demoSector);
+  const sectorPresets = categoryFilter(getPresetsForSector(demoSector));
 
   // All sectors for browsing
-  const allSectorPresets = getAllSectorPresets();
-  const allCategories = getAllCategories();
+  const allSectorPresets = getAllSectorPresets().map((s) => ({ ...s, presets: categoryFilter(s.presets) })).filter((s) => s.presets.length > 0);
+  const allCategories = getAllCategories().filter((cat) => {
+    if (!filterCategory) return true;
+    if (filterCategory === "suivi") return cat === "suivi";
+    return cat !== "suivi";
+  });
 
   // Apply both sector and category filters
   const filteredSectorPresets = allSectorPresets
