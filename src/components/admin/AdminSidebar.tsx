@@ -307,11 +307,11 @@ export function AdminSidebar() {
                 <SidebarMenu>
                   {spaces.map((space) => (
                     <SidebarMenuItem key={space.id}>
-                      <SidebarMenuButton tooltip={space.name}>
-                        <span className="flex items-center gap-3 px-5 py-[9px] text-[#4a5e46] hover:text-[#14532d] transition-colors">
+                      <SidebarMenuButton tooltip={space.name} asChild>
+                        <Link to={`/admin/espace/${space.id}`} className="flex items-center gap-3 px-5 py-[9px] text-[#4a5e46] hover:bg-[#14532d]/80 hover:!text-white transition-colors">
                           <span className="h-2 w-2 rounded-full bg-[#22c55e]" />
                           <span>{space.name}</span>
-                        </span>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
