@@ -205,8 +205,8 @@ export function AdminModulesSection({
         </CardHeader>
         <CardContent className="space-y-3">
           {allPlanModules.map((mod) => {
-            const isAlwaysOn = SYSTEM_MODULES.includes(mod.key);
-            const isEnabled = enabledModules.includes(mod.key);
+            const isIncluded = ALWAYS_INCLUDED.includes(mod.key) || SYSTEM_MODULES.includes(mod.key);
+            const isEnabled = isIncluded ? true : enabledModules.includes(mod.key);
             return (
               <div key={mod.key} className={`flex items-center justify-between py-2 border-b border-border/30 last:border-0 ${!isEnabled ? "opacity-60" : ""}`}>
                 <div className="flex items-center gap-2">
