@@ -120,6 +120,16 @@ export const SECTOR_ONBOARDING_ROLES: Record<string, { key: string; label: strin
     { key: "collaborateur-comptable", label: "Collaborateur comptable" },
     { key: "assistant-comptable", label: "Assistant comptable" },
   ],
+  "centre-islamique": [
+    { key: "directeur", label: "Directeur" },
+    { key: "professeur", label: "Professeur" },
+    { key: "assistant-pedagogique", label: "Assistant pédagogique" },
+  ],
+  "association-sportive": [
+    { key: "president", label: "Président" },
+    { key: "entraineur", label: "Entraîneur" },
+    { key: "secretaire", label: "Secrétaire" },
+  ],
 };
 
 // Extra roles added when team size is "structure" (20+)
