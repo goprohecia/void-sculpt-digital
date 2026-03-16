@@ -341,6 +341,7 @@ const REPARATEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const TRAITEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Commandes", description: "Portefeuille clients et commandes traiteur" },
   dossiers: { label: "Commandes", description: "Commandes événementielles et prestations traiteur" },
   employees: { label: "Équipe / Brigade", description: "Cuisiniers, serveurs et logistique" },
   clients: { label: "Clients", description: "Particuliers et entreprises" },
