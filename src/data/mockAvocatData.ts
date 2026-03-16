@@ -62,7 +62,7 @@ export interface AvocatAudience {
 }
 
 export const MOCK_COLLABORATEURS: AvocatCollaborateur[] = [
-  { id: "av-1", nom: "Dupont", prenom: "Maître Alexandre", specialite: "Droit des affaires & Commercial", barreau: "Paris", telephone: "01 40 50 60 70" },
+  { id: "av-1", nom: "Marchand", prenom: "Maître Stéphane", specialite: "Droit des affaires & Commercial", barreau: "Paris", telephone: "01 40 50 60 70" },
   { id: "av-2", nom: "Martin", prenom: "Maître Sophie", specialite: "Droit du travail & Social", barreau: "Paris", telephone: "01 40 50 60 71" },
   { id: "av-3", nom: "Lefèvre", prenom: "Maître Thomas", specialite: "Droit pénal", barreau: "Versailles", telephone: "01 40 50 60 72" },
 ];

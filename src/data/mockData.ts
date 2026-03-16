@@ -178,7 +178,7 @@ export const DEMO_CLIENT_ID = "c3";
 
 // ---- CLIENTS ----
 export const clients: Client[] = [
-  { id: "c1", nom: "Dupont", prenom: "Marie", email: "m.dupont@techsolutions.fr", telephone: "06 12 34 56 78", entreprise: "TechSolutions", statut: "actif", dateCreation: "2025-11-15", nombreDossiers: 3 },
+  { id: "c1", nom: "Belhaj", prenom: "Farid", email: "f.belhaj@techsolutions.fr", telephone: "06 12 34 56 78", entreprise: "TechSolutions", statut: "actif", dateCreation: "2025-11-15", nombreDossiers: 3 },
   { id: "c2", nom: "Martin", prenom: "Lucas", email: "lucas.martin@greenleaf.fr", telephone: "06 23 45 67 89", entreprise: "GreenLeaf Bio", statut: "actif", dateCreation: "2025-12-02", nombreDossiers: 2 },
   { id: "c3", nom: "Bernard", prenom: "Sophie", email: "s.bernard@luxemode.com", telephone: "06 34 56 78 90", entreprise: "Luxe & Mode", statut: "actif", dateCreation: "2026-01-10", nombreDossiers: 4 },
   { id: "c4", nom: "Petit", prenom: "Thomas", email: "thomas.petit@archibat.fr", telephone: "06 45 67 89 01", entreprise: "ArchiBat", statut: "actif", dateCreation: "2026-01-18", nombreDossiers: 1 },

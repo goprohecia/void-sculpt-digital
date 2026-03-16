@@ -139,8 +139,8 @@ export const SPORT_KPIS = {
 
 // For the client/member view
 export const MOCK_SPORT_MEMBER_SEANCES = [
-  { date: "2026-03-08", type: "Musculation", coach: "Kevin Dupont", duree: 60, notes: "Haut du corps — PR développé couché 70kg" },
-  { date: "2026-03-05", type: "HIIT", coach: "Kevin Dupont", duree: 30, notes: "Circuit 5 rounds" },
-  { date: "2026-03-03", type: "Musculation", coach: "Kevin Dupont", duree: 60, notes: "Dos + biceps" },
-  { date: "2026-02-28", type: "Cardio", coach: "Kevin Dupont", duree: 45, notes: "Rameur + vélo" },
+  { date: "2026-03-08", type: "Musculation", coach: "Kevin Rousseau", duree: 60, notes: "Haut du corps — PR développé couché 70kg" },
+  { date: "2026-03-05", type: "HIIT", coach: "Kevin Rousseau", duree: 30, notes: "Circuit 5 rounds" },
+  { date: "2026-03-03", type: "Musculation", coach: "Kevin Rousseau", duree: 60, notes: "Dos + biceps" },
+  { date: "2026-02-28", type: "Cardio", coach: "Kevin Rousseau", duree: 45, notes: "Rameur + vélo" },
 ];
