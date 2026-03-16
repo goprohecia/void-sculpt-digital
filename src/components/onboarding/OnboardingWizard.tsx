@@ -348,16 +348,16 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                           disabled={isDisabled && !isChecked}
                           className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
                             isChecked
-                              ? "border-primary bg-primary/5"
+                              ? "border-primary bg-primary/10"
                               : isDisabled
-                              ? "border-border/20 opacity-50"
-                              : "border-border/40 hover:border-border"
+                              ? "border-white/10 opacity-60"
+                              : "border-white/20 hover:border-white/40"
                           }`}
                         >
                           <Checkbox checked={isChecked} className="pointer-events-none" />
                           <span className="text-sm font-medium flex-1">{getModuleLabel(mod)}</span>
                           {isDisabled && !isChecked && (
-                            <Badge variant="outline" className="text-[10px] shrink-0">
+                            <Badge className="text-[10px] shrink-0 bg-white/15 text-white/80 border border-white/20">
                               {plan === "starter" ? "Business" : "Enterprise"}
                             </Badge>
                           )}
