@@ -375,6 +375,7 @@ const CABINET_RECRUTEMENT_OVERRIDES: SectorModulesConfig = {
 };
 
 const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Propriétaires & Dossiers", description: "Propriétaires et séjours/réservations" },
   dossiers: { label: "Séjours / Réservations", description: "Gestion des séjours et réservations voyageurs" },
   taches: { label: "Interventions", description: "Ménage, check-in/out, maintenance" },
   stock: { label: "Fournitures", description: "Linge, produits d'accueil et consommables" },
