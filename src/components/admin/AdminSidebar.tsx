@@ -60,9 +60,8 @@ export function AdminSidebar() {
 
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
-    { title: getModuleLabel("clients"), url: "/admin/clients", icon: Users, moduleKey: "clients" },
+    { title: getModuleLabel("clients-dossiers"), url: "/admin/clients", icon: Users, moduleKey: "clients-dossiers" },
     { title: getModuleLabel("employees"), url: "/admin/employees", icon: Users, moduleKey: "employees" },
-    { title: getModuleLabel("dossiers"), url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
     { title: getModuleLabel("rendez-vous"), url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
     { title: getModuleLabel("pipeline"), url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
     { title: getModuleLabel("messagerie"), url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
