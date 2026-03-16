@@ -117,9 +117,9 @@ export function BrevoConfigSettings() {
       <CardContent className="space-y-5">
         <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-start gap-2.5">
           <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5 shrink-0" />
-          <div className="text-xs text-amber-200/80 space-y-1">
-            <p className="font-medium text-amber-400">Prérequis</p>
-            <p>Créez un compte sur <strong>brevo.com</strong>, puis récupérez votre clé API dans <em>Paramètres → SMTP & API → Clés API</em>.</p>
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p className="font-medium text-amber-500">Prérequis</p>
+            <p>Créez un compte sur <strong>brevo.com</strong>, puis récupérez votre clé API dans <em>Paramètres → SMTP &amp; API → Clés API</em>.</p>
           </div>
         </div>
 
