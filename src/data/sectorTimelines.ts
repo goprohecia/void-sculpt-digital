@@ -367,7 +367,7 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     {
       name: "Mission comptable annuelle",
       category: "gestion",
-      steps: ["Dossier ouvert", "Pièces collectées", "Saisie comptable", "Révision", "Déclaration préparée", "Validée client", "Envoyée aux impôts", "Clôturée"],
+      steps: ["Dossier ouvert", "Pièces collectées", "Saisie comptable", "Révision", "Déclaration préparée", "Validée client", "Envoyée aux impôts"],
     },
     {
       name: "Déclaration fiscale",
