@@ -1,7 +1,7 @@
 import { useParams, Navigate } from "react-router-dom";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
-import { useDemoPlan } from "@/hooks/useDemoPlan";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 
