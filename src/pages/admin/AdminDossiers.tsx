@@ -478,6 +478,11 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
             </TabsContent>
 
             <TabsContent value="demandes" className="space-y-4 mt-4">
+              <div className="flex justify-end">
+                <Button size="sm" className="gap-1.5" onClick={() => setShowCreateDemande(true)}>
+                  <Plus className="h-4 w-4" /> Nouvelle demande
+                </Button>
+              </div>
               <motion.div className="space-y-3" variants={staggerContainer} initial="initial" animate="animate">
                 {demandes.map((dem) => (
                   <motion.div key={dem.id} variants={staggerItem} className="glass-card p-4 space-y-3">
