@@ -186,9 +186,9 @@ export default function ClientSignup() {
 
               <div className="space-y-2.5">
                 {(["starter", "business", "enterprise"] as SubscriptionPlan[]).map((plan) => {
-                  const modules = planModules[plan];
-                  const moduleCount = modules === "all" ? SELECTABLE_MODULES.length : modules.length;
+                  const quota = QUOTA_LIMITS[plan];
                   const price = planPrices[plan];
+                  const socleDisplay = SOCLE_FIXE.filter((k) => k !== "overview" && k !== "parametres");
                   const borderColors: Record<SubscriptionPlan, string> = {
                     starter: "border-[#e4e8df] hover:border-[#9ca3af]",
                     business: "border-[#e4e8df] hover:border-[#22c55e]",
@@ -211,14 +211,20 @@ export default function ClientSignup() {
                         <p className="text-lg font-bold text-[#1a2318]">{price}€<span className="text-xs font-normal text-[#9ca3af]">/mois</span></p>
                       </div>
                       <div className="space-y-1.5">
-                        <p className="text-[11px] text-[#9ca3af]">{modules === "all" ? "Tous les modules" : `${moduleCount} modules inclus`}</p>
-                        {modules !== "all" && (
-                          <div className="flex flex-wrap gap-1">
-                            {modules.map((m) => (
-                              <span key={m} className="text-[10px] px-1.5 py-0.5 rounded-md bg-white border border-[#e4e8df] text-[#4a5e46] capitalize">{GENERIC_MODULE_LABELS[m] || m}</span>
-                            ))}
-                          </div>
-                        )}
+                        {/* Socle fixe */}
+                        <p className="text-[11px] text-[#4a5e46] font-medium">Socle fixe inclus :</p>
+                        <div className="flex flex-wrap gap-1">
+                          {socleDisplay.map((m) => (
+                            <span key={m} className="text-[10px] px-1.5 py-0.5 rounded-md bg-primary/10 border border-primary/20 text-primary font-medium">
+                              {GENERIC_MODULE_LABELS[m] || m}
+                              <span className="ml-1 text-[8px] opacity-70">✓</span>
+                            </span>
+                          ))}
+                        </div>
+                        {/* Additional modules */}
+                        <p className="text-[11px] text-[#9ca3af]">
+                          {quota === null ? "+ Tous les modules" : `+ ${quota} modules au choix`}
+                        </p>
                       </div>
                       <div className={`text-xs font-medium ${accents[plan]} flex items-center gap-1`}>
                         Choisir <ArrowRight className="h-3 w-3" />

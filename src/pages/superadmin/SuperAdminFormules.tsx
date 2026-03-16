@@ -26,7 +26,7 @@ const PLAN_ACCENT: Record<SubscriptionPlan, string> = {
   enterprise: "text-amber-400",
 };
 
-const ALWAYS_INCLUDED = ["overview", "parametres"];
+const ALWAYS_INCLUDED = SOCLE_FIXE;
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
 
 export default function SuperAdminFormules() {
