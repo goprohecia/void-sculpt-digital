@@ -7,6 +7,7 @@ import { Building2, TrendingUp, Users, CreditCard, DollarSign, ArrowDownRight, A
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, Line, LineChart, Cell, Pie, PieChart, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { generateAuditPdf } from "@/lib/generateAuditPdf";
 import { generateAuditHtml } from "@/lib/generateAuditHtml";
+import { generateAuditBibleHtml } from "@/lib/generateAuditBibleHtml";
 import { SECTORS } from "@/contexts/DemoPlanContext";
 
 type Period = "6m" | "12m" | "annee";
