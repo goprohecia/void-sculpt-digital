@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, SOCLE_FIXE, QUOTA_LIMITS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { GENERIC_MODULE_LABELS, SECTOR_MODULE_OVERRIDES, type SectorModulesConfig } from "@/data/sectorModules";
 import { Save, Layers, ChevronDown, ChevronRight, Sparkles, ArrowUp, ArrowDown, Puzzle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -26,7 +26,7 @@ const PLAN_ACCENT: Record<SubscriptionPlan, string> = {
   enterprise: "text-amber-400",
 };
 
-const ALWAYS_INCLUDED = ["overview", "parametres"];
+const ALWAYS_INCLUDED = SOCLE_FIXE;
 const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
 
 export default function SuperAdminFormules() {

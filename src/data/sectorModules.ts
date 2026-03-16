@@ -17,6 +17,7 @@ export type SectorModulesConfig = Partial<Record<string, SectorModuleOverride>>;
 // ── Default generic labels (fallback) ──
 export const GENERIC_MODULE_LABELS: Record<string, string> = {
   overview: "Vue d'ensemble",
+  "clients-dossiers": "Clients & Dossiers",
   clients: "Clients",
   employees: "Salariés",
   dossiers: "Dossiers",
@@ -45,6 +46,7 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
 // Only keys that differ from generic need to be listed.
 
 const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Projets", description: "Portefeuille clients et suivi de projets tech" },
   dossiers: { label: "Projets", description: "Suivi de projets tech, sprints et repos" },
   clients: { label: "Clients", description: "Portefeuille clients du studio" },
   employees: { label: "Développeurs", description: "Équipe de développeurs" },
@@ -60,6 +62,7 @@ const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Commandes", description: "Portefeuille clients et commandes photo" },
   dossiers: { label: "Commandes", description: "Commandes et séances photo" },
   employees: { label: "Photographes", description: "Photographes et retoucheurs" },
   clients: { label: "Clients", description: "Portefeuille clients du studio" },
@@ -76,6 +79,7 @@ const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
 };
 
 const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Membres & Dossiers", description: "Fichier membres et suivi d'entraînement" },
   dossiers: { label: "Suivi membre", description: "Programmes d'entraînement et suivi par membre" },
   clients: { label: "Membres", description: "Fichier membres avec abonnement et objectifs" },
   employees: { label: "Coachs", description: "Équipe de coaching et planning" },
@@ -94,6 +98,7 @@ const COACH_SPORTIF_OVERRIDES: SectorModulesConfig = {
 };
 
 const BTP_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Chantiers", description: "Portefeuille clients et suivi de chantiers" },
   dossiers: { label: "Chantiers", description: "Suivi de chantiers, phases et avancement" },
   taches: { label: "Planning chantier", description: "Tâches par lot, sous-traitants et jalons" },
   documents: { label: "Plans & Documents", description: "Plans techniques, permis, CCTP et PV de réception" },
@@ -110,6 +115,7 @@ const BTP_OVERRIDES: SectorModulesConfig = {
 };
 
 const COIFFURE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Prestations", description: "Clients et historique des prestations" },
   dossiers: { label: "Réservations / Prestations", description: "Historique des prestations et réservations par client" },
   taches: { label: "Tâches salon", description: "Organisation quotidienne du salon" },
   documents: { label: "Fiches client", description: "Fiches techniques, colorations et préférences" },
@@ -127,6 +133,7 @@ const COIFFURE_OVERRIDES: SectorModulesConfig = {
 };
 
 const BOUTIQUE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Commandes", description: "Portefeuille clients et commandes" },
   dossiers: { label: "Commandes", description: "Suivi des commandes clients et fournisseurs" },
   taches: { label: "Tâches boutique", description: "Organisation quotidienne de la boutique" },
   stock: { label: "Inventaire", description: "Gestion des produits en rayon et en réserve" },
@@ -141,6 +148,7 @@ const BOUTIQUE_OVERRIDES: SectorModulesConfig = {
 };
 
 const CABINETS_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Affaires", description: "Portefeuille clients et dossiers juridiques" },
   dossiers: { label: "Affaires", description: "Suivi des affaires et dossiers juridiques" },
   taches: { label: "Échéances", description: "Délais légaux, audiences et deadlines" },
   stock: { label: "Stock", hidden: true },
@@ -155,6 +163,7 @@ const CABINETS_OVERRIDES: SectorModulesConfig = {
 };
 
 const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Comptes & Missions", description: "Comptes clients et missions social media" },
   dossiers: { label: "Missions", description: "Missions et comptes clients social media" },
   clients: { label: "Comptes clients", description: "Portefeuille de comptes clients" },
   employees: { label: "CM / Chargés de compte", description: "Équipe de community managers" },
@@ -172,6 +181,7 @@ const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
 };
 
 const CONSULTANT_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Missions", description: "Portefeuille clients et missions de conseil" },
   dossiers: { label: "Missions", description: "Suivi des missions de conseil en cours" },
   clients: { label: "Portefeuille clients", description: "Clients et contacts du cabinet" },
   employees: { label: "Consultants", description: "Équipe de consultants" },
@@ -188,6 +198,7 @@ const CONSULTANT_OVERRIDES: SectorModulesConfig = {
 };
 
 const DESIGNER_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Projets", description: "Portefeuille clients et projets design" },
   dossiers: { label: "Projets", description: "Projets de design (branding, UI/UX, print)" },
   clients: { label: "Clients", description: "Portefeuille clients du studio" },
   employees: { label: "Designers", description: "Équipe de designers" },
@@ -204,6 +215,7 @@ const DESIGNER_OVERRIDES: SectorModulesConfig = {
 };
 
 const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Prestations", description: "Portefeuille clients et prestations événementielles" },
   dossiers: { label: "Prestations", description: "Soirées, mariages, festivals et animations" },
   clients: { label: "Clients", description: "Portefeuille clients événementiel" },
   employees: { label: "Assistants / Régisseurs", description: "Équipe technique et régisseurs" },
@@ -219,6 +231,7 @@ const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Événements", description: "Portefeuille clients et organisation d'événements" },
   dossiers: { label: "Événements", description: "Organisation d'événements (congrès, galas, séminaires)" },
   employees: { label: "Chefs de projet", description: "Équipe de chefs de projet événementiel" },
   taches: { label: "Planning événement", description: "Rétroplanning et coordination des prestataires" },
@@ -233,6 +246,7 @@ const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
 };
 
 const FORMATEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Stagiaires & Sessions", description: "Stagiaires et sessions de formation" },
   dossiers: { label: "Sessions", description: "Sessions de formation et dossiers stagiaires" },
   employees: { label: "Formateurs", description: "Équipe de formateurs" },
   clients: { label: "Stagiaires", description: "Stagiaires et organismes clients" },
@@ -257,11 +271,13 @@ const GARAGES_OVERRIDES: SectorModulesConfig = {
   "rendez-vous": { label: "RDV atelier", description: "Créneaux de dépôt et restitution véhicule" },
   notes: { label: "Notes mécanicien", description: "Observations techniques et historique véhicule" },
   support: { label: "Garanties", description: "Garanties pièces et main d'œuvre" },
+  "clients-dossiers": { label: "Clients & Véhicules", description: "Fiches clients et suivi des véhicules" },
   clients: { label: "Clients & Véhicules", description: "Fiches clients avec parc automobile" },
   employees: { label: "Mécaniciens", description: "Équipe de mécaniciens et techniciens" },
 };
 
 const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Acquéreurs & Mandats", description: "Fichier clients et portefeuille de mandats" },
   dossiers: { label: "Mandats", description: "Portefeuille de mandats de vente et location" },
   taches: { label: "Visites & Tâches", description: "Organisation des visites et tâches administratives" },
   stock: { label: "Stock", hidden: true },
@@ -278,6 +294,7 @@ const IMMOBILIER_OVERRIDES: SectorModulesConfig = {
 };
 
 const MARIAGE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Mariées & Dossiers", description: "Fiches mariées et dossiers de commande" },
   dossiers: { label: "Commandes robes", description: "Dossiers mariées, mensurations, modèle choisi" },
   taches: { label: "Retouches & Préparation", description: "Retouches et préparation des robes" },
   stock: { label: "Robes & Accessoires", description: "Robes, voiles, accessoires et bijoux" },
@@ -293,6 +310,7 @@ const MARIAGE_OVERRIDES: SectorModulesConfig = {
 };
 
 const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Contrats", description: "Portefeuille clients et contrats de nettoyage" },
   dossiers: { label: "Contrats", description: "Contrats de nettoyage et interventions" },
   employees: { label: "Agents", description: "Équipes de nettoyage et responsables de site" },
   clients: { label: "Clients", description: "Clients B2B et syndics" },
@@ -307,6 +325,7 @@ const NETTOYAGE_OVERRIDES: SectorModulesConfig = {
 };
 
 const REPARATEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Réparations", description: "Fiches clients et réparations en atelier" },
   dossiers: { label: "Réparations", description: "Fiches appareils en réparation avec diagnostic et statut" },
   employees: { label: "Techniciens", description: "Techniciens de l'atelier" },
   clients: { label: "Clients & Appareils", description: "Historique complet par client : appareils réparés, devis, factures" },
@@ -322,6 +341,7 @@ const REPARATEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const TRAITEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Commandes", description: "Portefeuille clients et commandes traiteur" },
   dossiers: { label: "Commandes", description: "Commandes événementielles et prestations traiteur" },
   employees: { label: "Équipe / Brigade", description: "Cuisiniers, serveurs et logistique" },
   clients: { label: "Clients", description: "Particuliers et entreprises" },
@@ -337,6 +357,7 @@ const TRAITEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const CABINET_RECRUTEMENT_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Entreprises & Missions", description: "Entreprises clientes et missions de recrutement" },
   dossiers: { label: "Missions", description: "Portefeuille de missions de recrutement" },
   taches: { label: "Pipeline candidats", description: "Suivi des candidats par étape" },
   stock: { label: "Stock", hidden: true },
@@ -354,6 +375,7 @@ const CABINET_RECRUTEMENT_OVERRIDES: SectorModulesConfig = {
 };
 
 const CONCIERGERIE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Propriétaires & Dossiers", description: "Propriétaires et séjours/réservations" },
   dossiers: { label: "Séjours / Réservations", description: "Gestion des séjours et réservations voyageurs" },
   taches: { label: "Interventions", description: "Ménage, check-in/out, maintenance" },
   stock: { label: "Fournitures", description: "Linge, produits d'accueil et consommables" },
@@ -393,6 +415,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   conciergerie: CONCIERGERIE_OVERRIDES,
   "cabinet-recrutement": CABINET_RECRUTEMENT_OVERRIDES,
   "auto-ecole": {
+    "clients-dossiers": { label: "Élèves & Dossiers", description: "Fiches élèves et dossiers de conduite" },
     dossiers: { label: "Dossiers élèves", description: "Fiches élèves, progression et heures de conduite" },
     taches: { label: "Leçons & Examens", description: "Planification des leçons et inscriptions aux examens" },
     stock: { label: "Véhicules", description: "Flotte de véhicules, entretiens et affectations" },
@@ -406,6 +429,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     support: { label: "Support élèves", description: "Questions et assistance des élèves" },
   } as SectorModulesConfig,
   "cabinet-avocats": {
+    "clients-dossiers": { label: "Clients & Affaires", description: "Personnes physiques/morales et affaires judiciaires" },
     dossiers: { label: "Affaires", description: "Suivi des affaires judiciaires et contentieux" },
     taches: { label: "Échéances & Délais", description: "Délais de procédure, audiences et deadlines" },
     stock: { label: "Stock", hidden: true },
@@ -421,6 +445,7 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
     temps: { label: "Heures facturables", description: "Suivi du temps par affaire" },
   } as SectorModulesConfig,
   "expert-comptable": {
+    "clients-dossiers": { label: "Clients & Missions", description: "Portefeuille clients et missions comptables" },
     dossiers: { label: "Missions comptables", description: "Tenue comptable, bilans et déclarations fiscales" },
     taches: { label: "Échéances fiscales", description: "TVA, IS, IR, CFE et autres obligations" },
     stock: { label: "Stock", hidden: true },

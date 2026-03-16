@@ -35,7 +35,7 @@ export function ClientSidebar() {
 
   const allNavItems = [
     { title: "Tableau de bord", url: "/client", icon: LayoutDashboard, moduleKey: "overview" },
-    { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: "Mes dossiers", url: "/client/dossiers", icon: FolderOpen, moduleKey: "clients-dossiers" },
     { title: "Demandes", url: "/client/demandes", icon: Send, moduleKey: "demandes" },
     { title: "Devis", url: "/client/devis", icon: FileText, moduleKey: "devis" },
     { title: "Factures", url: "/client/factures", icon: Receipt, moduleKey: "factures" },

@@ -17,7 +17,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useTickets } from "@/hooks/use-tickets";
 import { useAppSettings } from "@/hooks/use-app-settings";
 import { useCustomSpaces } from "@/hooks/use-custom-spaces";
-import { useSubscription, PLAN_INFO } from "@/hooks/use-subscription";
+import { useSubscription, PLAN_INFO, SOCLE_FIXE } from "@/hooks/use-subscription";
 import { useWhiteLabel } from "@/hooks/use-white-label";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { Sparkles } from "lucide-react";
@@ -29,7 +29,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import logoMba from "@/assets/logo-mba.png";
 
-const principalKeys = ["overview", "clients", "employees", "dossiers"];
+const principalKeys = ["overview", "clients-dossiers", "employees"];
 const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
@@ -60,9 +60,8 @@ export function AdminSidebar() {
 
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
-    { title: getModuleLabel("clients"), url: "/admin/clients", icon: Users, moduleKey: "clients" },
+    { title: getModuleLabel("clients-dossiers"), url: "/admin/clients", icon: Users, moduleKey: "clients-dossiers" },
     { title: getModuleLabel("employees"), url: "/admin/employees", icon: Users, moduleKey: "employees" },
-    { title: getModuleLabel("dossiers"), url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
     { title: getModuleLabel("rendez-vous"), url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
     { title: getModuleLabel("pipeline"), url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
     { title: getModuleLabel("messagerie"), url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
@@ -87,7 +86,7 @@ export function AdminSidebar() {
   const enabledItems = allNavItems
     .filter((item) => enabledModules.includes(item.moduleKey))
     .filter((item) => !isModuleHidden(item.moduleKey));
-  const alwaysVisible = ["overview", "parametres"];
+  const alwaysVisible = SOCLE_FIXE;
   const planModules = currentPlanModules[plan];
   const navItems = planModules === "all"
     ? enabledItems
