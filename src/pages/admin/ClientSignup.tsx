@@ -7,14 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, Eye, EyeOff, ArrowLeft, ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import { CompleteProfileDialog } from "@/components/CompleteProfileDialog";
-import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, type SectorKey } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, ALL_MODULE_KEYS, SECTORS, SOCLE_FIXE, QUOTA_LIMITS, type SectorKey } from "@/contexts/DemoPlanContext";
 import { getModuleLabel as getSectorModuleLabel, isModuleHidden } from "@/data/sectorModules";
 import { GENERIC_MODULE_LABELS } from "@/data/sectorModules";
 import type { SubscriptionPlan } from "@/hooks/use-subscription";
 import logoMba from "@/assets/logo-mba.png";
 
-const ALWAYS_INCLUDED = ["overview", "parametres"];
-const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !ALWAYS_INCLUDED.includes(k));
+const SELECTABLE_MODULES = ALL_MODULE_KEYS.filter((k) => !SOCLE_FIXE.includes(k));
 
 const STEP_LABELS = ["Formule", "Secteur", "Modules", "Compte"];
 
