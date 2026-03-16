@@ -47,6 +47,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
 import AdminDossierDetail from "@/pages/admin/AdminDossierDetail";
+import AdminDemandes from "@/pages/admin/AdminDemandes";
 import AdminMessaging from "@/pages/admin/AdminMessaging";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminReminders from "@/pages/admin/AdminReminders";
