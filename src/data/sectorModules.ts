@@ -198,6 +198,7 @@ const CONSULTANT_OVERRIDES: SectorModulesConfig = {
 };
 
 const DESIGNER_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Projets", description: "Portefeuille clients et projets design" },
   dossiers: { label: "Projets", description: "Projets de design (branding, UI/UX, print)" },
   clients: { label: "Clients", description: "Portefeuille clients du studio" },
   employees: { label: "Designers", description: "Équipe de designers" },
