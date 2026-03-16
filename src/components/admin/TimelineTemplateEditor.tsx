@@ -167,7 +167,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
           <Filter className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
           <button
             onClick={() => setSelectedCategory("all")}
-            className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/50"}`}
+            className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === "all" ? "bg-primary text-primary-foreground border-primary" : "bg-white text-foreground border-border hover:bg-muted"}`}
           >
             Tous
           </button>
