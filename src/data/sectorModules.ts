@@ -246,6 +246,7 @@ const EVENEMENTIEL_OVERRIDES: SectorModulesConfig = {
 };
 
 const FORMATEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Stagiaires & Sessions", description: "Stagiaires et sessions de formation" },
   dossiers: { label: "Sessions", description: "Sessions de formation et dossiers stagiaires" },
   employees: { label: "Formateurs", description: "Équipe de formateurs" },
   clients: { label: "Stagiaires", description: "Stagiaires et organismes clients" },
