@@ -82,11 +82,11 @@ export function EmployeeSidebar() {
                         className={`flex items-center gap-3 py-[9px] px-5 border-l-[3px] transition-all duration-[120ms] ${
                           active
                             ? "bg-[#14532d] text-white font-bold border-l-[#22c55e] rounded-r-[var(--radius-sm)] mr-2 shadow-[0_2px_8px_rgba(20,83,45,0.25)]"
-                            : "text-[#4a5e46] border-l-transparent hover:bg-[#f0fdf4] hover:text-[#1a2318]"
+                            : "text-[#4a5e46] border-l-transparent hover:bg-[#14532d]/80 hover:text-white"
                         }`}
                       >
                         <item.icon className={`h-[18px] w-[18px] ${active ? "text-[#22c55e]" : "opacity-65"}`} />
-                        <span className="flex-1">{item.title}</span>
+                        <span className={`flex-1 ${active ? "!text-white" : ""}`}>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
