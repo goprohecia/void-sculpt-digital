@@ -175,7 +175,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat === selectedCategory ? "all" : cat)}
-              className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-muted/30 text-muted-foreground border-border/50 hover:bg-muted/50"}`}
+              className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground border-primary" : "bg-white text-foreground border-border hover:bg-muted"}`}
             >
               {PRESET_CATEGORY_LABELS[cat]}
             </button>
