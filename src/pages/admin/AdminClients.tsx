@@ -22,12 +22,7 @@ import { ClientTagManager, ClientTagBadges } from "@/components/admin/ClientTagM
 import { useTags, useClientTags } from "@/hooks/use-produits";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientDossiersLinked } from "@/components/admin/ClientDossiersLinked";
-
-const SEGMENTS = [
-  { value: "tous", label: "Tous" },
-  { value: "client", label: "Clients" },
-  { value: "prospect", label: "Prospects" },
-] as const;
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function AdminClients() {
   const [search, setSearch] = useState("");
