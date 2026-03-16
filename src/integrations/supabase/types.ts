@@ -609,6 +609,7 @@ export type Database = {
           compte_id: string | null
           created_at: string
           dernier_message: string
+          destinataire_type: string
           id: string
           non_lus: number
           sujet: string
@@ -620,6 +621,7 @@ export type Database = {
           compte_id?: string | null
           created_at?: string
           dernier_message?: string
+          destinataire_type?: string
           id?: string
           non_lus?: number
           sujet: string
@@ -631,6 +633,7 @@ export type Database = {
           compte_id?: string | null
           created_at?: string
           dernier_message?: string
+          destinataire_type?: string
           id?: string
           non_lus?: number
           sujet?: string
@@ -1568,6 +1571,7 @@ export type Database = {
           created_at: string
           date: string
           id: string
+          is_group_message: boolean
           media_name: string | null
           media_size: number | null
           media_type: string | null
@@ -1581,6 +1585,7 @@ export type Database = {
           created_at?: string
           date?: string
           id?: string
+          is_group_message?: boolean
           media_name?: string | null
           media_size?: number | null
           media_type?: string | null
@@ -1594,6 +1599,7 @@ export type Database = {
           created_at?: string
           date?: string
           id?: string
+          is_group_message?: boolean
           media_name?: string | null
           media_size?: number | null
           media_type?: string | null

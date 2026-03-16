@@ -1,17 +1,18 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { useConversations } from "@/hooks/use-conversations";
 import { useClientId } from "@/hooks/use-client-id";
 import { type Conversation } from "@/data/mockData";
-import { MessageSquare, Send } from "lucide-react";
+import { MessageSquare, Send, Megaphone } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { MessageMediaUpload, MessageMediaInline } from "@/components/messaging/MessageMediaUpload";
+import { Badge } from "@/components/ui/badge";
 
 export default function ClientMessaging() {
   const { clientId, isLoading: clientLoading, isDemo } = useClientId();
@@ -28,6 +29,14 @@ export default function ClientMessaging() {
 
   const activeConv = selectedConv ?? mesConversations[0] ?? null;
 
+  // Check if the last message in the active conversation is a group message
+  const lastMsgIsGroup = activeConv?.messages?.length
+    ? activeConv.messages[activeConv.messages.length - 1]?.is_group_message
+    : false;
+
+  // Check if ALL messages in the conversation are group messages (no reply allowed)
+  const allGroupMessages = activeConv?.messages?.every((m) => m.is_group_message) ?? false;
+
   const handleSelectConv = (conv: Conversation) => {
     setSelectedConv(conv);
     setShowList(false);
@@ -41,7 +50,7 @@ export default function ClientMessaging() {
         <motion.div className="space-y-4" variants={staggerContainer} initial="initial" animate="animate">
           <motion.div variants={staggerItem}>
             <h1 className="text-2xl font-bold flex items-center gap-2">
-              <MessageSquare className="h-6 w-6 text-[hsl(200,100%,60%)]" />
+              <MessageSquare className="h-6 w-6 text-primary" />
               Messagerie
             </h1>
             <p className="text-muted-foreground text-sm">{mesConversations.length} conversations</p>
@@ -52,7 +61,7 @@ export default function ClientMessaging() {
               <AdminEmptyState
                 icon={MessageSquare}
                 title="Aucune conversation"
-                description="Vos échanges avec l'équipe apparaîtront ici."
+                description="Vos échanges avec la Direction apparaîtront ici."
                 hint="Une conversation sera créée automatiquement lors du suivi de votre projet."
               />
             </motion.div>
@@ -89,7 +98,7 @@ export default function ClientMessaging() {
                             {conv.dernierMessage}
                           </span>
                           {conv.nonLus > 0 && (
-                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[hsl(200,100%,50%)] text-[9px] font-bold text-white">
+                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
                               {conv.nonLus}
                             </span>
                           )}
@@ -118,13 +127,13 @@ export default function ClientMessaging() {
                       <div className="p-4 border-b border-border/30 flex items-center gap-3">
                         <button
                           onClick={() => setShowList(true)}
-                          className="md:hidden text-sm text-[hsl(200,100%,60%)]"
+                          className="md:hidden text-sm text-primary"
                         >
                           ← Retour
                         </button>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold">{activeConv.sujet}</p>
-                          <p className="text-xs text-muted-foreground">Équipe Impartial</p>
+                          <p className="text-xs text-muted-foreground">Direction</p>
                         </div>
                       </div>
 
@@ -139,6 +148,12 @@ export default function ClientMessaging() {
                                 : "bg-muted/40 text-foreground rounded-bl-md"
                             )}
                           >
+                            {msg.is_group_message && (
+                              <Badge variant="secondary" className="mb-1 text-[10px] gap-1">
+                                <Megaphone className="h-3 w-3" />
+                                Message de groupe
+                              </Badge>
+                            )}
                             <p>{msg.contenu}</p>
                             <MessageMediaInline
                               mediaUrl={(msg as any).media_url}
@@ -151,55 +166,59 @@ export default function ClientMessaging() {
                         ))}
                       </div>
 
-                      <div className="p-3 border-t border-border/30 relative">
-                        <div className="flex gap-2">
-                          <MessageMediaUpload
-                            onMediaReady={setMediaResult}
-                            pending={pendingMedia}
-                            setPending={setPendingMedia}
-                            uploading={mediaUploading}
-                            setUploading={setMediaUploading}
-                            progress={mediaProgress}
-                            setProgress={setMediaProgress}
-                          />
-                          <textarea
-                            value={replyText}
-                            onChange={(e) => setReplyText(e.target.value)}
-                            placeholder="Votre message..."
-                            className="flex-1 glass-input border-0 resize-none min-h-[40px] max-h-[100px] p-2.5 text-sm"
-                            rows={1}
-                          />
-                          <button
-                            disabled={mediaUploading || (!replyText.trim() && !pendingMedia)}
-                            onClick={async () => {
-                              if (!activeConv || isDemo) { toast.info("Mode démo"); return; }
-                              let media = mediaResult;
-                              if (pendingMedia && !media) {
-                                const hiddenInput = document.querySelector('[data-upload-fn]') as any;
-                                if (hiddenInput?.__uploadFn) {
-                                  media = await hiddenInput.__uploadFn();
-                                  if (!media && !replyText.trim()) return;
+                      {/* Reply field — hidden if all messages are group messages */}
+                      {!allGroupMessages && (
+                        <div className="p-3 border-t border-border/30 relative">
+                          <div className="flex gap-2">
+                            <MessageMediaUpload
+                              onMediaReady={setMediaResult}
+                              pending={pendingMedia}
+                              setPending={setPendingMedia}
+                              uploading={mediaUploading}
+                              setUploading={setMediaUploading}
+                              progress={mediaProgress}
+                              setProgress={setMediaProgress}
+                            />
+                            <textarea
+                              value={replyText}
+                              onChange={(e) => setReplyText(e.target.value)}
+                              placeholder="Votre message à la Direction..."
+                              className="flex-1 glass-input border-0 resize-none min-h-[40px] max-h-[100px] p-2.5 text-sm"
+                              rows={1}
+                            />
+                            <button
+                              disabled={mediaUploading || (!replyText.trim() && !pendingMedia)}
+                              onClick={async () => {
+                                if (!activeConv || isDemo) { toast.info("Mode démo"); return; }
+                                let media = mediaResult;
+                                if (pendingMedia && !media) {
+                                  const hiddenInput = document.querySelector('[data-upload-fn]') as any;
+                                  if (hiddenInput?.__uploadFn) {
+                                    media = await hiddenInput.__uploadFn();
+                                    if (!media && !replyText.trim()) return;
+                                  }
                                 }
-                              }
-                              const { error } = await supabase.from("messages").insert({
-                                conversation_id: activeConv.id,
-                                contenu: replyText.trim() || (media ? `📎 ${media.name}` : ""),
-                                role: "client",
-                                date: new Date().toISOString(),
-                                ...(media ? { media_url: media.url, media_type: media.type, media_name: media.name, media_size: media.size } : {}),
-                              } as any);
-                              if (error) { toast.error(error.message); return; }
-                              setReplyText("");
-                              setMediaResult(null);
-                              setPendingMedia(null);
-                              queryClient.invalidateQueries({ queryKey: ["conversations"] });
-                            }}
-                            className="glass-button p-2.5 text-primary hover:text-primary-foreground hover:bg-primary transition-colors disabled:opacity-50"
-                          >
-                            <Send className="h-4 w-4" />
-                          </button>
+                                const { error } = await supabase.from("messages").insert({
+                                  conversation_id: activeConv.id,
+                                  contenu: replyText.trim() || (media ? `📎 ${media.name}` : ""),
+                                  role: "client",
+                                  date: new Date().toISOString(),
+                                  is_group_message: false,
+                                  ...(media ? { media_url: media.url, media_type: media.type, media_name: media.name, media_size: media.size } : {}),
+                                } as any);
+                                if (error) { toast.error(error.message); return; }
+                                setReplyText("");
+                                setMediaResult(null);
+                                setPendingMedia(null);
+                                queryClient.invalidateQueries({ queryKey: ["conversations"] });
+                              }}
+                              className="glass-button p-2.5 text-primary hover:text-primary-foreground hover:bg-primary transition-colors disabled:opacity-50"
+                            >
+                              <Send className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </>
                   ) : (
                     <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">

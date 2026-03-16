@@ -40,6 +40,7 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
   ia: "Intelligence IA",
   parametres: "Paramètres",
   fournisseurs: "Fournisseurs",
+  "messagerie-groupee": "Messagerie groupée",
 };
 
 // ── Sector-specific overrides ──

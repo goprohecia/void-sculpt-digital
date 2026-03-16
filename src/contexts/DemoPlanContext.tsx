@@ -12,7 +12,7 @@ export type SubscriptionPlan = "starter" | "business" | "enterprise";
 // "clients-dossiers" is the fused module (replaces separate "clients" and "dossiers")
 export const ALL_MODULE_KEYS = [
   "overview", "clients-dossiers", "employees", "pipeline",
-  "facturation", "relances", "stock", "messagerie", "emails",
+  "facturation", "relances", "stock", "messagerie", "messagerie-groupee", "emails",
   "rendez-vous", "agenda", "taches", "support", "notes",
   "analyse", "rapports", "documents", "temps", "automatisations",
   "ia", "parametres",
