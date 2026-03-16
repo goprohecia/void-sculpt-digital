@@ -57,7 +57,7 @@ export interface SportSeance {
 }
 
 export const MOCK_SPORT_COACHS: SportCoach[] = [
-  { id: "sc1", nom: "Kevin Dupont", specialite: "Musculation & HIIT", membresAssignes: 12, seancesSemaine: 18 },
+  { id: "sc1", nom: "Kevin Rousseau", specialite: "Musculation & HIIT", membresAssignes: 12, seancesSemaine: 18 },
   { id: "sc2", nom: "Sarah Lemoine", specialite: "Yoga & Pilates", membresAssignes: 15, seancesSemaine: 14 },
   { id: "sc3", nom: "Maxime Torres", specialite: "CrossFit & Cardio", membresAssignes: 10, seancesSemaine: 16 },
 ];
