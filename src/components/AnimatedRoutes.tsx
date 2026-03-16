@@ -47,6 +47,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
 import AdminDossierDetail from "@/pages/admin/AdminDossierDetail";
+import AdminDemandes from "@/pages/admin/AdminDemandes";
 import AdminMessaging from "@/pages/admin/AdminMessaging";
 import AdminBilling from "@/pages/admin/AdminBilling";
 import AdminReminders from "@/pages/admin/AdminReminders";
@@ -165,6 +166,7 @@ export function AnimatedRoutes() {
         <Route path="/admin/clients" element={<AdminClients />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
         <Route path="/admin/dossiers/:id" element={<AdminDossierDetail />} />
+        <Route path="/admin/demandes" element={<AdminDemandes />} />
         <Route path="/admin/messagerie" element={<AdminMessaging />} />
         <Route path="/admin/facturation" element={<AdminBilling />} />
         <Route path="/admin/relances" element={<AdminReminders />} />

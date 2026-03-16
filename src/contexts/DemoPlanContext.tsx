@@ -11,7 +11,7 @@ export type SubscriptionPlan = "starter" | "business" | "enterprise";
 // All available module keys in the system
 // "clients-dossiers" is the fused module (replaces separate "clients" and "dossiers")
 export const ALL_MODULE_KEYS = [
-  "overview", "clients-dossiers", "employees", "pipeline",
+  "overview", "clients-dossiers", "dossiers", "demandes", "employees", "pipeline",
   "facturation", "relances", "stock", "messagerie", "messagerie-groupee", "emails",
   "rendez-vous", "agenda", "taches", "support", "notes",
   "analyse", "rapports", "documents", "temps", "automatisations",
@@ -19,7 +19,7 @@ export const ALL_MODULE_KEYS = [
 ];
 
 // Socle fixe — always included, never counted in quota
-export const SOCLE_FIXE = ["overview", "parametres", "analyse", "clients-dossiers"];
+export const SOCLE_FIXE = ["overview", "parametres", "analyse", "clients-dossiers", "dossiers", "demandes"];
 
 // Quota limits per plan (additional modules beyond socle fixe)
 export const QUOTA_LIMITS: Record<SubscriptionPlan, number | null> = {

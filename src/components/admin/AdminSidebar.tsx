@@ -35,7 +35,7 @@ import type { LucideIcon } from "lucide-react";
 import logoMba from "@/assets/logo-mba.png";
 
 const principalKeys = ["overview", "clients-dossiers", "employees"];
-const commercialKeys = ["pipeline", "facturation", "relances", "stock", "fournisseurs"];
+const commercialKeys = ["pipeline", "dossiers", "demandes", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
@@ -53,6 +53,8 @@ const MODULE_DESCRIPTIONS: Record<string, string> = {
   "clients-dossiers": "Gérez vos clients et leurs dossiers en un seul endroit.",
   "employees": "Gérez votre équipe, rôles et permissions.",
   "pipeline": "Suivez vos opportunités commerciales étape par étape.",
+  "dossiers": "Gérez et suivez tous vos dossiers en cours.",
+  "demandes": "Consultez et traitez les demandes de vos clients.",
   "facturation": "Créez et gérez vos factures et devis.",
   "relances": "Automatisez le suivi de vos impayés.",
   "stock": "Gérez votre inventaire et vos produits.",
@@ -104,6 +106,8 @@ export function AdminSidebar() {
     { title: getModuleLabel("employees"), url: "/admin/employees", icon: Users, moduleKey: "employees" },
     { title: getModuleLabel("rendez-vous"), url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
     { title: getModuleLabel("pipeline"), url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
+    { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
+    { title: "Demandes", url: "/admin/demandes", icon: FileText, moduleKey: "demandes" },
     { title: getModuleLabel("messagerie"), url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
     { title: getModuleLabel("facturation"), url: "/admin/facturation", icon: Receipt, moduleKey: "facturation" },
     { title: getModuleLabel("relances"), url: "/admin/relances", icon: Bell, moduleKey: "relances" },

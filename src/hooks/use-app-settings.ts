@@ -9,6 +9,7 @@ export const ALL_ADMIN_MODULES = [
   { key: "clients", label: "Clients" },
   { key: "employees", label: "Salariés" },
   { key: "dossiers", label: "Dossiers" },
+  { key: "demandes", label: "Demandes" },
   { key: "messagerie", label: "Messagerie" },
   { key: "facturation", label: "Facturation" },
   { key: "relances", label: "Relances" },
