@@ -299,7 +299,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
             </div>
             <div className="flex flex-wrap gap-1">
               {t.steps.map((s, i) => (
-                <Badge key={i} variant="outline" className="text-[9px]">{i + 1}. {s}</Badge>
+                <Badge key={i} variant="outline" className="text-[9px] text-foreground border-border">{i + 1}. {s}</Badge>
               ))}
             </div>
           </CardContent>
