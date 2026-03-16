@@ -370,7 +370,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
                       variant="ghost"
                       size="sm"
                       onClick={() => setStep(0)}
-                      className="text-xs text-muted-foreground"
+                      className="text-xs text-white/60"
                     >
                       Modifier ma formule
                     </Button>
