@@ -20,7 +20,7 @@ interface TimelineTemplateEditorProps {
 
 export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEditorProps) {
   const { templates, createTemplate, updateTemplate, deleteTemplate } = useTimelineTemplates();
-  const { plan, isEnterprise } = useSubscription();
+  const { plan, isEnterprise, isBusiness } = useSubscription();
   const { demoSector } = useDemoPlan();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
