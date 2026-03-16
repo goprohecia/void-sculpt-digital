@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
-import { useDemoPlan, type SubscriptionPlan } from "@/contexts/DemoPlanContext";
+import { useDemoPlan, QUOTA_LIMITS, SOCLE_FIXE, type SubscriptionPlan } from "@/contexts/DemoPlanContext";
 
 export type { SubscriptionPlan };
+export { QUOTA_LIMITS, SOCLE_FIXE };
 
 export interface SubscriptionData {
   plan: SubscriptionPlan;
@@ -12,22 +13,10 @@ export interface SubscriptionData {
   customModules: Record<string, string>;
 }
 
-export const PLAN_LIMITS: Record<SubscriptionPlan, number | null> = {
-  starter: 3,
-  business: 6,
-  enterprise: null,
-};
-
 export const PLAN_INFO: Record<SubscriptionPlan, { label: string; price: number; color: string }> = {
   starter: { label: "Starter", price: 150, color: "text-muted-foreground" },
   business: { label: "Business", price: 250, color: "text-neon-blue" },
   enterprise: { label: "Enterprise", price: 500, color: "text-amber-400" },
-};
-
-export const PLAN_MODULES: Record<SubscriptionPlan, string[] | "all"> = {
-  starter: ["clients", "dossiers", "facturation"],
-  business: ["clients", "dossiers", "facturation", "messagerie", "relances", "support"],
-  enterprise: "all",
 };
 
 export function useSubscription() {
@@ -43,7 +32,7 @@ export function useSubscription() {
         return {
           plan,
           status: "active",
-          modulesLimit: PLAN_LIMITS[plan],
+          modulesLimit: QUOTA_LIMITS[plan],
           customModules: {},
         };
       }
@@ -64,7 +53,7 @@ export function useSubscription() {
         return {
           plan: "starter",
           status: "active",
-          modulesLimit: PLAN_LIMITS.starter,
+          modulesLimit: QUOTA_LIMITS.starter,
           customModules: {},
         };
       }
@@ -73,7 +62,7 @@ export function useSubscription() {
       return {
         plan,
         status: data.status,
-        modulesLimit: data.modules_limit ?? PLAN_LIMITS[plan],
+        modulesLimit: data.modules_limit ?? QUOTA_LIMITS[plan],
         customModules: (data.custom_modules as Record<string, string>) || {},
       };
     },
@@ -96,7 +85,7 @@ export function useSubscription() {
             user_id: user.id,
             plan: newPlan,
             status: "active",
-            modules_limit: PLAN_LIMITS[newPlan],
+            modules_limit: QUOTA_LIMITS[newPlan],
             updated_at: new Date().toISOString(),
           },
           { onConflict: "user_id" }
@@ -116,7 +105,7 @@ export function useSubscription() {
   return {
     plan,
     status: subscription?.status ?? "active",
-    modulesLimit: subscription?.modulesLimit ?? PLAN_LIMITS[plan],
+    modulesLimit: subscription?.modulesLimit ?? QUOTA_LIMITS[plan],
     customModules: subscription?.customModules ?? {},
     isLoading,
     isEnterprise: plan === "enterprise",
@@ -126,7 +115,7 @@ export function useSubscription() {
     canRenameModules: plan === "enterprise",
     canWhiteLabel: plan === "enterprise",
     updatePlan,
-    PLAN_LIMITS,
+    QUOTA_LIMITS,
     currentPlanModules,
   };
 }
