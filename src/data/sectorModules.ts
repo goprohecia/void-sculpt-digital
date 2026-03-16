@@ -215,6 +215,7 @@ const DESIGNER_OVERRIDES: SectorModulesConfig = {
 };
 
 const DJ_ANIMATEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Prestations", description: "Portefeuille clients et prestations événementielles" },
   dossiers: { label: "Prestations", description: "Soirées, mariages, festivals et animations" },
   clients: { label: "Clients", description: "Portefeuille clients événementiel" },
   employees: { label: "Assistants / Régisseurs", description: "Équipe technique et régisseurs" },
