@@ -46,6 +46,7 @@ export const GENERIC_MODULE_LABELS: Record<string, string> = {
 // Only keys that differ from generic need to be listed.
 
 const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Projets", description: "Portefeuille clients et suivi de projets tech" },
   dossiers: { label: "Projets", description: "Suivi de projets tech, sprints et repos" },
   clients: { label: "Clients", description: "Portefeuille clients du studio" },
   employees: { label: "Développeurs", description: "Équipe de développeurs" },
