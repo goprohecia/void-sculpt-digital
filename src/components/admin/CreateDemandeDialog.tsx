@@ -20,7 +20,7 @@ export function CreateDemandeDialog({ open, onOpenChange, clients }: Props) {
   const { demandes, addDemande } = useDemandes();
   const [clientId, setClientId] = useState("");
   const [titre, setTitre] = useState("");
-  const [typePrestation, setTypePrestation] = useState("");
+  const [typePrestation, setTypePrestation] = useState<DemandePrestation>("Site web");
   const [description, setDescription] = useState("");
   const [budget, setBudget] = useState("");
   const [loading, setLoading] = useState(false);
