@@ -199,7 +199,7 @@ export function OnboardingWizard({ onComplete }: OnboardingWizardProps) {
           key={`title-${step}`}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-2xl font-bold text-center mb-8"
+          className="text-2xl font-bold text-center mb-8 text-primary"
         >
           {STEP_TITLES[step]}
         </motion.h2>
