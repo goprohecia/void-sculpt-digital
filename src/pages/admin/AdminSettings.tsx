@@ -35,6 +35,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSettings";
 import { BrevoConfigSettings } from "@/components/admin/BrevoConfigSettings";
+import { CalendlyConfigSettings } from "@/components/admin/CalendlyConfigSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
   "overview", "dossiers", "clients-dossiers", "calendrier", "messagerie", "messagerie-groupee", "facturation",
@@ -719,6 +720,7 @@ export default function AdminSettings() {
       { key: "reservation", label: "Réservation", icon: CalendarDays },
       { key: "whitelabel", label: "White Label", icon: Palette },
       { key: "emails", label: "Emails (Brevo)", icon: Mail },
+      { key: "calendly", label: "Calendly", icon: CalendarDays },
       { key: "notifications", label: "Notifications", icon: Bell },
       { key: "suivi-client", label: "Suivi client", icon: Mail },
     ]},
@@ -1233,6 +1235,9 @@ export default function AdminSettings() {
 
       case "emails":
         return <BrevoConfigSettings />;
+
+      case "calendly":
+        return <CalendlyConfigSettings />;
 
       case "compte":
         return (

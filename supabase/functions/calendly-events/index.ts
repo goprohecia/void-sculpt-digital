@@ -55,10 +55,32 @@ serve(async (req) => {
     clientEmail = clientData?.email || user.email || "";
   }
 
-  const CALENDLY_API_TOKEN = Deno.env.get("CALENDLY_API_TOKEN");
+  // Try to get Calendly token from app_settings first (per-user config), fallback to env
+  let CALENDLY_API_TOKEN = "";
+  const serviceClient = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+  );
+  const { data: settingsData } = await serviceClient
+    .from("app_settings")
+    .select("value")
+    .eq("key", "calendly_config")
+    .maybeSingle();
+  
+  if (settingsData?.value) {
+    const val = typeof settingsData.value === "string" ? JSON.parse(settingsData.value) : settingsData.value;
+    if (val.enabled && val.api_token) {
+      CALENDLY_API_TOKEN = val.api_token;
+    }
+  }
+
+  if (!CALENDLY_API_TOKEN) {
+    CALENDLY_API_TOKEN = Deno.env.get("CALENDLY_API_TOKEN") || "";
+  }
+
   if (!CALENDLY_API_TOKEN) {
     return new Response(
-      JSON.stringify({ error: "CALENDLY_API_TOKEN is not configured" }),
+      JSON.stringify({ error: "Calendly n'est pas configuré. Rendez-vous dans Paramètres → Calendly pour ajouter votre token API." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
