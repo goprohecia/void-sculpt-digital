@@ -62,6 +62,7 @@ const DEVELOPPEUR_OVERRIDES: SectorModulesConfig = {
 };
 
 const PHOTOGRAPHE_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Commandes", description: "Portefeuille clients et commandes photo" },
   dossiers: { label: "Commandes", description: "Commandes et séances photo" },
   employees: { label: "Photographes", description: "Photographes et retoucheurs" },
   clients: { label: "Clients", description: "Portefeuille clients du studio" },
