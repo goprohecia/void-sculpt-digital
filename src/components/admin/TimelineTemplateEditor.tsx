@@ -147,11 +147,11 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
   return (
     <motion.div className="space-y-4" variants={staggerItem}>
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold flex items-center gap-2">
+        <h3 className="text-sm font-semibold flex items-center gap-2 text-foreground">
           <Clock className="h-4 w-4 text-primary" />
           Templates de timeline
-          <Badge variant="outline" className="text-[10px] gap-1">
-            <Sparkles className="h-3 w-3" /> Enterprise
+          <Badge className="text-[10px] gap-1 bg-primary/10 text-primary border border-primary/30">
+            <Sparkles className="h-3 w-3" /> Business / Enterprise
           </Badge>
         </h3>
         {!isEditing && (
