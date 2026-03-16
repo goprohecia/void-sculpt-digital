@@ -37,9 +37,10 @@ import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSet
 import { BrevoConfigSettings } from "@/components/admin/BrevoConfigSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
-  "overview", "dossiers", "calendrier", "messagerie", "facturation",
+  "overview", "dossiers", "clients-dossiers", "calendrier", "messagerie", "messagerie-groupee", "facturation",
   "relances", "support", "stock", "analyse", "taches", "agenda",
   "rapports", "documents", "temps", "automatisations", "notes", "pipeline", "profil",
+  "rendez-vous", "abonnement", "signature",
 ];
 
 function CustomSpacesManager() {
