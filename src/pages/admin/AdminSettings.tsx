@@ -35,6 +35,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { RolesPermissionsSettings } from "@/components/admin/RolesPermissionsSettings";
 import { BrevoConfigSettings } from "@/components/admin/BrevoConfigSettings";
+import { CalendlyConfigSettings } from "@/components/admin/CalendlyConfigSettings";
 
 const AVAILABLE_MODULE_KEYS_FOR_SPACES = [
   "overview", "dossiers", "clients-dossiers", "calendrier", "messagerie", "messagerie-groupee", "facturation",
