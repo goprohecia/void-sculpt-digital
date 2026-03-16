@@ -181,6 +181,7 @@ const COMMUNITY_MANAGER_OVERRIDES: SectorModulesConfig = {
 };
 
 const CONSULTANT_OVERRIDES: SectorModulesConfig = {
+  "clients-dossiers": { label: "Clients & Missions", description: "Portefeuille clients et missions de conseil" },
   dossiers: { label: "Missions", description: "Suivi des missions de conseil en cours" },
   clients: { label: "Portefeuille clients", description: "Clients et contacts du cabinet" },
   employees: { label: "Consultants", description: "Équipe de consultants" },
