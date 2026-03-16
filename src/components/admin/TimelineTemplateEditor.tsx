@@ -279,7 +279,7 @@ export function TimelineTemplateEditor({ filterCategory }: TimelineTemplateEdito
 
       {/* Existing templates */}
       {!isEditing && templates.map((t) => (
-        <Card key={t.id} className="bg-muted/20 border-border/50">
+        <Card key={t.id} className="bg-white border-border shadow-sm">
           <CardContent className="p-3">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
