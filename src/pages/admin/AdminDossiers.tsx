@@ -16,7 +16,7 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
 import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import type { DossierStatus } from "@/data/mockData";
-import { Search, FolderOpen, Eye, FileText, Filter, Plus } from "lucide-react";
+import { Search, FolderOpen, Eye, FileText, Filter, Plus, Users, Tag, X } from "lucide-react";
 import { CreateDossierDialog } from "@/components/admin/CreateDossierDialog";
 import { CreateDemandeDialog } from "@/components/admin/CreateDemandeDialog";
 import { GarageVehicleList } from "@/components/garage/GarageVehicleList";
