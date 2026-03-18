@@ -107,6 +107,48 @@ export default function AdminDossiers() {
       return data || [];
     },
   });
+
+  // Tag mutations
+  const addTagMutation = useMutation({
+    mutationFn: async ({ clientId, tagId }: { clientId: string; tagId: string }) => {
+      if (isDemo) return;
+      const { error } = await (supabase as any).from("client_tags").insert({ client_id: clientId, tag_id: tagId });
+      if (error) throw error;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["client_tags"] }); toast.success("Tag ajouté"); },
+  });
+
+  const removeTagMutation = useMutation({
+    mutationFn: async ({ clientId, tagId }: { clientId: string; tagId: string }) => {
+      if (isDemo) return;
+      const { error } = await (supabase as any).from("client_tags").delete().eq("client_id", clientId).eq("tag_id", tagId);
+      if (error) throw error;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["client_tags"] }); toast.success("Tag retiré"); },
+  });
+
+  const getClientTags = (clientId: string) => clientTags.filter((ct: any) => ct.client_id === clientId);
+  const getAvailableTags = (clientId: string) => {
+    const assignedIds = getClientTags(clientId).map((ct: any) => ct.tag_id);
+    return tags.filter((t: any) => !assignedIds.includes(t.id));
+  };
+
+  const filteredClients = useMemo(() => {
+    let list = clients;
+    if (clientSearch.trim()) {
+      const q = clientSearch.toLowerCase();
+      list = list.filter((c) =>
+        `${c.prenom} ${c.nom}`.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q) ||
+        c.entreprise?.toLowerCase().includes(q)
+      );
+    }
+    if (clientFilterTag) {
+      const clientIdsWithTag = clientTags.filter((ct: any) => ct.tag_id === clientFilterTag).map((ct: any) => ct.client_id);
+      list = list.filter((c) => clientIdsWithTag.includes(c.id));
+    }
+    return list;
+  }, [clients, clientSearch, clientFilterTag, clientTags]);
   
   const cdcDemande = cdcDemandeId ? demandes.find((d) => d.id === cdcDemandeId) : null;
 
