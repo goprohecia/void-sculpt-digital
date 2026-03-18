@@ -578,6 +578,102 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                 {demandes.length === 0 && <div className="p-8 text-center text-muted-foreground">Aucune demande</div>}
               </motion.div>
             </TabsContent>
+
+            <TabsContent value="clients" className="space-y-4 mt-4">
+              {/* Client filters */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Rechercher un client..." value={clientSearch} onChange={(e) => setClientSearch(e.target.value)} className="glass-input border-0 pl-9 h-10" />
+                </div>
+                <Select value={clientFilterTag || "__all__"} onValueChange={(v) => setClientFilterTag(v === "__all__" ? "" : v)}>
+                  <SelectTrigger className="w-[180px] h-10">
+                    <Tag className="h-3.5 w-3.5 mr-1.5" />
+                    <SelectValue placeholder="Filtrer par tag" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__all__">Tous les tags</SelectItem>
+                    {tags.map((t: any) => <SelectItem key={t.id} value={t.id}>{t.nom}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Client table */}
+              <div className="glass-card overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border/50 bg-muted/20">
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Email</th>
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Entreprise</th>
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Segment</th>
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Tags</th>
+                        <th className="text-center py-3 px-4 text-muted-foreground font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredClients.map((c) => {
+                        const cTags = getClientTags(c.id);
+                        const available = getAvailableTags(c.id);
+                        return (
+                          <tr key={c.id} className="border-b border-border/20 hover:bg-muted/20 transition-colors">
+                            <td className="py-3 px-4 font-medium">{c.prenom} {c.nom}</td>
+                            <td className="py-3 px-4 hidden md:table-cell text-muted-foreground text-xs">{c.email}</td>
+                            <td className="py-3 px-4 hidden lg:table-cell text-muted-foreground text-xs">{c.entreprise || "—"}</td>
+                            <td className="py-3 px-4 hidden lg:table-cell">
+                              <Badge variant="outline" className="text-xs">{c.segment}</Badge>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="flex flex-wrap gap-1">
+                                {cTags.map((ct: any) => {
+                                  const tag = tags.find((t: any) => t.id === ct.tag_id);
+                                  if (!tag) return null;
+                                  return (
+                                    <Badge key={ct.tag_id} variant="secondary" className="text-xs gap-1 pr-1">
+                                      {tag.nom}
+                                      <button onClick={() => removeTagMutation.mutate({ clientId: c.id, tagId: ct.tag_id })} className="hover:text-destructive transition-colors">
+                                        <X className="h-3 w-3" />
+                                      </button>
+                                    </Badge>
+                                  );
+                                })}
+                                {cTags.length === 0 && <span className="text-xs text-muted-foreground">Aucun tag</span>}
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              {available.length > 0 && (
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <Button size="sm" variant="outline" className="h-7 text-xs gap-1">
+                                      <Tag className="h-3 w-3" /> Ajouter
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="w-48 p-2" align="end">
+                                    <div className="space-y-1">
+                                      {available.map((t: any) => (
+                                        <button
+                                          key={t.id}
+                                          onClick={() => addTagMutation.mutate({ clientId: c.id, tagId: t.id })}
+                                          className="w-full text-left px-2 py-1.5 text-xs rounded hover:bg-muted transition-colors"
+                                        >
+                                          {t.nom}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </PopoverContent>
+                                </Popover>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                {filteredClients.length === 0 && <AdminEmptyState icon={Users} title="Aucun client" description="Les clients apparaîtront ici." />}
+              </div>
+            </TabsContent>
           </Tabs>
         </motion.div>
 
