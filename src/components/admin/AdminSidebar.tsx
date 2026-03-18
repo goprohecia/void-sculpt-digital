@@ -35,7 +35,7 @@ import type { LucideIcon } from "lucide-react";
 import logoMba from "@/assets/logo-mba.png";
 
 const principalKeys = ["overview", "clients-dossiers", "employees"];
-const commercialKeys = ["pipeline", "dossiers", "demandes", "facturation", "relances", "stock", "fournisseurs"];
+const commercialKeys = ["pipeline", "dossiers", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
@@ -107,7 +107,6 @@ export function AdminSidebar() {
     { title: getModuleLabel("rendez-vous"), url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
     { title: getModuleLabel("pipeline"), url: "/admin/pipeline", icon: Target, moduleKey: "pipeline" },
     { title: "Dossiers", url: "/admin/dossiers", icon: FolderOpen, moduleKey: "dossiers" },
-    { title: "Demandes", url: "/admin/demandes", icon: FileText, moduleKey: "demandes" },
     { title: getModuleLabel("messagerie"), url: "/admin/messagerie", icon: MessageSquare, badge: totalNonLus, moduleKey: "messagerie" },
     { title: getModuleLabel("facturation"), url: "/admin/facturation", icon: Receipt, moduleKey: "facturation" },
     { title: getModuleLabel("relances"), url: "/admin/relances", icon: Bell, moduleKey: "relances" },
