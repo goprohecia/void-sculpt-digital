@@ -49,9 +49,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { CahierDesChargesView } from "@/components/admin/CahierDesChargesView";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsDemo } from "@/hooks/useIsDemo";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const statusFilters: { key: "tous" | DossierStatus | "archive"; label: string }[] = [
   { key: "tous", label: "Tous" },
