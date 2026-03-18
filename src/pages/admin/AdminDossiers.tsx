@@ -73,6 +73,8 @@ export default function AdminDossiers() {
   const [cdcDemandeId, setCdcDemandeId] = useState<string | null>(null);
   const [showCreateDossier, setShowCreateDossier] = useState(false);
   const [showCreateDemande, setShowCreateDemande] = useState(false);
+  const [clientSearch, setClientSearch] = useState("");
+  const [clientFilterTag, setClientFilterTag] = useState("");
   
   const { dossiers, addDossier } = useDossiers();
   const { demandes, updateDemandeStatut } = useDemandes();
@@ -82,6 +84,7 @@ export default function AdminDossiers() {
   const { getAssignmentsByDossier } = useDemoData();
   const { demoSector } = useDemoPlan();
   const assignEnabled = isAssignationEnabled(demoSector);
+  const queryClient = useQueryClient();
 
   // Fetch tags
   const { data: tags = [] } = useQuery<any[]>({
