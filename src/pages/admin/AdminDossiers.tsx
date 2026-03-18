@@ -388,6 +388,7 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
             <TabsList>
               <TabsTrigger value="dossiers">Dossiers ({dossiers.length})</TabsTrigger>
               <TabsTrigger value="demandes">Demandes ({demandes.length})</TabsTrigger>
+              <TabsTrigger value="clients"><Users className="h-3.5 w-3.5 mr-1.5" />Clients ({clients.length})</TabsTrigger>
             </TabsList>
 
             <TabsContent value="dossiers" className="space-y-4 mt-4">
