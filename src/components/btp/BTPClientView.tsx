@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
-import { BTPChantierStepper } from "./BTPChantierStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { MOCK_CHANTIERS, BTP_STEP_MESSAGES, MOCK_DOCUMENTS_CLIENT } from "@/data/mockBTPData";
 import { HardHat, FileText, PenLine } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +38,7 @@ export function BTPClientView() {
       {/* Stepper with progress */}
       <motion.div variants={staggerItem} className="glass-card p-5">
         <h3 className="text-sm font-semibold mb-4">Avancement</h3>
-        <BTPChantierStepper
+        <SectorStepper
           currentStep={ch.etape}
           stepDates={ch.stepDates}
           avancement={ch.avancement}

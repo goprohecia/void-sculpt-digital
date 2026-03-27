@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_CONTRATS, MOCK_PLANNING_HEBDO, MOCK_AGENTS, NETTOYAGE_KPI, MOCK_INTERVENTIONS } from "@/data/mockNettoyageData";
-import { NettoyageOnboardingBanner } from "./NettoyageOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { Sparkles, Euro, CalendarDays, AlertTriangle, Users, FileText } from "lucide-react";
 
 export function NettoyageDashboard() {
@@ -12,7 +12,7 @@ export function NettoyageDashboard() {
 
   return (
     <div className="space-y-6">
-      <NettoyageOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">

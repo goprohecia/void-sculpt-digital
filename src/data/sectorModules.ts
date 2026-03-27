@@ -587,11 +587,14 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   designer: { admin: "Studio / Gérant", employee: "Designer", client: "Client" },
   developpeur: { admin: "Studio / Gérant", employee: "Développeur", client: "Client" },
   "dj-animateur": { admin: "Gérant / Artiste", employee: "Assistant / Régisseur", client: "Client" },
-
+  // [MBA] Réparateur — bible v3 section 6.1
+  reparateur: { admin: "Gérant", employee: "Technicien", client: "Client" },
   "cabinet-recrutement": { admin: "Direction", employee: "Chargé de recrutement", client: "Client / Candidat" },
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
   "cabinet-avocats": { admin: "Cabinet", employee: "Avocat / Collaborateur", client: "Client" },
   "expert-comptable": { admin: "Cabinet", employee: "Collaborateur comptable", client: "Client Entreprise" },
+  // [MBA] Nettoyage — bible v3 section 6.4
+  nettoyage: { admin: "Direction", employee: "Agent de nettoyage", client: "Client" },
   "centre-islamique": { admin: "Direction", employee: "Professeur", client: "Élève" },
   "association-sportive": { admin: "Direction du club", employee: "Entraîneur", client: "Membre" },
 };

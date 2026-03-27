@@ -1,32 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, Suspense } from "react";
 import { motion } from "framer-motion";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
-import { GarageDashboard } from "@/components/garage/GarageDashboard";
-import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
-import { BTPDashboard } from "@/components/btp/BTPDashboard";
-import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
-import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
-import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
-import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
-import { MariageDashboard } from "@/components/mariage/MariageDashboard";
-import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
-import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
-import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
-import { SportDashboard } from "@/components/sport/SportDashboard";
-import { CMDashboard } from "@/components/cm/CMDashboard";
-import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
-import { DesignerDashboard } from "@/components/designer/DesignerDashboard";
-import { DevDashboard } from "@/components/dev/DevDashboard";
-import { DJDashboard } from "@/components/dj/DJDashboard";
-import { EvenementielDashboard } from "@/components/evenementiel/EvenementielDashboard";
-import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
-import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
-import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
-import { ReparateurDashboard } from "@/components/reparateur/ReparateurDashboard";
-import { TraiteurDashboard } from "@/components/traiteur/TraiteurDashboard";
+// [MBA] Registre sectoriel — remplace 23 imports directs
+import { getSectorDashboard } from "@/components/sector/registry";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { EmailLogPanel } from "@/components/admin/EmailLogPanel";
 import { useEmailLogs } from "@/hooks/use-email-logs";
@@ -118,162 +97,18 @@ export default function AdminDashboard() {
     { icon: StickyNote, label: "Voir notes", to: "/admin/dossiers", color: "text-amber-400 bg-amber-500/15" },
   ];
 
-  if (demoSector === "garages") {
+  // [MBA] Registre sectoriel — remplace 23 blocs if/else
+  const SectorDashboard = getSectorDashboard(demoSector);
+  if (SectorDashboard) {
     return (
       <AdminLayout>
         <AdminPageTransition>
-          <GarageDashboard />
+          <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Chargement...</div>}>
+            <SectorDashboard />
+          </Suspense>
         </AdminPageTransition>
       </AdminLayout>
     );
-  }
-
-  if (demoSector === "immobilier") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <ImmobilierDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "btp") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <BTPDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "conciergerie") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <ConciergerieDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "coiffure") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <CoiffureDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "cabinet-recrutement") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <RecrutementDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "auto-ecole") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <AutoEcoleDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "mariage") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <MariageDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "cabinet-avocats") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <AvocatDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "expert-comptable") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <ComptableDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "boutique") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <BoutiqueDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "coach-sportif") {
-    return (<AdminLayout><AdminPageTransition><SportDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "community-manager") {
-    return (<AdminLayout><AdminPageTransition><CMDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "consultant") {
-    return (<AdminLayout><AdminPageTransition><ConsultantDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "designer") {
-    return (<AdminLayout><AdminPageTransition><DesignerDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "developpeur") {
-    return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "dj-animateur") {
-    return (<AdminLayout><AdminPageTransition><DJDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "evenementiel") {
-    return (<AdminLayout><AdminPageTransition><EvenementielDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "formateur") {
-    return (<AdminLayout><AdminPageTransition><FormateurDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "nettoyage") {
-    return (<AdminLayout><AdminPageTransition><NettoyageDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "photographe") {
-    return (<AdminLayout><AdminPageTransition><PhotographeDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "reparateur") {
-    return (<AdminLayout><AdminPageTransition><ReparateurDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "traiteur") {
-    return (<AdminLayout><AdminPageTransition><TraiteurDashboard /></AdminPageTransition></AdminLayout>);
   }
 
   return (

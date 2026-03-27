@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { AvocatStepper } from "./AvocatStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { toast } from "sonner";
 import { MOCK_AFFAIRES, MOCK_COLLABORATEURS, AVOCAT_STEPS } from "@/data/mockAvocatData";
 import {
@@ -51,7 +51,7 @@ export function AvocatClientView() {
             <CardTitle className="text-base">Avancement de l'affaire</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <AvocatStepper currentStep={affaire.etape - 1} />
+            <SectorStepper currentStep={affaire.etape - 1} />
             <div className="p-3 rounded-lg bg-muted/20">
               <p className="text-xs text-muted-foreground">Type de litige</p>
               <p className="text-sm font-medium">{affaire.typeLitige}</p>

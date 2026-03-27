@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DesignerStepper } from "./DesignerStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_DESIGNER_PROJETS, type DesignerVersionStatus,
 } from "@/data/mockDesignerData";
@@ -60,7 +60,7 @@ export function DesignerDesignerView() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <DesignerStepper currentStep={p.etape} />
+              <SectorStepper currentStep={p.etape} />
 
               {/* Brief */}
               <div className="p-3 rounded-lg border bg-muted/30">

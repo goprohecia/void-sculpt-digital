@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DevOnboardingBanner } from "./DevOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   DEV_KPIS, DEV_STEPS, MOCK_DEV_PROJETS, MOCK_DEV_EQUIPE,
 } from "@/data/mockDevData";
@@ -23,7 +23,7 @@ export function DevDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <motion.div variants={staggerItem}><DevOnboardingBanner /></motion.div>
+      <motion.div variants={staggerItem}><SectorOnboardingBanner /></motion.div>
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

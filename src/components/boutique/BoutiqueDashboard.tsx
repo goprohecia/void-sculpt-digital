@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BoutiqueOnboardingBanner } from "./BoutiqueOnboardingBanner";
-import { BoutiqueStepper } from "./BoutiqueStepper";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   BOUTIQUE_KPIS,
   BOUTIQUE_STEPS,
@@ -35,7 +35,7 @@ export function BoutiqueDashboard() {
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
       <motion.div variants={staggerItem}>
-        <BoutiqueOnboardingBanner />
+        <SectorOnboardingBanner />
       </motion.div>
 
       <motion.div variants={staggerItem}>

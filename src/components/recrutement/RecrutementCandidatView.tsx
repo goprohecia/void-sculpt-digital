@@ -5,7 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RecrutementStepper } from "./RecrutementStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { MOCK_CANDIDATS, RECRUTEMENT_STEPS } from "@/data/mockRecrutementData";
 import { User, FileCheck, MessageSquare, CalendarDays } from "lucide-react";
 
@@ -41,7 +41,7 @@ export function RecrutementCandidatView() {
                 <CardTitle className="text-base">Votre candidature</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <RecrutementStepper currentStep={candidat.etape - 1} />
+                <SectorStepper currentStep={candidat.etape - 1} />
                 <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
                   <div className="flex items-center gap-2 mb-2">
                     <MessageSquare className="h-4 w-4 text-primary" />

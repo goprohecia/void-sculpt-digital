@@ -1,3 +1,6 @@
+// [MBA] Messagerie client — bible v3 section 4.4
+// Client contacte uniquement la Direction/Admin
+// Client reçoit les messages groupés de l'employé (sans pouvoir répondre)
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
@@ -5,7 +8,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { useConversations } from "@/hooks/use-conversations";
 import { useClientId } from "@/hooks/use-client-id";
 import { type Conversation } from "@/data/mockData";
-import { MessageSquare, Send, Megaphone } from "lucide-react";
+import { MessageSquare, Send, Megaphone, Lock } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,11 +16,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { MessageMediaUpload, MessageMediaInline } from "@/components/messaging/MessageMediaUpload";
 import { Badge } from "@/components/ui/badge";
+// [MBA] Vocabulaire secteur pour le badge message groupé
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 
 export default function ClientMessaging() {
   const { clientId, isLoading: clientLoading, isDemo } = useClientId();
   const { getConversationsByClient } = useConversations();
   const queryClient = useQueryClient();
+  // [MBA] Vocabulaire secteur — ex: "Message de votre Coach" pour coach-sportif
+  const { employeeLabel } = useSectorRoleLabels();
   const mesConversations = clientId ? getConversationsByClient(clientId) : [];
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
@@ -58,11 +65,12 @@ export default function ClientMessaging() {
 
           {mesConversations.length === 0 ? (
             <motion.div variants={staggerItem}>
+              {/* [MBA] Bible v3 section 4.4 — client contacte uniquement la Direction */}
               <AdminEmptyState
                 icon={MessageSquare}
                 title="Aucune conversation"
                 description="Vos échanges avec la Direction apparaîtront ici."
-                hint="Une conversation sera créée automatiquement lors du suivi de votre projet."
+                hint="Vous pouvez uniquement contacter la Direction. Les messages de votre employé assigné apparaîtront ici en lecture seule."
               />
             </motion.div>
           ) : (
@@ -148,10 +156,12 @@ export default function ClientMessaging() {
                                 : "bg-muted/40 text-foreground rounded-bl-md"
                             )}
                           >
+                            {/* [MBA] Badge message groupé — bible v3 section 4.4
+                                Affiche "Message de votre [Coach/Professeur/Entraîneur]" */}
                             {msg.is_group_message && (
                               <Badge variant="secondary" className="mb-1 text-[10px] gap-1">
                                 <Megaphone className="h-3 w-3" />
-                                Message de groupe
+                                Message de votre {employeeLabel}
                               </Badge>
                             )}
                             <p>{msg.contenu}</p>
@@ -166,7 +176,13 @@ export default function ClientMessaging() {
                         ))}
                       </div>
 
-                      {/* Reply field — hidden if all messages are group messages */}
+                      {/* [MBA] Bible v3 section 4.4 — client ne peut pas répondre aux messages groupés */}
+                      {allGroupMessages && (
+                        <div className="p-3 border-t border-border/30 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+                          <Lock className="h-3 w-3" />
+                          <span>Vous ne pouvez pas répondre aux messages groupés</span>
+                        </div>
+                      )}
                       {!allGroupMessages && (
                         <div className="p-3 border-t border-border/30 relative">
                           <div className="flex gap-2">

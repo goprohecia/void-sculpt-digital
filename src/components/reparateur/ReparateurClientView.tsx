@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MOCK_FICHES, REPARATEUR_STEPS } from "@/data/mockReparateurData";
-import { ReparateurStepper } from "./ReparateurStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { Smartphone, FileText, CheckCircle, XCircle, Bell, QrCode } from "lucide-react";
 import { toast } from "sonner";
 
@@ -35,7 +35,7 @@ export function ReparateurClientView() {
       {/* Stepper */}
       <Card className="glass-card">
         <CardContent className="p-4">
-          <ReparateurStepper currentStep={step} />
+          <SectorStepper currentStep={step} />
         </CardContent>
       </Card>
 

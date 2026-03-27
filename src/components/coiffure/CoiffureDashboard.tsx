@@ -4,7 +4,7 @@ import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTrans
 import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CoiffureOnboardingBanner } from "./CoiffureOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   MOCK_COIFFURE_PRATICIENS,
   MOCK_COIFFURE_RDV,
@@ -36,7 +36,7 @@ export function CoiffureDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <CoiffureOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

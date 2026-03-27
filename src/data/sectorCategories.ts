@@ -28,7 +28,8 @@ export const SECTOR_CATEGORIES: SectorCategory[] = [
     emoji: "🧠",
     sectors: [
       { key: "consultant", icon: "🧠", label: "Consultant", roles: "Consultant / Client" },
-      { key: "coach-sportif", icon: "💪", label: "Coach sportif", roles: "Coach / Client" },
+      // [MBA] Bible v3 section 6.2 — client = "Membre" pour salle de sport
+      { key: "coach-sportif", icon: "💪", label: "Coach sportif", roles: "Coach / Membre" },
       { key: "cabinet-recrutement", icon: "🤝", label: "Cabinet de Recrutement", roles: "Chargé de recrutement / Client" },
       { key: "formateur", icon: "📚", label: "Formateur", roles: "Formateur / Client" },
       { key: "expert-comptable", icon: "📊", label: "Expert-Comptable", roles: "Collaborateur comptable / Client" },

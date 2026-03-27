@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { EmployeeLayout } from "@/components/admin/EmployeeLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { MOCK_BIENS, IMMO_STEPS, MOCK_VISITES_RDV } from "@/data/mockImmobilierData";
-import { ImmobilierMandatStepper } from "./ImmobilierMandatStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { Building2, Filter, CalendarDays, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -112,10 +112,10 @@ export function ImmobilierAgentView() {
 
                 {selectedBien === bien.id && (
                   <div className="pt-2 border-t border-border/30">
-                    <ImmobilierMandatStepper
+                    <SectorStepper
                       currentStep={bien.etape}
                       stepDates={bien.stepDates}
-                      agentNom={bien.agentNom}
+                      subLabel={bien.agentNom}
                       isEditable
                       onAdvance={() => handleAdvance(bien.id)}
                     />

@@ -6,7 +6,7 @@ import { useConversations } from "@/hooks/use-conversations";
 import { useDossierEmploye } from "@/hooks/use-dossier-employe";
 import { useIsDemo } from "@/hooks/useIsDemo";
 import { type Conversation } from "@/data/mockData";
-import { MessageSquare, Send, Megaphone, Users } from "lucide-react";
+import { MessageSquare, Send, Megaphone } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,10 +14,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
+// [MBA] Addendum — Dialog et Textarea supprimés (utilisés par l'ancien groupe dialog)
 import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 import { MessageMediaUpload, MessageMediaInline } from "@/components/messaging/MessageMediaUpload";
+// [MBA] Addendum messagerie groupée — composant générique
+import { MessageGroupee, type GroupRecipient, type GroupMessage } from "@/components/messaging/MessageGroupee";
 
 export default function EmployeeMessaging() {
   const { isDemo } = useIsDemo();
@@ -44,9 +45,7 @@ export default function EmployeeMessaging() {
   const [selectedConv, setSelectedConv] = useState<Conversation | null>(null);
   const [replyText, setReplyText] = useState("");
   const [showList, setShowList] = useState(true);
-  const [groupDialogOpen, setGroupDialogOpen] = useState(false);
-  const [groupMessage, setGroupMessage] = useState("");
-  const [groupSending, setGroupSending] = useState(false);
+  // [MBA] Addendum — ancien state groupDialog supprimé, remplacé par MessageGroupee
   const [pendingMedia, setPendingMedia] = useState<any>(null);
   const [mediaUploading, setMediaUploading] = useState(false);
   const [mediaProgress, setMediaProgress] = useState(0);
@@ -59,35 +58,7 @@ export default function EmployeeMessaging() {
     setShowList(false);
   };
 
-  const handleSendGroupMessage = async () => {
-    if (!groupMessage.trim() || isDemo) {
-      if (isDemo) toast.info("Mode démo");
-      return;
-    }
-    setGroupSending(true);
-    try {
-      // Insert group message in each conversation
-      const inserts = myConversations.map((conv) => ({
-        conversation_id: conv.id,
-        contenu: groupMessage.trim(),
-        role: "admin" as const,
-        date: new Date().toISOString(),
-        is_group_message: true,
-      }));
-      if (inserts.length === 0) {
-        toast.error("Aucune conversation trouvée");
-        return;
-      }
-      const { error } = await supabase.from("messages").insert(inserts as any);
-      if (error) { toast.error(error.message); return; }
-      toast.success(`Message envoyé à ${inserts.length} ${clientsLabel.toLowerCase()}`);
-      setGroupMessage("");
-      setGroupDialogOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["conversations"] });
-    } finally {
-      setGroupSending(false);
-    }
-  };
+  // [MBA] Addendum — handleSendGroupMessage supprimé, remplacé par MessageGroupee.onSend
 
   if (loading) {
     return (
@@ -111,16 +82,21 @@ export default function EmployeeMessaging() {
                 {myConversations.length} conversation{myConversations.length > 1 ? "s" : ""}
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setGroupDialogOpen(true)}
-              className="gap-2"
-              disabled={myConversations.length === 0}
-            >
-              <Megaphone className="h-4 w-4" />
-              Envoyer à mon groupe
-            </Button>
+            {/* [MBA] Addendum messagerie groupée — remplace l'ancien bouton par MessageGroupee */}
+            <MessageGroupee
+              recipients={myConversations.map((c) => ({
+                id: c.id,
+                nom: c.clientNom.split(" ").slice(-1)[0] || c.clientNom,
+                prenom: c.clientNom.split(" ")[0] || "",
+                role: "client" as const,
+              }))}
+              senderLevel="agent"
+              recipientsLabel={clientsLabel.toLowerCase()}
+              onSend={(msg) => {
+                // [MBA] Addendum — en production: batch insert Supabase avec is_group_message = true
+                toast.success(`Message groupé envoyé à ${msg.recipientIds.length} ${clientsLabel.toLowerCase()}`);
+              }}
+            />
           </motion.div>
 
           {myConversations.length === 0 ? (
@@ -216,10 +192,11 @@ export default function EmployeeMessaging() {
                                 : "ml-auto bg-primary/20 text-foreground rounded-br-md"
                             )}
                           >
+                            {/* [MBA] Badge message groupé — bible v3 section 4.4 */}
                             {msg.is_group_message && (
                               <Badge variant="secondary" className="mb-1 text-[10px] gap-1">
                                 <Megaphone className="h-3 w-3" />
-                                Message de groupe
+                                Message groupé
                               </Badge>
                             )}
                             <p>{msg.contenu}</p>
@@ -298,40 +275,7 @@ export default function EmployeeMessaging() {
         </motion.div>
       </AdminPageTransition>
 
-      {/* Group message dialog */}
-      <Dialog open={groupDialogOpen} onOpenChange={setGroupDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-primary" />
-              Envoyer à mon groupe
-            </DialogTitle>
-            <DialogDescription>
-              Ce message sera envoyé à {myConversations.length} {clientsLabel.toLowerCase()}.
-              Les destinataires ne pourront pas répondre à ce message.
-            </DialogDescription>
-          </DialogHeader>
-          <Textarea
-            placeholder={`Votre message pour tous vos ${clientsLabel.toLowerCase()}...`}
-            value={groupMessage}
-            onChange={(e) => setGroupMessage(e.target.value)}
-            rows={4}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setGroupDialogOpen(false)}>
-              Annuler
-            </Button>
-            <Button
-              onClick={handleSendGroupMessage}
-              disabled={!groupMessage.trim() || groupSending}
-              className="gap-2"
-            >
-              <Megaphone className="h-4 w-4" />
-              {groupSending ? "Envoi..." : "Envoyer"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* [MBA] Addendum — ancien dialog groupé remplacé par MessageGroupee inline */}
     </EmployeeLayout>
   );
 }

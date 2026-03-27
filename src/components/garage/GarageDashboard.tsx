@@ -6,7 +6,7 @@ import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { Car, Wrench, Clock, CheckCircle, CalendarDays, AlertTriangle, ArrowRight, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MOCK_VEHICULES, MOCK_GARAGE_RDV, GARAGE_STEPS } from "@/data/mockGarageData";
-import { GarageOnboardingBanner } from "./GarageOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 
 export function GarageDashboard() {
   const [vehicules] = useState(MOCK_VEHICULES);
@@ -28,7 +28,7 @@ export function GarageDashboard() {
 
   return (
     <>
-      <GarageOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
         {/* Header */}

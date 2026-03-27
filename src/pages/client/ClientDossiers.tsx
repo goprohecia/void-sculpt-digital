@@ -1,3 +1,5 @@
+// [MBA] Refactorisé — utilise le registre sectoriel au lieu de 26 imports directs
+import { Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ClientLayout } from "@/components/admin/ClientLayout";
@@ -10,32 +12,8 @@ import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { FolderOpen, Eye, AlertTriangle } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Badge } from "@/components/ui/badge";
-import { GarageClientView } from "@/components/garage/GarageClientView";
-import { ImmobilierProprietaireView } from "@/components/immobilier/ImmobilierProprietaireView";
-import { ImmobilierAcheteurView } from "@/components/immobilier/ImmobilierAcheteurView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BTPClientView } from "@/components/btp/BTPClientView";
-import { ConciergerieProprietaireView } from "@/components/conciergerie/ConciergerieProprietaireView";
-import { CoiffureClientView } from "@/components/coiffure/CoiffureClientView";
-import { RecrutementClientView } from "@/components/recrutement/RecrutementClientView";
-import { RecrutementCandidatView } from "@/components/recrutement/RecrutementCandidatView";
-import { AutoEcoleEleveView } from "@/components/auto-ecole/AutoEcoleEleveView";
-import { MariageClientView } from "@/components/mariage/MariageClientView";
-import { AvocatClientView } from "@/components/avocat/AvocatClientView";
-import { ComptableClientView } from "@/components/comptable/ComptableClientView";
-import { BoutiqueClientView } from "@/components/boutique/BoutiqueClientView";
-import { SportMembreView } from "@/components/sport/SportMembreView";
-import { CMClientView } from "@/components/cm/CMClientView";
-import { ConsultantClientView } from "@/components/consultant/ConsultantClientView";
-import { DesignerClientView } from "@/components/designer/DesignerClientView";
-import { DevClientView } from "@/components/dev/DevClientView";
-import { DJClientView } from "@/components/dj/DJClientView";
-import { EvenementielClientView } from "@/components/evenementiel/EvenementielClientView";
-import { FormateurStagiaireView } from "@/components/formateur/FormateurStagiaireView";
-import { NettoyageClientView } from "@/components/nettoyage/NettoyageClientView";
-import { PhotographeClientView } from "@/components/photographe/PhotographeClientView";
-import { ReparateurClientView } from "@/components/reparateur/ReparateurClientView";
-import { TraiteurClientView } from "@/components/traiteur/TraiteurClientView";
+import { getSectorClientView, getSectorClientViews } from "@/components/sector/registry";
 
 export default function ClientDossiers() {
   const { clientId, isLoading: clientLoading } = useClientId();
@@ -44,166 +22,43 @@ export default function ClientDossiers() {
   const { demoSector } = useDemoPlan();
   const mesDossiers = clientId ? getDossiersByClient(clientId) : [];
 
-  if (demoSector === "garages") {
-    return <GarageClientView />;
-  }
+  // [MBA] Registre sectoriel — vue client multi-onglets ou simple
+  const clientViews = getSectorClientViews(demoSector);
+  const ClientView = getSectorClientView(demoSector);
 
-  if (demoSector === "immobilier") {
+  if (clientViews) {
     return (
       <ClientLayout>
         <AdminPageTransition>
-          <Tabs defaultValue="proprietaire" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="proprietaire">Espace Propriétaire</TabsTrigger>
-              <TabsTrigger value="acheteur">Espace Acheteur</TabsTrigger>
-            </TabsList>
-            <TabsContent value="proprietaire">
-              <ImmobilierProprietaireView />
-            </TabsContent>
-            <TabsContent value="acheteur">
-              <ImmobilierAcheteurView />
-            </TabsContent>
-          </Tabs>
+          <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Chargement...</div>}>
+            <Tabs defaultValue={clientViews[0]?.label} className="space-y-4">
+              <TabsList>
+                {clientViews.map((v) => (
+                  <TabsTrigger key={v.label} value={v.label}>{v.label}</TabsTrigger>
+                ))}
+              </TabsList>
+              {clientViews.map((v) => (
+                <TabsContent key={v.label} value={v.label}>
+                  <v.component />
+                </TabsContent>
+              ))}
+            </Tabs>
+          </Suspense>
         </AdminPageTransition>
       </ClientLayout>
     );
   }
 
-  if (demoSector === "btp") {
+  if (ClientView) {
     return (
       <ClientLayout>
         <AdminPageTransition>
-          <BTPClientView />
+          <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Chargement...</div>}>
+            <ClientView />
+          </Suspense>
         </AdminPageTransition>
       </ClientLayout>
     );
-  }
-
-  if (demoSector === "conciergerie") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <ConciergerieProprietaireView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
-  }
-
-  if (demoSector === "coiffure") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <CoiffureClientView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
-  }
-
-  if (demoSector === "cabinet-recrutement") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <Tabs defaultValue="entreprise" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="entreprise">Espace Client Entreprise</TabsTrigger>
-              <TabsTrigger value="candidat">Espace Candidat</TabsTrigger>
-            </TabsList>
-            <TabsContent value="entreprise">
-              <RecrutementClientView />
-            </TabsContent>
-            <TabsContent value="candidat">
-              <RecrutementCandidatView />
-            </TabsContent>
-          </Tabs>
-        </AdminPageTransition>
-      </ClientLayout>
-    );
-  }
-
-  if (demoSector === "auto-ecole") {
-    return <AutoEcoleEleveView />;
-  }
-
-  if (demoSector === "mariage") {
-    return <MariageClientView />;
-  }
-
-  if (demoSector === "cabinet-avocats") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <AvocatClientView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
-  }
-
-  if (demoSector === "expert-comptable") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <ComptableClientView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
-  }
-
-  if (demoSector === "boutique") {
-    return (
-      <ClientLayout>
-        <AdminPageTransition>
-          <BoutiqueClientView />
-        </AdminPageTransition>
-      </ClientLayout>
-    );
-  }
-
-  if (demoSector === "coach-sportif") {
-    return (<ClientLayout><AdminPageTransition><SportMembreView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "community-manager") {
-    return (<ClientLayout><AdminPageTransition><CMClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "consultant") {
-    return (<ClientLayout><AdminPageTransition><ConsultantClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "designer") {
-    return (<ClientLayout><AdminPageTransition><DesignerClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "developpeur") {
-    return (<ClientLayout><AdminPageTransition><DevClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "dj-animateur") {
-    return (<ClientLayout><AdminPageTransition><DJClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "evenementiel") {
-    return (<ClientLayout><AdminPageTransition><EvenementielClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "formateur") {
-    return (<ClientLayout><AdminPageTransition><FormateurStagiaireView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "nettoyage") {
-    return (<ClientLayout><AdminPageTransition><NettoyageClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "photographe") {
-    return (<ClientLayout><AdminPageTransition><PhotographeClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "reparateur") {
-    return (<ClientLayout><AdminPageTransition><ReparateurClientView /></AdminPageTransition></ClientLayout>);
-  }
-
-  if (demoSector === "traiteur") {
-    return (<ClientLayout><AdminPageTransition><TraiteurClientView /></AdminPageTransition></ClientLayout>);
   }
 
   const getCahierByDossier = (dossierId: string) => {

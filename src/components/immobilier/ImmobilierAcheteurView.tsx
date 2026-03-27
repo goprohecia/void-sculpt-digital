@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
-import { ImmobilierMandatStepper } from "./ImmobilierMandatStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { MOCK_BIENS, IMMO_STEP_MESSAGES_ACHETEUR, ACHETEUR_CHECKLIST } from "@/data/mockImmobilierData";
 import { Building2, FileCheck, ClipboardList } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -43,7 +43,7 @@ export function ImmobilierAcheteurView() {
 
       <motion.div variants={staggerItem} className="glass-card p-5">
         <h3 className="text-sm font-semibold mb-4">Statut du bien</h3>
-        <ImmobilierMandatStepper currentStep={bien.etape} stepDates={bien.stepDates} agentNom={bien.agentNom} />
+        <SectorStepper currentStep={bien.etape} stepDates={bien.stepDates} subLabel={bien.agentNom} />
       </motion.div>
 
       <motion.div variants={staggerItem} className="glass-card p-5">

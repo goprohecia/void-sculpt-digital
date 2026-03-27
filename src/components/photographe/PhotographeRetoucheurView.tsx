@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MOCK_SEANCES } from "@/data/mockPhotographeData";
-import { PhotographeStepper } from "./PhotographeStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { Camera, ImageIcon, Clock, Bell } from "lucide-react";
 import { toast } from "sonner";
 
@@ -36,7 +36,7 @@ export function PhotographeRetoucheurView() {
         ))}
       </div>
 
-      <Card className="glass-card"><CardContent className="p-4"><PhotographeStepper currentStep={retouchesTerminees[selected.id] ? 5 : selected.step} /></CardContent></Card>
+      <Card className="glass-card"><CardContent className="p-4"><SectorStepper currentStep={retouchesTerminees[selected.id] ? 5 : selected.step} /></CardContent></Card>
 
       {/* Brief */}
       <Card className="glass-card">

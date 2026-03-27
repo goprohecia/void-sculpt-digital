@@ -3,7 +3,7 @@ import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTrans
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { AvocatOnboardingBanner } from "./AvocatOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   MOCK_AFFAIRES, MOCK_AUDIENCES, MOCK_COLLABORATEURS, MOCK_TACHES,
   AVOCAT_STEPS, AVOCAT_KPIS,
@@ -16,7 +16,7 @@ import {
 export function AvocatDashboard() {
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <AvocatOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

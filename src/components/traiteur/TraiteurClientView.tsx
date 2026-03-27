@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MOCK_COMMANDES, MOCK_FORMULES, TRAITEUR_STEPS } from "@/data/mockTraiteurData";
-import { TraiteurStepper } from "./TraiteurStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { UtensilsCrossed, FileText, CheckCircle, PenLine, Euro, Clock } from "lucide-react";
 import { toast } from "sonner";
 
@@ -47,7 +47,7 @@ export function TraiteurClientView() {
       {/* Stepper */}
       <Card className="glass-card">
         <CardContent className="p-4 space-y-2">
-          <TraiteurStepper currentStep={step} />
+          <SectorStepper currentStep={step} />
           <div className="flex items-center gap-2 pt-2 text-xs text-muted-foreground">
             <Clock className="h-3.5 w-3.5" />
             <span>Livraison prévue : {new Date(commande.date).toLocaleDateString("fr-FR")} à {commande.heureLivraison}</span>

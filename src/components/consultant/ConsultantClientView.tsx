@@ -4,7 +4,7 @@ import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTrans
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ConsultantStepper } from "./ConsultantStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_CONSULTANT_MISSIONS, MOCK_CONSULTANT_CR, MOCK_CONSULTANT_DOCUMENTS,
 } from "@/data/mockConsultantData";
@@ -39,7 +39,7 @@ export function ConsultantClientView() {
         <Card>
           <CardHeader><CardTitle className="text-base">Avancement</CardTitle></CardHeader>
           <CardContent>
-            <ConsultantStepper currentStep={mission.etape} />
+            <SectorStepper currentStep={mission.etape} />
           </CardContent>
         </Card>
       </motion.div>

@@ -3,13 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { MOCK_EVENEMENTS, MOCK_CHEFS_DE_PROJET, EVENEMENTIEL_KPI, EVENEMENTIEL_STEPS } from "@/data/mockEvenementielData";
-import { EvenementielOnboardingBanner } from "./EvenementielOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { Euro, CalendarDays, TrendingUp, PartyPopper, Users } from "lucide-react";
 
 export function EvenementielDashboard() {
   return (
     <div className="space-y-6">
-      <EvenementielOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">

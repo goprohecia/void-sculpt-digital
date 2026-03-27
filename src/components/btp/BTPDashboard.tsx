@@ -5,7 +5,7 @@ import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { HardHat, FileText, Receipt, AlertTriangle, Euro, ArrowRight, Plus, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MOCK_CHANTIERS, BTP_STEPS, MOCK_PLANNING_SEMAINE } from "@/data/mockBTPData";
-import { BTPOnboardingBanner } from "./BTPOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { Badge } from "@/components/ui/badge";
 
 export function BTPDashboard() {
@@ -27,7 +27,7 @@ export function BTPDashboard() {
 
   return (
     <>
-      <BTPOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
         <motion.div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3" variants={staggerItem}>

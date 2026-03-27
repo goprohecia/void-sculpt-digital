@@ -3,7 +3,7 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MariageStepper } from "./MariageStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_DOSSIERS_MARIEE, MOCK_ESSAYAGES, MOCK_CONSEILLERES,
   MARIAGE_STEPS, MARIAGE_STEP_MESSAGES,
@@ -39,7 +39,7 @@ export function MariageClientView() {
                 <CardTitle className="text-base">Suivi de votre commande</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <MariageStepper currentStep={dossier.etape - 1} />
+                <SectorStepper currentStep={dossier.etape - 1} />
 
                 {/* Message personnalisé */}
                 {stepMessage && (

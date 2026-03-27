@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_FICHES, MOCK_STOCK_PIECES, REPARATEUR_KPI, REPARATEUR_STEPS } from "@/data/mockReparateurData";
-import { ReparateurOnboardingBanner } from "./ReparateurOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { Smartphone, Wrench, Clock, Euro, Package, AlertTriangle } from "lucide-react";
 
 export function ReparateurDashboard() {
@@ -9,7 +9,7 @@ export function ReparateurDashboard() {
 
   return (
     <div className="space-y-6">
-      <ReparateurOnboardingBanner />
+      <SectorOnboardingBanner />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Wrench className="h-6 w-6 text-primary" /> Espace Atelier</h1>
         <p className="text-muted-foreground text-sm">Gestion des réparations, stock et facturation</p>

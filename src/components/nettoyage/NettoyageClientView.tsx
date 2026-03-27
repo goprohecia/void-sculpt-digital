@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MOCK_INTERVENTIONS, MOCK_CONTRATS, NETTOYAGE_STEPS } from "@/data/mockNettoyageData";
-import { NettoyageStepper } from "./NettoyageStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { CalendarDays, FileText, CheckCircle, Download, Euro } from "lucide-react";
 import { toast } from "sonner";
 
@@ -86,7 +86,7 @@ export function NettoyageClientView() {
                 {/* Stepper mini */}
                 {!past && (
                   <div className="pt-2">
-                    <NettoyageStepper currentStep={i.step} />
+                    <SectorStepper currentStep={i.step} />
                   </div>
                 )}
               </div>

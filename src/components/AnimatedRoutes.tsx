@@ -47,6 +47,8 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminClients from "@/pages/admin/AdminClients";
 import AdminDossiers from "@/pages/admin/AdminDossiers";
 import AdminDossierDetail from "@/pages/admin/AdminDossierDetail";
+// [MBA] Module Gestion Logements — conciergerie
+import AdminLogements from "@/pages/admin/AdminLogements";
 
 import AdminMessaging from "@/pages/admin/AdminMessaging";
 import AdminBilling from "@/pages/admin/AdminBilling";
@@ -165,6 +167,8 @@ export function AnimatedRoutes() {
         {/* Admin routes */}
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/clients" element={<AdminClients />} />
+        {/* [MBA] Module Gestion Logements — route conciergerie */}
+        <Route path="/admin/logements" element={<AdminLogements />} />
         <Route path="/admin/dossiers" element={<AdminDossiers />} />
         <Route path="/admin/dossiers/:id" element={<AdminDossierDetail />} />
         <Route path="/admin/demandes" element={<Navigate to="/admin/dossiers" replace />} />

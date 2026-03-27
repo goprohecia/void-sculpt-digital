@@ -5,7 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MariageStepper } from "./MariageStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_DOSSIERS_MARIEE, MOCK_ESSAYAGES, MOCK_CONSEILLERES, MARIAGE_STEPS,
 } from "@/data/mockMariageData";
@@ -96,7 +96,7 @@ export function MariageConseillerView() {
                               <p className="text-xs text-muted-foreground flex items-center gap-1"><FileText className="h-3 w-3" /> Notes de style</p>
                               <p className="text-sm bg-muted/30 p-3 rounded-lg mt-1">{fiche.notesStyle}</p>
                             </div>
-                            <MariageStepper currentStep={fiche.etape - 1} compact />
+                            <SectorStepper currentStep={fiche.etape - 1} compact />
                           </div>
                         </div>
                       </CardContent>

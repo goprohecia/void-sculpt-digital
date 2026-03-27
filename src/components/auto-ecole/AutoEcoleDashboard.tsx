@@ -4,7 +4,7 @@ import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTrans
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { AutoEcoleOnboardingBanner } from "./AutoEcoleOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   MOCK_ELEVES, MOCK_MONITEURS, MOCK_LECONS,
   AUTO_ECOLE_KPIS, AUTO_ECOLE_STEPS,
@@ -24,7 +24,7 @@ export function AutoEcoleDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <AutoEcoleOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

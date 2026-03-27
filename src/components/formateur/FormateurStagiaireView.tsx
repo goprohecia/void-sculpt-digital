@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { MOCK_SESSIONS } from "@/data/mockFormateurData";
-import { FormateurStepper } from "./FormateurStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { GraduationCap, FileText, Download, Clock, CheckCircle, Award } from "lucide-react";
 import { toast } from "sonner";
 
@@ -33,7 +33,7 @@ export function FormateurStagiaireView() {
       {/* Stepper */}
       <Card className="glass-card">
         <CardContent className="p-4">
-          <FormateurStepper currentStep={session.step} />
+          <SectorStepper currentStep={session.step} />
         </CardContent>
       </Card>
 

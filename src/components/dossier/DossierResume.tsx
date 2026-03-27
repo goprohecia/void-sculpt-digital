@@ -1,9 +1,7 @@
-import { motion } from "framer-motion";
-import { staggerItem } from "@/components/admin/AdminPageTransition";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, FileText, Link2, ShieldCheck, ExternalLink, Copy, Check, Pencil, Monitor, Smartphone, Tablet, CalendarDays } from "lucide-react";
+import { Eye, FileText, Link2, ShieldCheck, ExternalLink, Copy, Check, Pencil, Monitor, Smartphone, Tablet, CalendarDays, CreditCard, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -21,17 +19,21 @@ interface Props {
   onUpdatePreviewUrl: (args: { id: string; previewUrl: string }) => void;
   onValidateCdc?: (demandeId: string) => void;
   onAddPreviewVisit?: (dossierId: string) => void;
+  // [MBA] Droits passés par le parent — bible v3 sections 4.1/4.2/4.3
+  canEditPreviewUrl?: boolean;
+  canViewFinancials?: boolean;
 }
 
-export function DossierResume({ dossier, facturesDossier, devisDossier, previewVisits, cahier, demandeTitre, onUpdatePreviewUrl, onValidateCdc, onAddPreviewVisit }: Props) {
+export function DossierResume({ dossier, facturesDossier, devisDossier, previewVisits, cahier, demandeTitre, onUpdatePreviewUrl, onValidateCdc, onAddPreviewVisit, canEditPreviewUrl = true, canViewFinancials = true }: Props) {
   const [cdcViewOpen, setCdcViewOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [editing, setEditing] = useState(false);
   const [urlInput, setUrlInput] = useState(dossier.previewUrl || "");
 
-  const totalMontant = dossier.montant;
-  const encaisse = facturesDossier.filter(f => f.statut === "payee").reduce((s, f) => s + f.montant, 0);
-  const restantDu = totalMontant - encaisse;
+  // [MBA] Prochain paiement en attente
+  const prochainPaiement = facturesDossier
+    .filter(f => f.statut === "en_attente" || f.statut === "en_retard")
+    .sort((a, b) => new Date(a.dateEcheance).getTime() - new Date(b.dateEcheance).getTime())[0];
 
   const copyToClipboard = () => {
     if (!dossier.previewUrl) return;
@@ -49,19 +51,40 @@ export function DossierResume({ dossier, facturesDossier, devisDossier, previewV
 
   return (
     <div className="space-y-5">
-      {/* Bloc financier */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-lg border bg-card p-4 text-center">
-          <p className="text-xs text-muted-foreground">Montant total</p>
-          <p className="text-xl font-bold">{totalMontant.toLocaleString()} €</p>
+      {/* [MBA] 3 blocs résumé : Prochain RDV | Prochain paiement | Derniers messages */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <CalendarDays className="h-4 w-4 text-primary" />
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase">Prochain RDV</h4>
+          </div>
+          <p className="text-sm text-muted-foreground">Aucun RDV programmé</p>
+          <Button size="sm" variant="link" className="p-0 h-auto text-xs mt-1">Programmer un RDV</Button>
         </div>
-        <div className="rounded-lg border bg-card p-4 text-center">
-          <p className="text-xs text-muted-foreground">Encaissé</p>
-          <p className="text-xl font-bold text-[hsl(var(--primary))]">{encaisse.toLocaleString()} €</p>
+
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <CreditCard className="h-4 w-4 text-primary" />
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase">Prochain paiement</h4>
+          </div>
+          {prochainPaiement ? (
+            <div>
+              <p className="text-sm font-semibold">{prochainPaiement.montant.toLocaleString()} €</p>
+              <p className="text-xs text-muted-foreground">
+                Échéance : {new Date(prochainPaiement.dateEcheance).toLocaleDateString("fr-FR")}
+                {prochainPaiement.statut === "en_retard" && <Badge variant="destructive" className="ml-2 text-[10px] px-1 py-0">En retard</Badge>}
+              </p>
+            </div>
+          ) : <p className="text-sm text-muted-foreground">Aucun paiement en attente</p>}
         </div>
-        <div className="rounded-lg border bg-card p-4 text-center">
-          <p className="text-xs text-muted-foreground">Restant dû</p>
-          <p className="text-xl font-bold text-destructive">{restantDu.toLocaleString()} €</p>
+
+        <div className="rounded-lg border bg-card p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <MessageSquare className="h-4 w-4 text-primary" />
+            <h4 className="text-xs font-semibold text-muted-foreground uppercase">Derniers messages</h4>
+          </div>
+          <p className="text-sm text-muted-foreground">Aucun message récent</p>
+          <Button size="sm" variant="link" className="p-0 h-auto text-xs mt-1">Envoyer un message</Button>
         </div>
       </div>
 
@@ -92,12 +115,12 @@ export function DossierResume({ dossier, facturesDossier, devisDossier, previewV
         ) : <p className="text-sm text-muted-foreground">Aucun CDC associé</p>}
       </div>
 
-      {/* Preview link */}
+      {/* [MBA] Preview link — édition admin uniquement (bible v3 section 4.1) */}
       <div className="rounded-lg border bg-card p-4">
         <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
           <Link2 className="h-4 w-4 text-primary" /> Lien de preview
         </h3>
-        {editing ? (
+        {editing && canEditPreviewUrl ? (
           <div className="flex gap-2">
             <Input value={urlInput} onChange={e => setUrlInput(e.target.value)} placeholder="https://..." className="flex-1" />
             <Button size="sm" onClick={saveUrl}>Enregistrer</Button>
@@ -108,46 +131,50 @@ export function DossierResume({ dossier, facturesDossier, devisDossier, previewV
             <code className="text-xs bg-muted px-2 py-1 rounded flex-1 truncate">{dossier.previewUrl}</code>
             <Button size="sm" variant="outline" onClick={copyToClipboard}>{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}</Button>
             <a href={dossier.previewUrl} target="_blank" rel="noopener noreferrer"><Button size="sm" variant="outline"><ExternalLink className="h-3.5 w-3.5" /></Button></a>
-            <Button size="sm" variant="ghost" onClick={() => setEditing(true)}><Pencil className="h-3.5 w-3.5" /></Button>
+            {/* [MBA] Bouton éditer — admin uniquement */}
+            {canEditPreviewUrl && <Button size="sm" variant="ghost" onClick={() => setEditing(true)}><Pencil className="h-3.5 w-3.5" /></Button>}
           </div>
         ) : (
           <div className="flex items-center gap-3">
             <p className="text-sm text-muted-foreground">Aucun lien configuré</p>
-            <Button size="sm" variant="outline" onClick={() => setEditing(true)}>Ajouter</Button>
+            {/* [MBA] Bouton ajouter — admin uniquement */}
+            {canEditPreviewUrl && <Button size="sm" variant="outline" onClick={() => setEditing(true)}>Ajouter</Button>}
           </div>
         )}
       </div>
 
-      {/* Devis + Factures rapides */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-lg border bg-card p-4">
-          <h3 className="text-sm font-semibold mb-2">Devis ({devisDossier.length})</h3>
-          {devisDossier.length > 0 ? devisDossier.slice(0, 3).map(d => (
-            <div key={d.id} className="flex items-center justify-between py-1.5 text-sm">
-              <span className="font-mono text-xs">{d.reference}</span>
-              <div className="flex items-center gap-2">
-                <span>{d.montant.toLocaleString()} €</span>
-                <StatusBadge status={d.statut} />
+      {/* [MBA] Devis + Factures rapides — admin uniquement (bible v3: canViewFinancials) */}
+      {canViewFinancials && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-lg border bg-card p-4">
+            <h3 className="text-sm font-semibold mb-2">Devis ({devisDossier.length})</h3>
+            {devisDossier.length > 0 ? devisDossier.slice(0, 3).map(d => (
+              <div key={d.id} className="flex items-center justify-between py-1.5 text-sm">
+                <span className="font-mono text-xs">{d.reference}</span>
+                <div className="flex items-center gap-2">
+                  <span>{d.montant.toLocaleString()} €</span>
+                  <StatusBadge status={d.statut} />
+                </div>
               </div>
-            </div>
-          )) : <p className="text-sm text-muted-foreground">Aucun devis</p>}
-        </div>
-        <div className="rounded-lg border bg-card p-4">
-          <h3 className="text-sm font-semibold mb-2">Factures ({facturesDossier.length})</h3>
-          {facturesDossier.length > 0 ? facturesDossier.slice(0, 3).map(f => (
-            <div key={f.id} className="flex items-center justify-between py-1.5 text-sm">
-              <span className="font-mono text-xs">{f.reference}</span>
-              <div className="flex items-center gap-2">
-                <span>{f.montant.toLocaleString()} €</span>
-                <StatusBadge status={f.statut} />
+            )) : <p className="text-sm text-muted-foreground">Aucun devis</p>}
+          </div>
+          <div className="rounded-lg border bg-card p-4">
+            <h3 className="text-sm font-semibold mb-2">Factures ({facturesDossier.length})</h3>
+            {facturesDossier.length > 0 ? facturesDossier.slice(0, 3).map(f => (
+              <div key={f.id} className="flex items-center justify-between py-1.5 text-sm">
+                <span className="font-mono text-xs">{f.reference}</span>
+                <div className="flex items-center gap-2">
+                  <span>{f.montant.toLocaleString()} €</span>
+                  <StatusBadge status={f.statut} />
+                </div>
               </div>
-            </div>
-          )) : <p className="text-sm text-muted-foreground">Aucune facture</p>}
+            )) : <p className="text-sm text-muted-foreground">Aucune facture</p>}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Preview visits */}
-      {dossier.previewUrl && previewVisits.length > 0 && (
+      {/* [MBA] Preview visits — admin uniquement */}
+      {canViewFinancials && dossier.previewUrl && previewVisits.length > 0 && (
         <div className="rounded-lg border bg-card p-4">
           <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
             <Eye className="h-4 w-4 text-primary" /> Visites preview ({previewVisits.length})

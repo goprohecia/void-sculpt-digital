@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { DevStepper } from "./DevStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { MOCK_DEV_PROJETS } from "@/data/mockDevData";
 import {
   Code, CheckCircle, XCircle, FileSignature, Download, ExternalLink, Euro, Receipt,
@@ -51,7 +51,7 @@ export function DevClientView() {
       <motion.div variants={staggerItem}>
         <Card>
           <CardHeader><CardTitle className="text-base">Avancement</CardTitle></CardHeader>
-          <CardContent><DevStepper currentStep={projet.etape} /></CardContent>
+          <CardContent><SectorStepper currentStep={projet.etape} /></CardContent>
         </Card>
       </motion.div>
 

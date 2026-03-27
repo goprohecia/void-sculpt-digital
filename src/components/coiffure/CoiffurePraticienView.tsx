@@ -5,7 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CoiffureStepper } from "./CoiffureStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_COIFFURE_RDV,
   MOCK_COIFFURE_FICHES,
@@ -84,7 +84,7 @@ export function CoiffurePraticienView() {
                     <p className="text-xs text-muted-foreground italic">📝 {rdv.notes}</p>
                   )}
 
-                  <CoiffureStepper
+                  <SectorStepper
                     currentStep={rdv.etape}
                     isEditable
                     onAdvance={() => advanceRdv(rdv.id)}

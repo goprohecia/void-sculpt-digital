@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { SportStepper } from "./SportStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_SPORT_MEMBRES, MOCK_SPORT_COURS, MOCK_SPORT_MEMBER_SEANCES, SPORT_STEPS,
 } from "@/data/mockSportData";
@@ -55,7 +55,7 @@ export function SportMembreView() {
         <Card>
           <CardHeader><CardTitle className="text-base">Mon parcours</CardTitle></CardHeader>
           <CardContent>
-            <SportStepper currentStep={membre.etape} />
+            <SectorStepper currentStep={membre.etape} />
           </CardContent>
         </Card>
       </motion.div>

@@ -4,7 +4,7 @@ import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTrans
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DJStepper } from "./DJStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { MOCK_DJ_PRESTATIONS } from "@/data/mockDJData";
 import {
   Music, MapPin, CalendarDays, Clock, Users, FileSignature, Euro, CheckCircle,
@@ -56,7 +56,7 @@ export function DJClientView() {
       <motion.div variants={staggerItem}>
         <Card>
           <CardHeader><CardTitle className="text-base">Avancement</CardTitle></CardHeader>
-          <CardContent><DJStepper currentStep={presta.etape} /></CardContent>
+          <CardContent><SectorStepper currentStep={presta.etape} /></CardContent>
         </Card>
       </motion.div>
 

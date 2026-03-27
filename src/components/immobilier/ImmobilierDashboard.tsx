@@ -5,7 +5,7 @@ import { DashboardKPI } from "@/components/admin/DashboardKPI";
 import { Building2, Users, HandCoins, Euro, ArrowRight, Plus, CalendarDays } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MOCK_BIENS, MOCK_AGENTS, IMMO_STEPS, MOCK_VISITES_RDV } from "@/data/mockImmobilierData";
-import { ImmobilierOnboardingBanner } from "./ImmobilierOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { Badge } from "@/components/ui/badge";
 
 export function ImmobilierDashboard() {
@@ -22,7 +22,7 @@ export function ImmobilierDashboard() {
 
   return (
     <>
-      <ImmobilierOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
         {/* Header */}

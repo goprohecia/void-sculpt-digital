@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { MOCK_COMMANDES, TRAITEUR_STEPS } from "@/data/mockTraiteurData";
-import { TraiteurStepper } from "./TraiteurStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { UtensilsCrossed, MapPin, Clock, ClipboardCheck, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -49,7 +49,7 @@ export function TraiteurEquipeView() {
         ))}
       </div>
 
-      <Card className="glass-card"><CardContent className="p-4"><TraiteurStepper currentStep={selected.step} /></CardContent></Card>
+      <Card className="glass-card"><CardContent className="p-4"><SectorStepper currentStep={selected.step} /></CardContent></Card>
 
       {/* Détails commande */}
       <Card className="glass-card">

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { EmployeeLayout } from "@/components/admin/EmployeeLayout";
@@ -10,30 +11,8 @@ import { useDemoData } from "@/contexts/DemoDataContext";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
 import { FolderOpen, Crown, Shield, Eye } from "lucide-react";
-import { GarageMechanicView } from "@/components/garage/GarageMechanicView";
-import { ImmobilierAgentView } from "@/components/immobilier/ImmobilierAgentView";
-import { BTPOuvrierView } from "@/components/btp/BTPOuvrierView";
-import { ConciergerieAgentView } from "@/components/conciergerie/ConciergerieAgentView";
-import { CoiffurePraticienView } from "@/components/coiffure/CoiffurePraticienView";
-import { RecrutementChargeView } from "@/components/recrutement/RecrutementChargeView";
-import { AutoEcoleMoniteurView } from "@/components/auto-ecole/AutoEcoleMoniteurView";
-import { MariageConseillerView } from "@/components/mariage/MariageConseillerView";
-import { MariageRetoucheuseView } from "@/components/mariage/MariageRetoucheuseView";
-import { AvocatCollaborateurView } from "@/components/avocat/AvocatCollaborateurView";
-import { ComptableCollaborateurView } from "@/components/comptable/ComptableCollaborateurView";
-import { BoutiqueVendeurView } from "@/components/boutique/BoutiqueVendeurView";
-import { SportCoachView } from "@/components/sport/SportCoachView";
-import { CMChargeView } from "@/components/cm/CMChargeView";
-import { ConsultantConsultantView } from "@/components/consultant/ConsultantConsultantView";
-import { DesignerDesignerView } from "@/components/designer/DesignerDesignerView";
-import { DevDevView } from "@/components/dev/DevDevView";
-import { DJAssistantView } from "@/components/dj/DJAssistantView";
-import { EvenementielChefProjetView } from "@/components/evenementiel/EvenementielChefProjetView";
-import { FormateurFormateurView } from "@/components/formateur/FormateurFormateurView";
-import { NettoyageAgentView } from "@/components/nettoyage/NettoyageAgentView";
-import { PhotographeRetoucheurView } from "@/components/photographe/PhotographeRetoucheurView";
-import { ReparateurTechnicienView } from "@/components/reparateur/ReparateurTechnicienView";
-import { TraiteurEquipeView } from "@/components/traiteur/TraiteurEquipeView";
+// [MBA] Registre sectoriel — remplace 24 imports directs
+import { getSectorEmployeeView, getSectorEmployeeViews } from "@/components/sector/registry";
 
 // For demo, simulate the logged-in employee as "demo-emp-1"
 const CURRENT_EMPLOYEE_ID = "demo-emp-1";
@@ -43,131 +22,43 @@ export default function EmployeeDossiers() {
   const { demoSector } = useDemoPlan();
   const assignEnabled = isAssignationEnabled(demoSector);
 
-  if (demoSector === "garages") {
-    return <GarageMechanicView />;
-  }
+  // [MBA] Registre sectoriel — remplace 24 blocs if/else
+  const employeeViews = getSectorEmployeeViews(demoSector);
+  const EmployeeView = getSectorEmployeeView(demoSector);
 
-  if (demoSector === "immobilier") {
-    return <ImmobilierAgentView />;
-  }
-
-  if (demoSector === "btp") {
-    return <BTPOuvrierView />;
-  }
-
-  if (demoSector === "conciergerie") {
-    return <ConciergerieAgentView />;
-  }
-
-  if (demoSector === "coiffure") {
-    return <CoiffurePraticienView />;
-  }
-
-  if (demoSector === "cabinet-recrutement") {
-    return <RecrutementChargeView />;
-  }
-
-  if (demoSector === "auto-ecole") {
-    return <AutoEcoleMoniteurView />;
-  }
-
-  if (demoSector === "mariage") {
+  if (employeeViews) {
     return (
       <EmployeeLayout>
         <AdminPageTransition>
-          <Tabs defaultValue="conseillere" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="conseillere">Espace Conseillère</TabsTrigger>
-              <TabsTrigger value="retoucheuse">Espace Retoucheuse</TabsTrigger>
-            </TabsList>
-            <TabsContent value="conseillere">
-              <MariageConseillerView />
-            </TabsContent>
-            <TabsContent value="retoucheuse">
-              <MariageRetoucheuseView />
-            </TabsContent>
-          </Tabs>
+          <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Chargement...</div>}>
+            <Tabs defaultValue={employeeViews[0]?.label} className="space-y-4">
+              <TabsList>
+                {employeeViews.map((v) => (
+                  <TabsTrigger key={v.label} value={v.label}>{v.label}</TabsTrigger>
+                ))}
+              </TabsList>
+              {employeeViews.map((v) => (
+                <TabsContent key={v.label} value={v.label}>
+                  <v.component />
+                </TabsContent>
+              ))}
+            </Tabs>
+          </Suspense>
         </AdminPageTransition>
       </EmployeeLayout>
     );
   }
 
-  if (demoSector === "cabinet-avocats") {
+  if (EmployeeView) {
     return (
       <EmployeeLayout>
         <AdminPageTransition>
-          <AvocatCollaborateurView />
+          <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Chargement...</div>}>
+            <EmployeeView />
+          </Suspense>
         </AdminPageTransition>
       </EmployeeLayout>
     );
-  }
-
-  if (demoSector === "expert-comptable") {
-    return (
-      <EmployeeLayout>
-        <AdminPageTransition>
-          <ComptableCollaborateurView />
-        </AdminPageTransition>
-      </EmployeeLayout>
-    );
-  }
-
-  if (demoSector === "boutique") {
-    return (
-      <EmployeeLayout>
-        <AdminPageTransition>
-          <BoutiqueVendeurView />
-        </AdminPageTransition>
-      </EmployeeLayout>
-    );
-  }
-
-  if (demoSector === "coach-sportif") {
-    return (<EmployeeLayout><AdminPageTransition><SportCoachView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "community-manager") {
-    return (<EmployeeLayout><AdminPageTransition><CMChargeView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "consultant") {
-    return (<EmployeeLayout><AdminPageTransition><ConsultantConsultantView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "designer") {
-    return (<EmployeeLayout><AdminPageTransition><DesignerDesignerView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "developpeur") {
-    return (<EmployeeLayout><AdminPageTransition><DevDevView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "dj-animateur") {
-    return (<EmployeeLayout><AdminPageTransition><DJAssistantView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "evenementiel") {
-    return (<EmployeeLayout><AdminPageTransition><EvenementielChefProjetView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "formateur") {
-    return (<EmployeeLayout><AdminPageTransition><FormateurFormateurView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "nettoyage") {
-    return (<EmployeeLayout><AdminPageTransition><NettoyageAgentView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "photographe") {
-    return (<EmployeeLayout><AdminPageTransition><PhotographeRetoucheurView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "reparateur") {
-    return (<EmployeeLayout><AdminPageTransition><ReparateurTechnicienView /></AdminPageTransition></EmployeeLayout>);
-  }
-
-  if (demoSector === "traiteur") {
-    return (<EmployeeLayout><AdminPageTransition><TraiteurEquipeView /></AdminPageTransition></EmployeeLayout>);
   }
 
   const myDossiers = getDossiersByEmployee(CURRENT_EMPLOYEE_ID);
@@ -220,8 +111,8 @@ export default function EmployeeDossiers() {
                     </div>
                     <p className="font-medium text-sm">{dossier.clientNom}</p>
                     <p className="text-xs text-muted-foreground">{dossier.typePrestation}</p>
-                    <div className="flex items-center justify-between pt-1 border-t border-border/20">
-                      <span className="text-sm font-medium">{dossier.montant.toLocaleString()} €</span>
+                    {/* [MBA] Employé NE VOIT PAS les finances globales — bible v3 section 4.2 */}
+                    <div className="flex items-center justify-end pt-1 border-t border-border/20">
                       <div className="flex items-center gap-1 text-xs text-primary">
                         <Eye className="h-3 w-3" /> Voir
                       </div>

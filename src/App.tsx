@@ -22,22 +22,22 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <DemoAuthProvider>
-          <DemoDataProvider>
-            <DemoPlanProvider>
-            <WhiteLabelProvider>
-              <LoadingScreen onComplete={() => setIsLoaded(true)} />
-              <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter>
-                  <AnimatedRoutes />
-                  <CookieBanner />
-                  <ScrollToTop />
-                </BrowserRouter>
-              </div>
-            </WhiteLabelProvider>
-            </DemoPlanProvider>
-          </DemoDataProvider>
+          <DemoPlanProvider>
+            <DemoDataProvider>
+              <WhiteLabelProvider>
+                <LoadingScreen onComplete={() => setIsLoaded(true)} />
+                <div className={`transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                  <Toaster />
+                  <Sonner />
+                  <BrowserRouter>
+                    <AnimatedRoutes />
+                    <CookieBanner />
+                    <ScrollToTop />
+                  </BrowserRouter>
+                </div>
+              </WhiteLabelProvider>
+            </DemoDataProvider>
+          </DemoPlanProvider>
         </DemoAuthProvider>
       </TooltipProvider>
     </QueryClientProvider>

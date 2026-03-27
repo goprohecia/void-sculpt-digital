@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AvocatStepper } from "./AvocatStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { toast } from "sonner";
 import {
   MOCK_AFFAIRES, MOCK_AUDIENCES, MOCK_COLLABORATEURS, MOCK_TACHES,
@@ -89,7 +89,7 @@ export function AvocatCollaborateurView() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm bg-muted/30 p-3 rounded-lg">{affaireDetail.description}</p>
-                    <AvocatStepper currentStep={affaireDetail.etape - 1} compact />
+                    <SectorStepper currentStep={affaireDetail.etape - 1} compact />
 
                     {/* Tâches de l'affaire */}
                     <div>

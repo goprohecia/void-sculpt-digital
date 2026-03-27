@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ConsultantOnboardingBanner } from "./ConsultantOnboardingBanner";
-import { ConsultantStepper } from "./ConsultantStepper";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   CONSULTANT_KPIS, CONSULTANT_STEPS, MOCK_CONSULTANT_MISSIONS, MOCK_CONSULTANT_EQUIPE,
 } from "@/data/mockConsultantData";
@@ -27,7 +27,7 @@ export function ConsultantDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <motion.div variants={staggerItem}><ConsultantOnboardingBanner /></motion.div>
+      <motion.div variants={staggerItem}><SectorOnboardingBanner /></motion.div>
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

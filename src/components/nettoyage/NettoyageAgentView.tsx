@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { MOCK_INTERVENTIONS } from "@/data/mockNettoyageData";
-import { NettoyageStepper } from "./NettoyageStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { ClipboardList, MapPin, KeyRound, Phone, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -59,7 +59,7 @@ export function NettoyageAgentView() {
       {/* Stepper */}
       <Card className="glass-card">
         <CardContent className="p-4">
-          <NettoyageStepper currentStep={terminees[selected.id] ? 4 : selected.step} />
+          <SectorStepper currentStep={terminees[selected.id] ? 4 : selected.step} />
         </CardContent>
       </Card>
 

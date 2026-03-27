@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MOCK_SESSIONS, FORMATEUR_KPI, FORMATEUR_STEPS } from "@/data/mockFormateurData";
-import { FormateurOnboardingBanner } from "./FormateurOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { GraduationCap, Users, Clock, CalendarDays, CheckCircle, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
@@ -21,7 +21,7 @@ export function FormateurDashboard() {
 
   return (
     <div className="space-y-6">
-      <FormateurOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">

@@ -1,12 +1,12 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useMemo, useEffect, type ReactNode } from "react";
 import {
-  factures as initialFactures,
-  devis as initialDevis,
-  dossiers as initialDossiers,
-  clients as initialClients,
-  notifications as initialNotifications,
-  INITIAL_ASSIGNMENTS,
-  MOCK_TEAM_MEMBERS,
+  factures as genericFactures,
+  devis as genericDevis,
+  dossiers as genericDossiers,
+  clients as genericClients,
+  notifications as genericNotifications,
+  INITIAL_ASSIGNMENTS as GENERIC_ASSIGNMENTS,
+  MOCK_TEAM_MEMBERS as GENERIC_TEAM_MEMBERS,
   type Client,
   type Facture,
   type FactureStatus,
@@ -17,6 +17,9 @@ import {
   type DossierAssignment,
   type Notification,
 } from "@/data/mockData";
+// [MBA] Import sector-specific mock data and DemoPlanContext
+import { getSectorMockData } from "@/data/sectorMockMapping";
+import { useDemoPlan } from "@/contexts/DemoPlanContext";
 
 // ---- EmailLog type ----
 export type EmailLogType = "relance" | "devis" | "paiement" | "demande" | "validation";
@@ -124,7 +127,8 @@ export interface Demande {
   clientId: string;
   clientNom: string;
   titre: string;
-  typePrestation: DemandePrestation;
+  // [MBA] Élargi à string pour supporter tous les secteurs (pas seulement dev)
+  typePrestation: DemandePrestation | string;
   description: string;
   budget?: string;
   statut: DemandeStatus;
@@ -236,6 +240,8 @@ interface DemoDataContextType {
   validateCahier: (demandeId: string) => void;
   rejectCahier: (demandeId: string, motif: string) => void;
   marquerRdvEffectue: (dossierId: string) => void;
+  // [MBA] Équipe secteur — membres dynamiques selon demoSector
+  teamMembers: TeamMember[];
   // Assignment system
   assignments: Record<string, DossierAssignment[]>;
   assignDossier: (dossierId: string, newAssignments: DossierAssignment[]) => void;
@@ -250,17 +256,67 @@ function nowISO() {
 }
 
 export function DemoDataProvider({ children }: { children: ReactNode }) {
-  const [factures, setFactures] = useState<Facture[]>([...initialFactures]);
-  const [devisState, setDevis] = useState<Devis[]>([...initialDevis]);
-  const [dossiersState, setDossiers] = useState<Dossier[]>([...initialDossiers]);
-  const [clientsState, setClients] = useState<Client[]>([...initialClients]);
-  const [demandes, setDemandes] = useState<Demande[]>([...initialDemandes]);
-  const [notifs, setNotifs] = useState<Notification[]>([...initialNotifications]);
+  // [MBA] Résolution dynamique des données mock selon le secteur actif
+  const { demoSector } = useDemoPlan();
+
+  const resolvedData = useMemo(() => {
+    const sectorData = getSectorMockData(demoSector);
+    if (sectorData) {
+      return {
+        clients: sectorData.clients,
+        dossiers: sectorData.dossiers,
+        factures: sectorData.factures,
+        devis: sectorData.devis,
+        notifications: sectorData.notifications,
+        teamMembers: sectorData.teamMembers,
+        assignments: sectorData.assignments,
+        // [MBA] Demandes spécifiques au secteur (auto-générées si absentes)
+        demandes: (sectorData.demandes ?? []) as Demande[],
+      };
+    }
+    // Fallback : données génériques (mockData.ts)
+    return {
+      clients: genericClients,
+      dossiers: genericDossiers,
+      factures: genericFactures,
+      devis: genericDevis,
+      notifications: genericNotifications,
+      teamMembers: GENERIC_TEAM_MEMBERS,
+      assignments: GENERIC_ASSIGNMENTS,
+      demandes: initialDemandes,
+    };
+  }, [demoSector]);
+
+  const [factures, setFactures] = useState<Facture[]>([...resolvedData.factures]);
+  const [devisState, setDevis] = useState<Devis[]>([...resolvedData.devis]);
+  const [dossiersState, setDossiers] = useState<Dossier[]>([...resolvedData.dossiers]);
+  const [clientsState, setClients] = useState<Client[]>([...resolvedData.clients]);
+  // [MBA] Demandes dynamiques selon secteur (plus hardcodé sur initialDemandes)
+  const [demandes, setDemandes] = useState<Demande[]>([...resolvedData.demandes]);
+  const [notifs, setNotifs] = useState<Notification[]>([...resolvedData.notifications]);
   const [emailLogs, setEmailLogs] = useState<EmailLog[]>([]);
   const [sendLogs, setSendLogs] = useState<SendLog[]>([]);
   const [previewVisits, setPreviewVisits] = useState<PreviewVisit[]>(generateMockVisits());
   const [cahiersDesCharges, setCahiersDesCharges] = useState<CahierDesCharges[]>([...initialCahiers]);
-  const [assignments, setAssignments] = useState<Record<string, DossierAssignment[]>>({ ...INITIAL_ASSIGNMENTS });
+  const [assignments, setAssignments] = useState<Record<string, DossierAssignment[]>>({ ...resolvedData.assignments });
+  // [MBA] Équipe secteur dynamique — expose les membres d'équipe du secteur actif
+  const [teamMembersState, setTeamMembers] = useState<TeamMember[]>([...resolvedData.teamMembers]);
+
+  // [MBA] Réinitialiser les données quand le secteur change
+  useEffect(() => {
+    setFactures([...resolvedData.factures]);
+    setDevis([...resolvedData.devis]);
+    setDossiers([...resolvedData.dossiers]);
+    setClients([...resolvedData.clients]);
+    setNotifs([...resolvedData.notifications]);
+    setAssignments({ ...resolvedData.assignments });
+    setTeamMembers([...resolvedData.teamMembers]);
+    // [MBA] Demandes aussi réinitialisées au changement de secteur
+    setDemandes([...resolvedData.demandes]);
+    setEmailLogs([]);
+    setSendLogs([]);
+  }, [resolvedData]);
+
   const pushEmail = useCallback((type: EmailLogType, destinataire: string, sujet: string, contenu: string, clientId?: string, reference?: string) => {
     const email: EmailLog = {
       id: `em_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -508,6 +564,7 @@ export function DemoDataProvider({ children }: { children: ReactNode }) {
       getNotificationsAdmin, getNotificationsByClient, getNotificationsByEmployee, getPreviewVisitsByDossier, addPreviewVisit,
       markNotificationRead, markAllNotificationsRead,
       cahiersDesCharges, getCahierByDemande, getCahierByDossier, saveCahierDesCharges, updateCahierComment, validateCahier, rejectCahier, marquerRdvEffectue,
+      teamMembers: teamMembersState,
       assignments, assignDossier, getAssignmentsByDossier, getDossiersByEmployee,
     }}>
       {children}

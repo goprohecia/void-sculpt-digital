@@ -4,7 +4,7 @@ import { staggerContainer, staggerItem } from "@/components/admin/AdminPageTrans
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { MariageOnboardingBanner } from "./MariageOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   MOCK_DOSSIERS_MARIEE, MOCK_ESSAYAGES, MOCK_CONSEILLERES, MOCK_RETOUCHEUSES,
   MOCK_ROBES_STOCK, MARIAGE_STEPS, MARIAGE_KPIS,
@@ -17,7 +17,7 @@ import {
 export function MariageDashboard() {
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <MariageOnboardingBanner />
+      <SectorOnboardingBanner />
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

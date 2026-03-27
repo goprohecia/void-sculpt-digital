@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MOCK_FICHES, MOCK_STOCK_PIECES, CHECKLIST_TESTS, REPARATEUR_STEPS } from "@/data/mockReparateurData";
-import { ReparateurStepper } from "./ReparateurStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { Wrench, Smartphone, Package, ClipboardCheck, FileText } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,7 +61,7 @@ export function ReparateurTechnicienView() {
         ))}
       </div>
 
-      <Card className="glass-card"><CardContent className="p-4"><ReparateurStepper currentStep={selected.step} /></CardContent></Card>
+      <Card className="glass-card"><CardContent className="p-4"><SectorStepper currentStep={selected.step} /></CardContent></Card>
 
       {/* Fiche technique */}
       <Card className="glass-card">

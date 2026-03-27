@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ComptableStepper } from "./ComptableStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { toast } from "sonner";
 import {
   MOCK_MISSIONS, MOCK_DECLARATIONS, MOCK_COLLABORATEURS_COMPTABLES,
@@ -80,7 +80,7 @@ export function ComptableClientView() {
             <CardTitle className="text-base">Avancement de votre mission</CardTitle>
           </CardHeader>
           <CardContent>
-            <ComptableStepper currentStep={mission.etape - 1} />
+            <SectorStepper currentStep={mission.etape - 1} />
           </CardContent>
         </Card>
       </motion.div>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { MOCK_EVENEMENTS, EVENEMENTIEL_STEPS } from "@/data/mockEvenementielData";
-import { EvenementielStepper } from "./EvenementielStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { CalendarDays, AlertTriangle, Users, ClipboardList, StickyNote } from "lucide-react";
 import { toast } from "sonner";
 
@@ -58,7 +58,7 @@ export function EvenementielChefProjetView() {
           {/* Stepper */}
           <Card className="glass-card">
             <CardContent className="p-4">
-              <EvenementielStepper currentStep={selected.step} />
+              <SectorStepper currentStep={selected.step} />
             </CardContent>
           </Card>
 

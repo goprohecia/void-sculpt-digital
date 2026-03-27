@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CMOnboardingBanner } from "./CMOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   CM_KPIS, CM_STEPS, MOCK_CM_CLIENTS, MOCK_CM_CMS,
 } from "@/data/mockCMData";
@@ -25,7 +25,7 @@ export function CMDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <motion.div variants={staggerItem}><CMOnboardingBanner /></motion.div>
+      <motion.div variants={staggerItem}><SectorOnboardingBanner /></motion.div>
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">

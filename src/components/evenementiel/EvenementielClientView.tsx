@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MOCK_EVENEMENTS } from "@/data/mockEvenementielData";
-import { EvenementielStepper } from "./EvenementielStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { PartyPopper, FileText, Euro, ClipboardList, Download, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -51,7 +51,7 @@ export function EvenementielClientView() {
       {/* Stepper avec pourcentage */}
       <Card className="glass-card">
         <CardContent className="p-4">
-          <EvenementielStepper currentStep={evt.step} showPercentage />
+          <SectorStepper currentStep={evt.step} showPercentage />
         </CardContent>
       </Card>
 

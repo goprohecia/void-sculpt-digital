@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BoutiqueStepper } from "./BoutiqueStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_BOUTIQUE_CLIENT_COMMANDES,
   MOCK_BOUTIQUE_FIDELITE,
@@ -82,7 +82,7 @@ export function BoutiqueClientView() {
 
               {expanded === cmd.id && (
                 <div className="space-y-3">
-                  <BoutiqueStepper currentStep={cmd.etape} />
+                  <SectorStepper currentStep={cmd.etape} />
                   <div className="space-y-1">
                     <p className="text-xs font-medium">Articles :</p>
                     {cmd.articles.map((a, i) => (

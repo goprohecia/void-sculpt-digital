@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_COMMANDES, MOCK_MATIERES, TRAITEUR_KPI, TRAITEUR_STEPS } from "@/data/mockTraiteurData";
-import { TraiteurOnboardingBanner } from "./TraiteurOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { UtensilsCrossed, Euro, Users, CalendarDays, Package, AlertTriangle } from "lucide-react";
 
 export function TraiteurDashboard() {
@@ -9,7 +9,7 @@ export function TraiteurDashboard() {
 
   return (
     <div className="space-y-6">
-      <TraiteurOnboardingBanner />
+      <SectorOnboardingBanner />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><UtensilsCrossed className="h-6 w-6 text-primary" /> Espace Direction</h1>
         <p className="text-muted-foreground text-sm">Gestion des commandes, production et stock</p>

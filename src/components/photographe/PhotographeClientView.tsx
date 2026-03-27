@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MOCK_SEANCES, MOCK_GALLERY_IMAGES, PHOTOGRAPHE_STEPS } from "@/data/mockPhotographeData";
-import { PhotographeStepper } from "./PhotographeStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { Camera, Heart, Download, Lock, Euro, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -39,7 +39,7 @@ export function PhotographeClientView() {
       {/* Stepper */}
       <Card className="glass-card">
         <CardContent className="p-4 space-y-2">
-          <PhotographeStepper currentStep={soldePaye ? 6 : seance.step} />
+          <SectorStepper currentStep={soldePaye ? 6 : seance.step} />
           <div className="flex justify-between text-xs text-muted-foreground pt-2">
             {PHOTOGRAPHE_STEPS.map((s, i) => (
               <span key={i} className="flex-1 text-center">{i <= 1 ? "J" : i <= 3 ? `J+${i * 3}` : `J+${i * 5}`}</span>

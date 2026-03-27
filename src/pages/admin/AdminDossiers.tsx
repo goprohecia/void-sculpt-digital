@@ -14,34 +14,12 @@ import { useClients } from "@/hooks/use-clients";
 import { useDemoData } from "@/contexts/DemoDataContext";
 import { useDemoPlan } from "@/contexts/DemoPlanContext";
 import { isAssignationEnabled } from "@/data/sectorModules";
-import { MOCK_TEAM_MEMBERS } from "@/data/mockData";
 import type { DossierStatus } from "@/data/mockData";
 import { Search, FolderOpen, Eye, FileText, Filter, Plus, Users, Tag, X } from "lucide-react";
 import { CreateDossierDialog } from "@/components/admin/CreateDossierDialog";
 import { CreateDemandeDialog } from "@/components/admin/CreateDemandeDialog";
-import { GarageVehicleList } from "@/components/garage/GarageVehicleList";
-import { ImmobilierDashboard } from "@/components/immobilier/ImmobilierDashboard";
-import { BTPDashboard } from "@/components/btp/BTPDashboard";
-import { ConciergerieDashboard } from "@/components/conciergerie/ConciergerieDashboard";
-import { CoiffureDashboard } from "@/components/coiffure/CoiffureDashboard";
-import { RecrutementDashboard } from "@/components/recrutement/RecrutementDashboard";
-import { AutoEcoleDashboard } from "@/components/auto-ecole/AutoEcoleDashboard";
-import { MariageDashboard } from "@/components/mariage/MariageDashboard";
-import { AvocatDashboard } from "@/components/avocat/AvocatDashboard";
-import { ComptableDashboard } from "@/components/comptable/ComptableDashboard";
-import { BoutiqueDashboard } from "@/components/boutique/BoutiqueDashboard";
-import { SportDashboard } from "@/components/sport/SportDashboard";
-import { CMDashboard } from "@/components/cm/CMDashboard";
-import { ConsultantDashboard } from "@/components/consultant/ConsultantDashboard";
-import { DesignerDashboard } from "@/components/designer/DesignerDashboard";
-import { DevDashboard } from "@/components/dev/DevDashboard";
-import { DJDashboard } from "@/components/dj/DJDashboard";
-import { EvenementielDashboard } from "@/components/evenementiel/EvenementielDashboard";
-import { FormateurDashboard } from "@/components/formateur/FormateurDashboard";
-import { NettoyageDashboard } from "@/components/nettoyage/NettoyageDashboard";
-import { PhotographeDashboard } from "@/components/photographe/PhotographeDashboard";
-import { ReparateurDashboard } from "@/components/reparateur/ReparateurDashboard";
-import { TraiteurDashboard } from "@/components/traiteur/TraiteurDashboard";
+// [MBA] Vocabulaire secteur pour headers de colonnes (Propriétaire, Membre, Élève...)
+import { useSectorRoleLabels } from "@/hooks/use-sector-role-labels";
 import { AIContextButton } from "@/components/admin/AIContextButton";
 import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,9 +59,12 @@ export default function AdminDossiers() {
   const { getCahierByDemande } = useCahiers();
   const { clients } = useClients();
   const { isDemo } = useIsDemo();
-  const { getAssignmentsByDossier } = useDemoData();
-  const { demoSector } = useDemoPlan();
+  // [MBA] teamMembers dynamiques selon le secteur actif (pas MOCK_TEAM_MEMBERS générique)
+  const { getAssignmentsByDossier, teamMembers } = useDemoData();
+  const { demoSector, getModuleLabel } = useDemoPlan();
   const assignEnabled = isAssignationEnabled(demoSector);
+  // [MBA] Vocabulaire secteur pour headers (Client→Propriétaire, Salarié→Technicien, etc.)
+  const { clientLabel, clientsLabel, employeeLabel } = useSectorRoleLabels();
   const queryClient = useQueryClient();
 
   // Fetch tags
@@ -197,163 +178,8 @@ export default function AdminDossiers() {
     toast.success(`Dossier ${newDossier.reference} créé depuis la demande`);
   };
 
-  if (demoSector === "garages") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <GarageVehicleList />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "immobilier") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <ImmobilierDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "btp") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <BTPDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "conciergerie") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <ConciergerieDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "coiffure") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <CoiffureDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "cabinet-recrutement") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <RecrutementDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "auto-ecole") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <AutoEcoleDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "mariage") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <MariageDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "cabinet-avocats") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <AvocatDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "expert-comptable") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <ComptableDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "boutique") {
-    return (
-      <AdminLayout>
-        <AdminPageTransition>
-          <BoutiqueDashboard />
-        </AdminPageTransition>
-      </AdminLayout>
-    );
-  }
-
-  if (demoSector === "coach-sportif") {
-    return (<AdminLayout><AdminPageTransition><SportDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "community-manager") {
-    return (<AdminLayout><AdminPageTransition><CMDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "consultant") {
-    return (<AdminLayout><AdminPageTransition><ConsultantDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "designer") {
-    return (<AdminLayout><AdminPageTransition><DesignerDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "developpeur") {
-    return (<AdminLayout><AdminPageTransition><DevDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "dj-animateur") {
-    return (<AdminLayout><AdminPageTransition><DJDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "evenementiel") {
-    return (<AdminLayout><AdminPageTransition><EvenementielDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "formateur") {
-    return (<AdminLayout><AdminPageTransition><FormateurDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "nettoyage") {
-    return (<AdminLayout><AdminPageTransition><NettoyageDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "photographe") {
-    return (<AdminLayout><AdminPageTransition><PhotographeDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "reparateur") {
-    return (<AdminLayout><AdminPageTransition><ReparateurDashboard /></AdminPageTransition></AdminLayout>);
-  }
-
-  if (demoSector === "traiteur") {
-    return (<AdminLayout><AdminPageTransition><TraiteurDashboard /></AdminPageTransition></AdminLayout>);
-  }
+  // [MBA] Le module Dossiers & Demandes est le socle fixe universel — même format pour TOUS les secteurs
+  // Les données s'adaptent au secteur via useDemoData() et le vocabulaire via useSectorRoleLabels()
 
   return (
     <AdminLayout>
@@ -361,9 +187,10 @@ export default function AdminDossiers() {
         <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
           <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
+              {/* [MBA] Titre adapté au secteur via getModuleLabel */}
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <FolderOpen className="h-6 w-6 text-primary" />
-                Dossiers & Demandes
+                {getModuleLabel("clients-dossiers")}
               </h1>
               <p className="text-muted-foreground text-sm">{dossiers.length} dossiers · {demandes.length} demandes</p>
             </div>
@@ -384,11 +211,12 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
             />
           </motion.div>
 
+          {/* [MBA] Onglets socle fixe — vocabulaire adapté au secteur */}
           <Tabs defaultValue="dossiers">
             <TabsList>
-              <TabsTrigger value="dossiers">Dossiers ({dossiers.length})</TabsTrigger>
+              <TabsTrigger value="dossiers">{getModuleLabel("dossiers")} ({dossiers.length})</TabsTrigger>
               <TabsTrigger value="demandes">Demandes ({demandes.length})</TabsTrigger>
-              <TabsTrigger value="clients"><Users className="h-3.5 w-3.5 mr-1.5" />Clients ({clients.length})</TabsTrigger>
+              <TabsTrigger value="clients"><Users className="h-3.5 w-3.5 mr-1.5" />{clientsLabel} ({clients.length})</TabsTrigger>
             </TabsList>
 
             <TabsContent value="dossiers" className="space-y-4 mt-4">
@@ -449,7 +277,8 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                     <thead>
                       <tr className="border-b border-border/50 bg-muted/20">
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium">Référence</th>
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                        {/* [MBA] Colonne Client adaptée au secteur (Propriétaire, Membre, Élève...) */}
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">{clientLabel}</th>
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Prestation</th>
                         <th className="text-right py-3 px-4 text-muted-foreground font-medium">Montant</th>
                         {assignEnabled && <th className="text-center py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Assigné à</th>}
@@ -474,7 +303,8 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                                 return (
                                   <div className="flex items-center justify-center -space-x-2">
                                     {shown.map((a) => {
-                                      const m = MOCK_TEAM_MEMBERS.find((t) => t.id === a.employeeId);
+                                      // [MBA] Utilise teamMembers du secteur actif, pas MOCK_TEAM_MEMBERS générique
+                                      const m = teamMembers.find((t) => t.id === a.employeeId);
                                       return m ? (
                                         <Avatar key={a.employeeId} className="h-6 w-6 border-2 border-background">
                                           <AvatarFallback className="text-[9px] font-semibold bg-primary/10 text-primary">
@@ -500,7 +330,7 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                     </tbody>
                   </table>
                 </div>
-                {filtered.length === 0 && <AdminEmptyState icon={FolderOpen} title="Aucun dossier" description="Les dossiers de vos projets clients apparaîtront ici." hint="Créez un dossier à partir d'une demande validée." />}
+                {filtered.length === 0 && <AdminEmptyState icon={FolderOpen} title="Aucun dossier" description={`Les dossiers de vos ${clientsLabel.toLowerCase()} apparaîtront ici.`} hint="Créez un dossier à partir d'une demande validée." />}
               </motion.div>
 
               {/* Mobile */}
@@ -584,7 +414,8 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Rechercher un client..." value={clientSearch} onChange={(e) => setClientSearch(e.target.value)} className="glass-input border-0 pl-9 h-10" />
+                  {/* [MBA] Placeholder adapté au secteur */}
+                  <Input placeholder={`Rechercher un ${clientLabel.toLowerCase()}...`} value={clientSearch} onChange={(e) => setClientSearch(e.target.value)} className="glass-input border-0 pl-9 h-10" />
                 </div>
                 <Select value={clientFilterTag || "__all__"} onValueChange={(v) => setClientFilterTag(v === "__all__" ? "" : v)}>
                   <SelectTrigger className="w-[180px] h-10">
@@ -604,7 +435,8 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/50 bg-muted/20">
-                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">Client</th>
+                        {/* [MBA] Header adapté au secteur */}
+                        <th className="text-left py-3 px-4 text-muted-foreground font-medium">{clientLabel}</th>
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden md:table-cell">Email</th>
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Entreprise</th>
                         <th className="text-left py-3 px-4 text-muted-foreground font-medium hidden lg:table-cell">Segment</th>
@@ -671,7 +503,7 @@ ${dossiers.map(d => `• ${d.reference} - ${d.clientNom} - ${d.typePrestation} -
                     </tbody>
                   </table>
                 </div>
-                {filteredClients.length === 0 && <AdminEmptyState icon={Users} title="Aucun client" description="Les clients apparaîtront ici." />}
+                {filteredClients.length === 0 && <AdminEmptyState icon={Users} title={`Aucun ${clientLabel.toLowerCase()}`} description={`Les ${clientsLabel.toLowerCase()} apparaîtront ici.`} />}
               </div>
             </TabsContent>
           </Tabs>

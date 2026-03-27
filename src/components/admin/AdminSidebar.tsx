@@ -35,7 +35,9 @@ import type { LucideIcon } from "lucide-react";
 import logoMba from "@/assets/logo-mba.png";
 
 const principalKeys = ["overview", "clients-dossiers", "employees"];
-const commercialKeys = ["pipeline", "dossiers", "facturation", "relances", "stock", "fournisseurs"];
+// [MBA] Module Gestion Logements — ajouté dans Commercial (visible conciergerie uniquement)
+// [MBA] Module Gestion Logements — après Dossiers, avant Facturation
+const commercialKeys = ["pipeline", "dossiers", "logements", "facturation", "relances", "stock", "fournisseurs"];
 const outilsKeys = ["messagerie", "emails", "rendez-vous", "agenda", "taches", "support", "notes"];
 const gestionKeys = ["analyse", "rapports", "documents", "temps", "automatisations", "ia", "parametres"];
 
@@ -100,8 +102,14 @@ export function AdminSidebar() {
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
 
+  // [MBA] Module Gestion Logements — visible uniquement pour conciergerie
+  const showLogements = demoSector === "conciergerie";
+
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
+    // [MBA] Module Gestion Logements — entre overview et clients-dossiers
+    // [MBA] Module Gestion Logements — icône Building2, badge compteur, après Dossiers
+    ...(showLogements ? [{ title: "Logements", url: "/admin/logements", icon: Building2, badge: 6, moduleKey: "logements" as string }] : []),
     { title: getModuleLabel("clients-dossiers"), url: "/admin/clients", icon: Users, moduleKey: "clients-dossiers" },
     { title: getModuleLabel("employees"), url: "/admin/employees", icon: Users, moduleKey: "employees" },
     { title: getModuleLabel("rendez-vous"), url: "/admin/rendez-vous", icon: CalendarDays, moduleKey: "rendez-vous" },
@@ -126,9 +134,10 @@ export function AdminSidebar() {
     { title: getModuleLabel("parametres"), url: "/admin/parametres", icon: Settings, moduleKey: "parametres" },
   ];
 
-  // All enabled items (settings + sector visibility)
+  // [MBA] Module Gestion Logements — modules sectoriels toujours visibles (pas dans enabledModules standard)
+  const sectorSpecificModules = ["logements"];
   const enabledItems = allNavItems
-    .filter((item) => enabledModules.includes(item.moduleKey))
+    .filter((item) => enabledModules.includes(item.moduleKey) || sectorSpecificModules.includes(item.moduleKey))
     .filter((item) => !isModuleHidden(item.moduleKey));
 
   const planModules = currentPlanModules[plan];
@@ -296,28 +305,7 @@ export function AdminSidebar() {
             );
           })}
 
-          {(isEnterprise || isBusiness) && spaces.length > 0 && (
-            <SidebarGroup>
-              <SidebarGroupLabel className="text-[10px] uppercase tracking-[1.5px] font-bold text-[#9ca3af] flex items-center gap-1.5 px-5">
-                <Sparkles className="h-3.5 w-3.5 text-[#22c55e]" />
-                Espaces personnalisés
-              </SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {spaces.map((space) => (
-                    <SidebarMenuItem key={space.id}>
-                      <SidebarMenuButton tooltip={space.name} asChild>
-                        <Link to={`/admin/espace/${space.id}`} className="flex items-center gap-3 px-5 py-[9px] text-[#4a5e46] hover:bg-[#14532d]/80 hover:!text-white transition-colors">
-                          <span className="h-2 w-2 rounded-full bg-[#22c55e]" />
-                          <span>{space.name}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          )}
+          {/* [MBA] Section "Espaces personnalisés" supprimée — géré via le sector registry */}
         </SidebarContent>
 
         <SidebarFooter className="p-4 bg-[#f7f8f5] border-t border-[#e4e8df]">

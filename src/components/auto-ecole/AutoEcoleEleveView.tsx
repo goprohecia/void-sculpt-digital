@@ -4,7 +4,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { AutoEcoleStepper } from "./AutoEcoleStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_ELEVES, MOCK_LECONS, MOCK_MONITEURS, AUTO_ECOLE_STEPS,
 } from "@/data/mockAutoEcoleData";
@@ -54,7 +54,7 @@ export function AutoEcoleEleveView() {
                 <CardTitle className="text-base">Avancement de votre formation</CardTitle>
               </CardHeader>
               <CardContent>
-                <AutoEcoleStepper currentStep={eleve.etape - 1} />
+                <SectorStepper currentStep={eleve.etape - 1} />
               </CardContent>
             </Card>
           </motion.div>

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ComptableStepper } from "./ComptableStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { toast } from "sonner";
 import {
   MOCK_MISSIONS, MOCK_DECLARATIONS, MOCK_COLLABORATEURS_COMPTABLES,
@@ -96,7 +96,7 @@ export function ComptableCollaborateurView() {
                     <CardTitle className="text-base">{missionDetail.entrepriseNom} — Détail</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <ComptableStepper currentStep={missionDetail.etape - 1} compact />
+                    <SectorStepper currentStep={missionDetail.etape - 1} compact />
 
                     {/* Pièces reçues */}
                     <div>

@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DJOnboardingBanner } from "./DJOnboardingBanner";
-import { DJStepper } from "./DJStepper";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   DJ_KPIS, DJ_STEPS, MOCK_DJ_PRESTATIONS,
 } from "@/data/mockDJData";
@@ -31,7 +31,7 @@ export function DJDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <motion.div variants={staggerItem}><DJOnboardingBanner /></motion.div>
+      <motion.div variants={staggerItem}><SectorOnboardingBanner /></motion.div>
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">
@@ -77,7 +77,7 @@ export function DJDashboard() {
                   </div>
                   <Badge variant="secondary" className="text-xs">{DJ_STEPS[p.etape] || DJ_STEPS[0]}</Badge>
                 </div>
-                <DJStepper currentStep={p.etape} />
+                <SectorStepper currentStep={p.etape} />
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Users className="h-3 w-3" /> {p.artisteAssigne}
                   <span>·</span>

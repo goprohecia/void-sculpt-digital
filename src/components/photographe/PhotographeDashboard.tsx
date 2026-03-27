@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_SEANCES, MOCK_PHOTOGRAPHES, PHOTOGRAPHE_KPI, PHOTOGRAPHE_STEPS } from "@/data/mockPhotographeData";
-import { PhotographeOnboardingBanner } from "./PhotographeOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import { Camera, Euro, Clock, CalendarDays, ImageIcon } from "lucide-react";
 
 export function PhotographeDashboard() {
   return (
     <div className="space-y-6">
-      <PhotographeOnboardingBanner />
+      <SectorOnboardingBanner />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Camera className="h-6 w-6 text-primary" /> Espace Studio</h1>
         <p className="text-muted-foreground text-sm">Pilotage des séances et livraisons</p>

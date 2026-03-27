@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CoiffureStepper } from "./CoiffureStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_COIFFURE_PRATICIENS,
   MOCK_COIFFURE_PRESTATIONS,
@@ -166,7 +166,7 @@ export function CoiffureClientView() {
                   </div>
                   <Badge variant="outline" className="text-xs">{rdv.prix} €</Badge>
                 </div>
-                <CoiffureStepper currentStep={rdv.etape} />
+                <SectorStepper currentStep={rdv.etape} />
                 {!rdv.acomptePaye && rdv.etape < 1 && (
                   <Button size="sm" variant="outline" onClick={() => payAcompte(rdv.id)}>
                     <CreditCard className="h-3 w-3 mr-1" /> Payer l'acompte ({Math.round(rdv.prix * 0.3)} €)

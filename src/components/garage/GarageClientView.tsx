@@ -4,7 +4,7 @@ import { ClientLayout } from "@/components/admin/ClientLayout";
 import { AdminPageTransition, staggerContainer, staggerItem } from "@/components/admin/AdminPageTransition";
 import { Car, User, CalendarDays, Wrench, Bell } from "lucide-react";
 import { MOCK_VEHICULES, GARAGE_CLIENT_MESSAGES } from "@/data/mockGarageData";
-import { GarageVehicleStepper } from "./GarageVehicleStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { toast } from "sonner";
 
 export function GarageClientView() {
@@ -79,7 +79,7 @@ export function GarageClientView() {
           {/* Stepper */}
           <motion.div variants={staggerItem} className="glass-card p-5">
             <h3 className="text-sm font-semibold mb-4">Avancement</h3>
-            <GarageVehicleStepper
+            <SectorStepper
               currentStep={vehicule.etape}
               stepDates={vehicule.stepDates}
               notes={vehicule.notes}

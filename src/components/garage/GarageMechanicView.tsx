@@ -5,7 +5,7 @@ import { AdminPageTransition, staggerContainer, staggerItem } from "@/components
 import { Badge } from "@/components/ui/badge";
 import { Wrench, Car } from "lucide-react";
 import { MOCK_VEHICULES, GARAGE_STEPS, type MockVehicule } from "@/data/mockGarageData";
-import { GarageVehicleStepper } from "./GarageVehicleStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { toast } from "sonner";
 
 const CURRENT_MECHANIC_ID = "mec-1";
@@ -73,7 +73,7 @@ export function GarageMechanicView() {
                     </div>
                   )}
 
-                  <GarageVehicleStepper
+                  <SectorStepper
                     currentStep={v.etape}
                     stepDates={v.stepDates}
                     isEditable

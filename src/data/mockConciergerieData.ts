@@ -3,19 +3,31 @@ import { getDefaultStepsForSector } from "./sectorTimelines";
 
 export const CONCIERGERIE_STEPS = getDefaultStepsForSector("conciergerie");
 
+// [MBA] Module Gestion Logements — interface enrichie CDC Conciergerie
 export interface ConciergerieBien {
   id: string;
   nom: string;
   adresse: string;
   ville: string;
-  type: "appartement" | "maison" | "studio";
+  type: "appartement" | "maison" | "villa" | "studio" | "loft" | "chambre_hotes" | "gite";
   proprietaireId: string;
   proprietaireNom: string;
   capacite: number;
+  surface?: number;
+  etage?: string;
+  codeAcces?: string;
   photo: string;
-  tauxOccupation: number; // %
+  tauxOccupation: number;
   revenuMensuel: number;
   commissionConciergerie: number;
+  plateformes: ("Airbnb" | "Booking" | "Vrbo" | "Direct")[];
+  statut: "disponible" | "reserve" | "en_menage" | "indisponible" | "maintenance";
+  instructionsMenage?: string;
+  equipements?: string[];
+  tarifNuit?: number;
+  lienAirbnb?: string;
+  lienBooking?: string;
+  lienVrbo?: string;
 }
 
 export interface ConciergerieReservation {
@@ -30,7 +42,7 @@ export interface ConciergerieReservation {
   agentNom: string;
   proprietaireId: string;
   montantSejour: number;
-  plateforme: "Airbnb" | "Booking" | "Direct";
+  plateforme: "Airbnb" | "Booking" | "Vrbo" | "Direct";
 }
 
 export interface ConciergerieIntervention {
@@ -61,13 +73,14 @@ export const MOCK_CONCIERGERIE_AGENTS: ConciergerieAgent[] = [
   { id: "conc-agent-2", nom: "Garcia", prenom: "Luis", telephone: "06 98 76 54 32", interventionsJour: 3 },
 ];
 
+// [MBA] Module Gestion Logements — données mock enrichies
 export const MOCK_CONCIERGERIE_BIENS: ConciergerieBien[] = [
-  { id: "bien-1", nom: "Studio Bastille", adresse: "12 rue de la Roquette", ville: "Paris", type: "studio", proprietaireId: "prop-1", proprietaireNom: "M. Dupont", capacite: 2, photo: "/placeholder.svg", tauxOccupation: 78, revenuMensuel: 2400, commissionConciergerie: 480 },
-  { id: "bien-2", nom: "Appt Marais", adresse: "8 rue des Francs-Bourgeois", ville: "Paris", type: "appartement", proprietaireId: "prop-1", proprietaireNom: "M. Dupont", capacite: 4, photo: "/placeholder.svg", tauxOccupation: 85, revenuMensuel: 3800, commissionConciergerie: 760 },
-  { id: "bien-3", nom: "Maison Montmartre", adresse: "45 rue Lepic", ville: "Paris", type: "maison", proprietaireId: "prop-2", proprietaireNom: "Mme Bernard", capacite: 6, photo: "/placeholder.svg", tauxOccupation: 62, revenuMensuel: 4200, commissionConciergerie: 840 },
-  { id: "bien-4", nom: "Studio Nation", adresse: "3 avenue du Trône", ville: "Paris", type: "studio", proprietaireId: "prop-2", proprietaireNom: "Mme Bernard", capacite: 2, photo: "/placeholder.svg", tauxOccupation: 91, revenuMensuel: 2100, commissionConciergerie: 420 },
-  { id: "bien-5", nom: "Appt Oberkampf", adresse: "22 rue Oberkampf", ville: "Paris", type: "appartement", proprietaireId: "prop-3", proprietaireNom: "M. Lefèvre", capacite: 3, photo: "/placeholder.svg", tauxOccupation: 70, revenuMensuel: 2900, commissionConciergerie: 580 },
-  { id: "bien-6", nom: "Loft Belleville", adresse: "10 rue de Belleville", ville: "Paris", type: "appartement", proprietaireId: "prop-3", proprietaireNom: "M. Lefèvre", capacite: 5, photo: "/placeholder.svg", tauxOccupation: 55, revenuMensuel: 3200, commissionConciergerie: 640 },
+  { id: "bien-1", nom: "Studio Bastille", adresse: "12 rue de la Roquette, 75011 Paris", ville: "Paris", type: "studio", proprietaireId: "prop-1", proprietaireNom: "M. Dupont", capacite: 2, surface: 28, etage: "3e", codeAcces: "4521B", photo: "/placeholder.svg", tauxOccupation: 78, revenuMensuel: 2400, commissionConciergerie: 480, plateformes: ["Airbnb", "Booking"], statut: "reserve", tarifNuit: 85, equipements: ["WiFi", "Machine à laver", "Cuisine équipée"], instructionsMenage: "Attention aux draps blancs — utiliser le programme délicat.", lienAirbnb: "https://airbnb.com/rooms/12345" },
+  { id: "bien-2", nom: "Appt Marais", adresse: "8 rue des Francs-Bourgeois, 75004 Paris", ville: "Paris", type: "appartement", proprietaireId: "prop-1", proprietaireNom: "M. Dupont", capacite: 4, surface: 55, etage: "2e", codeAcces: "1789A", photo: "/placeholder.svg", tauxOccupation: 85, revenuMensuel: 3800, commissionConciergerie: 760, plateformes: ["Airbnb", "Booking", "Vrbo"], statut: "disponible", tarifNuit: 140, equipements: ["WiFi", "Parking", "Balcon", "Climatisation"], instructionsMenage: "2 salles de bain. Recharger les capsules Nespresso.", lienAirbnb: "https://airbnb.com/rooms/23456", lienBooking: "https://booking.com/hotel/fr/marais-dupont" },
+  { id: "bien-3", nom: "Maison Montmartre", adresse: "45 rue Lepic, 75018 Paris", ville: "Paris", type: "maison", proprietaireId: "prop-2", proprietaireNom: "Mme Bernard", capacite: 6, surface: 95, photo: "/placeholder.svg", tauxOccupation: 62, revenuMensuel: 4200, commissionConciergerie: 840, plateformes: ["Airbnb", "Direct"], statut: "en_menage", tarifNuit: 220, equipements: ["WiFi", "Jardin", "BBQ", "Parking privé", "Lave-vaisselle"], instructionsMenage: "Jardin à arroser si séjour > 5 jours. 3 chambres + canapé-lit salon." },
+  { id: "bien-4", nom: "Studio Nation", adresse: "3 avenue du Trône, 75012 Paris", ville: "Paris", type: "studio", proprietaireId: "prop-2", proprietaireNom: "Mme Bernard", capacite: 2, surface: 22, etage: "5e sans ascenseur", codeAcces: "Boîte à clés #3412", photo: "/placeholder.svg", tauxOccupation: 91, revenuMensuel: 2100, commissionConciergerie: 420, plateformes: ["Airbnb"], statut: "reserve", tarifNuit: 70, equipements: ["WiFi", "Micro-ondes"], instructionsMenage: "Petit studio — ménage rapide. Vérifier les ampoules." },
+  { id: "bien-5", nom: "Appt Oberkampf", adresse: "22 rue Oberkampf, 75011 Paris", ville: "Paris", type: "appartement", proprietaireId: "prop-3", proprietaireNom: "M. Lefèvre", capacite: 3, surface: 42, etage: "1er", codeAcces: "7788C", photo: "/placeholder.svg", tauxOccupation: 70, revenuMensuel: 2900, commissionConciergerie: 580, plateformes: ["Booking", "Vrbo"], statut: "disponible", tarifNuit: 110, equipements: ["WiFi", "Ascenseur", "Machine à laver"], lienBooking: "https://booking.com/hotel/fr/oberkampf-lefevre", lienVrbo: "https://vrbo.com/2345678" },
+  { id: "bien-6", nom: "Loft Belleville", adresse: "10 rue de Belleville, 75020 Paris", ville: "Paris", type: "loft", proprietaireId: "prop-3", proprietaireNom: "M. Lefèvre", capacite: 5, surface: 78, etage: "RDC", codeAcces: "Digicode 4567", photo: "/placeholder.svg", tauxOccupation: 55, revenuMensuel: 3200, commissionConciergerie: 640, plateformes: ["Airbnb", "Booking", "Vrbo", "Direct"], statut: "maintenance", tarifNuit: 165, equipements: ["WiFi", "Parking", "Terrasse", "Home cinéma", "Cuisine ouverte"], instructionsMenage: "Grand espace ouvert. Passer l'aspirateur sur la mezzanine aussi." },
 ];
 
 export const MOCK_CONCIERGERIE_RESERVATIONS: ConciergerieReservation[] = [
@@ -75,7 +88,7 @@ export const MOCK_CONCIERGERIE_RESERVATIONS: ConciergerieReservation[] = [
   { id: "resa-2", bienId: "bien-2", bienNom: "Appt Marais", voyageurNom: "Anna Müller", dateArrivee: "2026-03-08", dateDepart: "2026-03-12", etape: 4, agentId: "conc-agent-1", agentNom: "Claire Petit", proprietaireId: "prop-1", montantSejour: 720, plateforme: "Booking" },
   { id: "resa-3", bienId: "bien-3", bienNom: "Maison Montmartre", voyageurNom: "Carlos López", dateArrivee: "2026-03-12", dateDepart: "2026-03-18", etape: 1, agentId: "conc-agent-2", agentNom: "Luis Garcia", proprietaireId: "prop-2", montantSejour: 1200, plateforme: "Direct" },
   { id: "resa-4", bienId: "bien-4", bienNom: "Studio Nation", voyageurNom: "Sophie Martin", dateArrivee: "2026-03-05", dateDepart: "2026-03-09", etape: 6, agentId: "conc-agent-2", agentNom: "Luis Garcia", proprietaireId: "prop-2", montantSejour: 360, plateforme: "Airbnb" },
-  { id: "resa-5", bienId: "bien-5", bienNom: "Appt Oberkampf", voyageurNom: "Yuki Tanaka", dateArrivee: "2026-03-11", dateDepart: "2026-03-15", etape: 2, agentId: "conc-agent-1", agentNom: "Claire Petit", proprietaireId: "prop-3", montantSejour: 560, plateforme: "Airbnb" },
+  { id: "resa-5", bienId: "bien-5", bienNom: "Appt Oberkampf", voyageurNom: "Yuki Tanaka", dateArrivee: "2026-03-11", dateDepart: "2026-03-15", etape: 2, agentId: "conc-agent-1", agentNom: "Claire Petit", proprietaireId: "prop-3", montantSejour: 560, plateforme: "Vrbo" },
   { id: "resa-6", bienId: "bien-1", bienNom: "Studio Bastille", voyageurNom: "Emma Wilson", dateArrivee: "2026-03-15", dateDepart: "2026-03-19", etape: 0, agentId: "conc-agent-1", agentNom: "Claire Petit", proprietaireId: "prop-1", montantSejour: 500, plateforme: "Booking" },
   { id: "resa-7", bienId: "bien-6", bienNom: "Loft Belleville", voyageurNom: "Pierre Durand", dateArrivee: "2026-03-06", dateDepart: "2026-03-10", etape: 5, agentId: "conc-agent-2", agentNom: "Luis Garcia", proprietaireId: "prop-3", montantSejour: 640, plateforme: "Direct" },
 ];

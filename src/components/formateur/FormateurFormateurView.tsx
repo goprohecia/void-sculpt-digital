@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MOCK_SESSIONS } from "@/data/mockFormateurData";
-import { FormateurStepper } from "./FormateurStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import { ClipboardList, Users, FileCheck, Award } from "lucide-react";
 import { toast } from "sonner";
 
@@ -69,7 +69,7 @@ export function FormateurFormateurView() {
       {/* Stepper */}
       <Card className="glass-card">
         <CardContent className="p-4">
-          <FormateurStepper currentStep={selected.step} />
+          <SectorStepper currentStep={selected.step} />
         </CardContent>
       </Card>
 

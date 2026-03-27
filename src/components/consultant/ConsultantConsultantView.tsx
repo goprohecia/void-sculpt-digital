@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ConsultantStepper } from "./ConsultantStepper";
+import { SectorStepper } from "@/components/admin/SectorStepper";
 import {
   MOCK_CONSULTANT_MISSIONS, MOCK_CONSULTANT_CR, MOCK_CONSULTANT_REUNIONS,
 } from "@/data/mockConsultantData";
@@ -54,7 +54,7 @@ export function ConsultantConsultantView() {
               <p className="text-xs text-muted-foreground">{m.objet}</p>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ConsultantStepper currentStep={m.etape} />
+              <SectorStepper currentStep={m.etape} />
 
               <div>
                 <p className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-1"><Target className="h-3 w-3" /> Objectifs</p>

@@ -108,9 +108,10 @@ export function DossierTimeline({ dossierId, isAdmin = false, isEmployee = false
     <TooltipProvider>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
+          {/* [MBA] Titre adapté au secteur */}
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <Clock className="h-4 w-4 text-primary" />
-            Suivi de livraison
+            Timeline de suivi
           </h2>
           {/* Config: active for admin Business/Enterprise, upsell for admin Starter */}
           {canEditConfig && templates.length > 1 && (

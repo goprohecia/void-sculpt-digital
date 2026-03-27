@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SportOnboardingBanner } from "./SportOnboardingBanner";
+import { SectorOnboardingBanner } from "@/components/admin/SectorOnboardingBanner";
 import {
   SPORT_KPIS, MOCK_SPORT_MEMBRES, MOCK_SPORT_COACHS, MOCK_SPORT_COURS,
 } from "@/data/mockSportData";
@@ -26,7 +26,7 @@ export function SportDashboard() {
 
   return (
     <motion.div className="space-y-6" variants={staggerContainer} initial="initial" animate="animate">
-      <motion.div variants={staggerItem}><SportOnboardingBanner /></motion.div>
+      <motion.div variants={staggerItem}><SectorOnboardingBanner /></motion.div>
 
       <motion.div variants={staggerItem}>
         <h1 className="text-2xl font-bold flex items-center gap-2">
