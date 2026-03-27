@@ -41,6 +41,8 @@ const getCategoryIcon = (title: string) => {
   const map: Record<string, React.ComponentType<{ className?: string }>> = {
     "Réparation & Technique": Wrench, "Accompagnement & Conseil": Handshake,
     "Créatif & Événementiel": Palette, "Commerce & Services": ShoppingBag,
+    // [MBA] Restructuration conciergerie — nouvelle catégorie
+    "Conciergerie & Gestion de biens": Building2,
     "Juridique & Administratif": Scale, "Éducation & Formation": GraduationCap,
     "Mariage & Haute Couture": Heart,
   };
@@ -53,7 +55,9 @@ const SECTOR_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
   formateur: BookOpen, "expert-comptable": Calculator,
   designer: Paintbrush, photographe: Camera, "dj-animateur": Music,
   evenementiel: PartyPopper, "community-manager": Share2,
-  boutique: Store, conciergerie: Home, nettoyage: SprayCan,
+  boutique: Store,
+  // [MBA] Restructuration conciergerie — 3 métiers distincts
+  "conciergerie-immo": Home, "conciergerie-nettoyage": SprayCan, "conciergerie-auto": Car,
   traiteur: ChefHat, coiffure: Scissors,
   "cabinet-avocats": Gavel, immobilier: Building2, developpeur: Code,
   "auto-ecole": CarFront, "centre-islamique": Moon, "association-sportive": Trophy,
@@ -75,8 +79,10 @@ const SECTOR_DESCRIPTIONS: Record<string, string> = {
   evenementiel: "Organisation, coordination, logistique",
   "community-manager": "Réseaux sociaux, contenu, stratégie",
   boutique: "Vente, stock, fidélisation",
-  conciergerie: "Location saisonnière, Airbnb, gestion",
-  nettoyage: "Entretien, propreté, contrats B2B",
+  // [MBA] Restructuration conciergerie
+  "conciergerie-immo": "Gestion locative Airbnb, Booking, Vrbo — voyageurs, ménage, revenus",
+  "conciergerie-nettoyage": "Entreprise de nettoyage — logements, bureaux, locaux, contrats récurrents",
+  "conciergerie-auto": "Conciergerie auto — livraison, entretien, lavage, parking",
   traiteur: "Cuisine, livraison, événements",
   coiffure: "Coiffure, beauté, soins",
   "cabinet-avocats": "Droit, contentieux, conseil juridique",

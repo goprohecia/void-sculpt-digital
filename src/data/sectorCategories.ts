@@ -1,3 +1,4 @@
+// [MBA] Restructuration conciergerie — catégories secteurs pour l'onboarding
 import type { SectorKey } from "@/contexts/DemoPlanContext";
 
 export interface SectorCategoryItem {
@@ -28,7 +29,6 @@ export const SECTOR_CATEGORIES: SectorCategory[] = [
     emoji: "🧠",
     sectors: [
       { key: "consultant", icon: "🧠", label: "Consultant", roles: "Consultant / Client" },
-      // [MBA] Bible v3 section 6.2 — client = "Membre" pour salle de sport
       { key: "coach-sportif", icon: "💪", label: "Coach sportif", roles: "Coach / Membre" },
       { key: "cabinet-recrutement", icon: "🤝", label: "Cabinet de Recrutement", roles: "Chargé de recrutement / Client" },
       { key: "formateur", icon: "📚", label: "Formateur", roles: "Formateur / Client" },
@@ -47,14 +47,23 @@ export const SECTOR_CATEGORIES: SectorCategory[] = [
     ],
   },
   {
+    // [MBA] Restructuration conciergerie — conciergerie et nettoyage retirés, remplacés par la nouvelle catégorie
     title: "Commerce & Services",
     emoji: "🛍️",
     sectors: [
       { key: "boutique", icon: "🛍️", label: "Magasin / Boutique", roles: "Vendeur / Client" },
-      { key: "conciergerie", icon: "🏡", label: "Conciergerie / Airbnb", roles: "Agent d'entretien / Propriétaire" },
-      { key: "nettoyage", icon: "🧹", label: "Nettoyage", roles: "Agent / Client" },
       { key: "traiteur", icon: "🍽️", label: "Traiteur", roles: "Cuisinier / Client" },
       { key: "coiffure", icon: "✂️", label: "Salon de Coiffure / Beauté", roles: "Praticien / Client" },
+    ],
+  },
+  // [MBA] Restructuration conciergerie — nouvelle catégorie avec 3 métiers distincts
+  {
+    title: "Conciergerie & Gestion de biens",
+    emoji: "🏠",
+    sectors: [
+      { key: "conciergerie-immo", icon: "🏠", label: "Conciergerie immobilière", roles: "Gestionnaire / Propriétaire" },
+      { key: "conciergerie-nettoyage", icon: "🧹", label: "Conciergerie de nettoyage", roles: "Responsable / Agent d'entretien" },
+      { key: "conciergerie-auto", icon: "🚗", label: "Conciergerie automobile", roles: "Gestionnaire / Chauffeur-Livreur" },
     ],
   },
   {

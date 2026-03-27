@@ -102,8 +102,8 @@ export function AdminSidebar() {
   const totalNonLus = conversations.reduce((sum, c) => sum + (c.nonLus || 0), 0);
   const openTickets = tickets.filter((t) => t.statut === "ouvert" || t.statut === "en_cours").length;
 
-  // [MBA] Module Gestion Logements — visible uniquement pour conciergerie
-  const showLogements = demoSector === "conciergerie";
+  // [MBA] Restructuration conciergerie — Logements visible pour conciergerie-immo uniquement
+  const showLogements = demoSector === "conciergerie-immo";
 
   const allNavItems = [
     { title: getModuleLabel("overview"), url: "/admin", icon: LayoutDashboard, moduleKey: "overview" },
@@ -338,7 +338,8 @@ export function AdminSidebar() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[13px] font-semibold truncate text-[#1a2318]">{user?.nom || "My Business Assistant"}</p>
-              <p className="text-[11px] text-[#9ca3af] capitalize">{user?.role || "Admin"}</p>
+              {/* [MBA] Restructuration — Admin → Entreprise dans le label affiché */}
+              <p className="text-[11px] text-[#9ca3af]">{user?.role === "admin" ? "Entreprise" : user?.role === "superadmin" ? "Super Admin" : user?.role || "Entreprise"}</p>
             </div>
           </div>
           <button

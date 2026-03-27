@@ -73,6 +73,8 @@ import AdminFournisseurs from "@/pages/admin/AdminFournisseurs";
 import AdminAnnonces from "@/pages/admin/AdminAnnonces";
 
 // Super Admin pages
+// [MBA] Séparation Superadmin — page login dédiée
+import SuperAdminLogin from "@/pages/superadmin/SuperAdminLogin";
 import SuperAdminDashboard from "@/pages/superadmin/SuperAdminDashboard";
 import SuperAdminEntreprises from "@/pages/superadmin/SuperAdminEntreprises";
 import SuperAdminAbonnements from "@/pages/superadmin/SuperAdminAbonnements";
@@ -226,6 +228,8 @@ export function AnimatedRoutes() {
         <Route path="/employee/profil" element={<EmployeeProfile />} />
 
         {/* Super Admin routes */}
+        {/* [MBA] Séparation Superadmin — login dédié, non visible dans l'UI utilisateur */}
+        <Route path="/superadmin/login" element={<SuperAdminLogin />} />
         <Route path="/superadmin" element={<SuperAdminDashboard />} />
         <Route path="/superadmin/entreprises" element={<SuperAdminEntreprises />} />
         <Route path="/superadmin/entreprises/:id" element={<SuperAdminEntrepriseDetail />} />

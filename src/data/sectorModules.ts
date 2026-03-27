@@ -412,10 +412,23 @@ export const SECTOR_MODULE_OVERRIDES: Record<string, SectorModulesConfig> = {
   garages: GARAGES_OVERRIDES,
   immobilier: IMMOBILIER_OVERRIDES,
   mariage: MARIAGE_OVERRIDES,
-  nettoyage: NETTOYAGE_OVERRIDES,
+  // [MBA] Restructuration conciergerie — anciennes clés remplacées
+  "conciergerie-nettoyage": NETTOYAGE_OVERRIDES,
   reparateur: REPARATEUR_OVERRIDES,
   traiteur: TRAITEUR_OVERRIDES,
-  conciergerie: CONCIERGERIE_OVERRIDES,
+  "conciergerie-immo": CONCIERGERIE_OVERRIDES,
+  "conciergerie-auto": {
+    "clients-dossiers": { label: "Clients & Véhicules", description: "Fiches clients et véhicules en gestion" },
+    dossiers: { label: "Prestations", description: "Prestations véhicules en cours et terminées" },
+    employees: { label: "Chauffeurs-Livreurs", description: "Équipe de chauffeurs et livreurs" },
+    clients: { label: "Clients", description: "Propriétaires de véhicules" },
+    taches: { label: "Interventions", description: "Lavage, entretien, livraison, parking" },
+    stock: { label: "Fournitures", description: "Produits de nettoyage, pièces" },
+    "rendez-vous": { label: "Prise en charge", description: "Créneaux de récupération et livraison" },
+    analyse: { label: "Dashboard Auto", description: "KPIs : véhicules gérés, prestations, revenus" },
+    notes: { label: "Notes véhicule", description: "État du véhicule, signalements" },
+    facturation: { label: "Facturation", description: "Factures par prestation et abonnement" },
+  } as SectorModulesConfig,
   "cabinet-recrutement": CABINET_RECRUTEMENT_OVERRIDES,
   "auto-ecole": {
     "clients-dossiers": { label: "Élèves & Dossiers", description: "Fiches élèves et dossiers de conduite" },
@@ -537,7 +550,9 @@ export function getSectorOverrides(sectorKey: string): SectorModulesConfig {
 const ASSIGNATION_SECTORS = [
   "garages",        // Garage
   "btp",            // BTP / Artisan
-  "conciergerie",   // Conciergerie
+  "conciergerie-immo",       // Conciergerie immobilière
+  "conciergerie-nettoyage",  // Conciergerie nettoyage
+  "conciergerie-auto",       // Conciergerie automobile
   "immobilier",     // Agence Immobilière
   "coach-sportif",  // Salle de Sport
   "cabinets",       // Expert-Comptable / Cabinet d'Avocats
@@ -577,7 +592,10 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   btp: { admin: "Dirigeant", employee: "Ouvrier / Technicien", client: "Client" },
   coiffure: { admin: "Gérant", employee: "Coiffeur / Praticien", client: "Client" },
   "auto-ecole": { admin: "Directeur", employee: "Moniteur", client: "Élève" },
-  conciergerie: { admin: "Conciergerie", employee: "Agent d'entretien", client: "Propriétaire" },
+  // [MBA] Restructuration conciergerie — 3 métiers distincts
+  "conciergerie-immo": { admin: "Conciergerie", employee: "Agent d'entretien", client: "Propriétaire" },
+  "conciergerie-nettoyage": { admin: "Direction", employee: "Agent de nettoyage", client: "Client" },
+  "conciergerie-auto": { admin: "Direction", employee: "Chauffeur-Livreur", client: "Client" },
   cabinets: { admin: "Associé", employee: "Collaborateur", client: "Client" },
   immobilier: { admin: "Direction", employee: "Agent", client: "Client" },
   boutique: { admin: "Gérant", employee: "Vendeur", client: "Client" },
@@ -593,8 +611,7 @@ export const SECTOR_ROLE_LABELS: Record<string, SectorRoleLabels> = {
   mariage: { admin: "Admin Boutique", employee: "Conseillère / Retoucheuse", client: "Mariée" },
   "cabinet-avocats": { admin: "Cabinet", employee: "Avocat / Collaborateur", client: "Client" },
   "expert-comptable": { admin: "Cabinet", employee: "Collaborateur comptable", client: "Client Entreprise" },
-  // [MBA] Nettoyage — bible v3 section 6.4
-  nettoyage: { admin: "Direction", employee: "Agent de nettoyage", client: "Client" },
+  // nettoyage supprimé — remplacé par conciergerie-nettoyage ci-dessus
   "centre-islamique": { admin: "Direction", employee: "Professeur", client: "Élève" },
   "association-sportive": { admin: "Direction du club", employee: "Entraîneur", client: "Membre" },
 };

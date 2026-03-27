@@ -1394,11 +1394,59 @@ const cabinetsMock: SectorMockData = {
   },
 };
 
+// [MBA] Restructuration conciergerie — mock conciergerie automobile
+const conciergerieAutoMock: SectorMockData = {
+  clients: [
+    { id: "c1", nom: "Martin", prenom: "Philippe", email: "p.martin@gmail.com", telephone: "06 12 34 56 78", entreprise: "", statut: "actif", dateCreation: "2025-10-01", nombreDossiers: 3 },
+    { id: "c2", nom: "Chen", prenom: "Mei-Lin", email: "m.chen@hotmail.com", telephone: "06 23 45 67 89", entreprise: "", statut: "actif", dateCreation: "2025-11-15", nombreDossiers: 1 },
+    { id: "c3", nom: "AutoPrestige", prenom: "", email: "contact@autoprestige.fr", telephone: "04 91 34 56 78", entreprise: "AutoPrestige SARL", statut: "actif", dateCreation: "2025-08-20", nombreDossiers: 5 },
+    { id: "c4", nom: "Bouvier", prenom: "Antoine", email: "a.bouvier@orange.fr", telephone: "06 45 67 89 01", entreprise: "", statut: "actif", dateCreation: "2026-01-05", nombreDossiers: 1 },
+    { id: "c5", nom: "Dubois", prenom: "Marine", email: "m.dubois@free.fr", telephone: "06 56 78 90 12", entreprise: "", statut: "inactif", dateCreation: "2025-06-10", nombreDossiers: 1 },
+  ],
+  dossiers: [
+    { id: "d1", reference: "AUT-2026-001", clientId: "c1", clientNom: "Martin Philippe", typePrestation: "Lavage complet — BMW X5", montant: 150, statut: "en_cours", dateCreation: "2026-02-15", dateEcheance: "2026-02-16" },
+    { id: "d2", reference: "AUT-2026-002", clientId: "c1", clientNom: "Martin Philippe", typePrestation: "Entretien vidange — Audi A4", montant: 350, statut: "en_attente", dateCreation: "2026-02-20", dateEcheance: "2026-02-25" },
+    { id: "d3", reference: "AUT-2026-003", clientId: "c2", clientNom: "Chen Mei-Lin", typePrestation: "Lavage intérieur — Tesla Model 3", montant: 80, statut: "termine", dateCreation: "2026-02-10", dateEcheance: "2026-02-11" },
+    { id: "d4", reference: "AUT-2026-004", clientId: "c3", clientNom: "AutoPrestige", typePrestation: "Livraison véhicule — Paris → Lyon", montant: 200, statut: "en_cours", dateCreation: "2026-02-18", dateEcheance: "2026-02-19" },
+    { id: "d5", reference: "AUT-2026-005", clientId: "c3", clientNom: "AutoPrestige", typePrestation: "Parking longue durée — Porsche 911", montant: 300, statut: "en_cours", dateCreation: "2026-01-15", dateEcheance: "2026-03-15" },
+    { id: "d6", reference: "AUT-2026-006", clientId: "c4", clientNom: "Bouvier Antoine", typePrestation: "Contrôle technique — Porsche Cayenne", montant: 80, statut: "en_attente", dateCreation: "2026-02-22", dateEcheance: "2026-02-28" },
+    { id: "d7", reference: "AUT-2025-007", clientId: "c5", clientNom: "Dubois Marine", typePrestation: "Nettoyage premium — Range Rover", montant: 180, statut: "termine", dateCreation: "2025-09-01", dateEcheance: "2025-09-02" },
+  ],
+  factures: [
+    { id: "f1", reference: "FAC-AUT-001", clientId: "c1", clientNom: "Martin Philippe", dossierId: "d1", montant: 150, statut: "en_attente", dateEmission: "2026-02-15", dateEcheance: "2026-03-15" },
+    { id: "f2", reference: "FAC-AUT-002", clientId: "c2", clientNom: "Chen Mei-Lin", dossierId: "d3", montant: 80, statut: "payee", dateEmission: "2026-02-11", dateEcheance: "2026-03-11" },
+    { id: "f3", reference: "FAC-AUT-003", clientId: "c3", clientNom: "AutoPrestige", dossierId: "d4", montant: 200, statut: "en_attente", dateEmission: "2026-02-18", dateEcheance: "2026-03-18" },
+    { id: "f4", reference: "FAC-AUT-004", clientId: "c3", clientNom: "AutoPrestige", dossierId: "d5", montant: 300, statut: "en_attente", dateEmission: "2026-01-15", dateEcheance: "2026-02-15" },
+    { id: "f5", reference: "FAC-AUT-005", clientId: "c5", clientNom: "Dubois Marine", dossierId: "d7", montant: 180, statut: "payee", dateEmission: "2025-09-02", dateEcheance: "2025-10-02" },
+  ],
+  devis: [
+    { id: "dv1", reference: "DEV-AUT-001", clientId: "c1", clientNom: "Martin Philippe", dossierId: "d2", titre: "Entretien complet Audi A4 — vidange + filtres", montant: 350, statut: "accepte", dateEmission: "2026-02-18", dateValidite: "2026-03-18" },
+    { id: "dv2", reference: "DEV-AUT-002", clientId: "c4", clientNom: "Bouvier Antoine", dossierId: "d6", titre: "Contrôle technique + pré-contrôle Porsche Cayenne", montant: 120, statut: "en_attente", dateEmission: "2026-02-22", dateValidite: "2026-03-22" },
+  ],
+  notifications: [
+    { id: "n1", type: "dossier", titre: "Véhicule pris en charge", description: "BMW X5 de M. Martin — lavage en cours", date: "2026-02-15 09:00", lu: false, lien: "/admin/dossiers", destinataire: "admin" },
+    { id: "n2", type: "facture", titre: "Paiement reçu", description: "Mme Chen a réglé la facture FAC-AUT-002 (80 €)", date: "2026-02-12 14:00", lu: true, lien: "/admin/facturation", destinataire: "admin" },
+    { id: "n3", type: "dossier", titre: "Livraison terminée", description: "Véhicule livré à Lyon pour AutoPrestige", date: "2026-02-19 17:00", lu: false, lien: "/admin/dossiers", destinataire: "admin" },
+    { id: "n4", type: "devis", titre: "Nouveau devis", description: "Devis envoyé à M. Bouvier — contrôle technique Cayenne", date: "2026-02-22 11:00", lu: false, lien: "/admin/dossiers", destinataire: "admin" },
+  ],
+  teamMembers: [
+    { id: "demo-emp-1", nom: "Dufour", prenom: "Alexandre", poste: "Chauffeur-Livreur", statut: "disponible", couleur: "#6366f1", capaciteMax: 6 },
+    { id: "demo-emp-2", nom: "Mounir", prenom: "Youssef", poste: "Chauffeur-Livreur", statut: "disponible", couleur: "#f59e0b", capaciteMax: 6 },
+    { id: "demo-emp-3", nom: "Renaud", prenom: "Pauline", poste: "Responsable atelier", statut: "disponible", couleur: "#10b981", capaciteMax: 10 },
+  ],
+  assignments: {
+    d1: [{ employeeId: "demo-emp-1", role: "responsable", dateAssignation: "2026-02-15" }],
+    d4: [{ employeeId: "demo-emp-2", role: "responsable", dateAssignation: "2026-02-18" }],
+    d5: [{ employeeId: "demo-emp-3", role: "responsable", dateAssignation: "2026-01-15" }],
+  },
+};
+
 // ── MAPPING SECTEUR → MOCK DATA ──
-// [MBA] Chaque secteur a son propre mock — plus de fallback sur mockData.ts
+// [MBA] Restructuration conciergerie — anciennes clés remplacées
 const SECTOR_MOCK_MAP: Record<SectorKey, SectorMockData> = {
-  conciergerie: conciergerieMock,
-  nettoyage: nettoyageMock,
+  "conciergerie-immo": conciergerieMock,
+  "conciergerie-nettoyage": nettoyageMock,
+  "conciergerie-auto": conciergerieAutoMock,
   reparateur: reparateurMock,
   "centre-islamique": centreIslamiqueMock,
   "association-sportive": associationSportiveMock,

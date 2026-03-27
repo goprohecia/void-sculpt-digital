@@ -62,7 +62,7 @@ export default function AdminLogin() {
     }
 
     if (email.toLowerCase() === "admin@mybusinessassistant.com") {
-      setError("Ce compte est réservé à l'espace administrateur");
+      setError("Ce compte est réservé à l'administration MBA");
       return;
     }
 
@@ -206,12 +206,12 @@ export default function AdminLogin() {
                 <span className="bg-white px-2 text-[#9ca3af]">Comptes de démonstration</span>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            {/* [MBA] Restructuration — Admin → Espace Entreprise, Superadmin retiré */}
+            <div className="grid grid-cols-3 gap-2">
               {([
-                { type: "admin" as const, label: "Admin", email: "admin@mba.demo" },
+                { type: "admin" as const, label: "Espace Entreprise", email: "admin@mba.demo" },
                 { type: "employee" as const, label: employeeLabel, email: "employee@mba.demo" },
                 { type: "client" as const, label: clientLabel, email: "client@mba.demo" },
-                { type: "superadmin" as const, label: "Super Admin", email: "superadmin@mba.demo" },
               ]).map((d) => (
                 <button key={d.type} onClick={() => fillDemo(d.type)} className="bg-[#f7f8f5] border border-[#e4e8df] rounded-lg p-2.5 text-left hover:border-[#22c55e] hover:bg-[#f0fdf4] transition-colors">
                   <p className="text-[11px] font-bold text-[#14532d]">{d.label}</p>

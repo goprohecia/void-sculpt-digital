@@ -37,14 +37,15 @@ const SECTOR_REGISTRY: Partial<Record<SectorKey, SectorComponents>> = {
     ClientView: lazy(() => import("@/components/btp/BTPClientView").then(m => ({ default: m.BTPClientView }))),
     EmployeeView: lazy(() => import("@/components/btp/BTPOuvrierView").then(m => ({ default: m.BTPOuvrierView }))),
   },
-  // [MBA] Addendum — 3 espaces + niveaux employé (pas 4 espaces)
-  // Admin (Dashboard), Propriétaire (ClientView), Agent/Manager (EmployeeView)
-  // Prestataire = espace personnalisé Enterprise (bible v3 section 11), pas un tab EmployeeViews
-  conciergerie: {
+  // [MBA] Restructuration conciergerie — 3 métiers distincts
+  // conciergerie-immo hérite des composants existants (ConciergerieDashboard, ProprietaireView, AgentView)
+  "conciergerie-immo": {
     Dashboard: lazy(() => import("@/components/conciergerie/ConciergerieDashboard").then(m => ({ default: m.ConciergerieDashboard }))),
     ClientView: lazy(() => import("@/components/conciergerie/ConciergerieProprietaireView").then(m => ({ default: m.ConciergerieProprietaireView }))),
     EmployeeView: lazy(() => import("@/components/conciergerie/ConciergerieAgentView").then(m => ({ default: m.ConciergerieAgentView }))),
   },
+  // conciergerie-nettoyage et conciergerie-auto — pas de composants spécifiques pour l'instant
+  // Ils utilisent le fallback générique (AdminDossiers standard)
   coiffure: {
     Dashboard: lazy(() => import("@/components/coiffure/CoiffureDashboard").then(m => ({ default: m.CoiffureDashboard }))),
     ClientView: lazy(() => import("@/components/coiffure/CoiffureClientView").then(m => ({ default: m.CoiffureClientView }))),

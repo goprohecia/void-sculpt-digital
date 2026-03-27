@@ -1,7 +1,8 @@
 // ── Mock data for Nettoyage / Entreprise de propreté ──
 import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const NETTOYAGE_STEPS = getDefaultStepsForSector("nettoyage");
+// [MBA] Restructuration conciergerie — ancienne clé "nettoyage" → "conciergerie-nettoyage"
+export const NETTOYAGE_STEPS = getDefaultStepsForSector("conciergerie-nettoyage");
 
 export interface NettoyageChecklistItem {
   id: string;

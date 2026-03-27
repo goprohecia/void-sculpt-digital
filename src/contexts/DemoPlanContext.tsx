@@ -41,10 +41,13 @@ export const DEFAULT_PLAN_PRICES: Record<SubscriptionPlan, number> = {
   enterprise: 500,
 };
 
-// ── Sectors aligned with landing page sector pages ──
+// [MBA] Restructuration conciergerie — anciennes clés "conciergerie" et "nettoyage" remplacées
+// par "conciergerie-immo", "conciergerie-nettoyage", "conciergerie-auto"
 export const SECTORS = [
   { key: "auto-ecole", label: "Auto-École", icon: "🚗" },
-  { key: "conciergerie", label: "Conciergerie", icon: "🏠" },
+  { key: "conciergerie-immo", label: "Conciergerie immobilière", icon: "🏠" },
+  { key: "conciergerie-nettoyage", label: "Conciergerie de nettoyage", icon: "🧹" },
+  { key: "conciergerie-auto", label: "Conciergerie automobile", icon: "🚗" },
   { key: "btp", label: "BTP", icon: "🏗️" },
   { key: "boutique", label: "Boutique", icon: "🛍️" },
   { key: "cabinets", label: "Cabinets", icon: "⚖️" },
@@ -60,7 +63,6 @@ export const SECTORS = [
   { key: "garages", label: "Garages", icon: "🔧" },
   { key: "immobilier", label: "Immobilier", icon: "🏢" },
   { key: "mariage", label: "Mariage", icon: "💍" },
-  { key: "nettoyage", label: "Nettoyage", icon: "🧹" },
   { key: "photographe", label: "Photographe", icon: "📷" },
   { key: "reparateur", label: "Réparateur", icon: "🛠️" },
   { key: "traiteur", label: "Traiteur", icon: "🍽️" },
@@ -76,7 +78,10 @@ export type SectorKey = (typeof SECTORS)[number]["key"];
 // Ordered list of recommended ADDITIONAL modules per sector (socle fixe excluded)
 export const DEFAULT_SECTOR_RECOMMENDATIONS: Record<SectorKey, string[]> = {
   "auto-ecole": ["rendez-vous", "agenda", "facturation", "messagerie", "relances", "abonnement"],
-  conciergerie: ["agenda", "employees", "facturation", "messagerie", "relances", "abonnement"],
+  // [MBA] Restructuration conciergerie — 3 métiers distincts
+  "conciergerie-immo": ["agenda", "employees", "facturation", "messagerie", "relances", "abonnement"],
+  "conciergerie-nettoyage": ["agenda", "facturation", "messagerie", "relances", "employees", "abonnement"],
+  "conciergerie-auto": ["agenda", "facturation", "messagerie", "relances", "rendez-vous", "taches"],
   btp: ["facturation", "relances", "stock", "agenda", "messagerie", "signature"],
   boutique: ["stock", "facturation", "messagerie", "relances", "employees", "emails"],
   cabinets: ["signature", "messagerie", "agenda", "facturation", "relances", "emails"],
@@ -92,7 +97,7 @@ export const DEFAULT_SECTOR_RECOMMENDATIONS: Record<SectorKey, string[]> = {
   garages: ["rendez-vous", "facturation", "stock", "messagerie", "relances", "emails"],
   immobilier: ["agenda", "messagerie", "signature", "facturation", "relances", "emails"],
   mariage: ["rendez-vous", "facturation", "messagerie", "agenda", "relances", "signature"],
-  nettoyage: ["agenda", "facturation", "messagerie", "relances", "employees", "abonnement"],
+  // [MBA] "nettoyage" supprimé — remplacé par "conciergerie-nettoyage" ci-dessus
   photographe: ["rendez-vous", "agenda", "facturation", "messagerie", "relances", "emails"],
   reparateur: ["facturation", "stock", "support", "relances", "rendez-vous", "taches"],
   traiteur: ["signature", "facturation", "agenda", "messagerie", "relances", "emails"],

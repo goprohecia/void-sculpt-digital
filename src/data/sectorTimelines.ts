@@ -118,7 +118,8 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     },
   ],
 
-  conciergerie: [
+  // [MBA] Restructuration conciergerie — ancienne clé "conciergerie" → "conciergerie-immo"
+  "conciergerie-immo": [
     {
       name: "Suivi séjour",
       category: "location",
@@ -285,7 +286,8 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
     },
   ],
 
-  nettoyage: [
+  // [MBA] Restructuration conciergerie — ancienne clé "nettoyage" → "conciergerie-nettoyage"
+  "conciergerie-nettoyage": [
     {
       name: "Contrat récurrent",
       category: "gestion",
@@ -295,6 +297,15 @@ export const SECTOR_TIMELINE_PRESETS: Record<string, TimelinePreset[]> = {
       name: "Intervention ponctuelle",
       category: "service",
       steps: ["Demande reçue", "Évaluation", "Devis rapide", "Confirmation", "Intervention", "Vérification", "Facturation"],
+    },
+  ],
+
+  // [MBA] Restructuration conciergerie — nouveau métier conciergerie auto
+  "conciergerie-auto": [
+    {
+      name: "Prestation véhicule",
+      category: "service",
+      steps: ["Demande reçue", "Véhicule pris en charge", "Prestation en cours", "Contrôle qualité", "Véhicule livré", "Facturé", "Terminé"],
     },
   ],
 
@@ -408,7 +419,9 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     coiffure: "Coiffure",
     photographe: "Photographe",
     consultant: "Consultant",
-    conciergerie: "Conciergerie",
+    "conciergerie-immo": "Conciergerie immobilière",
+    "conciergerie-nettoyage": "Conciergerie nettoyage",
+    "conciergerie-auto": "Conciergerie automobile",
     boutique: "Boutique",
     cabinets: "Cabinets",
     "coach-sportif": "Coach sportif",
@@ -420,7 +433,7 @@ export function getAllSectorPresets(): { sectorKey: string; sectorLabel: string;
     formateur: "Formateur",
     garages: "Garages",
     mariage: "Mariage",
-    nettoyage: "Nettoyage",
+    // nettoyage supprimé — remplacé par conciergerie-nettoyage ci-dessus
     reparateur: "Réparateur",
     traiteur: "Traiteur",
     "cabinet-recrutement": "Cabinet de Recrutement",

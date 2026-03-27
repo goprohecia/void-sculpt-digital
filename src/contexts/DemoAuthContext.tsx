@@ -19,7 +19,8 @@ interface DemoAuthContextType {
 const DEMO_ACCOUNTS: Record<string, { password: string; user: DemoUser }> = {
   "admin@mba.demo": {
     password: "demo2026",
-    user: { email: "admin@mba.demo", nom: "Admin MBA", role: "admin" },
+    // [MBA] Restructuration — "Admin MBA" → nom réaliste de gérant
+    user: { email: "admin@mba.demo", nom: "Marc Leroy", role: "admin" },
   },
   "client@mba.demo": {
     password: "demo2026",

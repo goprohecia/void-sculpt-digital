@@ -1,7 +1,8 @@
 // ── Mock data for Conciergerie / Airbnb sector ──
 import { getDefaultStepsForSector } from "./sectorTimelines";
 
-export const CONCIERGERIE_STEPS = getDefaultStepsForSector("conciergerie");
+// [MBA] Restructuration conciergerie — ancienne clé "conciergerie" → "conciergerie-immo"
+export const CONCIERGERIE_STEPS = getDefaultStepsForSector("conciergerie-immo");
 
 // [MBA] Module Gestion Logements — interface enrichie CDC Conciergerie
 export interface ConciergerieBien {
